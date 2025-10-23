@@ -6,12 +6,14 @@ on:
     paths:
       - 'packages/subgraph/**'
       - '.github/workflows/subgraph-*.yml'
-      - 'packages/contracts/**'
+      - 'packages/contracts/src/**'
+      - 'packages/contracts/types/**'
   pull_request:
     paths:
       - 'packages/subgraph/**'
       - '.github/workflows/subgraph-*.yml'
-      - 'packages/contracts/**'
+      - 'packages/contracts/src/**'
+      - 'packages/contracts/types/**'
   workflow_dispatch:
 
 env:
