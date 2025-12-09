@@ -82,11 +82,16 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   let metadataCIDPath = '0x';
 
   if (!isLocal(hre.network)) {
-    // Upload the metadata to IPFS
-    metadataCIDPath = await uploadToPinata(
-      JSON.stringify(MANAGEMENT_DAO_METADATA, null, 2),
-      `management-dao-metadata`
-    );
+    // Upload the metadata to IPFS (prefer Pinata). If it fails, skip upload to avoid
+    // hitting endpoints with TLS issues and set empty metadata.
+    try {
+      metadataCIDPath = await uploadToPinata(
+        JSON.stringify(MANAGEMENT_DAO_METADATA, null, 2),
+        `management-dao-metadata`
+      );
+    } catch (e) {
+      metadataCIDPath = '0x';
+    }
   }
 
   const hasMetadataPermission = await managementDaoContract.hasPermission(
