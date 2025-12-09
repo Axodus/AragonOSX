@@ -102,14 +102,24 @@ const config: HardhatUserConfig = {
       throwOnCallFailures: true,
       blockGasLimit: 3000000000, // really high to test some things that are only possible with a higher block gas limit
       gasPrice: 80000000000,
-      deploy: ENABLE_DEPLOY_TEST
-        ? ['./deploy']
-        : ['./deploy/env', './deploy/new', './deploy/verification'],
+      deploy: ENABLE_DEPLOY_TEST ? ['.'] : ['env', 'new', 'verification'],
     },
     localhost: {
-      deploy: ENABLE_DEPLOY_TEST
-        ? ['./deploy']
-        : ['./deploy/env', './deploy/new', './deploy/verification'],
+      deploy: ENABLE_DEPLOY_TEST ? ['.'] : ['env', 'new', 'verification'],
+    },
+    harmony: {
+      url: process.env.HARMONY_MAINNET_RPC || '',
+      chainId: 1666600000,
+      gasPrice: Number(process.env.HARMONY_GAS_PRICE || '1000000000'),
+      accounts,
+      deploy: ENABLE_DEPLOY_TEST ? ['.'] : ['env', 'new', 'verification'],
+    },
+    harmonyTestnet: {
+      url: process.env.HARMONY_TESTNET_RPC || '',
+      chainId: 1666700000,
+      gasPrice: Number(process.env.HARMONY_TESTNET_GAS_PRICE || '1000000000'),
+      accounts,
+      deploy: ENABLE_DEPLOY_TEST ? ['.'] : ['env', 'new', 'verification'],
     },
     ...hardhatNetworks,
   },
@@ -135,6 +145,8 @@ const config: HardhatUserConfig = {
       arbitrumSepolia: process.env.ARBISCAN_KEY || '',
       modeTestnet: 'modeTestnet',
       modeMainnet: 'modeMainnet',
+      harmony: process.env.HARMONY_EXPLORER_KEY || '',
+      harmonyTestnet: process.env.HARMONY_TESTNET_EXPLORER_KEY || '',
     },
     customChains: [
       {
@@ -193,6 +205,22 @@ const config: HardhatUserConfig = {
           apiURL:
             'https://api.routescan.io/v2/network/mainnet/evm/34443/etherscan',
           browserURL: 'https://modescan.io',
+        },
+      },
+      {
+        network: 'harmony',
+        chainId: 1666600000,
+        urls: {
+          apiURL: process.env.HARMONY_EXPLORER_API_URL || '',
+          browserURL: process.env.HARMONY_EXPLORER_BROWSER_URL || '',
+        },
+      },
+      {
+        network: 'harmonyTestnet',
+        chainId: 1666700000,
+        urls: {
+          apiURL: process.env.HARMONY_TESTNET_EXPLORER_API_URL || '',
+          browserURL: process.env.HARMONY_TESTNET_EXPLORER_BROWSER_URL || '',
         },
       },
     ],
