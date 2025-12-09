@@ -10,6 +10,11 @@
     "@jridgewell/gen-mapping" "^0.3.5"
     "@jridgewell/trace-mapping" "^0.3.24"
 
+"@aragon/osx-artifacts@^1.4.6":
+  version "1.4.6"
+  resolved "https://registry.yarnpkg.com/@aragon/osx-artifacts/-/osx-artifacts-1.4.6.tgz#60f3ec0ffa700d8af552b1f5eeafb7164a98d809"
+  integrity sha512-f1P1Rp6dvzcj5rY4H5GF5z4SMJE1DJzqs9NouvRCBkxj4CNTZ5IngyWRu5d388+94LghnjeK12OhLPTr3jTjjQ==
+
 "@aragon/osx-commons-configs@^0.4.0":
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/@aragon/osx-commons-configs/-/osx-commons-configs-0.4.0.tgz#5b6ae025de1ccf7f9a135bfbcb0aa822c774acf9"
@@ -74,6 +79,16 @@
     "@ensdomains/ens-contracts" "0.0.11"
     "@openzeppelin/contracts" "4.8.1"
     "@openzeppelin/contracts-upgradeable" "4.8.1"
+
+"@aragon/osx@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@aragon/osx/-/osx-1.4.0.tgz#36ff0671e214ff331625cbcc67cd7f80ce276153"
+  integrity sha512-FY9GizdhRXCLOuy/pADbLD3BsFZ9c+4JmvGC4DB7mauyck8yY2Itf4RhFG3X/afzVihex0bNths4wIf90ZaaUA==
+  dependencies:
+    "@aragon/osx-commons-contracts" "1.4.0"
+    "@ensdomains/ens-contracts" "0.0.11"
+    "@openzeppelin/contracts" "4.9.6"
+    "@openzeppelin/contracts-upgradeable" "4.9.6"
 
 "@ardatan/relay-compiler@12.0.0":
   version "12.0.0"

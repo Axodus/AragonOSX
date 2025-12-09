@@ -102,24 +102,24 @@ const config: HardhatUserConfig = {
       throwOnCallFailures: true,
       blockGasLimit: 3000000000, // really high to test some things that are only possible with a higher block gas limit
       gasPrice: 80000000000,
-      deploy: ENABLE_DEPLOY_TEST ? ['.'] : ['env', 'new', 'verification'],
+      deploy: ['env', 'new', 'verification'],
     },
     localhost: {
-      deploy: ENABLE_DEPLOY_TEST ? ['.'] : ['env', 'new', 'verification'],
+      deploy: ['env', 'new', 'verification'],
     },
     harmony: {
       url: process.env.HARMONY_MAINNET_RPC || '',
       chainId: 1666600000,
       gasPrice: Number(process.env.HARMONY_GAS_PRICE || '1000000000'),
       accounts,
-      deploy: ENABLE_DEPLOY_TEST ? ['.'] : ['env', 'new', 'verification'],
+      deploy: ['env', 'new', 'verification'],
     },
     harmonyTestnet: {
       url: process.env.HARMONY_TESTNET_RPC || '',
       chainId: 1666700000,
       gasPrice: Number(process.env.HARMONY_TESTNET_GAS_PRICE || '1000000000'),
       accounts,
-      deploy: ENABLE_DEPLOY_TEST ? ['.'] : ['env', 'new', 'verification'],
+      deploy: ['env', 'new', 'verification'],
     },
     ...hardhatNetworks,
   },
