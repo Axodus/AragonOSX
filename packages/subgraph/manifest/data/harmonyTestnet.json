@@ -1,23 +1,23 @@
 {
-    "info": "# Do not edit subgraph.yaml,this is a generated file. \n# Instead, edit subgraph.placeholder.yaml and run: yarn manifest",
-    "network": "harmonyTestnet",
-    "dataSources": {
-        "DAORegistry": {
-            "name": "DAORegistry",
-            "address": "0x0000000000000000000000000000000000000000",
-            "startBlock": 0
-        },
-        "PluginRepoRegistry": {
-            "name": "PluginRepoRegistry",
-            "address": "0x0000000000000000000000000000000000000000",
-            "startBlock": 0
-        },
-        "PluginSetupProcessors": [
-            {
-                "name": "PluginSetupProcessor",
-                "address": "0x0000000000000000000000000000000000000000",
-                "startBlock": 0
-            }
-        ]
-    }
+  "info": "# Do not edit subgraph.yaml,this is a generated file. \n# Instead, edit subgraph.placeholder.yaml and run: yarn manifest",
+  "network": "harmonyTestnet",
+  "dataSources": {
+    "DAORegistry": {
+      "name": "DAORegistry",
+      "address": "0x0000000000000000000000000000000000000000",
+      "startBlock": 0
+    },
+    "PluginRepoRegistry": {
+      "name": "PluginRepoRegistry",
+      "address": "0x0000000000000000000000000000000000000000",
+      "startBlock": 0
+    },
+    "PluginSetupProcessors": [
+      {
+        "name": "PluginSetupProcessor",
+        "address": "0x0000000000000000000000000000000000000000",
+        "startBlock": 0
+      }
+    ]
+  }
 }

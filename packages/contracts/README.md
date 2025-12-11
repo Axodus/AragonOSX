@@ -46,7 +46,7 @@ The private key provided by default is a hardhat publically known key for `0xf39
 
 Support for Harmony (mainnet and testnet) is included in `hardhat.config.ts` as the networks `harmony` and `harmonyTestnet`.
 
-1) Create and fill your `.env` (based on `.env.example`):
+1. Create and fill your `.env` (based on `.env.example`):
 
 ```
 ETH_KEY=0x<private-key>
@@ -63,7 +63,7 @@ HARMONYTESTNET_DAO_ENS_DOMAIN=dao.eth
 HARMONYTESTNET_PLUGIN_ENS_DOMAIN=plugin.dao.eth
 ```
 
-2) Run a fresh build and deploy (from this package):
+2. Run a fresh build and deploy (from this package):
 
 ```bash
 yarn build
@@ -72,7 +72,7 @@ npx hardhat deploy --network harmonyTestnet
 npx hardhat deploy --network harmony
 ```
 
-3) Save the deployed addresses. You will need at minimum:
+3. Save the deployed addresses. You will need at minimum:
 
 - `DAORegistry`
 - `PluginRepoRegistry`
@@ -81,6 +81,7 @@ npx hardhat deploy --network harmony
 Record them to use with the subgraph and the web app.
 
 Notes:
+
 - Harmony uses chain IDs 1666600000 (mainnet) and 1666700000 (testnet). If transactions hang, try lowering `gasPrice` via the env overrides above.
 - Contract verification depends on the explorer’s API. If your explorer is not Etherscan-compatible, use a Blockscout verification flow or verify manually in the explorer UI.
 

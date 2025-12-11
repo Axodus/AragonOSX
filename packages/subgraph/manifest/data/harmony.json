@@ -1,23 +1,23 @@
 {
-    "info": "# Do not edit subgraph.yaml,this is a generated file. \n# Instead, edit subgraph.placeholder.yaml and run: yarn manifest",
-    "network": "harmony",
-    "dataSources": {
-        "DAORegistry": {
-            "name": "DAORegistry",
-            "address": "0xB34073eB1fF2525bD5e58b7f08C1ad927EBCFa69",
-            "startBlock": 82187187
-        },
-        "PluginRepoRegistry": {
-            "name": "PluginRepoRegistry",
-            "address": "0xEC4DB15db97AbCff05bB2f605C6d3582031630d4",
-            "startBlock": 82187194
-        },
-        "PluginSetupProcessors": [
-            {
-                "name": "PluginSetupProcessor",
-                "address": "0x178f0886547c5dF9B906FaA9AEC96126580948a0",
-                "startBlock": 82187201
-            }
-        ]
-    }
+  "info": "# Do not edit subgraph.yaml,this is a generated file. \n# Instead, edit subgraph.placeholder.yaml and run: yarn manifest",
+  "network": "harmony",
+  "dataSources": {
+    "DAORegistry": {
+      "name": "DAORegistry",
+      "address": "0xB34073eB1fF2525bD5e58b7f08C1ad927EBCFa69",
+      "startBlock": 82187187
+    },
+    "PluginRepoRegistry": {
+      "name": "PluginRepoRegistry",
+      "address": "0xEC4DB15db97AbCff05bB2f605C6d3582031630d4",
+      "startBlock": 82187194
+    },
+    "PluginSetupProcessors": [
+      {
+        "name": "PluginSetupProcessor",
+        "address": "0x178f0886547c5dF9B906FaA9AEC96126580948a0",
+        "startBlock": 82187201
+      }
+    ]
+  }
 }
