@@ -39,7 +39,7 @@ async function generateTypechain(): Promise<void> {
 
   if (filesArg) {
     await execPromise(
-      `typechain --target ethers-v5 --out-dir ./typechain ${filesArg}`
+      `typechain --target ethers-v6 --out-dir ./typechain ${filesArg}`
     );
   }
 

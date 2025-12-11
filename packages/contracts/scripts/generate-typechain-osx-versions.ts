@@ -18,7 +18,7 @@ async function generateTypechain(src: string, dest: string): Promise<void> {
     fs.mkdirSync(outputDir, {recursive: true});
 
     await execPromise(
-      `typechain --target ethers-v5 --out-dir "${outputDir}" "${file}"`
+      `typechain --target ethers-v6 --out-dir "${outputDir}" "${file}"`
     );
   }
 }
