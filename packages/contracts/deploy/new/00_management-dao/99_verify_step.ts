@@ -13,6 +13,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const {ethers} = hre;
   const [deployer] = await ethers.getSigners();
+  const multisigEnv = process.env.HARMONY_MANAGEMENT_DAO_MULTISIG || process.env.HARMONYTESTNET_MANAGEMENT_DAO_MULTISIG;
 
   // Get `managementDAO` address.
   const managementDAOAddress = await getContractAddress(
@@ -25,15 +26,18 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     deployer
   );
 
-  // Check that deployer has root permission.
-  // In our setup, the deployer is granted EXECUTE_PERMISSION temporarily,
-  // not ROOT. Verify EXECUTE instead of ROOT to reflect the intended flow.
-  await checkPermission(managementDaoContract, {
-    operation: Operation.Grant,
-    where: {name: 'ManagementDAOProxy', address: managementDAOAddress},
-    who: {name: 'Deployer', address: deployer.address},
-    permission: 'EXECUTE_PERMISSION',
-  });
+  // If a Multisig is configured, we skip verifying EXECUTE for the deployer,
+  // since we no longer grant temporary EXECUTE to the EOA on Harmony.
+  if (!multisigEnv || multisigEnv.length === 0) {
+    await checkPermission(managementDaoContract, {
+      operation: Operation.Grant,
+      where: {name: 'ManagementDAOProxy', address: managementDAOAddress},
+      who: {name: 'Deployer', address: deployer.address},
+      permission: 'EXECUTE_PERMISSION',
+    });
+  } else {
+    console.log('Multisig detected; skipping deployer EXECUTE permission verification.');
+  }
 
   // check that the DAO have all permissions set correctly
   for (let index = 0; index < DAO_PERMISSIONS.length; index++) {
