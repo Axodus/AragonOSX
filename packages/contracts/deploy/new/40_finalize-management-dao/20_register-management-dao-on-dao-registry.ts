@@ -46,46 +46,43 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     return;
   }
 
-  // Get `DAORegistryProxy` contract.
-  const daoRegistryContract = DAORegistry__factory.connect(
-    daoRegistryAddress,
-    deployer
-  );
-
-  // Harmony não tem ENS oficial; se falhar, trate como não registrado
-  let owner = ethers.ZeroAddress;
-  try {
-    const ensRegistryContract = ENSRegistry__factory.connect(
-      await getENSAddress(hre),
+  // Registro no DAORegistry: somente quando não há Multisig (fluxo deployer)
+  if (!multisigEnv) {
+    // Get `DAORegistryProxy` contract somente quando necessário
+    const daoRegistryContract = DAORegistry__factory.connect(
+      daoRegistryAddress,
       deployer
     );
-    owner = await ensRegistryContract.owner(node);
-  } catch (e) {
-    owner = ethers.ZeroAddress;
-  }
 
-  let daoENSSubdomainRegistrar = await getContractAddress(
-    'DAOENSSubdomainRegistrarProxy',
-    hre
-  );
+    // Harmony não tem ENS oficial; se falhar, trate como não registrado
+    let owner = ethers.ZeroAddress;
+    try {
+      const ensRegistryContract = ENSRegistry__factory.connect(
+        await getENSAddress(hre),
+        deployer
+      );
+      owner = await ensRegistryContract.owner(node);
+    } catch (e) {
+      owner = ethers.ZeroAddress;
+    }
 
-  if (
-    owner != daoENSSubdomainRegistrar &&
-    owner != (ethers as any).ZeroAddress
-  ) {
-    throw new Error(
-      `A DAO with ${daoSubdomain}.${daoDomain} is registered and owned by 
-      someone other than ENSSubdomainRegistrar ${daoENSSubdomainRegistrar}.`
+    let daoENSSubdomainRegistrar = await getContractAddress(
+      'DAOENSSubdomainRegistrarProxy',
+      hre
     );
-  }
 
-  if (owner === (ethers as any).ZeroAddress) {
-    // Register `managingDAO` on `DAORegistry`.
-    // Em ambientes com Multisig como owner inicial, o deployer pode não ter permissão.
-    // Nesse caso, pulamos o registro on-chain aqui para ser feito via Multisig.
-    if (multisigEnv) {
-      console.log('[Finalize/Register] Multisig configurado; pulando registro via deployer (execute via Multisig).');
-    } else {
+    if (
+      owner != daoENSSubdomainRegistrar &&
+      owner != (ethers as any).ZeroAddress
+    ) {
+      throw new Error(
+        `A DAO with ${daoSubdomain}.${daoDomain} is registered and owned by 
+        someone other than ENSSubdomainRegistrar ${daoENSSubdomainRegistrar}.`
+      );
+    }
+
+    if (owner === (ethers as any).ZeroAddress) {
+      // Register `managingDAO` on `DAORegistry`.
       try {
         const registerTx = await daoRegistryContract.register(
           managementDAOAddress,
@@ -100,6 +97,8 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
         console.log('[Finalize/Register] Falha ao registrar via deployer; provavelmente requer execução via Multisig. Pulando.');
       }
     }
+  } else {
+    console.log('[Finalize/Register] Multisig configurado; pulando registro via deployer (execute via Multisig).');
   }
 
   // Set Metadata for the Management DAO
