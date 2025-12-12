@@ -33,7 +33,6 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     args: [],
     log: true,
     proxy: {
-      owner: deployer.address,
       proxyContract: 'ERC1967Proxy',
       proxyArgs: ['{implementation}', '{data}'],
       execute: {
