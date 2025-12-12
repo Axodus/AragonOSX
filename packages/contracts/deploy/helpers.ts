@@ -244,8 +244,9 @@ export async function managePermissions(
     ]
   );
 
+  const callId = ethers.keccak256(ethers.toUtf8Bytes('Set_Permissions'));
   const tx = await (permissionManagerContract as any).execute(
-    ethers.hexlify(ethers.toUtf8Bytes('Set_Permissions')),
+    callId,
     [
       {
         to: (permissionManagerContract as any).target || (permissionManagerContract as any).address,
