@@ -25,6 +25,28 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   await registrar.deployed();
   console.log(`[nameservice] Registrar deployed at: ${registrar.address}`);
 
+  // Initialize registrar
+  const envNode = process.env.NAME_SERVICE_NODE;
+  if (!envNode) {
+    console.warn('[nameservice] NAME_SERVICE_NODE env var not set (expected bytes32 namehash). Skipping initialize.');
+  } else {
+    try {
+      const raw = fs.readFileSync(DEPLOYED_JSON, 'utf8');
+      const json = JSON.parse(raw);
+      const daoProxy = json?.deployedContractAddresses?.[network]?.ManagementDAOProxy;
+      if (!daoProxy) {
+        console.warn('[nameservice] ManagementDAOProxy not found in deployed_contracts.json. Skipping initialize.');
+      } else {
+        console.log(`[nameservice] Initializing registrar with DAO ${daoProxy}, adapter ${adapter.address}, node ${envNode}...`);
+        const tx = await registrar.initialize(daoProxy, adapter.address, envNode);
+        await tx.wait();
+        console.log('[nameservice] Registrar initialized.');
+      }
+    } catch (e) {
+      console.warn('[nameservice] Failed to initialize registrar:', e);
+    }
+  }
+
   // Persist addresses to deployed_contracts.json
   try {
     const raw = fs.readFileSync(DEPLOYED_JSON, 'utf8');
@@ -38,6 +60,8 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   } catch (e) {
     console.warn(`[nameservice] Failed to update deployed_contracts.json:`, e);
   }
+
+  console.log('[nameservice] Reminder: grant REGISTER_ENS_SUBDOMAIN_PERMISSION_ID to registrar via DAO if needed.');
 };
 
 func.tags = ['nameservice-adapter'];

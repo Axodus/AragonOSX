@@ -1,4 +1,4 @@
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.17;
 
 import {INameService} from "./INameService.sol";
 

@@ -1,4 +1,4 @@
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.17;
 
 interface INameService {
     function resolve(bytes32 node) external view returns (address);
