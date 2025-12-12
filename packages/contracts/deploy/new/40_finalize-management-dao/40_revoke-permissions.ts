@@ -11,6 +11,7 @@ import {HardhatRuntimeEnvironment} from 'hardhat/types';
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {ethers} = hre;
   const [deployer] = await ethers.getSigners();
+  const multisigEnv = process.env.HARMONY_MANAGEMENT_DAO_MULTISIG || process.env.HARMONYTESTNET_MANAGEMENT_DAO_MULTISIG;
 
   // Get info from .env
   const daoSubdomain = managementDaoSubdomainEnv(hre.network);
@@ -35,6 +36,21 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     managementDAOAddress,
     deployer
   );
+
+  // Se Multisig está configurado e estamos removendo privilégios do deployer,
+  // podemos manter apenas a verificação/registro das revogações que não exigem
+  // executar via deployer (DAO.execute); caso contrário, pule para evitar revert.
+  const execPermissionId = ethers.keccak256(ethers.toUtf8Bytes('EXECUTE_PERMISSION'));
+  const hasExecute = await (DAO__factory.connect(managementDAOAddress, deployer) as any).hasPermission(
+    managementDAOAddress,
+    deployer.address,
+    execPermissionId,
+    '0x'
+  );
+  if (multisigEnv && !hasExecute) {
+    console.log('[Finalize/Revoke] Multisig configurado e deployer sem EXECUTE; pulando revogações via deployer.');
+    return;
+  }
 
   // Revoke `REGISTER_DAO_PERMISSION` from `Deployer`.
   // Revoke `ROOT_PERMISSION` from `Deployer`.
@@ -62,4 +78,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   await managePermissions(managementDaoContract, revokePermissions);
 };
 export default func;
-func.tags = ['New', 'RevokeManagementPermissionsDAO'];
+func.tags = ['new', 'RevokeManagementPermissionsDAO'];

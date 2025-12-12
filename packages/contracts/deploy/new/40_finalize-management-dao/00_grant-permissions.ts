@@ -9,6 +9,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const {ethers} = hre;
   const [deployer] = await ethers.getSigners();
+  const multisigEnv = process.env.HARMONY_MANAGEMENT_DAO_MULTISIG || process.env.HARMONYTESTNET_MANAGEMENT_DAO_MULTISIG;
 
   // Get `DAORegistryProxy` address.
   const daoRegistryAddress = await getContractAddress('DAORegistryProxy', hre);
@@ -28,6 +29,19 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     deployer
   );
 
+  // Se Multisig está configurado ou deployer não tem EXECUTE, pule e deixe para o Multisig.
+  const execPermissionId = ethers.keccak256(ethers.toUtf8Bytes('EXECUTE_PERMISSION'));
+  const hasExecute = await (DAO__factory.connect(managementDAOAddress, deployer) as any).hasPermission(
+    managementDAOAddress,
+    deployer.address,
+    execPermissionId,
+    '0x'
+  );
+  if (multisigEnv || !hasExecute) {
+    console.log('[Finalize] Multisig configurado ou deployer sem EXECUTE; pulando grants finais.');
+    return;
+  }
+
   const grantPermissions = [
     {
       operation: Operation.Grant,
@@ -46,4 +60,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   await managePermissions(managementDaoContract, grantPermissions);
 };
 export default func;
-func.tags = ['New', 'RegisterManagementDAO'];
+func.tags = ['new', 'RegisterManagementDAO'];

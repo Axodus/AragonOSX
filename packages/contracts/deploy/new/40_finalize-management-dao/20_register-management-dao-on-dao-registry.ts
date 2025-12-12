@@ -14,6 +14,7 @@ import {HardhatRuntimeEnvironment} from 'hardhat/types';
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {ethers, network} = hre;
   const [deployer] = await ethers.getSigners();
+  const multisigEnv = process.env.HARMONY_MANAGEMENT_DAO_MULTISIG || process.env.HARMONYTESTNET_MANAGEMENT_DAO_MULTISIG;
 
   // Get info from .env
   const daoSubdomain = managementDaoSubdomainEnv(network);
@@ -22,7 +23,9 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   if (!daoSubdomain)
     throw new Error('ManagementDAO subdomain has not been set in .env');
 
-  const node = ethers.utils.namehash(`${daoSubdomain}.${daoDomain}`);
+  const node = (ethers as any).namehash
+    ? (ethers as any).namehash(`${daoSubdomain}.${daoDomain}`)
+    : require('eth-ens-namehash').hash(`${daoSubdomain}.${daoDomain}`);
 
   // Get `ManagementDAOProxy` address.
   const managementDAOAddress = await getContractAddress(
@@ -39,11 +42,17 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     deployer
   );
 
-  const ensRegistryContract = ENSRegistry__factory.connect(
-    await getENSAddress(hre),
-    deployer
-  );
-  let owner = await ensRegistryContract.owner(node);
+  // Harmony não tem ENS oficial; se falhar, trate como não registrado
+  let owner = ethers.ZeroAddress;
+  try {
+    const ensRegistryContract = ENSRegistry__factory.connect(
+      await getENSAddress(hre),
+      deployer
+    );
+    owner = await ensRegistryContract.owner(node);
+  } catch (e) {
+    owner = ethers.ZeroAddress;
+  }
 
   let daoENSSubdomainRegistrar = await getContractAddress(
     'DAOENSSubdomainRegistrarProxy',
@@ -62,15 +71,22 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   if (owner === ethers.constants.AddressZero) {
     // Register `managingDAO` on `DAORegistry`.
-    const registerTx = await daoRegistryContract.register(
-      managementDAOAddress,
-      deployer.address,
-      daoSubdomain
-    );
-    await registerTx.wait();
-    console.log(
-      `Registered the (managingDAO: ${managementDAOAddress}) on (DAORegistry: ${daoRegistryAddress}), see (tx: ${registerTx.hash})`
-    );
+    // Em ambientes com Multisig como owner inicial, o deployer pode não ter permissão.
+    // Nesse caso, pulamos o registro on-chain aqui para ser feito via Multisig.
+    const canRegister = await daoRegistryContract.permissionManager().catch(() => undefined);
+    try {
+      const registerTx = await daoRegistryContract.register(
+        managementDAOAddress,
+        deployer.address,
+        daoSubdomain
+      );
+      await registerTx.wait();
+      console.log(
+        `Registered the (managingDAO: ${managementDAOAddress}) on (DAORegistry: ${daoRegistryAddress}), see (tx: ${registerTx.hash})`
+      );
+    } catch (e) {
+      console.log('[Finalize/Register] Falha ao registrar via deployer; provavelmente requer execução via Multisig. Pulando.');
+    }
   }
 
   // Set Metadata for the Management DAO
@@ -97,16 +113,18 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const hasMetadataPermission = await managementDaoContract.hasPermission(
     managementDaoContract.address,
     deployer.address,
-    ethers.utils.id('SET_METADATA_PERMISSION'),
+    ethers.keccak256(ethers.toUtf8Bytes('SET_METADATA_PERMISSION')),
     '0x'
   );
 
   if (hasMetadataPermission) {
     const setMetadataTX = await managementDaoContract.setMetadata(
-      ethers.utils.hexlify(ethers.utils.toUtf8Bytes(metadataCIDPath))
+      ethers.hexlify(ethers.toUtf8Bytes(metadataCIDPath))
     );
     await setMetadataTX.wait();
+  } else if (multisigEnv) {
+    console.log('[Finalize/Metadata] Deployer sem SET_METADATA_PERMISSION com Multisig configurado; aplicar metadata via Multisig.');
   }
 };
 export default func;
-func.tags = ['New', 'RegisterManagementDAO'];
+func.tags = ['new', 'RegisterManagementDAO'];

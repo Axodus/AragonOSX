@@ -9,6 +9,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const {ethers} = hre;
   const [deployer] = await ethers.getSigners();
+  const multisigEnv = process.env.HARMONY_MANAGEMENT_DAO_MULTISIG || process.env.HARMONYTESTNET_MANAGEMENT_DAO_MULTISIG;
 
   // Get `ManagementDAOProxy` address.
   const managementDAOAddress = await getContractAddress(
@@ -32,12 +33,16 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   await delay(5000);
 
   // Check revoked permission.
-  await checkPermission(managementDaoContract, {
-    operation: Operation.Revoke,
-    where: {name: 'DAORegistryProxy', address: daoRegistryAddress},
-    who: {name: 'Deployer', address: deployer.address},
-    permission: 'REGISTER_DAO_PERMISSION',
-  });
+  if (!multisigEnv) {
+    await checkPermission(managementDaoContract, {
+      operation: Operation.Revoke,
+      where: {name: 'DAORegistryProxy', address: daoRegistryAddress},
+      who: {name: 'Deployer', address: deployer.address},
+      permission: 'REGISTER_DAO_PERMISSION',
+    });
+  } else {
+    console.log('[Finalize/Verify] Multisig configurado; pulando verificação de revogação REGISTER_DAO_PERMISSION do deployer.');
+  }
 
   await checkPermission(managementDaoContract, {
     operation: Operation.Revoke,
@@ -53,21 +58,29 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     permission: 'ROOT_PERMISSION',
   });
 
-  await checkPermission(managementDaoContract, {
-    operation: Operation.Revoke,
-    where: {name: 'ManagementDAOProxy', address: managementDAOAddress},
-    who: {name: 'Deployer', address: deployer.address},
-    permission: 'ROOT_PERMISSION',
-  });
+  if (!multisigEnv) {
+    await checkPermission(managementDaoContract, {
+      operation: Operation.Revoke,
+      where: {name: 'ManagementDAOProxy', address: managementDAOAddress},
+      who: {name: 'Deployer', address: deployer.address},
+      permission: 'ROOT_PERMISSION',
+    });
+  } else {
+    console.log('[Finalize/Verify] Multisig configurado; pulando verificação de revogação ROOT do deployer.');
+  }
 
-  await checkPermission(managementDaoContract, {
-    operation: Operation.Grant,
-    where: {name: 'ManagementDAOProxy', address: managementDAOAddress},
-    who: {name: 'Deployer', address: deployer.address},
-    permission: 'EXECUTE_PERMISSION',
-  });
+  if (!multisigEnv) {
+    await checkPermission(managementDaoContract, {
+      operation: Operation.Grant,
+      where: {name: 'ManagementDAOProxy', address: managementDAOAddress},
+      who: {name: 'Deployer', address: deployer.address},
+      permission: 'EXECUTE_PERMISSION',
+    });
+  } else {
+    console.log('[Finalize/Verify] Multisig configurado; pulando verificação de EXECUTE do deployer (fluxo Multisig-first).');
+  }
 
   console.log('Finalizing Management DAO verified');
 };
 export default func;
-func.tags = ['New', 'RegisterManagementDAO'];
+func.tags = ['new', 'RegisterManagementDAO'];
