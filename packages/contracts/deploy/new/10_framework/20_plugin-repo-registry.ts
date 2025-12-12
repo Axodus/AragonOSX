@@ -26,7 +26,6 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     args: [],
     log: true,
     proxy: {
-      owner: deployer.address,
       proxyContract: 'ERC1967Proxy',
       proxyArgs: ['{implementation}', '{data}'],
       execute: {
@@ -40,4 +39,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 };
 export default func;
 // func.runAtTheEnd = true;
-func.tags = ['New', 'PluginRepoRegistry'];
+func.tags = ['new', 'PluginRepoRegistry'];

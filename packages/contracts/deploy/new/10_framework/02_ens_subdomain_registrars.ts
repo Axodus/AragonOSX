@@ -8,6 +8,11 @@ import {HardhatRuntimeEnvironment} from 'hardhat/types';
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {deployments, ethers, network} = hre;
   const {deploy} = deployments;
+  // Harmony não possui suporte ENS oficial; pulamos completamente este passo.
+  if ((network.name || '').toLowerCase().includes('harmony')) {
+    console.log("[ENS] Rede 'harmony' sem suporte ENS oficial. Pulando subdomain registrars.");
+    return;
+  }
 
   const [deployer] = await ethers.getSigners();
 
@@ -19,12 +24,21 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const managementDAO = DAO__factory.connect(managementDAOAddress, deployer);
 
   const ensRegistryAddress = await getENSAddress(hre);
+  // If ENS is not available on this network, skip.
+  if (!ensRegistryAddress) {
+    console.log("[ENS] Registro não disponível nesta rede. Pulando subdomain registrars.");
+    return;
+  }
 
   const daoDomain = daoDomainEnv(network);
   const pluginDomain = pluginDomainEnv(network);
 
-  const daoNode = ethers.utils.namehash(daoDomain);
-  const pluginNode = ethers.utils.namehash(pluginDomain);
+  if (!daoDomain || !pluginDomain) {
+    console.log("[ENS] Domínios não configurados. Pulando subdomain registrars.");
+    return;
+  }
+  const daoNode = (ethers as any).namehash ? (ethers as any).namehash(daoDomain) : require('eth-ens-namehash').hash(daoDomain);
+  const pluginNode = (ethers as any).namehash ? (ethers as any).namehash(pluginDomain) : require('eth-ens-namehash').hash(pluginDomain);
 
   await deploy('DAOENSSubdomainRegistrarProxy', {
     contract: ensSubdomainRegistrarArtifact,
@@ -32,7 +46,6 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     args: [],
     log: true,
     proxy: {
-      owner: deployer.address,
       proxyContract: 'ERC1967Proxy',
       proxyArgs: ['{implementation}', '{data}'],
       execute: {
@@ -56,7 +69,6 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     args: [],
     log: true,
     proxy: {
-      owner: deployer.address,
       proxyContract: 'ERC1967Proxy',
       proxyArgs: ['{implementation}', '{data}'],
       execute: {
@@ -96,7 +108,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     );
 
   const tx = await managementDAO.execute(
-    ethers.utils.hexlify(ethers.utils.formatBytes32String('ENS_Permissions')),
+    ethers.hexlify(ethers.toUtf8Bytes('ENS_Permissions')),
     [
       {
         to: daoRegistrarTX.to || '',
@@ -120,4 +132,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   await tx.wait();
 };
 export default func;
-func.tags = ['New', 'ENSSubdomainRegistrars'];
+func.tags = ['new', 'ENSSubdomainRegistrars'];

@@ -228,17 +228,35 @@ export async function managePermissions(
       permissions.length - items.length
     }`
   );
-  const tx = await permissionManagerContract.applyMultiTargetPermissions(
-    items.map(item => [
-      item.operation,
-      item.where.address,
-      item.who.address,
-      item.condition || (ethers as any).ZeroAddress || '0x0000000000000000000000000000000000000000',
-      ethers.keccak256(ethers.toUtf8Bytes(item.permission)),
-    ]),
+  // Para conceder/revogar permissões, precisamos de ROOT. O DAO normalmente possui ROOT.
+  // Usamos `DAO.execute` para que a chamada ocorra no contexto do contrato DAO
+  // (msg.sender = DAO), enquanto o deployer apenas precisa de EXECUTE_PERMISSION.
+  const calldata = permissionManagerContract.interface.encodeFunctionData(
+    'applyMultiTargetPermissions',
+    [
+      items.map(item => [
+        item.operation,
+        item.where.address,
+        item.who.address,
+        item.condition || (ethers as any).ZeroAddress || '0x0000000000000000000000000000000000000000',
+        ethers.keccak256(ethers.toUtf8Bytes(item.permission)),
+      ]),
+    ]
+  );
+
+  const tx = await (permissionManagerContract as any).execute(
+    ethers.hexlify(ethers.toUtf8Bytes('Set_Permissions')),
+    [
+      {
+        to: permissionManagerContract.address,
+        value: 0n,
+        data: calldata,
+      },
+    ],
+    0,
     // Alguns RPCs (ex.: Harmony) não implementam corretamente eth_estimateGas.
     // Forçamos limites explícitos para evitar falha de ProviderError: not implemented.
-    {gasLimit: 1_200_000}
+    {gasLimit: 1_500_000}
   );
   console.log(`Set permissions with ${tx.hash}. Waiting for confirmation...`);
   await tx.wait();

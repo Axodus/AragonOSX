@@ -8,7 +8,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {ethers} = hre;
   const [deployer] = await ethers.getSigners();
 
-  console.log(`Granting ${deployer.address} temp execute permissions`);
+  console.log(`Granting ${deployer.address} temp EXECUTE permission`);
 
   // Get `managementDAO` address.
   const managementDAOAddress = await getContractAddress(
@@ -21,7 +21,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     deployer
   );
 
-  // grant the deployer execute permissions.
+  // Grant the deployer EXECUTE permission for setup (ROOT not needed; DAO.execute is used for permission changes).
   await managePermissions(managementDaoContract, [
     {
       operation: Operation.Grant,

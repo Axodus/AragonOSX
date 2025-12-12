@@ -14,7 +14,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const managementDAOAddress = await getContractAddress('ManagementDAOProxy', hre);
   const managementDaoContract = DAO__factory.connect(managementDAOAddress, deployer);
 
-  console.log(`[multisig] Revogando EXECUTE_PERMISSION do Deployer ${deployer.address}`);
+  console.log(`[multisig] Revogando EXECUTE_PERMISSION e ROOT_PERMISSION do Deployer ${deployer.address}`);
 
   await managePermissions(managementDaoContract, [
     {
@@ -22,6 +22,13 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
       where: {name: 'ManagementDAOProxy', address: managementDAOAddress},
       who: {name: 'Deployer', address: deployer.address},
       permission: 'EXECUTE_PERMISSION',
+      data: '0x',
+    },
+    {
+      operation: Operation.Revoke,
+      where: {name: 'ManagementDAOProxy', address: managementDAOAddress},
+      who: {name: 'Deployer', address: deployer.address},
+      permission: 'ROOT_PERMISSION',
       data: '0x',
     },
   ]);

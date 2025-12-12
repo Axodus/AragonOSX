@@ -24,6 +24,11 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     hre
   );
 
+  // If network has no ENS (e.g., Harmony), skip ENS-related verifications
+  const ensDisabled = (hre.network.name || '').toLowerCase().includes('harmony');
+  if (ensDisabled) {
+    console.log("[ENS] Rede sem suporte ENS oficial. Pulando verificações de ENS.");
+  } else {
   // VERIFYING DAO ENS SUBDOMAIN REGISTRAR
   const DAOENSSubdomainRegistrarAddress = await getContractAddress(
     'DAOENSSubdomainRegistrarProxy',
@@ -49,7 +54,8 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     }
 
     const node = await DAOENSSubdomainRegistrar.node();
-    const expectedNode = ethers.utils.namehash(daoDomainEnv(hre.network));
+    const domain = daoDomainEnv(hre.network);
+    const expectedNode = (ethers as any).namehash ? (ethers as any).namehash(domain) : require('eth-ens-namehash').hash(domain);
     if (node !== expectedNode) {
       throw new Error(
         `DAOENSSubdomainRegistrar node (${node}) doesn't match expected node (${expectedNode})`
@@ -85,12 +91,14 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     }
 
     const node = await PluginENSSubdomainRegistrar.node();
-    const expectedNode = ethers.utils.namehash(pluginDomainEnv(hre.network));
+    const domain = pluginDomainEnv(hre.network);
+    const expectedNode = (ethers as any).namehash ? (ethers as any).namehash(domain) : require('eth-ens-namehash').hash(domain);
     if (node !== expectedNode) {
       throw new Error(
         `PluginENSSubdomainRegistrar node (${node}) doesn't match expected node (${expectedNode})`
       );
     }
+  }
   }
 
   // VERIFYING DAO REGISTRY
@@ -102,11 +110,14 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   await checkSetManagementDao(DAORegistry, managementDAOAddress);
   // scope to reuse same const again
   {
-    const SubdomainRegistrarAddress = await DAORegistry.subdomainRegistrar();
-    if (SubdomainRegistrarAddress !== DAOENSSubdomainRegistrarAddress) {
-      throw new Error(
-        `${DAORegistry} has wrong SubdomainRegistrarAddress set. Expected ${DAOENSSubdomainRegistrarAddress} to be ${SubdomainRegistrarAddress}`
-      );
+    if (!ensDisabled) {
+      const SubdomainRegistrarAddress = await DAORegistry.subdomainRegistrar();
+      const expected = await getContractAddress('DAOENSSubdomainRegistrarProxy', hre);
+      if (SubdomainRegistrarAddress !== expected) {
+        throw new Error(
+          `${DAORegistryAddress} has wrong SubdomainRegistrarAddress set. Expected ${expected} to be ${SubdomainRegistrarAddress}`
+        );
+      }
     }
   }
 
@@ -122,12 +133,14 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   await checkSetManagementDao(PluginRepoRegistry, managementDAOAddress);
   // scope to reuse same const again
   {
-    const SubdomainRegistrarAddress =
-      await PluginRepoRegistry.subdomainRegistrar();
-    if (SubdomainRegistrarAddress !== PluginENSSubdomainRegistrarAddress) {
-      throw new Error(
-        `${PluginRepoRegistry} has wrong SubdomainRegistrarAddress set. Expected ${PluginENSSubdomainRegistrarAddress} to be ${SubdomainRegistrarAddress}`
-      );
+    if (!ensDisabled) {
+      const SubdomainRegistrarAddress = await PluginRepoRegistry.subdomainRegistrar();
+      const expected = await getContractAddress('PluginENSSubdomainRegistrarProxy', hre);
+      if (SubdomainRegistrarAddress !== expected) {
+        throw new Error(
+          `${PluginRepoRegistryAddress} has wrong SubdomainRegistrarAddress set. Expected ${expected} to be ${SubdomainRegistrarAddress}`
+        );
+      }
     }
   }
 
@@ -197,7 +210,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 };
 export default func;
 func.tags = [
-  'New',
+  'new',
   'ENSSubdomainRegistrar',
   'DAORegistry',
   'PluginRepoRegistry',

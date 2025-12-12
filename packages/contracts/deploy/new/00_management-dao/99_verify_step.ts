@@ -26,11 +26,13 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   );
 
   // Check that deployer has root permission.
+  // In our setup, the deployer is granted EXECUTE_PERMISSION temporarily,
+  // not ROOT. Verify EXECUTE instead of ROOT to reflect the intended flow.
   await checkPermission(managementDaoContract, {
     operation: Operation.Grant,
     where: {name: 'ManagementDAOProxy', address: managementDAOAddress},
     who: {name: 'Deployer', address: deployer.address},
-    permission: 'ROOT_PERMISSION',
+    permission: 'EXECUTE_PERMISSION',
   });
 
   // check that the DAO have all permissions set correctly
@@ -48,4 +50,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   console.log('Management DAO deployment verified');
 };
 export default func;
-func.tags = ['New', 'ManagementDao', 'SetDAOPermissions'];
+  func.tags = ['new', 'ManagementDao', 'SetDAOPermissions'];
