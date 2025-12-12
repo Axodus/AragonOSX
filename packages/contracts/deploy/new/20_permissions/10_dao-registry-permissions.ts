@@ -7,6 +7,16 @@ import {HardhatRuntimeEnvironment} from 'hardhat/types';
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {ethers} = hre;
   const [deployer] = await ethers.getSigners();
+  const multisigEnv = process.env.HARMONY_MANAGEMENT_DAO_MULTISIG || process.env.HARMONYTESTNET_MANAGEMENT_DAO_MULTISIG;
+
+  // Quando um Multisig está configurado como owner inicial do DAO,
+  // o deployer pode não possuir EXECUTE e chamadas via DAO.execute irão reverter.
+  // Nessa configuração, pulamos este passo e deixamos as permissões do DAORegistry
+  // para serem aplicadas no estágio pós-instalação do Multisig.
+  if (multisigEnv && multisigEnv.length > 0) {
+    console.log('[DAORegistry] Multisig configurado; pulando concessões iniciais via deployer.');
+    return;
+  }
 
   // Get `managementDAO` address.
   const managementDAOAddress = await getContractAddress(
