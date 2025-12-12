@@ -10,6 +10,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {ethers} = hre;
 
   const [deployer] = await ethers.getSigners();
+  const multisigEnv = process.env.HARMONY_MANAGEMENT_DAO_MULTISIG || process.env.HARMONYTESTNET_MANAGEMENT_DAO_MULTISIG;
 
   // Get `ManagementDAOProxy` address.
   const managementDAOAddress = await getContractAddress(
@@ -79,12 +80,16 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   });
 
   // DAO REGISTRY PERMISSIONS
-  await checkPermission(managementDaoContract, {
-    operation: Operation.Grant,
-    where: {name: 'DAORegistryProxy', address: daoRegistryAddress},
-    who: {name: 'DAOFactory', address: daoFactoryAddress},
-    permission: 'REGISTER_DAO_PERMISSION',
-  });
+  if (!multisigEnv || multisigEnv.length === 0) {
+    await checkPermission(managementDaoContract, {
+      operation: Operation.Grant,
+      where: {name: 'DAORegistryProxy', address: daoRegistryAddress},
+      who: {name: 'DAOFactory', address: daoFactoryAddress},
+      permission: 'REGISTER_DAO_PERMISSION',
+    });
+  } else {
+    console.log('[Verify] Multisig configurado; pulando verificação de REGISTER_DAO_PERMISSION (será aplicada após Multisig).');
+  }
 
   // PLUGIN REPO REGISTRY PERMISSIONS
   await checkPermission(managementDaoContract, {
