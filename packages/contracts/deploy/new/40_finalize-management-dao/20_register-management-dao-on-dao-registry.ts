@@ -36,6 +36,16 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   // Get `DAORegistryProxy` address.
   const daoRegistryAddress = await getContractAddress('DAORegistryProxy', hre);
 
+  // Valida endereços antes de conectar contratos (ethers v6 exige endereços válidos)
+  if (!managementDAOAddress || managementDAOAddress === (ethers as any).ZeroAddress) {
+    console.log('[Finalize/Register] Endereço de ManagementDAOProxy inválido; pulando.');
+    return;
+  }
+  if (!daoRegistryAddress || daoRegistryAddress === (ethers as any).ZeroAddress) {
+    console.log('[Finalize/Register] Endereço de DAORegistryProxy inválido; pulando.');
+    return;
+  }
+
   // Get `DAORegistryProxy` contract.
   const daoRegistryContract = DAORegistry__factory.connect(
     daoRegistryAddress,
