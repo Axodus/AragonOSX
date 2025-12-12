@@ -73,19 +73,22 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     // Register `managingDAO` on `DAORegistry`.
     // Em ambientes com Multisig como owner inicial, o deployer pode não ter permissão.
     // Nesse caso, pulamos o registro on-chain aqui para ser feito via Multisig.
-    const canRegister = await daoRegistryContract.permissionManager().catch(() => undefined);
-    try {
-      const registerTx = await daoRegistryContract.register(
-        managementDAOAddress,
-        deployer.address,
-        daoSubdomain
-      );
-      await registerTx.wait();
-      console.log(
-        `Registered the (managingDAO: ${managementDAOAddress}) on (DAORegistry: ${daoRegistryAddress}), see (tx: ${registerTx.hash})`
-      );
-    } catch (e) {
-      console.log('[Finalize/Register] Falha ao registrar via deployer; provavelmente requer execução via Multisig. Pulando.');
+    if (multisigEnv) {
+      console.log('[Finalize/Register] Multisig configurado; pulando registro via deployer (execute via Multisig).');
+    } else {
+      try {
+        const registerTx = await daoRegistryContract.register(
+          managementDAOAddress,
+          deployer.address,
+          daoSubdomain
+        );
+        await registerTx.wait();
+        console.log(
+          `Registered the (managingDAO: ${managementDAOAddress}) on (DAORegistry: ${daoRegistryAddress}), see (tx: ${registerTx.hash})`
+        );
+      } catch (e) {
+        console.log('[Finalize/Register] Falha ao registrar via deployer; provavelmente requer execução via Multisig. Pulando.');
+      }
     }
   }
 
