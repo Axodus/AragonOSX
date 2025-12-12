@@ -46,6 +46,12 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     return;
   }
 
+  // Em fluxo Multisig-first, evitamos quaisquer conexões/execuções via deployer neste passo
+  if (multisigEnv) {
+    console.log('[Finalize/Register] Multisig configurado; pulando finalize (registro/metadata) via deployer.');
+    return;
+  }
+
   // Registro no DAORegistry: somente quando não há Multisig (fluxo deployer)
   if (!multisigEnv) {
     // Get `DAORegistryProxy` contract somente quando necessário
@@ -97,8 +103,6 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
         console.log('[Finalize/Register] Falha ao registrar via deployer; provavelmente requer execução via Multisig. Pulando.');
       }
     }
-  } else {
-    console.log('[Finalize/Register] Multisig configurado; pulando registro via deployer (execute via Multisig).');
   }
 
   // Set Metadata for the Management DAO
