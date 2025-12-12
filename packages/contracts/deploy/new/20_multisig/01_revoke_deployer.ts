@@ -35,6 +35,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 };
 
 func.tags = ['new', 'ManagementDaoMultisig'];
-func.dependencies = ['ManagementDaoPermissions'];
+// Revoke only after framework permissions have been set
+func.dependencies = ['ManagementDaoPermissions', 'DAO_Registry_Permissions'];
 
 export default func;

@@ -45,4 +45,6 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   await managePermissions(managementDaoContract, grantPermissions);
 };
 export default func;
-func.tags = ['New', 'DAO_Registry_Permissions'];
+func.tags = ['new', 'DAO_Registry_Permissions'];
+// Ensure this runs before revoking deployer permissions
+func.dependencies = ['ManagementDaoPermissions', 'PluginRepoRegistry', 'PluginRepoFactory', 'PluginSetupProcessor', 'DAOFactory'];
