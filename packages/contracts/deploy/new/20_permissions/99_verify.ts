@@ -92,15 +92,19 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   }
 
   // PLUGIN REPO REGISTRY PERMISSIONS
-  await checkPermission(managementDaoContract, {
-    operation: Operation.Grant,
-    where: {
-      name: 'PluginRepoRegistryProxy',
-      address: pluginRepoRegistryAddress,
-    },
-    who: {name: 'PluginRepoFactory', address: pluginRepoFactoryAddress},
-    permission: 'REGISTER_PLUGIN_REPO_PERMISSION',
-  });
+  if (!multisigEnv || multisigEnv.length === 0) {
+    await checkPermission(managementDaoContract, {
+      operation: Operation.Grant,
+      where: {
+        name: 'PluginRepoRegistryProxy',
+        address: pluginRepoRegistryAddress,
+      },
+      who: {name: 'PluginRepoFactory', address: pluginRepoFactoryAddress},
+      permission: 'REGISTER_PLUGIN_REPO_PERMISSION',
+    });
+  } else {
+    console.log('[Verify] Multisig configurado; pulando verificação de REGISTER_PLUGIN_REPO_PERMISSION (será aplicada após Multisig).');
+  }
 
   console.log('Permissions verified');
 };
