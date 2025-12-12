@@ -11,6 +11,12 @@ interface INameService {
         address owner_
     ) external returns (bytes32 node);
 
+    function registerByHash(
+        bytes32 parentNode,
+        bytes32 labelHash,
+        address owner_
+    ) external returns (bytes32 node);
+
     function setAddr(bytes32 node, address addr_) external;
 
     event Registered(bytes32 indexed parentNode, bytes32 indexed node, string label, address owner);

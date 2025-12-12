@@ -26,6 +26,18 @@ contract CountryNameServiceAdapter is INameService {
         emit Registered(parentNode, node, label, owner_);
     }
 
+    function registerByHash(
+        bytes32 parentNode,
+        bytes32 labelHash,
+        address owner_
+    ) external override returns (bytes32 node) {
+        node = keccak256(abi.encodePacked(parentNode, labelHash));
+        require(_owners[node] == address(0), "NS:ALREADY_REGISTERED");
+        _owners[node] = owner_;
+        // No human-readable label available here; emit with empty string.
+        emit Registered(parentNode, node, "", owner_);
+    }
+
     function setAddr(bytes32 node, address addr_) external override {
         require(msg.sender == _owners[node], "NS:NOT_OWNER");
         _addrs[node] = addr_;
