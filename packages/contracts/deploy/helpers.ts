@@ -235,7 +235,10 @@ export async function managePermissions(
       item.who.address,
       item.condition || (ethers as any).ZeroAddress || '0x0000000000000000000000000000000000000000',
       ethers.keccak256(ethers.toUtf8Bytes(item.permission)),
-    ])
+    ]),
+    // Alguns RPCs (ex.: Harmony) não implementam corretamente eth_estimateGas.
+    // Forçamos limites explícitos para evitar falha de ProviderError: not implemented.
+    {gasLimit: 1_200_000}
   );
   console.log(`Set permissions with ${tx.hash}. Waiting for confirmation...`);
   await tx.wait();
