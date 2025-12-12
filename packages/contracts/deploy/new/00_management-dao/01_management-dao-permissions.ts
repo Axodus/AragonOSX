@@ -8,6 +8,14 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {ethers} = hre;
   const [deployer] = await ethers.getSigners();
 
+  const multisigEnv = process.env.HARMONY_MANAGEMENT_DAO_MULTISIG || process.env.HARMONYTESTNET_MANAGEMENT_DAO_MULTISIG;
+  if (multisigEnv && multisigEnv.length > 0) {
+    console.log(
+      `Multisig is configured (${multisigEnv}). Skipping temporary EXECUTE grant to deployer.`
+    );
+    return;
+  }
+
   console.log(`Granting ${deployer.address} temp EXECUTE permission`);
 
   // Get `managementDAO` address.
