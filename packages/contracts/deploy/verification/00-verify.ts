@@ -31,7 +31,14 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   for (const name of names) {
     const d = all[name];
     const address = d.address;
-    const args = d.args || [];
+    let args = d.args || [];
+
+    // Implementations behind proxies usually have zero-arg constructors.
+    // Force empty args for any deployment labeled as an implementation.
+    const isImplementation = /Implementation$/i.test(name) || /Proxy_Implementation/i.test(name);
+    if (isImplementation) {
+      args = [];
+    }
 
     try {
       await run('verify:verify', {address, constructorArguments: args});
