@@ -15,9 +15,23 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const officialEnsRegistryAddress = ENS_ADDRESSES[network.name];
 
+  // Harmony redes não suportam ENS por padrão; pula setup para evitar erros
+  if (network.name === 'harmony' || network.name === 'harmonyTestnet') {
+    console.log(`[ENS] Rede '${network.name}' sem suporte ENS oficial. Pulando setup.`);
+    return;
+  }
+
   if (!officialEnsRegistryAddress) {
-    await setupENS([daoDomain, pluginDomain], hre);
+    // Filtra nomes inválidos
+    const domains = [daoDomain, pluginDomain].filter(
+      d => !!d && d.trim().length > 0 && d.includes('.')
+    );
+    if (domains.length === 0) {
+      console.log('[ENS] Nenhum domínio válido para registrar. Pulando.');
+      return;
+    }
+    await setupENS(domains, hre);
   }
 };
 export default func;
-func.tags = ['New', 'ENSRegistry'];
+func.tags = ['new', 'ENSRegistry'];
