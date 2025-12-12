@@ -19,6 +19,20 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const managementDaoContract = DAO__factory.connect(managementDAOAddress, deployer);
   const pluginRepoFactoryAddress = await getContractAddress('PluginRepoFactory', hre);
 
+  // Se o deployer não possui EXECUTE no ManagementDAO, não conseguirá chamar DAO.execute.
+  // Nessa situação, este passo deve ser executado pelo Multisig off-chain, então pulamos.
+  const execPermissionId = ethers.keccak256(ethers.toUtf8Bytes('EXECUTE_PERMISSION'));
+  const hasExecute = await (DAO__factory.connect(managementDAOAddress, deployer) as any).hasPermission(
+    managementDAOAddress,
+    deployer.address,
+    execPermissionId,
+    '0x'
+  );
+  if (!hasExecute) {
+    console.log('[PostMultisig] Deployer não possui EXECUTE no DAO. Pulando grants pós-multisig (execute via Multisig).');
+    return;
+  }
+
   const grants = [
     {
       operation: Operation.Grant,
