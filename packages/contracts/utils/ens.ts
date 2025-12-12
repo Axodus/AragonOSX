@@ -5,11 +5,11 @@ import {ethers} from 'hardhat';
 import {HardhatRuntimeEnvironment} from 'hardhat/types';
 
 export function ensLabelHash(label: string): string {
-  return ethers.utils.id(label);
+  return ethers.keccak256(ethers.toUtf8Bytes(label));
 }
 
 export function ensDomainHash(name: string): string {
-  return ethers.utils.namehash(name);
+  return (ethers as any).namehash ? (ethers as any).namehash(name) : require('eth-ens-namehash').hash(name);
 }
 
 export async function setupENS(
@@ -35,7 +35,7 @@ export async function setupENS(
   await deploy('PublicResolver', {
     contract: publicResolverArtifact,
     from: deployer.address,
-    args: [ensDeployment.address, ethers.constants.AddressZero],
+    args: [ensDeployment.address, (ethers as any).ZeroAddress || '0x0000000000000000000000000000000000000000'],
   });
 
   const resolver = await deployments.get('PublicResolver');
@@ -63,12 +63,13 @@ export async function setupENS(
         .join('.');
 
       // skipping if it is already set
-      const resolvedResolver = await ens.resolver(
-        ensDomainHash(
-          `${domainNamesReversed[i + 1]}${domain ? '.' + domain : ''}`
-        )
-      );
-      if (resolvedResolver !== ethers.constants.AddressZero) {
+      const fullDomain = `${domainNamesReversed[i + 1]}${domain ? '.' + domain : ''}`;
+      if (!fullDomain || fullDomain.trim().length === 0) {
+        // Evita label vazia na raiz
+        continue;
+      }
+      const resolvedResolver = await ens.resolver(ensDomainHash(fullDomain));
+      if (resolvedResolver !== ((ethers as any).ZeroAddress || '0x0000000000000000000000000000000000000000')) {
         continue;
       }
 
