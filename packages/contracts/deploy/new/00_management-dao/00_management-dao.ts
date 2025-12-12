@@ -21,7 +21,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const initializeParams = {
     metadata: '0x',
     initialOwner: deployer.address,
-    trustedForwarder: ethers.constants.AddressZero,
+    trustedForwarder: (ethers as any).ZeroAddress || '0x0000000000000000000000000000000000000000',
     daoURI: '0x',
   };
 
@@ -51,5 +51,5 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   });
 };
 export default func;
-func.tags = ['New', 'ManagementDao'];
-func.dependencies = ['Env'];
+func.tags = ['new', 'ManagementDao'];
+func.dependencies = ['env'];

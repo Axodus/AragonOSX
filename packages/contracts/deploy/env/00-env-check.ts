@@ -49,5 +49,5 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   console.log('✅ All required env vars are set');
 };
 export default func;
-// set the dependencies of other functions to `Env` to ensure this check runs first
-func.tags = ['Env'];
+// Run as part of the 'env' tag group defined in networks/hardhat config
+func.tags = ['env'];
