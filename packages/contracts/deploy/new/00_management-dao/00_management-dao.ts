@@ -1,5 +1,6 @@
 import daoArtifactJson from '../../../artifacts/src/core/dao/DAO.sol/DAO.json';
 import {ArtifactData, DeployFunction} from 'hardhat-deploy/types';
+import {managementDaoMultisigAddressEnv} from '../../../utils/environment';
 import {HardhatRuntimeEnvironment} from 'hardhat/types';
 
 /** NOTE:
@@ -9,7 +10,7 @@ import {HardhatRuntimeEnvironment} from 'hardhat/types';
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   console.log(`\nDeploying ManagementDAO.`);
 
-  const {deployments, ethers} = hre;
+  const {deployments, ethers, network} = hre;
   const {deploy} = deployments;
   const [deployer] = await ethers.getSigners();
 
@@ -18,9 +19,11 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
       ` At the final step when Multisig is available, it will be installed on managementDAO and all roles for the Deployer will be revoked.`
   );
 
+  const initialOwnerAddress = managementDaoMultisigAddressEnv(network) || deployer.address;
+
   const initializeParams = {
     metadata: '0x',
-    initialOwner: deployer.address,
+    initialOwner: initialOwnerAddress,
     trustedForwarder: (ethers as any).ZeroAddress || '0x0000000000000000000000000000000000000000',
     daoURI: '0x',
   };
