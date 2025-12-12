@@ -12,11 +12,17 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   for (let index = 0; index < hre.aragonToVerifyContracts.length; index++) {
     const element = hre.aragonToVerifyContracts[index];
+    // Implementations behind proxies usually have zero-arg constructors.
+    const isImplementation =
+      /Implementation$/i.test(element.contract || '') ||
+      /Proxy_Implementation/i.test(element.contract || '');
+
+    const args = isImplementation ? [] : element.args || [];
 
     console.log(
-      `Verifying address ${element.address} with constructor argument ${element.args}.`
+      `Verifying address ${element.address} with constructor argument ${JSON.stringify(args)}.`
     );
-    await verifyContract(element.address, element.args || [], element.contract);
+    await verifyContract(element.address, args, element.contract);
 
     // Etherscan Max rate limit is 1/5s,
     // use 6s just to be safe.
