@@ -7,6 +7,7 @@ import {HardhatRuntimeEnvironment} from 'hardhat/types';
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {ethers} = hre;
   const [deployer] = await ethers.getSigners();
+  const multisigEnv = process.env.HARMONY_MANAGEMENT_DAO_MULTISIG || process.env.HARMONYTESTNET_MANAGEMENT_DAO_MULTISIG;
 
   // Get `managementDAO` address.
   const managementDAOAddress = await getContractAddress(
@@ -19,6 +20,13 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     managementDAOAddress,
     deployer
   );
+
+  // Se Multisig está configurado, o deployer provavelmente não tem EXECUTE.
+  // Evite revert: pule este passo e aplique via pós-multisig.
+  if (multisigEnv && multisigEnv.length > 0) {
+    console.log('[PluginRegistry] Multisig configurado; pulando concessões via deployer.');
+    return;
+  }
 
   // Get `PluginRepoRegistryProxy` address.
   const pluginRepoRegistryAddress = await getContractAddress(
@@ -57,4 +65,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   await managePermissions(managementDaoContract, grantPermissions);
 };
 export default func;
-func.tags = ['New', 'Plugin_Registry_Permissions'];
+func.tags = ['new', 'Plugin_Registry_Permissions'];
