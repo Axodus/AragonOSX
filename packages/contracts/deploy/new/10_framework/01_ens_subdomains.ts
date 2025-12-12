@@ -24,7 +24,7 @@ async function registerAndTransferDomain(
   let owner = await ensRegistryContract.owner(node);
 
   // node hasn't been registered yet
-  if (owner === ethers.constants.AddressZero) {
+  if (owner === ((ethers as any).ZeroAddress || '0x0000000000000000000000000000000000000000')) {
     owner = await registerSubnodeRecord(
       domain,
       deployer,
@@ -72,8 +72,16 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   );
 
   // Check if domains are owned by the managementDAO
-  const daoNode = ethers.utils.namehash(daoDomain);
-  const pluginNode = ethers.utils.namehash(pluginDomain);
+  if (network.name === 'harmony' || network.name === 'harmonyTestnet') {
+    console.log(`[ENS] Rede '${network.name}' sem suporte ENS oficial. Pulando subdomains.`);
+    return;
+  }
+  const daoNode = (ethers as any).namehash
+    ? (ethers as any).namehash(daoDomain)
+    : require('eth-ens-namehash').hash(daoDomain);
+  const pluginNode = (ethers as any).namehash
+    ? (ethers as any).namehash(pluginDomain)
+    : require('eth-ens-namehash').hash(pluginDomain);
 
   await registerAndTransferDomain(
     ensRegistryContract,
@@ -96,4 +104,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   );
 };
 export default func;
-func.tags = ['New', 'ENSSubdomains'];
+func.tags = ['new', 'ENSSubdomains'];

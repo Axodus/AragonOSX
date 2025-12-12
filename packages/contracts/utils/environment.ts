@@ -76,3 +76,9 @@ export const managementDaoMultisigAddressEnv = (network: Network): string =>
     `${network.name.toUpperCase()}_MANAGEMENT_DAO_MULTISIG`,
     process.env.HARDHAT_MANAGEMENT_DAO_MULTISIG || HARDHAT_ACCOUNTS[0].ADDRESS
   );
+
+export const countryRegistryEnv = (network: Network): string =>
+  env(network, `${network.name.toUpperCase()}_COUNTRY_REGISTRY`, '');
+
+export const countryControllerEnv = (network: Network): string =>
+  env(network, `${network.name.toUpperCase()}_COUNTRY_CONTROLLER`, '');

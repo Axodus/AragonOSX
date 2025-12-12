@@ -1,5 +1,5 @@
 import {setupENS} from '../../../utils/ens';
-import {daoDomainEnv, pluginDomainEnv} from '../../../utils/environment';
+import {daoDomainEnv, pluginDomainEnv, countryRegistryEnv} from '../../../utils/environment';
 import {ENS_ADDRESSES} from '../../helpers';
 import {DeployFunction} from 'hardhat-deploy/types';
 import {HardhatRuntimeEnvironment} from 'hardhat/types';
@@ -15,9 +15,14 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const officialEnsRegistryAddress = ENS_ADDRESSES[network.name];
 
-  // Harmony redes não suportam ENS por padrão; pula setup para evitar erros
+  // Harmony redes usam 1.country; se houver registry configurado, apenas valida domínios via leitura posteriormente.
   if (network.name === 'harmony' || network.name === 'harmonyTestnet') {
-    console.log(`[ENS] Rede '${network.name}' sem suporte ENS oficial. Pulando setup.`);
+    const countryRegistry = countryRegistryEnv(network);
+    if (countryRegistry && countryRegistry.trim().length > 0) {
+      console.log(`[Country] Registry configurado (${countryRegistry}). Pulando deploy ENS padrão.`);
+      return;
+    }
+    console.log(`[ENS] Rede '${network.name}' sem suporte ENS oficial e sem 1.country registry configurado. Pulando setup.`);
     return;
   }
 
