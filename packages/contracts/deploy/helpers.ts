@@ -188,7 +188,7 @@ export async function isPermissionSetCorrectly(
   permissionManagerContract: Contract,
   {operation, where, who, permission, data = '0x'}: Permission
 ): Promise<boolean> {
-  const permissionId = ethers.utils.id(permission);
+  const permissionId = ethers.keccak256(ethers.toUtf8Bytes(permission));
   const isGranted = await permissionManagerContract.isGranted(
     where.address,
     who.address,
@@ -233,8 +233,8 @@ export async function managePermissions(
       item.operation,
       item.where.address,
       item.who.address,
-      item.condition || ethers.constants.AddressZero,
-      ethers.utils.id(item.permission),
+      item.condition || (ethers as any).ZeroAddress || '0x0000000000000000000000000000000000000000',
+      ethers.keccak256(ethers.toUtf8Bytes(item.permission)),
     ])
   );
   console.log(`Set permissions with ${tx.hash}. Waiting for confirmation...`);
