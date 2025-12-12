@@ -7,7 +7,19 @@ import {DeployFunction} from 'hardhat-deploy/types';
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {deployments, network, run} = hre;
   const all = await deployments.all();
-  const names = Object.keys(all);
+  let names = Object.keys(all);
+
+  // Em redes sem suporte a ENS (ex.: harmony), pule verificações de registrars ENS
+  const noEnsNetworks = new Set(['harmony', 'harmonytestnet']);
+  if (noEnsNetworks.has(network.name.toLowerCase())) {
+    const skipPatterns = [
+      'DAOENSSubdomainRegistrarProxy',
+      'PluginENSSubdomainRegistrarProxy',
+      'ENSSubdomainRegistrar',
+    ];
+    names = names.filter(n => !skipPatterns.some(p => n.includes(p)));
+    console.log(`[verify] Rede '${network.name}' sem ENS; pulando contratos: ${skipPatterns.join(', ')}`);
+  }
 
   if (names.length === 0) {
     console.log(`[verify] Nenhum contrato encontrado para verificação em '${network.name}'.`);
