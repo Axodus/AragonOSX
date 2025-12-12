@@ -1,5 +1,5 @@
 import {DAO__factory} from '../../../typechain';
-import {getContractAddress, managePermissions} from '../../helpers';
+import {getContractAddress} from '../../helpers';
 import {Operation} from '@aragon/osx-commons-sdk';
 import {DeployFunction} from 'hardhat-deploy/types';
 import {HardhatRuntimeEnvironment} from 'hardhat/types';
@@ -21,15 +21,19 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     deployer
   );
 
-  // Grant the deployer EXECUTE permission for setup (ROOT not needed; DAO.execute is used for permission changes).
-  await managePermissions(managementDaoContract, [
-    {
-      operation: Operation.Grant,
-      where: {name: 'ManagementDAOProxy', address: managementDAOAddress},
-      who: {name: 'Deployer', address: deployer.address},
-      permission: 'EXECUTE_PERMISSION',
-    },
-  ]);
+  // Bootstrap: as initialOwner, the deployer holds ROOT and can grant EXECUTE directly
+  const items = [
+    [
+      Operation.Grant,
+      managementDAOAddress,
+      deployer.address,
+      (ethers as any).ZeroAddress || '0x0000000000000000000000000000000000000000',
+      ethers.keccak256(ethers.toUtf8Bytes('EXECUTE_PERMISSION')),
+    ],
+  ];
+  const tx = await managementDaoContract.applyMultiTargetPermissions(items, {gasLimit: 1_200_000});
+  console.log(`Set permissions with ${tx.hash}. Waiting for confirmation...`);
+  await tx.wait();
 };
 export default func;
 func.tags = ['new', 'ManagementDaoPermissions'];
