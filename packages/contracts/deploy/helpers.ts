@@ -248,7 +248,7 @@ export async function managePermissions(
     ethers.hexlify(ethers.toUtf8Bytes('Set_Permissions')),
     [
       {
-        to: permissionManagerContract.address,
+        to: (permissionManagerContract as any).target || (permissionManagerContract as any).address,
         value: 0n,
         data: calldata,
       },
@@ -284,7 +284,7 @@ export async function isENSDomainRegistered(
     signer
   );
 
-  return ensRegistryContract.recordExists(ethers.utils.namehash(domain));
+  return ensRegistryContract.recordExists((ethers as any).namehash ? (ethers as any).namehash(domain) : require('eth-ens-namehash').hash(domain));
 }
 
 export async function getENSAddress(
@@ -332,14 +332,14 @@ export async function registerSubnodeRecord(
     owner
   );
   const tx = await ensRegistryContract.setSubnodeRecord(
-    ethers.utils.namehash(parentDomain),
-    ethers.utils.keccak256(ethers.utils.toUtf8Bytes(subdomain)),
+    ((ethers as any).namehash ? (ethers as any).namehash(parentDomain) : require('eth-ens-namehash').hash(parentDomain)),
+    ethers.keccak256(ethers.toUtf8Bytes(subdomain)),
     owner.address,
     publicResolver,
     0
   );
   await tx.wait();
-  return ensRegistryContract.owner(ethers.utils.namehash(domain));
+  return ensRegistryContract.owner(((ethers as any).namehash ? (ethers as any).namehash(domain) : require('eth-ens-namehash').hash(domain)));
 }
 
 export async function transferSubnodeRecord(
@@ -359,8 +359,8 @@ export async function transferSubnodeRecord(
   );
 
   const tx = await ensRegistryContract.setSubnodeOwner(
-    ethers.utils.namehash(parentDomain),
-    ethers.utils.keccak256(ethers.utils.toUtf8Bytes(subdomain)),
+    ((ethers as any).namehash ? (ethers as any).namehash(parentDomain) : require('eth-ens-namehash').hash(parentDomain)),
+    ethers.keccak256(ethers.toUtf8Bytes(subdomain)),
     newOwner
   );
   console.log(
@@ -388,11 +388,11 @@ export async function transferSubnodeChain(
   // +1 on length because we also need to check the owner of the empty domain
   for (let i = 0; i < daoDomainSplitted.length + 1; i++) {
     const domainOwner = await ensRegistryContract.callStatic.owner(
-      ethers.utils.namehash(domain)
+      ((ethers as any).namehash ? (ethers as any).namehash(domain) : require('eth-ens-namehash').hash(domain))
     );
     if (domainOwner !== newOwner && domainOwner === currentOwner) {
       const tx = await ensRegistryContract.setOwner(
-        ethers.utils.namehash(domain),
+        ((ethers as any).namehash ? (ethers as any).namehash(domain) : require('eth-ens-namehash').hash(domain)),
         newOwner
       );
       console.log(
