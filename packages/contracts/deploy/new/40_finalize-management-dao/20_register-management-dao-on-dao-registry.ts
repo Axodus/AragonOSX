@@ -61,7 +61,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   if (
     owner != daoENSSubdomainRegistrar &&
-    owner != ethers.constants.AddressZero
+    owner != (ethers as any).ZeroAddress
   ) {
     throw new Error(
       `A DAO with ${daoSubdomain}.${daoDomain} is registered and owned by 
@@ -69,7 +69,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     );
   }
 
-  if (owner === ethers.constants.AddressZero) {
+  if (owner === (ethers as any).ZeroAddress) {
     // Register `managingDAO` on `DAORegistry`.
     // Em ambientes com Multisig como owner inicial, o deployer pode não ter permissão.
     // Nesse caso, pulamos o registro on-chain aqui para ser feito via Multisig.
