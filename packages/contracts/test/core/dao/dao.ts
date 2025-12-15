@@ -320,7 +320,7 @@ describe('DAO', function () {
 
       expect(
         await uninitializedDao.supportsInterface(
-          getInterfaceId(IExecutor__factory.createInterface())
+          getInterfaceId(new Interface(IExecutor__factory.abi))
         )
       ).to.be.false;
 
@@ -328,7 +328,7 @@ describe('DAO', function () {
 
       expect(
         await uninitializedDao.supportsInterface(
-          getInterfaceId(IExecutor__factory.createInterface())
+          getInterfaceId(new Interface(IExecutor__factory.abi))
         )
       ).to.be.true;
     });

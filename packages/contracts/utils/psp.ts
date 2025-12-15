@@ -1,5 +1,5 @@
-import {defaultAbiCoder, keccak256} from 'ethers/lib/utils';
+import {AbiCoder, keccak256} from 'ethers';
 
 export function hashHelpers(helpers: string[]) {
-  return keccak256(defaultAbiCoder.encode(['address[]'], [helpers]));
+  return keccak256(new AbiCoder().encode(['address[]'], [helpers]));
 }
