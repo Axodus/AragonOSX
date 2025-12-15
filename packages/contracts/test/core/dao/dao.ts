@@ -303,12 +303,12 @@ describe('DAO', function () {
       // Expect `_reentrancyStatus` to remain unchanged.
 
       expect(
-        ethers.BigNumber.from(
+        toNumber(
           await ethers.provider.getStorageAt(
             uninitializedDao.address,
             REENTRANCY_STATUS_SLOT_POSITION
           )
-        ).toNumber()
+        )
       ).to.equal(0);
     });
 
