@@ -74,6 +74,11 @@ Configuration for AI behavior when interacting with Codacy's MCP Server
 - If the Codacy CLI is not installed, just run the `codacy_cli_analyze` tool from Codacy's MCP Server.
 - When calling `codacy_cli_analyze`, only send provider, organization and repository if the project is a git repository.
 
+### Do NOT use `codacy_get_pattern`
+
+- The `codacy_get_pattern` tool is not supported in this environment and will return Bad Request.
+- Do not call `codacy_get_pattern` (or any pattern-definition retrieval tool). Use `codacy_cli_analyze` exclusively for analyses.
+
 ## Whenever a call to a Codacy tool that uses `repository` or `organization` as a parameter returns a 404 error
 
 - Offer to run the `codacy_setup_repository` tool to add the repository to Codacy
