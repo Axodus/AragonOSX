@@ -49,13 +49,12 @@ import {
   getProtocolVersion,
   IMPLICIT_INITIAL_PROTOCOL_VERSION,
 } from '@aragon/osx-commons-sdk';
-import {smock} from '@defi-wonderland/smock';
 import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers';
-import chai, {expect} from 'chai';
+import chai, {expect} from '../../chai-setup';
 import {ContractFactory} from 'ethers';
 import hre, {ethers} from 'hardhat';
 
-chai.use(smock.matchers);
+// smock matchers are added in chai-setup if available
 
 const errorSignature = '0x08c379a0'; // first 4 bytes of Error(string)
 

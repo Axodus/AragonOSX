@@ -10,23 +10,24 @@ import {PluginUUPSUpgradeableV1Mock__factory} from '@aragon/osx-ethers-v1.2.0';
 import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers';
 import {expect} from 'chai';
 import hre, {ethers} from 'hardhat';
+import {id, getAddress, ZeroAddress} from 'ethers';
 
-const ADMIN_PERMISSION_ID = ethers.utils.id('ADMIN_PERMISSION');
+const ADMIN_PERMISSION_ID = id('ADMIN_PERMISSION');
 const RESTRICTED_PERMISSIONS_FOR_ANY_ADDR = [
   DAO_PERMISSIONS.ROOT_PERMISSION_ID,
-  ethers.utils.id('TEST_PERMISSION_1'),
-  ethers.utils.id('TEST_PERMISSION_2'),
+  id('TEST_PERMISSION_1'),
+  id('TEST_PERMISSION_2'),
 ];
 
-const UNSET_FLAG = ethers.utils.getAddress(
+const UNSET_FLAG = getAddress(
   '0x0000000000000000000000000000000000000000'
 );
-const ALLOW_FLAG = ethers.utils.getAddress(
+const ALLOW_FLAG = getAddress(
   '0x0000000000000000000000000000000000000002'
 );
 export const ANY_ADDR = '0xffffffffffffffffffffffffffffffffffffffff';
 
-const addressZero = ethers.constants.AddressZero;
+const addressZero = ZeroAddress;
 
 let conditionMock: PermissionConditionMock;
 

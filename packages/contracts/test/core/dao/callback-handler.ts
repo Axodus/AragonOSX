@@ -4,7 +4,7 @@ import {
 } from '../../../typechain';
 import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers';
 import {expect} from 'chai';
-import {defaultAbiCoder, hexDataSlice, id} from 'ethers/lib/utils';
+import {dataSlice, id} from 'ethers';
 import hre, {ethers} from 'hardhat';
 
 const EVENTS = {
@@ -12,7 +12,7 @@ const EVENTS = {
   CALLBACK_RECEIVED: 'CallbackReceived',
 };
 
-const callbackSelector = hexDataSlice(id('callbackFunc()'), 0, 4); // 0x1eb2075a
+const callbackSelector = dataSlice(id('callbackFunc()'), 0, 4); // 0x1eb2075a
 const magicNumber = `0x1${'0'.repeat(7)}`;
 export const UNREGISTERED_INTERFACE_RETURN = `0x${'00'.repeat(4)}`;
 

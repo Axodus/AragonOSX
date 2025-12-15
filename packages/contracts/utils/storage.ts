@@ -1,4 +1,4 @@
-import {defaultAbiCoder} from 'ethers/lib/utils';
+import {AbiCoder} from 'ethers';
 import {ethers} from 'hardhat';
 
 // See https://eips.ethereum.org/EIPS/eip-1967
@@ -12,7 +12,8 @@ export async function readStorage(
   location: number | string,
   types: string[]
 ): Promise<string> {
+  const abi = new AbiCoder();
   return ethers.provider
     .getStorageAt(contractAddress, location)
-    .then(encoded => defaultAbiCoder.decode(types, encoded)[0]);
+    .then(encoded => abi.decode(types, encoded)[0]);
 }
