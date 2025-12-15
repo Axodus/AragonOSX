@@ -14,7 +14,7 @@ import {
 import {skipTestSuiteIfNetworkIsZkSync} from '../test-utils/skip-functions';
 import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers';
 import {expect} from 'chai';
-import {defaultAbiCoder} from 'ethers/lib/utils';
+import {AbiCoder, id} from 'ethers';
 import hre, {ethers, deployments} from 'hardhat';
 
 const IMPLEMENTATION_ADDRESS_SLOT =
@@ -36,7 +36,7 @@ function getAddress(name: string) {
 }
 
 async function assertImplementation(contract: string, expected: string) {
-  const actual = defaultAbiCoder
+  const actual = new AbiCoder()
     .decode(
       ['address'],
       await ethers.provider.getStorageAt(contract, IMPLEMENTATION_ADDRESS_SLOT)
@@ -53,8 +53,8 @@ type Permission = {
 };
 
 async function validatePermissions(dao: DAO, p1: Permission, p2: Permission) {
-  const registerDAOPermission = ethers.utils.id('REGISTER_DAO_PERMISSION');
-  const registerPluginRepoPermission = ethers.utils.id(
+  const registerDAOPermission = id('REGISTER_DAO_PERMISSION');
+  const registerPluginRepoPermission = id(
     'REGISTER_PLUGIN_REPO_PERMISSION'
   );
 
@@ -167,9 +167,7 @@ skipTestSuiteIfNetworkIsZkSync('Update to 1.4.0', function () {
 
     const signer = await impersonateAccount(multisigAddr);
 
-    await dao
-      .connect(signer)
-      .execute(ethers.utils.id('someCallId'), actions, 0);
+    await dao.connect(signer).execute(id('someCallId'), actions, 0);
 
     await validatePermissions(
       dao,

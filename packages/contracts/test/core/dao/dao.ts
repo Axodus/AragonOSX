@@ -53,6 +53,7 @@ import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers';
 import chai, {expect} from '../../chai-setup';
 import {ContractFactory} from 'ethers';
 import hre, {ethers} from 'hardhat';
+import {Interface, toNumber} from 'ethers';
 import {toNumber} from 'ethers';
 
 // smock matchers are added in chai-setup if available
@@ -339,7 +340,7 @@ describe('DAO', function () {
     let initArgs: any;
 
     const IExecutorInterfaceId = getInterfaceId(
-      IExecutor__factory.createInterface()
+      new Interface(IExecutor__factory.abi)
     );
 
     before(() => {
