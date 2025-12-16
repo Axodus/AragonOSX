@@ -646,7 +646,7 @@ describe('DAO', function () {
       const tx = await dao.execute(ZERO_BYTES32, [data.failAction], num as any);
       const event = findEventLog<ExecutedEvent>(
         await tx.wait(),
-        DAO__factory.createInterface(),
+        IDAO__factory.createInterface() as any,
         EVENTS.Executed
       );
 
@@ -659,7 +659,7 @@ describe('DAO', function () {
       const tx = await dao.execute(ZERO_BYTES32, [data.succeedAction], 0);
       const event = findEventLog<ExecutedEvent>(
         await tx.wait(),
-        DAO__factory.createInterface(),
+        IDAO__factory.createInterface() as any,
         EVENTS.Executed
       );
       expect(event.args.execResults[0]).to.equal(data.successActionResult);
@@ -689,7 +689,7 @@ describe('DAO', function () {
       let tx = await dao.execute(ZERO_BYTES32, actions, allowFailureMap);
       let event = findEventLog<ExecutedEvent>(
         await tx.wait(),
-        DAO__factory.createInterface(),
+        IDAO__factory.createInterface() as any,
         EVENTS.Executed
       );
 
@@ -727,7 +727,7 @@ describe('DAO', function () {
       const tx = await dao.execute(ZERO_BYTES32, [data.succeedAction], 0);
       const rc = await tx.wait();
 
-      const event = findEventLog<ExecutedEvent>(rc, DAO__factory.createInterface(), EVENTS.Executed);
+      const event = findEventLog<ExecutedEvent>(rc, IDAO__factory.createInterface() as any, EVENTS.Executed);
       expect(event.args.actor).to.equal(ownerAddress);
       expect(event.args.callId).to.equal(ZERO_BYTES32);
       expect(event.args.actions.length).to.equal(1);

@@ -374,19 +374,21 @@ describe('DAOFactory: ', function () {
           dao,
           anyValue,
           pluginRepoPointer[0],
-          (val: any) =>
-            expect([Number(val.release), Number(val.build)]).to.deep.equal([
-              1,
-              1,
-            ]),
+          (val: any) => {
+            const r = Number(val?.release ?? val?.[0]);
+            const b = Number(val?.build ?? val?.[1]);
+            return r === 1 && b === 1;
+          },
           (val: any) => {
             expect(val.plugin).to.equal(expectedPlugin);
             expect(val.currentHelpers).to.deep.equal(helpers);
             expect(val.data).to.equal(pluginInstallationData.data);
+            return true;
           },
           (val: any) => {
             expect(val.helpers).to.deep.equal(helpers);
             expect(val.permissions).to.deep.equal(permissions);
+            return true;
           },
           anyValue
         )

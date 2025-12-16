@@ -481,11 +481,11 @@ describe('PluginSetupProcessor', function () {
             targetDao.address,
             preparedSetupId,
             pluginRepoPointer[0],
-            (val: any) =>
-              expect([Number(val.release), Number(val.build)]).to.deep.equal([
-                1,
-                1,
-              ]),
+              (val: any) => {
+                const r = Number(val?.release ?? val?.[0]);
+                const b = Number(val?.build ?? val?.[1]);
+                return r === 1 && b === 1;
+              },
             data,
             anyValue,
             (val: any) => {
@@ -1074,17 +1074,21 @@ describe('PluginSetupProcessor', function () {
             targetDao.address,
             preparedSetupId,
             pluginRepoPointer[0],
-            (val: any) =>
-              expect([Number(val.release), Number(val.build)]).to.deep.equal([
-                1,
-                1,
-              ]),
+            (val: any) => {
+              const r = Number(val?.release ?? val?.[0]);
+              const b = Number(val?.build ?? val?.[1]);
+              return r === 1 && b === 1;
+            },
             (val: any) => {
               expect(val.plugin).to.equal(proxy);
               expect(val.currentHelpers).to.deep.equal(helpersUV1);
               expect(val.data).to.equal(data);
+              return true;
             },
-            (val: any) => expect(val).to.deep.equal(uninstallPermissions)
+            (val: any) => {
+              expect(val).to.deep.equal(uninstallPermissions);
+              return true;
+            }
           );
       });
     });
