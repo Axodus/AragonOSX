@@ -2,14 +2,17 @@ import {Interface} from 'ethers';
 
 // Compute ERC-165 interfaceId (XOR of function selectors) for ethers v6 Interface
 export function getInterfaceId(iface: Interface): string {
+  const fns = iface.fragments.filter((f) => f.type === 'function');
+  const onlyIERC165 = fns.length === 1 && fns[0].name === 'supportsInterface' && (fns[0].inputs?.length ?? 0) === 1;
   let acc = 0n;
-  for (const frag of iface.fragments) {
-    if (frag.type !== 'function' || typeof frag.selector !== 'string') continue;
-    // Exclude ERC-165's supportsInterface from the XOR per EIP-165
-    if (frag.name === 'supportsInterface' && frag.inputs?.length === 1) {
+  for (const frag of fns) {
+    if (!onlyIERC165 && frag.name === 'supportsInterface' && (frag.inputs?.length ?? 0) === 1) {
+      // For any interface that inherits IERC165, exclude supportsInterface from the XOR
       continue;
     }
-    acc ^= BigInt(frag.selector);
+    if (typeof (frag as any).selector === 'string') {
+      acc ^= BigInt((frag as any).selector);
+    }
   }
   const hex = acc.toString(16).padStart(8, '0');
   return '0x' + hex;
@@ -22,7 +25,14 @@ export function findEventLog<T = any>(
   eventName: string
 ): T {
   const logs = (receipt as any).logs ?? [];
+  // Narrow by topic first for performance and correctness
+  let topic: string | undefined;
+  try {
+    topic = iface.getEventTopic(eventName as any);
+  } catch {}
+
   for (const log of logs) {
+    if (topic && Array.isArray(log.topics) && log.topics[0] !== topic) continue;
     try {
       const parsed = iface.parseLog(log);
       if (parsed && parsed.name === eventName) {

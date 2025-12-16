@@ -102,7 +102,7 @@ describe('DAO Upgrade', function () {
         expect(emittedImplementation).to.equal(daoV130Implementation.address);
 
         // Check that storage is not corrupted.
-        expect(await daoV100Proxy.callStatic.daoURI()).to.equal(daoExampleURI);
+        expect(await (daoV100Proxy as any).daoURI.staticCall()).to.equal(daoExampleURI);
       });
 
       it('does not corrupt permissions', async () => {

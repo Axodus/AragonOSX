@@ -703,7 +703,7 @@ describe('PluginSetupProcessor', function () {
           )
         ).not.to.be.reverted;
         await expect(
-          psp.callStatic.applyInstallation(
+          (psp as any).applyInstallation.staticCall(
             targetDao.address,
             createApplyInstallationParams(
               plugin,
@@ -714,7 +714,7 @@ describe('PluginSetupProcessor', function () {
           )
         ).not.to.be.reverted;
         await expect(
-          psp.callStatic.applyInstallation(
+          (psp as any).applyInstallation.staticCall(
             targetDao.address,
             createApplyInstallationParams(
               plugin,
@@ -942,7 +942,7 @@ describe('PluginSetupProcessor', function () {
       it('reverts if the plugin was uninstalled and tries to prepare uninstallation for it', async () => {
         // make sure that prepare uninstall doesn't revert before applying uninstall.
         await expect(
-          psp.callStatic.prepareUninstallation(
+          (psp as any).prepareUninstallation.staticCall(
             targetDao.address,
             createPrepareUninstallationParams(
               proxy,
