@@ -1,4 +1,6 @@
 import {Interface} from 'ethers';
+import {IDAO__factory} from '../../../typechain/factories/IDAO__factory';
+import {IExecutor__factory} from '../../../typechain/factories/IExecutor__factory';
 
 // Compute ERC-165 interfaceId (XOR of function selectors) for ethers v6 Interface
 export function getInterfaceId(iface: Interface): string {
@@ -85,6 +87,25 @@ export function findEventLog<T = any>(
           if (parsed) {
             return parsed as unknown as T;
           }
+        } catch {}
+      }
+    } catch {}
+    // Try parsing using canonical IDAO and IExecutor ABIs via ethers v6 Interface
+    try {
+      const v6Idao = new Interface((IDAO__factory as any).abi ?? []);
+      for (const log of logs) {
+        try {
+          const parsed = v6Idao.parseLog(log);
+          if (parsed && parsed.name === 'Executed') return parsed as unknown as T;
+        } catch {}
+      }
+    } catch {}
+    try {
+      const v6Exec = new Interface((IExecutor__factory as any).abi ?? []);
+      for (const log of logs) {
+        try {
+          const parsed = v6Exec.parseLog(log);
+          if (parsed && parsed.name === 'Executed') return parsed as unknown as T;
         } catch {}
       }
     } catch {}
