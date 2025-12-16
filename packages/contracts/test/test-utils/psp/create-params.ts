@@ -7,15 +7,22 @@ function cloneHelpers(helpers: string[]): string[] {
 }
 
 function clonePermissions(permissions: PermissionOperation[]): PermissionOperation[] {
-  return Array.isArray(permissions)
-    ? permissions.map((p: any) => ({
-        operation: typeof p.operation === 'bigint' ? Number(p.operation) : p.operation,
-        where: String(p.where),
-        who: String(p.who),
-        permissionId: p.permissionId,
-        condition: String(p.condition),
-      }))
-    : (permissions as any);
+  if (!Array.isArray(permissions)) return permissions as any;
+  return (permissions as any[]).map((p: any) => {
+    const isTuple = Array.isArray(p);
+    const operationRaw = isTuple ? p[0] : p?.operation;
+    const whereRaw = isTuple ? p[1] : p?.where;
+    const whoRaw = isTuple ? p[2] : p?.who;
+    const conditionRaw = isTuple ? p[3] : p?.condition;
+    const permissionIdRaw = isTuple ? p[4] : p?.permissionId;
+    return {
+      operation: typeof operationRaw === 'bigint' ? Number(operationRaw) : operationRaw,
+      where: String(whereRaw),
+      who: String(whoRaw),
+      permissionId: permissionIdRaw,
+      condition: String(conditionRaw),
+    } as PermissionOperation;
+  });
 }
 
 export function createPrepareInstallationParams(

@@ -379,20 +379,14 @@ describe('DAOFactory: ', function () {
             const b = Number(val?.build ?? val?.[1]);
             return r === 1 && b === 1;
           },
+          pluginInstallationData.data,
+          expectedPlugin,
           (val: any) => {
             if (!val) return false;
-            expect(val.plugin ?? val[0]).to.equal(expectedPlugin);
-            expect(val.currentHelpers ?? val[1]).to.deep.equal(helpers);
-            expect(val.data ?? val[2]).to.equal(pluginInstallationData.data);
+            expect((val.helpers ?? val[0]) as any).to.deep.equal(helpers);
+            expect((val.permissions ?? val[1]) as any).to.deep.equal(permissions);
             return true;
-          },
-          (val: any) => {
-            if (!val) return false;
-            expect(val.helpers ?? val[0]).to.deep.equal(helpers);
-            expect(val.permissions ?? val[1]).to.deep.equal(permissions);
-            return true;
-          },
-          anyValue
+          }
         )
         .to.emit(psp, EVENTS.InstallationApplied)
         .withArgs(
