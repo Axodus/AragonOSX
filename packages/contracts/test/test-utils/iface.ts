@@ -52,14 +52,29 @@ export function findEventLog<T = any>(
   // Special-case fallback for DAO Executed event across ABI variants
   if (eventName === 'Executed') {
     try {
-      const minimal = new Interface([
+      // v1.4.0+: includes failureMap (6-arg variant)
+      const minimalWithFailureMap = new Interface([
         'event Executed(address actor, bytes32 callId, (address to, uint256 value, bytes data)[] actions, uint256 allowFailureMap, uint256 failureMap, bytes[] execResults)'
       ]);
-      const sigTopic = minimal.getEventTopic('Executed');
+      const sigTopicWithFailureMap = minimalWithFailureMap.getEventTopic('Executed');
       for (const log of logs) {
-        if (Array.isArray(log.topics) && log.topics[0] !== sigTopic) continue;
+        if (Array.isArray(log.topics) && log.topics[0] !== sigTopicWithFailureMap) continue;
         try {
-          const parsed = minimal.parseLog(log);
+          const parsed = minimalWithFailureMap.parseLog(log);
+          if (parsed) {
+            return parsed as unknown as T;
+          }
+        } catch {}
+      }
+      // v1.3.x and earlier: without failureMap (5-arg variant)
+      const minimalNoFailureMap = new Interface([
+        'event Executed(address actor, bytes32 callId, (address to, uint256 value, bytes data)[] actions, uint256 allowFailureMap, bytes[] execResults)'
+      ]);
+      const sigTopicNoFailureMap = minimalNoFailureMap.getEventTopic('Executed');
+      for (const log of logs) {
+        if (Array.isArray(log.topics) && log.topics[0] !== sigTopicNoFailureMap) continue;
+        try {
+          const parsed = minimalNoFailureMap.parseLog(log);
           if (parsed) {
             return parsed as unknown as T;
           }
