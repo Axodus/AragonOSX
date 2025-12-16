@@ -48,7 +48,7 @@ describe('CallbackHandler', function () {
     );
 
     expect(
-      await callbackHandlerMockHelper.callStatic.handleCallback(
+      await callbackHandlerMockHelper.handleCallback.staticCall(
         callbackSelector,
         '0x'
       )

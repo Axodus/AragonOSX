@@ -10,7 +10,7 @@ import {PluginUUPSUpgradeableV1Mock__factory} from '@aragon/osx-ethers-v1.2.0';
 import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers';
 import {expect} from 'chai';
 import hre, {ethers} from 'hardhat';
-import {id, getAddress, ZeroAddress} from 'ethers';
+import {id, getAddress, ZeroAddress, solidityPacked, keccak256} from 'ethers';
 
 const ADMIN_PERMISSION_ID = id('ADMIN_PERMISSION');
 const RESTRICTED_PERMISSIONS_FOR_ANY_ADDR = [
@@ -174,11 +174,11 @@ describe('Core: PermissionManager', function () {
           pm.address,
           otherSigner.address,
           ADMIN_PERMISSION_ID,
-          ethers.constants.AddressZero
+          ZeroAddress
         )
       )
         .to.be.revertedWithCustomError(pm, 'ConditionNotAContract')
-        .withArgs(ethers.constants.AddressZero);
+        .withArgs(ZeroAddress);
     });
 
     it('reverts if the condition contract does not support `IPermissionConditon`', async () => {
@@ -777,7 +777,7 @@ describe('Core: PermissionManager', function () {
   describe('isGranted', () => {
     it('returns `true` if the permission is granted to the user', async () => {
       await pm.grant(pm.address, otherSigner.address, ADMIN_PERMISSION_ID);
-      const isGranted = await pm.callStatic.isGranted(
+      const isGranted = await pm.isGranted.staticCall(
         pm.address,
         otherSigner.address,
         ADMIN_PERMISSION_ID,
@@ -787,7 +787,7 @@ describe('Core: PermissionManager', function () {
     });
 
     it('returns `false` if the permission is not granted to the user', async () => {
-      const isGranted = await pm.callStatic.isGranted(
+      const isGranted = await pm.isGranted.staticCall(
         pm.address,
         otherSigner.address,
         ADMIN_PERMISSION_ID,
@@ -808,7 +808,7 @@ describe('Core: PermissionManager', function () {
       await condition.setAnswer(true);
 
       expect(
-        await pm.isGranted(
+        await pm.isGranted.staticCall(
           pm.address,
           ownerSigner.address,
           ADMIN_PERMISSION_ID,
@@ -830,7 +830,7 @@ describe('Core: PermissionManager', function () {
 
       // Check `ownerSigner.address` as a caller `_who`
       expect(
-        await pm.isGranted(
+        await pm.isGranted.staticCall(
           pm.address,
           ownerSigner.address,
           ADMIN_PERMISSION_ID,
@@ -840,7 +840,7 @@ describe('Core: PermissionManager', function () {
 
       // Check `otherSigner.address` as a caller `_who`
       expect(
-        await pm.isGranted(
+        await pm.isGranted.staticCall(
           pm.address,
           otherSigner.address,
           ADMIN_PERMISSION_ID,
@@ -850,8 +850,8 @@ describe('Core: PermissionManager', function () {
 
       // Check that `false` is returned if `address(0)` is the target `_where`.
       expect(
-        await pm.isGranted(
-          ethers.constants.AddressZero,
+        await pm.isGranted.staticCall(
+          ZeroAddress,
           ownerSigner.address,
           ADMIN_PERMISSION_ID,
           condition.address
@@ -872,7 +872,7 @@ describe('Core: PermissionManager', function () {
 
       // Check `pm.address` as a target `_where`
       expect(
-        await pm.isGranted(
+        await pm.isGranted.staticCall(
           pm.address,
           ownerSigner.address,
           ADMIN_PERMISSION_ID,
@@ -882,8 +882,8 @@ describe('Core: PermissionManager', function () {
 
       // Check `address(0)` as a target `_where`
       expect(
-        await pm.isGranted(
-          ethers.constants.AddressZero,
+        await pm.isGranted.staticCall(
+          ZeroAddress,
           ownerSigner.address,
           ADMIN_PERMISSION_ID,
           condition.address
@@ -892,8 +892,8 @@ describe('Core: PermissionManager', function () {
 
       // Check that `false` is returned if `otherSigner is the caller `_who`.
       expect(
-        await pm.isGranted(
-          ethers.constants.AddressZero,
+        await pm.isGranted.staticCall(
+          ZeroAddress,
           otherSigner.address,
           ADMIN_PERMISSION_ID,
           condition.address
@@ -904,7 +904,7 @@ describe('Core: PermissionManager', function () {
     it('should be callable by anyone', async () => {
       const isGranted = await pm
         .connect(otherSigner)
-        .callStatic.isGranted(
+        .isGranted.staticCall(
           pm.address,
           otherSigner.address,
           ADMIN_PERMISSION_ID,
@@ -953,7 +953,7 @@ describe('Core: PermissionManager', function () {
 
       // Check that `isGranted` returns false for `ownerSigner` to whom the specific condition was granted.
       expect(
-        await pm.isGranted(
+        await pm.isGranted.staticCall(
           pm.address,
           ownerSigner.address,
           ADMIN_PERMISSION_ID,
@@ -963,8 +963,8 @@ describe('Core: PermissionManager', function () {
 
       // Check that `ownerSigner` is still granted access to other contracts (e.g., `address(0)`) through the `genericTargetCondition` condition.
       expect(
-        await pm.isGranted(
-          ethers.constants.AddressZero,
+        await pm.isGranted.staticCall(
+          ZeroAddress,
           ownerSigner.address,
           ADMIN_PERMISSION_ID,
           genericTargetCondition.address
@@ -999,7 +999,7 @@ describe('Core: PermissionManager', function () {
 
       // Check that `isGranted` returns false for `ANY_ADDR` (here, we check only two addresses, `ownerSigner` and `otherSigner`).
       expect(
-        await pm.isGranted(
+        await pm.isGranted.staticCall(
           pm.address,
           ownerSigner.address,
           ADMIN_PERMISSION_ID,
@@ -1007,7 +1007,7 @@ describe('Core: PermissionManager', function () {
         )
       ).to.be.false;
       expect(
-        await pm.isGranted(
+        await pm.isGranted.staticCall(
           pm.address,
           otherSigner.address,
           ADMIN_PERMISSION_ID,
@@ -1017,8 +1017,8 @@ describe('Core: PermissionManager', function () {
 
       // Check that `ownerSigner` is granted access to other contracts (e.g., `address(0)`) via the `genericTargetCondition` condition.
       expect(
-        await pm.isGranted(
-          ethers.constants.AddressZero,
+        await pm.isGranted.staticCall(
+          ZeroAddress,
           ownerSigner.address,
           ADMIN_PERMISSION_ID,
           genericTargetCondition.address
@@ -1027,8 +1027,8 @@ describe('Core: PermissionManager', function () {
 
       // Check that `otherSigner` is not granted access to other contracts (e.g., `address(0)`) via the `genericTargetCondition` condition.
       expect(
-        await pm.isGranted(
-          ethers.constants.AddressZero,
+        await pm.isGranted.staticCall(
+          ZeroAddress,
           otherSigner.address,
           ADMIN_PERMISSION_ID,
           genericTargetCondition.address
@@ -1076,7 +1076,7 @@ describe('Core: PermissionManager', function () {
 
       // Check that `isGranted` returns false for `ownerSigner` to whom the specific condition was granted.
       expect(
-        await pm.isGranted(
+        await pm.isGranted.staticCall(
           pm.address,
           ownerSigner.address,
           ADMIN_PERMISSION_ID,
@@ -1086,8 +1086,8 @@ describe('Core: PermissionManager', function () {
 
       // Check that `ownerSigner` is still granted access to other contracts (e.g., `address(0)`) through the `genericTargetCondition` condition.
       expect(
-        await pm.isGranted(
-          ethers.constants.AddressZero,
+        await pm.isGranted.staticCall(
+          ZeroAddress,
           ownerSigner.address,
           ADMIN_PERMISSION_ID,
           genericTargetCondition.address
@@ -1144,7 +1144,7 @@ describe('Core: PermissionManager', function () {
 
   describe('helpers', () => {
     it('should hash PERMISSIONS', async () => {
-      const packed = ethers.utils.solidityPack(
+      const packed = solidityPacked(
         ['string', 'address', 'address', 'address'],
         [
           'PERMISSION',
@@ -1153,7 +1153,7 @@ describe('Core: PermissionManager', function () {
           DAO_PERMISSIONS.ROOT_PERMISSION_ID,
         ]
       );
-      const hash = ethers.utils.keccak256(packed);
+      const hash = keccak256(packed);
       const contractHash = await pm.getPermissionHash(
         pm.address,
         ownerSigner.address,
