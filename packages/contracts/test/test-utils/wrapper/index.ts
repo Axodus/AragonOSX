@@ -130,7 +130,8 @@ export class Wrapper {
     if (isProxy) {
       const {contract: proxyFactoryContract} = await this.network.deploy(
         'ProxyFactory',
-        [contract.address]
+        // ethers v6 exposes contract address as .target
+        [(contract as any).target ?? (contract as any).address]
       );
 
       // Currently, always deploys with UUPS

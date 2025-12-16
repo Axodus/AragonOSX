@@ -18,6 +18,9 @@ export class HardhatClass implements NetworkDeployment {
       signers[0]
     ).deploy(...args);
 
+    // Ensure deployment is mined so ethers v6 sets a valid `target`
+    await contract.waitForDeployment();
+
     return {artifact, contract};
   }
 

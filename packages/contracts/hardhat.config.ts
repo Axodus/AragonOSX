@@ -67,6 +67,39 @@ console.log('Is deploy test is enabled: ', ENABLE_DEPLOY_TEST);
 // Note that this also gets injected when running it through coverage.
 task('test').setAction(async (args, hre, runSuper) => {
   await hre.run('compile');
+  // Back-compat shim for ethers v6: expose .address like v5
+  try {
+    const {Contract} = await import('ethers');
+    if (
+      Contract &&
+      (Contract as any).prototype &&
+      !Object.getOwnPropertyDescriptor((Contract as any).prototype, 'address')
+    ) {
+      Object.defineProperty((Contract as any).prototype, 'address', {
+        get: function () {
+          // ethers v6 uses .target for contract address
+          return (this as any).target;
+        },
+      });
+    }
+    // Also patch Hardhat's re-exported ethers just in case
+    if (
+      (hre as any).ethers &&
+      (hre as any).ethers.Contract &&
+      !Object.getOwnPropertyDescriptor(
+        (hre as any).ethers.Contract.prototype,
+        'address'
+      )
+    ) {
+      Object.defineProperty((hre as any).ethers.Contract.prototype, 'address', {
+        get: function () {
+          return (this as any).target;
+        },
+      });
+    }
+  } catch (e) {
+    // no-op if import fails; tests may still work without the shim
+  }
   const imp = await import('./test/test-utils/wrapper');
 
   const wrapper = await imp.Wrapper.create(
