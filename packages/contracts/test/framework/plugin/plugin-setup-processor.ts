@@ -1645,8 +1645,14 @@ describe('PluginSetupProcessor', function () {
           )
         )
           .to.emit(setupUV2, 'UpdatePrepared')
-          .withArgs(targetDao.address, 1, (val: any) =>
-            expect(val).to.deep.equal([proxy, helpersUV1, data])
+          .withArgs(
+            targetDao.address,
+            1,
+            (val: any) => {
+              expect(val.plugin).to.equal(proxy);
+              expect(val.currentHelpers).to.deep.equal(helpersUV1);
+              expect(val.data).to.equal(data);
+            }
           );
       });
 
@@ -1689,11 +1695,20 @@ describe('PluginSetupProcessor', function () {
             targetDao.address,
             preparedSetupId,
             pluginRepoPointer[0],
-            (val: any) => expect(val).to.deep.equal(newVersion),
             (val: any) =>
-              expect(val).to.deep.equal([proxy, helpersUV1, EMPTY_DATA]),
-            (val: any) =>
-              expect(val).to.deep.equal([expectedHelpers, expectedPermissions]),
+              expect([Number(val.release), Number(val.build)]).to.deep.equal([
+                newVersion[0],
+                newVersion[1],
+              ]),
+            (val: any) => {
+              expect(val.plugin).to.equal(proxy);
+              expect(val.currentHelpers).to.deep.equal(helpersUV1);
+              expect(val.data).to.equal(EMPTY_DATA);
+            },
+            (val: any) => {
+              expect(val.helpers).to.deep.equal(expectedHelpers);
+              expect(val.permissions).to.deep.equal(expectedPermissions);
+            },
             initData
           );
       });
