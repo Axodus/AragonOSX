@@ -25,7 +25,8 @@ import {
   deployAndUpgradeSelfCheck,
 } from '../../test-utils/uups-upgradeable';
 import {ARTIFACT_SOURCES} from '../../test-utils/wrapper';
-import {PLUGIN_REPO_PERMISSIONS, getProtocolVersion} from '@aragon/osx-commons-sdk';
+import {PLUGIN_REPO_PERMISSIONS, IMPLICIT_INITIAL_PROTOCOL_VERSION} from '@aragon/osx-commons-sdk';
+import {getProtocolVersionCompat} from '../../test-utils/protocol';
 import {getInterfaceId} from '../../test-utils/iface';
 import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers';
 import {expect} from 'chai';
@@ -120,12 +121,12 @@ describe('PluginRepo', function () {
           );
         expect(toImplementation).to.not.equal(fromImplementation);
 
-        const fromProtocolVersion = await getProtocolVersion(
+        const fromProtocolVersion = await getProtocolVersionCompat(
           legacyContractFactory.attach(fromImplementation)
-        );
-        const toProtocolVersion = await getProtocolVersion(
+        , IMPLICIT_INITIAL_PROTOCOL_VERSION);
+        const toProtocolVersion = await getProtocolVersionCompat(
           currentContractFactory.attach(toImplementation)
-        );
+        , IMPLICIT_INITIAL_PROTOCOL_VERSION);
 
         expect(fromProtocolVersion).to.not.deep.equal(toProtocolVersion);
         expect(fromProtocolVersion).to.deep.equal([1, 0, 0]);
@@ -149,12 +150,12 @@ describe('PluginRepo', function () {
           );
         expect(toImplementation).to.not.equal(fromImplementation);
 
-        const fromProtocolVersion = await getProtocolVersion(
+        const fromProtocolVersion = await getProtocolVersionCompat(
           legacyContractFactory.attach(fromImplementation)
-        );
-        const toProtocolVersion = await getProtocolVersion(
+        , IMPLICIT_INITIAL_PROTOCOL_VERSION);
+        const toProtocolVersion = await getProtocolVersionCompat(
           currentContractFactory.attach(toImplementation)
-        );
+        , IMPLICIT_INITIAL_PROTOCOL_VERSION);
 
         expect(fromProtocolVersion).to.not.deep.equal(toProtocolVersion);
         expect(fromProtocolVersion).to.deep.equal([1, 3, 0]);

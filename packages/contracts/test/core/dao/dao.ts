@@ -41,8 +41,9 @@ import {
 import {ARTIFACT_SOURCES} from '../../test-utils/wrapper';
 import {ANY_ADDR} from '../permission/permission-manager';
 import {UNREGISTERED_INTERFACE_RETURN} from './callback-handler';
-import {DAO_PERMISSIONS} from '@aragon/osx-commons-sdk';
+import {DAO_PERMISSIONS, IMPLICIT_INITIAL_PROTOCOL_VERSION} from '@aragon/osx-commons-sdk';
 import {flipBitBigInt} from '../../test-utils/bitmap';
+import {getProtocolVersionCompat} from '../../test-utils/protocol';
 import {getInterfaceId, findEventLog} from '../../test-utils/iface';
 import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers';
 import chai, {expect} from '../../chai-setup';
@@ -385,11 +386,13 @@ describe('DAO', function () {
 
       expect(toImplementation).to.not.equal(fromImplementation);
 
-      const fromProtocolVersion = await getProtocolVersion(
-        legacyContractFactory.attach(fromImplementation)
+      const fromProtocolVersion = await getProtocolVersionCompat(
+        legacyContractFactory.attach(fromImplementation) as any,
+        IMPLICIT_INITIAL_PROTOCOL_VERSION
       );
-      const toProtocolVersion = await getProtocolVersion(
-        currentContractFactory.attach(toImplementation)
+      const toProtocolVersion = await getProtocolVersionCompat(
+        currentContractFactory.attach(toImplementation) as any,
+        IMPLICIT_INITIAL_PROTOCOL_VERSION
       );
 
       expect(fromProtocolVersion).to.not.deep.equal(toProtocolVersion);
@@ -427,11 +430,13 @@ describe('DAO', function () {
         );
       expect(toImplementation).to.not.equal(fromImplementation);
 
-      const fromProtocolVersion = await getProtocolVersion(
-        legacyContractFactory.attach(fromImplementation)
+      const fromProtocolVersion = await getProtocolVersionCompat(
+        legacyContractFactory.attach(fromImplementation) as any,
+        IMPLICIT_INITIAL_PROTOCOL_VERSION
       );
-      const toProtocolVersion = await getProtocolVersion(
-        currentContractFactory.attach(toImplementation)
+      const toProtocolVersion = await getProtocolVersionCompat(
+        currentContractFactory.attach(toImplementation) as any,
+        IMPLICIT_INITIAL_PROTOCOL_VERSION
       );
 
       expect(fromProtocolVersion).to.not.deep.equal(toProtocolVersion);
@@ -743,8 +748,8 @@ describe('DAO', function () {
           value: 0,
         };
 
-        let allowFailureMap = ethers.BigNumber.from(0);
-        allowFailureMap = flipBit(0, allowFailureMap); // allow the action to fail
+        let allowFailureMap = 0n as any;
+        allowFailureMap = flipBitBigInt(allowFailureMap, 0) as any; // allow the action to fail
 
         const expectedGas = await dao.estimateGas.execute(
           ZERO_BYTES32,
@@ -755,14 +760,14 @@ describe('DAO', function () {
         // Provide too little gas so that the last `to.call` fails, but the remaining gas is enough to finish the subsequent operations.
         await expect(
           dao.execute(ZERO_BYTES32, [gasConsumingAction], allowFailureMap, {
-            gasLimit: expectedGas.sub(3000),
+            gasLimit: (expectedGas as bigint) - 3000n,
           })
         ).to.be.revertedWithCustomError(dao, 'InsufficientGas');
 
         // Provide enough gas so that the entire call passes.
         await expect(
           dao.execute(ZERO_BYTES32, [gasConsumingAction], allowFailureMap, {
-            gasLimit: expectedGas,
+            gasLimit: expectedGas as bigint,
           })
         ).to.not.be.reverted;
       }
@@ -781,8 +786,8 @@ describe('DAO', function () {
           value: 0,
         };
 
-        let allowFailureMap = ethers.BigNumber.from(0);
-        allowFailureMap = flipBit(0, allowFailureMap); // allow the action to fail
+        let allowFailureMap = 0n as any;
+        allowFailureMap = flipBitBigInt(allowFailureMap, 0) as any; // allow the action to fail
 
         const expectedGas = await dao.estimateGas.execute(
           ZERO_BYTES32,
@@ -793,14 +798,14 @@ describe('DAO', function () {
         // Provide too little gas so that the last `to.call` fails, but the remaining gas is enough to finish the subsequent operations.
         await expect(
           dao.execute(ZERO_BYTES32, [gasConsumingAction], allowFailureMap, {
-            gasLimit: expectedGas.sub(10000),
+            gasLimit: (expectedGas as bigint) - 10000n,
           })
         ).to.be.revertedWithCustomError(dao, 'InsufficientGas');
 
         // Provide enough gas so that the entire call passes.
         await expect(
           dao.execute(ZERO_BYTES32, [gasConsumingAction], allowFailureMap, {
-            gasLimit: expectedGas,
+            gasLimit: expectedGas as bigint,
           })
         ).to.not.be.reverted;
       }
@@ -831,7 +836,7 @@ describe('DAO', function () {
           const transferAction = {to: recipient, value: amount, data: '0x'};
           await dao.execute(ZERO_BYTES32, [transferAction], 0);
           const newBalance = await ethers.provider.getBalance(recipient);
-          expect(newBalance.sub(currentBalance)).to.equal(amount);
+          expect((newBalance as bigint) - (currentBalance as bigint)).to.equal(amount);
         });
       });
 

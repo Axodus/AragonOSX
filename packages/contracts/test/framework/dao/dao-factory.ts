@@ -631,7 +631,7 @@ describe('DAOFactory: ', function () {
     it('should grant EXECUTE_PERMISSION to the DAO creator', async function () {
       const tx = await daoFactory.createDao(daoSettings, []);
 
-      const createdDao = findEventTopicLog<DAORegisteredEvent>(
+      const createdDao = findEventLog<DAORegisteredEvent>(
         await tx.wait(),
         DAORegistry__factory.createInterface(),
         EVENTS.DAORegistered

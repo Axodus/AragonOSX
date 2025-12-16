@@ -39,7 +39,7 @@ describe('Management DAO', function () {
     daoRegistrar: ENSSubdomainRegistrar;
   };
 
-  before(async () => {
+  before(async function () {
     [deployer] = await ethers.getSigners();
 
     // deployment should be empty
@@ -53,7 +53,7 @@ describe('Management DAO', function () {
       managementDaoDeployment = await deployments.get('ManagementDAOProxy');
     } catch (e) {
       // If deployments are not available in the current environment, skip the suite
-      (this as any).skip?.();
+      this.skip();
       return;
     }
     managementDao = DAO__factory.connect(

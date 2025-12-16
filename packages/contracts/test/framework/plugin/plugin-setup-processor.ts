@@ -78,7 +78,6 @@ import {
   deployPluginRepoFactory,
   deployPluginRepoRegistry,
 } from '../../test-utils/repo';
-import {findEventTopicLog} from '@aragon/osx-commons-sdk';
 import {Operation} from '@aragon/osx-commons-sdk';
 import {
   DAO_PERMISSIONS,

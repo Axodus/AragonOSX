@@ -18,10 +18,8 @@ import {
   deployAndUpgradeSelfCheck,
 } from '../../../test-utils/uups-upgradeable';
 import {ARTIFACT_SOURCES} from '../../../test-utils/wrapper';
-import {
-  ENS_REGISTRAR_PERMISSIONS,
-  getProtocolVersion,
-} from '@aragon/osx-commons-sdk';
+import {ENS_REGISTRAR_PERMISSIONS} from '@aragon/osx-commons-sdk';
+import {getProtocolVersionCompat} from '../../../test-utils/protocol';
 import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers';
 import {expect} from 'chai';
 import {ContractFactory, ZeroAddress} from 'ethers';
@@ -331,11 +329,13 @@ describe('ENSSubdomainRegistrar', function () {
         );
       expect(toImplementation).to.not.equal(fromImplementation);
 
-      const fromProtocolVersion = await getProtocolVersion(
-        legacyContractFactory.attach(fromImplementation)
+      const fromProtocolVersion = await getProtocolVersionCompat(
+        legacyContractFactory.attach(fromImplementation) as any,
+        [1, 0, 0]
       );
-      const toProtocolVersion = await getProtocolVersion(
-        currentContractFactory.attach(toImplementation)
+      const toProtocolVersion = await getProtocolVersionCompat(
+        currentContractFactory.attach(toImplementation) as any,
+        [1, 0, 0]
       );
 
       expect(fromProtocolVersion).to.not.deep.equal(toProtocolVersion);
@@ -363,11 +363,13 @@ describe('ENSSubdomainRegistrar', function () {
         );
       expect(toImplementation).to.not.equal(fromImplementation);
 
-      const fromProtocolVersion = await getProtocolVersion(
-        legacyContractFactory.attach(fromImplementation)
+      const fromProtocolVersion = await getProtocolVersionCompat(
+        legacyContractFactory.attach(fromImplementation) as any,
+        [1, 0, 0]
       );
-      const toProtocolVersion = await getProtocolVersion(
-        currentContractFactory.attach(toImplementation)
+      const toProtocolVersion = await getProtocolVersionCompat(
+        currentContractFactory.attach(toImplementation) as any,
+        [1, 0, 0]
       );
 
       expect(fromProtocolVersion).to.not.deep.equal(toProtocolVersion);
