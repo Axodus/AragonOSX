@@ -567,7 +567,7 @@ describe('DAOFactory: ', function () {
     it('creates a dao and initializes with correct args', async function () {
       const tx = await daoFactory.createDao(daoSettings, []);
 
-      const dao = findEventTopicLog<DAORegisteredEvent>(
+      const dao = findEventLog<DAORegisteredEvent>(
         await tx.wait(),
         DAORegistry__factory.createInterface(),
         EVENTS.DAORegistered
@@ -587,7 +587,7 @@ describe('DAOFactory: ', function () {
 
     it('creates a dao and sets its own permissions correctly on itself', async () => {
       const tx = await daoFactory.createDao(daoSettings, []);
-      const dao = findEventTopicLog<DAORegisteredEvent>(
+      const dao = findEventLog<DAORegisteredEvent>(
         await tx.wait(),
         DAORegistry__factory.createInterface(),
         EVENTS.DAORegistered
@@ -598,7 +598,7 @@ describe('DAOFactory: ', function () {
 
     it('revokes ROOT_PERMISSION that is granted with DAO initialization', async () => {
       const tx = await daoFactory.createDao(daoSettings, []);
-      const dao = findEventTopicLog<DAORegisteredEvent>(
+      const dao = findEventLog<DAORegisteredEvent>(
         await tx.wait(),
         DAORegistry__factory.createInterface(),
         EVENTS.DAORegistered

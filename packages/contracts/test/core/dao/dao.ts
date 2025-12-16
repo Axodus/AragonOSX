@@ -41,12 +41,8 @@ import {
 import {ARTIFACT_SOURCES} from '../../test-utils/wrapper';
 import {ANY_ADDR} from '../permission/permission-manager';
 import {UNREGISTERED_INTERFACE_RETURN} from './callback-handler';
-import {
-  flipBit,
-  DAO_PERMISSIONS,
-  getProtocolVersion,
-  IMPLICIT_INITIAL_PROTOCOL_VERSION,
-} from '@aragon/osx-commons-sdk';
+import {DAO_PERMISSIONS} from '@aragon/osx-commons-sdk';
+import {flipBitBigInt} from '../../test-utils/bitmap';
 import {getInterfaceId, findEventLog} from '../../test-utils/iface';
 import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers';
 import chai, {expect} from '../../chai-setup';
@@ -178,25 +174,25 @@ describe('DAO', function () {
     });
 
     it('sets OZs `_initialized` at storage slot [0] to 3', async () => {
-      expect(
-        toNumber(
-          await ethers.provider.getStorage(
-            dao.address,
-            OZ_INITIALIZED_SLOT_POSITION
+        expect(
+          toNumber(
+            await ethers.provider.getStorage(
+              dao.address,
+              OZ_INITIALIZED_SLOT_POSITION
+            )
           )
-        )
-      ).to.equal(3);
+        ).to.equal(3);
     });
 
     it('sets the `_reentrancyStatus` at storage slot [304] to `_NOT_ENTERED = 1`', async () => {
-      expect(
-        toNumber(
-          await ethers.provider.getStorage(
-            dao.address,
-            REENTRANCY_STATUS_SLOT_POSITION
+        expect(
+          toNumber(
+            await ethers.provider.getStorage(
+              dao.address,
+              REENTRANCY_STATUS_SLOT_POSITION
+            )
           )
-        )
-      ).to.equal(1);
+        ).to.equal(1);
     });
   });
 
@@ -302,7 +298,7 @@ describe('DAO', function () {
 
       expect(
         toNumber(
-          await ethers.provider.getStorageAt(
+          await ethers.provider.getStorage(
             uninitializedDao.address,
             REENTRANCY_STATUS_SLOT_POSITION
           )
@@ -637,7 +633,7 @@ describe('DAO', function () {
 
     it('succeeds if action is failable but allowFailureMap allows it', async () => {
       let num = 0n;
-      num = flipBit(0, num as any);
+      num = flipBitBigInt(num, 0) as any;
 
       const tx = await dao.execute(ZERO_BYTES32, [data.failAction], num as any);
       const event = findEventLog<ExecutedEvent>(
@@ -678,7 +674,7 @@ describe('DAO', function () {
       // add first 3 actions in the allowFailureMap
       // to make sure tx succeeds.
       for (let i = 0; i < 3; i++) {
-        allowFailureMap = flipBit(i, allowFailureMap);
+        allowFailureMap = flipBitBigInt(allowFailureMap, i) as any;
       }
 
       // If the below call not fails, means allowFailureMap is correct.
@@ -697,7 +693,7 @@ describe('DAO', function () {
       // bits set at indexes where actions failed
       let failureMap = 0n as any;
       for (let i = 0; i < 3; i++) {
-        failureMap = flipBit(i, failureMap);
+        failureMap = flipBitBigInt(failureMap, i) as any;
       }
       // Check that dao correctly generated failureMap
       expect(event.args.failureMap).to.equal(failureMap);
@@ -713,7 +709,7 @@ describe('DAO', function () {
 
       // lets remove one of the action from allowFailureMap
       // to see tx will actually revert.
-      allowFailureMap = flipBit(2, allowFailureMap);
+      allowFailureMap = flipBitBigInt(allowFailureMap, 2) as any;
       await expect(dao.execute(ZERO_BYTES32, actions, allowFailureMap))
         .to.be.revertedWithCustomError(dao, 'ActionFailed')
         .withArgs(2); // Since we unset the 2th action from failureMap, it should fail with that index.
@@ -723,7 +719,7 @@ describe('DAO', function () {
       const tx = await dao.execute(ZERO_BYTES32, [data.succeedAction], 0);
       const rc = await tx.wait();
 
-      const event = findEvent<ExecutedEvent>(rc, 'Executed');
+      const event = findEventLog<ExecutedEvent>(rc, DAO__factory.createInterface(), EVENTS.Executed);
       expect(event.args.actor).to.equal(ownerAddress);
       expect(event.args.callId).to.equal(ZERO_BYTES32);
       expect(event.args.actions.length).to.equal(1);
@@ -811,7 +807,7 @@ describe('DAO', function () {
     );
 
     describe('Transferring tokens', async () => {
-      const amount = ethers.utils.parseEther('1.23');
+      const amount = ethers.parseEther('1.23');
       const options = {value: amount};
 
       describe('ETH Transfer', async () => {
@@ -827,12 +823,7 @@ describe('DAO', function () {
 
         it('transfers native token(eth) to recipient', async () => {
           // put native tokens into the DAO
-          await dao.deposit(
-            ethers.constants.AddressZero,
-            amount,
-            'ref',
-            options
-          );
+          await dao.deposit(ethers.ZeroAddress, amount, 'ref', options);
 
           const recipient = signers[1].address;
           const currentBalance = await ethers.provider.getBalance(recipient);

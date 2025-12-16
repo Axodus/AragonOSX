@@ -14,7 +14,6 @@ import {ARTIFACT_SOURCES} from '../test-utils/wrapper';
 import {IMPLICIT_INITIAL_PROTOCOL_VERSION} from '@aragon/osx-commons-sdk';
 import {findEventLog, getInterfaceId} from '../test-utils/iface';
 import {DAO_PERMISSIONS} from '@aragon/osx-commons-sdk';
-import {getInterfaceId} from '@aragon/osx-commons-sdk';
 import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers';
 import {expect} from 'chai';
 import hre, {ethers} from 'hardhat';
@@ -99,11 +98,6 @@ describe('DAO Upgrade', function () {
             daoV130Implementation.interface as unknown as Interface,
             'Upgraded'
           ) as any
-        ).args.implementation;
-        const emittedImplementation = findEventTopicLog<UpgradedEvent>(
-          await upgradeTx.wait(),
-          daoV130Implementation.interface,
-          'Upgraded'
         ).args.implementation;
         expect(emittedImplementation).to.equal(daoV130Implementation.address);
 
@@ -206,7 +200,7 @@ describe('DAO Upgrade', function () {
         await daoV100Proxy.grant(
           daoV100Proxy.address,
           daoV100Proxy.address,
-          ethers.utils.id('SET_TRUSTED_FORWARDER_PERMISSION')
+          ethers.id('SET_TRUSTED_FORWARDER_PERMISSION')
         );
 
         // Create an action to set forwarder1
@@ -306,7 +300,7 @@ describe('DAO Upgrade', function () {
       await daoCurrentProxy.initialize(
         DUMMY_METADATA,
         signers[0].address,
-        ethers.constants.AddressZero,
+        ethers.ZeroAddress,
         daoExampleURI
       );
 
