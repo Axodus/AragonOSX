@@ -374,10 +374,17 @@ describe('DAOFactory: ', function () {
           dao,
           anyValue,
           pluginSetupMockRepoAddress,
-          (val: any) => expect(val).to.deep.equal([1, 1]),
+          (val: any) =>
+            expect([Number(val.release), Number(val.build)]).to.deep.equal([
+              1,
+              1,
+            ]),
           EMPTY_DATA,
           expectedPlugin,
-          (val: any) => expect(val).to.deep.equal([helpers, permissions])
+          (val: any) => {
+            expect(val.helpers).to.deep.equal(helpers);
+            expect(val.permissions).to.deep.equal(permissions);
+          }
         )
         .to.emit(psp, EVENTS.InstallationApplied)
         .withArgs(
@@ -549,7 +556,7 @@ describe('DAOFactory: ', function () {
 
       // Execute the function
       const [createdDao, installedPlugins] =
-        await daoFactory.callStatic.createDao(daoSettings, plugins);
+        await (daoFactory as any).createDao.staticCall(daoSettings, plugins);
 
       // Validate the DAO creation
       expect(createdDao).to.equal(expectedDao);
@@ -655,7 +662,7 @@ describe('DAOFactory: ', function () {
 
       // Execute the function
       const [createdDao, installedPlugins] =
-        await daoFactory.callStatic.createDao(daoSettings, []);
+        await (daoFactory as any).createDao.staticCall(daoSettings, []);
 
       // Validate the DAO creation
       expect(createdDao).to.equal(expectedDao);

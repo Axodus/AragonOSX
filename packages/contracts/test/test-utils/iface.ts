@@ -40,5 +40,14 @@ export function findEventLog<T = any>(
       }
     } catch {}
   }
+  // Fallback: try parsing all logs without topic pre-filter (handles ABI/topic mismatches)
+  for (const log of logs) {
+    try {
+      const parsed = iface.parseLog(log);
+      if (parsed && parsed.name === eventName) {
+        return parsed as unknown as T;
+      }
+    } catch {}
+  }
   throw new Error(`Event ${eventName} not found in receipt`);
 }

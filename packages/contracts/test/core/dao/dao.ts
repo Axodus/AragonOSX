@@ -23,6 +23,7 @@ import {DAO__factory as DAO_V1_0_0__factory} from '../../../typechain/@aragon/os
 import {IDAO__factory as IDAO_V1_0_0_factory} from '../../../typechain/@aragon/osx-v1.0.1/core/dao/IDAO.sol';
 import {DAO__factory as DAO_V1_3_0__factory} from '../../../typechain/@aragon/osx-v1.3.0/core/dao/DAO.sol';
 import {IDAO__factory as IDAO_V3_0_0_factory} from '../../../typechain/@aragon/osx-v1.3.0/core/dao/IDAO.sol';
+import {IDAO__factory as IDAO_V1_0_0_factory} from '../../../typechain/@aragon/osx-v1.0.1/core/dao/IDAO.sol';
 import {ExecutedEvent} from '../../../typechain/DAO';
 import {
   getActions,
@@ -467,9 +468,10 @@ describe('DAO', function () {
     });
 
     it('supports the `IDAO` interface', async () => {
-      const iface = new Interface(IDAO__factory.abi);
-      expect(getInterfaceId(iface)).to.equal('0x9385547e'); // the interfaceID from IDAO v1.0.0
-      expect(await dao.supportsInterface(getInterfaceId(iface))).to.be.true;
+      const expectedId = getInterfaceId(new Interface(IDAO_V1_0_0_factory.abi));
+      const currentId = getInterfaceId(new Interface(IDAO__factory.abi));
+      expect(currentId).to.equal(expectedId);
+      expect(await dao.supportsInterface(expectedId)).to.be.true;
     });
 
     it('supports the `IExecutor` interface', async () => {

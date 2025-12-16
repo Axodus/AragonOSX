@@ -345,10 +345,12 @@ describe('PluginRepoRegistry', function () {
       expect(toImplementation).to.not.equal(fromImplementation);
 
         const fromProtocolVersion = await getProtocolVersionCompat(
-        legacyContractFactory.attach(fromImplementation)
+        legacyContractFactory.attach(fromImplementation) as any,
+        [1, 0, 0]
       );
         const toProtocolVersion = await getProtocolVersionCompat(
-        currentContractFactory.attach(toImplementation)
+        currentContractFactory.attach(toImplementation) as any,
+        [1, 0, 0]
       );
 
       expect(fromProtocolVersion).to.not.deep.equal(toProtocolVersion);
@@ -377,10 +379,12 @@ describe('PluginRepoRegistry', function () {
       expect(toImplementation).to.not.equal(fromImplementation);
 
         const fromProtocolVersion = await getProtocolVersionCompat(
-        legacyContractFactory.attach(fromImplementation)
+        legacyContractFactory.attach(fromImplementation) as any,
+        [1, 0, 0]
       );
         const toProtocolVersion = await getProtocolVersionCompat(
-        currentContractFactory.attach(toImplementation)
+        currentContractFactory.attach(toImplementation) as any,
+        [1, 0, 0]
       );
 
       expect(fromProtocolVersion).to.not.deep.equal(toProtocolVersion);

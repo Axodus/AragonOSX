@@ -304,11 +304,12 @@ describe('PluginSetupProcessor', function () {
         EMPTY_DATA
       );
 
-      const proxy = await pluginFactory
-        .attach(plugin)
-        .callStatic.implementation();
+      const proxy = await (pluginFactory
+        .attach(plugin) as any).implementation.staticCall();
 
-      expect(proxy).to.equal(await setup.callStatic.implementation());
+      expect(proxy).to.equal(
+        await (setup as any).implementation.staticCall()
+      );
     }
   });
 
@@ -480,11 +481,17 @@ describe('PluginSetupProcessor', function () {
             targetDao.address,
             preparedSetupId,
             pluginRepoPointer[0],
-            (val: any) => expect(val).to.deep.equal([1, 1]),
+            (val: any) =>
+              expect([Number(val.release), Number(val.build)]).to.deep.equal([
+                1,
+                1,
+              ]),
             data,
             anyValue,
-            (val: any) =>
-              expect(val).to.deep.equal([expectedHelpers, expectedPermissions])
+            (val: any) => {
+              expect(val.helpers).to.deep.equal(expectedHelpers);
+              expect(val.permissions).to.deep.equal(expectedPermissions);
+            }
           );
       });
     });
@@ -1023,8 +1030,13 @@ describe('PluginSetupProcessor', function () {
           )
         )
           .to.emit(setupUV1, 'UninstallationPrepared')
-          .withArgs(targetDao.address, (val: any) =>
-            expect(val).to.deep.equal([proxy, helpersUV1, data])
+          .withArgs(
+            targetDao.address,
+            (val: any) => {
+              expect(val.plugin).to.equal(proxy);
+              expect(val.currentHelpers).to.deep.equal(helpersUV1);
+              expect(val.data).to.equal(data);
+            }
           );
       });
 
@@ -1062,8 +1074,16 @@ describe('PluginSetupProcessor', function () {
             targetDao.address,
             preparedSetupId,
             pluginRepoPointer[0],
-            (val: any) => expect(val).to.deep.equal([1, 1]),
-            (val: any) => expect(val).to.deep.equal([proxy, helpersUV1, data]),
+            (val: any) =>
+              expect([Number(val.release), Number(val.build)]).to.deep.equal([
+                1,
+                1,
+              ]),
+            (val: any) => {
+              expect(val.plugin).to.equal(proxy);
+              expect(val.currentHelpers).to.deep.equal(helpersUV1);
+              expect(val.data).to.equal(data);
+            },
             (val: any) => expect(val).to.deep.equal(uninstallPermissions)
           );
       });
