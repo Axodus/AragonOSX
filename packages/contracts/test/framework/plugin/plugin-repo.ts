@@ -25,11 +25,8 @@ import {
   deployAndUpgradeSelfCheck,
 } from '../../test-utils/uups-upgradeable';
 import {ARTIFACT_SOURCES} from '../../test-utils/wrapper';
-import {
-  PLUGIN_REPO_PERMISSIONS,
-  getInterfaceId,
-  getProtocolVersion,
-} from '@aragon/osx-commons-sdk';
+import {PLUGIN_REPO_PERMISSIONS, getProtocolVersion} from '@aragon/osx-commons-sdk';
+import {getInterfaceId} from '../../test-utils/iface';
 import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers';
 import {expect} from 'chai';
 import {ContractFactory, Interface, id} from 'ethers';

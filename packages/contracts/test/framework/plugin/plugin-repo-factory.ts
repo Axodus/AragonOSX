@@ -14,10 +14,8 @@ import {
   deployMockPluginSetup,
   deployPluginRepoRegistry,
 } from '../../test-utils/repo';
-import {
-  PLUGIN_REGISTRY_PERMISSIONS,
-  getInterfaceId,
-} from '@aragon/osx-commons-sdk';
+import {PLUGIN_REGISTRY_PERMISSIONS} from '@aragon/osx-commons-sdk';
+import {getInterfaceId} from '../../test-utils/iface';
 import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers';
 import {expect} from 'chai';
 import hre, {ethers} from 'hardhat';
@@ -153,9 +151,9 @@ describe('PluginRepoFactory: ', function () {
         .to.not.emit(pluginRepo, EVENTS.ReleaseMetadataUpdated);
 
       const permissions = [
-        ethers.utils.id('MAINTAINER_PERMISSION'),
-        ethers.utils.id('UPGRADE_REPO_PERMISSION'),
-        ethers.utils.id('ROOT_PERMISSION'),
+        ethers.id('MAINTAINER_PERMISSION'),
+        ethers.id('UPGRADE_REPO_PERMISSION'),
+        ethers.id('ROOT_PERMISSION'),
       ];
 
       for (let i = 0; i < permissions.length; i++) {
@@ -232,9 +230,9 @@ describe('PluginRepoFactory: ', function () {
         .withArgs(1, '0x11');
 
       const permissions = [
-        ethers.utils.id('MAINTAINER_PERMISSION'),
-        ethers.utils.id('UPGRADE_REPO_PERMISSION'),
-        ethers.utils.id('ROOT_PERMISSION'),
+        ethers.id('MAINTAINER_PERMISSION'),
+        ethers.id('UPGRADE_REPO_PERMISSION'),
+        ethers.id('ROOT_PERMISSION'),
       ];
 
       for (let i = 0; i < permissions.length; i++) {

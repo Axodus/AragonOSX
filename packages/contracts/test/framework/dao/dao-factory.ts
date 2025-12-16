@@ -76,18 +76,17 @@ async function extractInfoFromCreateDaoTx(tx: any): Promise<{
   helpers: any;
   permissions: any;
 }> {
-  const daoRegisteredEvent = findEventTopicLog<DAORegisteredEvent>(
+  const daoRegisteredEvent = findEventLog<DAORegisteredEvent>(
     await tx.wait(),
     new Interface(DAORegistry__factory.abi),
     EVENTS.DAORegistered
   );
 
-  const installationPreparedEvent =
-    findEventTopicLog<InstallationPreparedEvent>(
-      await tx.wait(),
-      new Interface(PluginSetupProcessor__factory.abi),
-      EVENTS.InstallationPrepared
-    );
+  const installationPreparedEvent = findEventLog<InstallationPreparedEvent>(
+    await tx.wait(),
+    new Interface(PluginSetupProcessor__factory.abi),
+    EVENTS.InstallationPrepared
+  );
 
   return {
     dao: daoRegisteredEvent.args.dao,
@@ -510,15 +509,16 @@ describe('DAOFactory: ', function () {
 
       // Count how often the event was emitted by inspecting the logs
       const receipt = await tx.wait();
-      const topic =
-        PluginSetupProcessor__factory.createInterface().getEventTopic(
-          EVENTS.InstallationApplied
-        );
-
+      const iface = PluginSetupProcessor__factory.createInterface();
       let installationAppliedEventCount = 0;
-      receipt.logs.forEach(log => {
-        if (log.topics[0] === topic) installationAppliedEventCount++;
-      });
+      for (const log of receipt.logs) {
+        try {
+          const parsed = iface.parseLog(log);
+          if (parsed && parsed.name === EVENTS.InstallationApplied) {
+            installationAppliedEventCount++;
+          }
+        } catch {}
+      }
 
       expect(installationAppliedEventCount).to.equal(2);
     });

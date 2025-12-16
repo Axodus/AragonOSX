@@ -7,7 +7,7 @@ import {
 } from '../../../typechain';
 import {deployNewDAO} from '../../test-utils/dao';
 import {ARTIFACT_SOURCES} from '../../test-utils/wrapper';
-import {getInterfaceId} from '@aragon/osx-commons-sdk';
+import {getInterfaceId} from '../../test-utils/iface';
 import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers';
 import {expect} from 'chai';
 import hre, {ethers} from 'hardhat';

@@ -11,10 +11,8 @@ import {UpgradedEvent} from '../../typechain/DAO';
 import {readStorage, ERC1967_IMPLEMENTATION_SLOT} from '../../utils/storage';
 import {daoExampleURI, ZERO_BYTES32} from '../test-utils/dao';
 import {ARTIFACT_SOURCES} from '../test-utils/wrapper';
-import {
-  IMPLICIT_INITIAL_PROTOCOL_VERSION,
-  findEventTopicLog,
-} from '@aragon/osx-commons-sdk';
+import {IMPLICIT_INITIAL_PROTOCOL_VERSION} from '@aragon/osx-commons-sdk';
+import {findEventLog, getInterfaceId} from '../test-utils/iface';
 import {DAO_PERMISSIONS} from '@aragon/osx-commons-sdk';
 import {getInterfaceId} from '@aragon/osx-commons-sdk';
 import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers';
@@ -95,7 +93,13 @@ describe('DAO Upgrade', function () {
         );
         expect(implementationAfterUpgrade).to.not.equal(daoV100Implementation);
 
-        // Check the emitted implementation.
+        const emittedImplementation = (
+          findEventLog<UpgradedEvent>(
+            await upgradeTx.wait(),
+            daoV130Implementation.interface as unknown as Interface,
+            'Upgraded'
+          ) as any
+        ).args.implementation;
         const emittedImplementation = findEventTopicLog<UpgradedEvent>(
           await upgradeTx.wait(),
           daoV130Implementation.interface,
@@ -197,7 +201,7 @@ describe('DAO Upgrade', function () {
           signers[0].address,
           id('EXECUTE_PERMISSION')
         );
-
+          ethers.id('SET_TRUSTED_FORWARDER_PERMISSION')
         // We use the `setTrustedForwarder` to test execution and must give permission to the DAO (executor) to call it.
         await daoV100Proxy.grant(
           daoV100Proxy.address,
