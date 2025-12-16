@@ -4,9 +4,12 @@ import {Interface} from 'ethers';
 export function getInterfaceId(iface: Interface): string {
   let acc = 0n;
   for (const frag of iface.fragments) {
-    if (frag.type === 'function' && typeof frag.selector === 'string') {
-      acc ^= BigInt(frag.selector);
+    if (frag.type !== 'function' || typeof frag.selector !== 'string') continue;
+    // Exclude ERC-165's supportsInterface from the XOR per EIP-165
+    if (frag.name === 'supportsInterface' && frag.inputs?.length === 1) {
+      continue;
     }
+    acc ^= BigInt(frag.selector);
   }
   const hex = acc.toString(16).padStart(8, '0');
   return '0x' + hex;
