@@ -2,6 +2,7 @@ import ensRegistryArtifact from '../artifacts/@ensdomains/ens-contracts/contract
 import publicResolverArtifact from '../artifacts/@ensdomains/ens-contracts/contracts/resolvers/PublicResolver.sol/PublicResolver.json';
 import {ENSRegistry__factory} from '../typechain';
 import {ethers} from 'hardhat';
+import {namehash as v6Namehash} from 'ethers';
 import {HardhatRuntimeEnvironment} from 'hardhat/types';
 
 export function ensLabelHash(label: string): string {
@@ -9,7 +10,18 @@ export function ensLabelHash(label: string): string {
 }
 
 export function ensDomainHash(name: string): string {
-  return (ethers as any).namehash ? (ethers as any).namehash(name) : require('eth-ens-namehash').hash(name);
+  // Handle root node explicitly to avoid ethers v6 empty-label error
+  if (name === '') {
+    return '0x' + '0'.repeat(64);
+  }
+  // Prefer ethers v6 namehash if available
+  if (typeof v6Namehash === 'function') {
+    return v6Namehash(name);
+  }
+  // Fallback to ens-namehash package
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const nh = require('eth-ens-namehash');
+  return nh.hash(name);
 }
 
 export async function setupENS(

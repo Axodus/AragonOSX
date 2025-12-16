@@ -146,15 +146,15 @@ export class Wrapper {
         );
       }
 
-      const tx = await proxyFactoryContract.deployUUPSProxy(data);
-
-      const event = findEvent<ProxyCreatedEvent>(
-        await tx.wait(),
-        'ProxyCreated'
+      // v6-safe: precompute proxy address via static call, then send tx and wait
+      const expectedProxy = await proxyFactoryContract.deployUUPSProxy.staticCall(
+        data
       );
+      const tx = await proxyFactoryContract.deployUUPSProxy(data);
+      await tx.wait();
 
       contract = new hre.ethers.Contract(
-        event.args.proxy,
+        expectedProxy,
         artifact.abi,
         (await hre.ethers.getSigners())[0]
       );
