@@ -24,7 +24,7 @@ import {
 } from '@aragon/osx-commons-sdk';
 import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers';
 import {expect} from 'chai';
-import {ContractFactory} from 'ethers';
+import {ContractFactory, ZeroAddress} from 'ethers';
 import hre, {ethers} from 'hardhat';
 
 // Setup ENS with signers[0] owning the ENS root node (''), the resolver node ('resolver'), the managing DAO, and the subdomain registrar
