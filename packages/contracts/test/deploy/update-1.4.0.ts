@@ -58,11 +58,17 @@ async function validatePermissions(dao: DAO, p1: Permission, p2: Permission) {
     'REGISTER_PLUGIN_REPO_PERMISSION'
   );
 
+  const hasPermission = dao.getFunction('hasPermission');
   expect(
-    await dao.hasPermission(p1.where, p1.who, registerDAOPermission, '0x')
+    await hasPermission.staticCall(
+      p1.where,
+      p1.who,
+      registerDAOPermission,
+      '0x'
+    )
   ).to.be.equal(p1.isSet);
   expect(
-    await dao.hasPermission(
+    await hasPermission.staticCall(
       p2.where,
       p2.who,
       registerPluginRepoPermission,
