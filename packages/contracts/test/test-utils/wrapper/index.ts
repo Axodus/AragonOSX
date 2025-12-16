@@ -127,6 +127,8 @@ export class Wrapper {
       artifactName,
       constructorArgs
     );
+    // Normalize ethers v6 contract instance to always expose `target` and `.address`
+    contract = await this.normalizeContract(contract);
     if (isProxy) {
       const {contract: proxyFactoryContract} = await this.network.deploy(
         'ProxyFactory',
@@ -156,6 +158,7 @@ export class Wrapper {
         artifact.abi,
         (await hre.ethers.getSigners())[0]
       );
+      contract = await this.normalizeContract(contract);
     }
 
     return contract;
@@ -210,3 +213,30 @@ export class Wrapper {
     );
   }
 }
+
+// Helpers
+// Ensure returned contract has a valid `target` and `.address` getter in ethers v6
+Wrapper.prototype.normalizeContract = async function (contract: any) {
+  if (contract && !(contract as any).target && typeof contract.getAddress === 'function') {
+    try {
+      (contract as any).target = await contract.getAddress();
+    } catch (_) {
+      // ignore, will fail later if truly unset
+    }
+  }
+  if (
+    contract &&
+    !Object.getOwnPropertyDescriptor((contract as any).__proto__, 'address')
+  ) {
+    try {
+      Object.defineProperty((contract as any).__proto__, 'address', {
+        get: function () {
+          return (this as any).target;
+        },
+      });
+    } catch (_) {
+      // ignore
+    }
+  }
+  return contract;
+};

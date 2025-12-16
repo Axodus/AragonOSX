@@ -20,6 +20,14 @@ export class HardhatClass implements NetworkDeployment {
 
     // Ensure deployment is mined so ethers v6 sets a valid `target`
     await contract.waitForDeployment();
+    // Fallback: set `target` manually if still unset (environment/plugin quirks)
+    if (!(contract as any).target && typeof (contract as any).getAddress === 'function') {
+      try {
+        (contract as any).target = await (contract as any).getAddress();
+      } catch (_) {
+        // ignore, will fail fast later if truly unset
+      }
+    }
 
     return {artifact, contract};
   }
