@@ -1145,7 +1145,7 @@ describe('Core: PermissionManager', function () {
   describe('helpers', () => {
     it('should hash PERMISSIONS', async () => {
       const packed = solidityPacked(
-        ['string', 'address', 'address', 'address'],
+        ['string', 'address', 'address', 'bytes32'],
         [
           'PERMISSION',
           ownerSigner.address,

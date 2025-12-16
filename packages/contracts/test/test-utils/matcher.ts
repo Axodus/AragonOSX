@@ -1,8 +1,7 @@
-import {decodeReturnData} from '@nomicfoundation/hardhat-chai-matchers/internal/reverted/utils.js';
 import {buildAssert} from '@nomicfoundation/hardhat-chai-matchers/utils.js';
 import {AssertionError} from 'chai';
 import chai from 'chai';
-import {id} from 'ethers';
+import {AbiCoder, dataSlice, id, toBeHex} from 'ethers';
 
 /// The below code overwrites the behaviour of the `revertedWith` matcher to support how zkSync and ethers-v5
 /// encode and handle errors. The functions below are lifted from the `hardhat-chai-matchers` package and modified
@@ -17,6 +16,46 @@ chai.use(({Assertion}) => {
   supportRevertedWith(Assertion);
   supportRevertedWithCustomError(Assertion, chai.util);
 });
+
+type DecodedReturnData =
+  | {kind: 'Empty'}
+  | {kind: 'Error'; reason: string}
+  | {kind: 'Panic'; code: bigint; description: string}
+  | {kind: 'Custom'; id: string};
+
+function decodeReturnData(returnData: string): DecodedReturnData {
+  if (!returnData || returnData === '0x') {
+    return {kind: 'Empty'};
+  }
+
+  const selector = returnData.slice(0, 10);
+  // Error(string)
+  if (selector === '0x08c379a0') {
+    const [reason] = new AbiCoder().decode(['string'], dataSlice(returnData, 4));
+    return {kind: 'Error', reason};
+  }
+  // Panic(uint256)
+  if (selector === '0x4e487b71') {
+    const [code] = new AbiCoder().decode(['uint256'], dataSlice(returnData, 4)) as [bigint];
+    // Description mapping (subset)
+    const descriptions: Record<string, string> = {
+      [toBeHex(0x01)]: 'assert(false)',
+      [toBeHex(0x11)]: 'arithmetic overflow/underflow',
+      [toBeHex(0x12)]: 'division or modulo by zero',
+      [toBeHex(0x21)]: 'invalid enum value',
+      [toBeHex(0x22)]: 'storage byte array that is incorrectly encoded',
+      [toBeHex(0x31)]: 'pop on empty array',
+      [toBeHex(0x32)]: 'array index out of bounds',
+      [toBeHex(0x41)]: 'memory allocation overflow',
+      [toBeHex(0x51)]: 'zero-initialized function call',
+    };
+    const key = toBeHex(Number(code));
+    return {kind: 'Panic', code, description: descriptions[key] ?? 'panic'};
+  }
+
+  // Custom error: return selector only; args decoded later if needed
+  return {kind: 'Custom', id: selector};
+}
 
 /**
  * Try to obtain the return data of a transaction from the given value.

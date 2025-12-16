@@ -48,7 +48,7 @@ __metadata:
     "@matterlabs/hardhat-zksync-solc": "npm:1.2.5"
     "@matterlabs/hardhat-zksync-upgradable": "npm:0.4.0"
     "@matterlabs/hardhat-zksync-verify": "npm:0.7.0"
-    "@nomicfoundation/hardhat-chai-matchers": "npm:^1.0.5"
+    "@nomicfoundation/hardhat-chai-matchers": "npm:^2.0.0"
     "@nomicfoundation/hardhat-ethers": "npm:^3.1.2"
     "@nomicfoundation/hardhat-network-helpers": "npm:^1.0.8"
     "@nomicfoundation/hardhat-verify": "npm:^1.0.4"
@@ -3375,21 +3375,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomicfoundation/hardhat-chai-matchers@npm:^1.0.5":
-  version: 1.0.6
-  resolution: "@nomicfoundation/hardhat-chai-matchers@npm:1.0.6"
+"@nomicfoundation/hardhat-chai-matchers@npm:^2.0.0":
+  version: 2.1.2
+  resolution: "@nomicfoundation/hardhat-chai-matchers@npm:2.1.2"
   dependencies:
-    "@ethersproject/abi": "npm:^5.1.2"
     "@types/chai-as-promised": "npm:^7.1.3"
     chai-as-promised: "npm:^7.1.1"
     deep-eql: "npm:^4.0.1"
     ordinal: "npm:^1.0.3"
   peerDependencies:
-    "@nomiclabs/hardhat-ethers": ^2.0.0
+    "@nomicfoundation/hardhat-ethers": ^3.1.0
     chai: ^4.2.0
-    ethers: ^5.0.0
-    hardhat: ^2.9.4
-  checksum: 10c0/d5e0327aee476ddd1ff25ab6d0fb47af0ccf081a9ff072499dccba7656eea9911aab4bd7e19fe46e5dfb920d2690df3c64dbb324a83e15f8ec9dd13a56ebbe66
+    ethers: ^6.14.0
+    hardhat: ^2.26.0
+  checksum: 10c0/ed51e9d5e20869fc50f13ee7c8ad65e9531a6222a8b19c1afe21c28d563c8d2361c2f6f36a0c8a7b4e9b6c9c8df9f1878d6512b27919e18ea4e71bf28249bf86
   languageName: node
   linkType: hard
 
