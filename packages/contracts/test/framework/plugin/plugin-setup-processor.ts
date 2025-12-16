@@ -491,6 +491,7 @@ describe('PluginSetupProcessor', function () {
             (val: any) => {
               expect(val.helpers).to.deep.equal(expectedHelpers);
               expect(val.permissions).to.deep.equal(expectedPermissions);
+              return true;
             }
           );
       });
@@ -1036,6 +1037,7 @@ describe('PluginSetupProcessor', function () {
               expect(val.plugin).to.equal(proxy);
               expect(val.currentHelpers).to.deep.equal(helpersUV1);
               expect(val.data).to.equal(data);
+              return true;
             }
           );
       });
@@ -1654,6 +1656,7 @@ describe('PluginSetupProcessor', function () {
               expect(val.plugin).to.equal(proxy);
               expect(val.currentHelpers).to.deep.equal(helpersUV1);
               expect(val.data).to.equal(data);
+              return true;
             }
           );
       });
@@ -1697,19 +1700,23 @@ describe('PluginSetupProcessor', function () {
             targetDao.address,
             preparedSetupId,
             pluginRepoPointer[0],
-            (val: any) =>
+            (val: any) => {
               expect([Number(val.release), Number(val.build)]).to.deep.equal([
                 newVersion[0],
                 newVersion[1],
-              ]),
+              ]);
+              return true;
+            },
             (val: any) => {
               expect(val.plugin).to.equal(proxy);
               expect(val.currentHelpers).to.deep.equal(helpersUV1);
               expect(val.data).to.equal(EMPTY_DATA);
+              return true;
             },
             (val: any) => {
               expect(val.helpers).to.deep.equal(expectedHelpers);
               expect(val.permissions).to.deep.equal(expectedPermissions);
+              return true;
             },
             initData
           );
