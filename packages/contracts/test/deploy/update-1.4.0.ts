@@ -100,7 +100,13 @@ skipTestSuiteIfNetworkIsZkSync('Update to 1.4.0', function () {
         '0x' + '00'.repeat(64),
       ]);
     } catch (e: any) {
-      if (String(e?.message || '').includes('Storage overrides are not supported for forked blocks')) {
+      const msg = String(e?.message || '');
+      const patterns = [
+        'Storage overrides are not supported for forked blocks',
+        'unsupported fork storage override',
+        'setStorageAt is not supported',
+      ];
+      if (patterns.some(p => msg.includes(p))) {
         this.skip();
       }
     }
@@ -108,7 +114,22 @@ skipTestSuiteIfNetworkIsZkSync('Update to 1.4.0', function () {
   let deployer: SignerWithAddress;
 
   before(async () => {
-    await forkSepolia();
+    try {
+      await forkSepolia();
+    } catch (e: any) {
+      const msg = String(e?.message || '');
+      const patterns = [
+        'Storage overrides are not supported for forked blocks',
+        'unsupported fork storage override',
+        'setStorageAt is not supported',
+      ];
+      if (patterns.some(p => msg.includes(p))) {
+        // If fork init fails due to storage override limitations, skip suite
+        (this as any).skip?.();
+        return;
+      }
+      throw e;
+    }
 
     [deployer] = await ethers.getSigners();
   });
