@@ -54,7 +54,6 @@ import chai, {expect} from '../../chai-setup';
 import {ContractFactory} from 'ethers';
 import hre, {ethers} from 'hardhat';
 import {Interface, toNumber} from 'ethers';
-import {toNumber} from 'ethers';
 
 // smock matchers are added in chai-setup if available
 
@@ -409,7 +408,7 @@ describe('DAO', function () {
       // Check that it still supports old interfaceId for backwards compatibility.
       expect(
         await proxy.supportsInterface(
-          getInterfaceId(IDAO_V1_0_0_factory.createInterface())
+          getInterfaceId(new Interface(IDAO_V1_0_0_factory.abi))
         )
       ).to.be.true;
 
@@ -449,7 +448,7 @@ describe('DAO', function () {
       // Check that it still supports old interfaceId for backwards compatibility.
       expect(
         await proxy.supportsInterface(
-          getInterfaceId(IDAO_V3_0_0_factory.createInterface())
+          getInterfaceId(new Interface(IDAO_V3_0_0_factory.abi))
         )
       ).to.be.true;
 
@@ -463,33 +462,33 @@ describe('DAO', function () {
     });
 
     it('supports the `IERC165` interface', async () => {
-      const iface = IERC165__factory.createInterface();
+      const iface = new Interface(IERC165__factory.abi);
       expect(await dao.supportsInterface(getInterfaceId(iface))).to.be.true;
     });
 
     it('supports the `IDAO` interface', async () => {
-      const iface = IDAO__factory.createInterface();
+      const iface = new Interface(IDAO__factory.abi);
       expect(getInterfaceId(iface)).to.equal('0x9385547e'); // the interfaceID from IDAO v1.0.0
       expect(await dao.supportsInterface(getInterfaceId(iface))).to.be.true;
     });
 
     it('supports the `IExecutor` interface', async () => {
-      const iface = IExecutor__factory.createInterface();
+      const iface = new Interface(IExecutor__factory.abi);
       expect(await dao.supportsInterface(getInterfaceId(iface))).to.be.true;
     });
 
     it('supports the `IProtocolVersion` interface', async () => {
-      const iface = IProtocolVersion__factory.createInterface();
+      const iface = new Interface(IProtocolVersion__factory.abi);
       expect(await dao.supportsInterface(getInterfaceId(iface))).to.be.true;
     });
 
     it('supports the `IERC1271` interface', async () => {
-      const iface = IERC1271__factory.createInterface();
+      const iface = new Interface(IERC1271__factory.abi);
       expect(await dao.supportsInterface(getInterfaceId(iface))).to.be.true;
     });
 
     it('supports the `IEIP4824` interface', async () => {
-      const iface = IEIP4824__factory.createInterface();
+      const iface = new Interface(IEIP4824__factory.abi);
       expect(await dao.supportsInterface(getInterfaceId(iface))).to.be.true;
     });
 
