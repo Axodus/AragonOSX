@@ -32,13 +32,13 @@ import {
 } from '@aragon/osx-commons-sdk';
 import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers';
 import {expect} from 'chai';
-import {ContractFactory} from 'ethers';
+import {ContractFactory, Interface, id} from 'ethers';
 import hre, {ethers} from 'hardhat';
 
 const emptyBytes = '0x00';
 const BUILD_METADATA = '0x11';
 const RELEASE_METADATA = '0x1111';
-const MAINTAINER_PERMISSION_ID = ethers.utils.id('MAINTAINER_PERMISSION');
+const MAINTAINER_PERMISSION_ID = id('MAINTAINER_PERMISSION');
 
 describe('PluginRepo', function () {
   let ownerAddress: string;
@@ -63,9 +63,9 @@ describe('PluginRepo', function () {
   describe('Initialize', () => {
     it('initializes correctly', async () => {
       const permissions = [
-        ethers.utils.id('MAINTAINER_PERMISSION'),
-        ethers.utils.id('UPGRADE_REPO_PERMISSION'),
-        ethers.utils.id('ROOT_PERMISSION'),
+        id('MAINTAINER_PERMISSION'),
+        id('UPGRADE_REPO_PERMISSION'),
+        id('ROOT_PERMISSION'),
       ];
 
       for (let i = 0; i < permissions.length; i++) {
@@ -178,20 +178,20 @@ describe('PluginRepo', function () {
       });
 
       it('supports the `IERC165` interface', async () => {
-        const iface = IERC165__factory.createInterface();
+        const iface = new Interface(IERC165__factory.abi);
         expect(await pluginRepo.supportsInterface(getInterfaceId(iface))).to.be
           .true;
       });
 
       it('supports the `IPluginRepo` interface', async () => {
-        const iface = IPluginRepo__factory.createInterface();
+        const iface = new Interface(IPluginRepo__factory.abi);
         expect(getInterfaceId(iface)).to.equal('0xd4321b40'); // the interfaceID from IPluginRepo v1.0.0
         expect(await pluginRepo.supportsInterface(getInterfaceId(iface))).to.be
           .true;
       });
 
       it('supports the `IProtocolVersion` interface', async () => {
-        const iface = IProtocolVersion__factory.createInterface();
+        const iface = new Interface(IProtocolVersion__factory.abi);
         expect(await pluginRepo.supportsInterface(getInterfaceId(iface))).to.be
           .true;
       });
