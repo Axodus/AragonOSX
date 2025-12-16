@@ -1,6 +1,6 @@
 import {Interface} from 'ethers';
-import {IDAO__factory} from '../../../typechain/factories/IDAO__factory';
-import {IExecutor__factory} from '../../../typechain/factories/IExecutor__factory';
+import {IDAO__factory} from '../../typechain/factories/IDAO__factory';
+import {IExecutor__factory} from '../../typechain/factories/IExecutor__factory';
 
 // Compute ERC-165 interfaceId (XOR of function selectors) for ethers v6 Interface
 export function getInterfaceId(iface: Interface): string {
