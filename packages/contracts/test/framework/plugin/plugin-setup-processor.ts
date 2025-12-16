@@ -504,8 +504,8 @@ describe('PluginSetupProcessor', function () {
           psp.applyInstallation(
             targetDao.address,
             createApplyInstallationParams(
-              ethers.constants.AddressZero,
-              [ethers.constants.AddressZero, 1, 1],
+              ethers.ZeroAddress,
+              [ethers.ZeroAddress, 1, 1],
               [],
               []
             )
