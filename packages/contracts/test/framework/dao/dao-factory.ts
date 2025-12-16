@@ -46,6 +46,7 @@ import {anyValue} from '@nomicfoundation/hardhat-chai-matchers/withArgs';
 import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers';
 import {expect} from 'chai';
 import hre, {ethers} from 'hardhat';
+import {Interface, ZeroAddress} from 'ethers';
 
 const EVENTS = {
   PluginRepoRegistered: 'PluginRepoRegistered',
@@ -66,7 +67,7 @@ const daoDummySubdomain = 'dao1';
 const registrarManagedDomain = 'dao.eth';
 const daoDummyMetadata = '0x0000';
 const EMPTY_DATA = '0x';
-const AddressZero = ethers.constants.AddressZero;
+const AddressZero = ZeroAddress;
 
 async function extractInfoFromCreateDaoTx(tx: any): Promise<{
   dao: any;
@@ -78,14 +79,14 @@ async function extractInfoFromCreateDaoTx(tx: any): Promise<{
 }> {
   const daoRegisteredEvent = findEventTopicLog<DAORegisteredEvent>(
     await tx.wait(),
-    DAORegistry__factory.createInterface(),
+    new Interface(DAORegistry__factory.abi),
     EVENTS.DAORegistered
   );
 
   const installationPreparedEvent =
     findEventTopicLog<InstallationPreparedEvent>(
       await tx.wait(),
-      PluginSetupProcessor__factory.createInterface(),
+      new Interface(PluginSetupProcessor__factory.abi),
       EVENTS.InstallationPrepared
     );
 
