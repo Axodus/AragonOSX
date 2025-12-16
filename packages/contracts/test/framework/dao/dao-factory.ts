@@ -380,14 +380,16 @@ describe('DAOFactory: ', function () {
             return r === 1 && b === 1;
           },
           (val: any) => {
-            expect(val.plugin).to.equal(expectedPlugin);
-            expect(val.currentHelpers).to.deep.equal(helpers);
-            expect(val.data).to.equal(pluginInstallationData.data);
+            if (!val) return false;
+            expect(val.plugin ?? val[0]).to.equal(expectedPlugin);
+            expect(val.currentHelpers ?? val[1]).to.deep.equal(helpers);
+            expect(val.data ?? val[2]).to.equal(pluginInstallationData.data);
             return true;
           },
           (val: any) => {
-            expect(val.helpers).to.deep.equal(helpers);
-            expect(val.permissions).to.deep.equal(permissions);
+            if (!val) return false;
+            expect(val.helpers ?? val[0]).to.deep.equal(helpers);
+            expect(val.permissions ?? val[1]).to.deep.equal(permissions);
             return true;
           },
           anyValue
