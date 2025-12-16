@@ -1,6 +1,5 @@
 import {Operation} from '@aragon/osx-commons-sdk';
-import {utils, constants} from 'ethers';
-import {ethers} from 'hardhat';
+import {hexlify, id, ZeroAddress, zeroPadValue} from 'ethers';
 
 export function mockPermissionsOperations(
   start: number,
@@ -12,10 +11,10 @@ export function mockPermissionsOperations(
   for (let i = start; i < end; i++) {
     arr.push({
       operation: op,
-      where: utils.hexZeroPad(ethers.utils.hexlify(i), 20),
-      who: utils.hexZeroPad(ethers.utils.hexlify(i), 20),
-      condition: constants.AddressZero,
-      permissionId: utils.id('MOCK_PERMISSION'),
+      where: zeroPadValue(hexlify(i), 20),
+      who: zeroPadValue(hexlify(i), 20),
+      condition: ZeroAddress,
+      permissionId: id('MOCK_PERMISSION'),
     });
   }
 
@@ -26,7 +25,7 @@ export function mockHelpers(amount: number): string[] {
   let arr: string[] = [];
 
   for (let i = 0; i < amount; i++) {
-    arr.push(utils.hexZeroPad(ethers.utils.hexlify(i), 20));
+    arr.push(zeroPadValue(hexlify(i), 20));
   }
 
   return arr;
