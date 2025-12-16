@@ -781,7 +781,7 @@ describe('Core: PermissionManager', function () {
         pm.address,
         otherSigner.address,
         ADMIN_PERMISSION_ID,
-        []
+        '0x'
       );
       expect(isGranted).to.be.equal(true);
     });
@@ -791,7 +791,7 @@ describe('Core: PermissionManager', function () {
         pm.address,
         otherSigner.address,
         ADMIN_PERMISSION_ID,
-        []
+        '0x'
       );
       expect(isGranted).to.be.equal(false);
     });
@@ -908,7 +908,7 @@ describe('Core: PermissionManager', function () {
           pm.address,
           otherSigner.address,
           ADMIN_PERMISSION_ID,
-          []
+          '0x'
         );
       expect(isGranted).to.be.equal(false);
     });
@@ -1097,11 +1097,11 @@ describe('Core: PermissionManager', function () {
 
     it('returns `true` if the permission is granted to `_who == ANY_ADDR`', async () => {
       await pm.grant(pm.address, ANY_ADDR, ADMIN_PERMISSION_ID);
-      const isGranted = await pm.callStatic.isGranted(
+      const isGranted = await pm.isGranted.staticCall(
         pm.address,
         otherSigner.address,
         ADMIN_PERMISSION_ID,
-        []
+        '0x'
       );
       expect(isGranted).to.be.equal(true);
     });
@@ -1122,21 +1122,21 @@ describe('Core: PermissionManager', function () {
         permissionCondition.address
       );
       expect(
-        await pm.callStatic.isGranted(
+        await pm.isGranted.staticCall(
           pm.address,
           otherSigner.address,
           ADMIN_PERMISSION_ID,
-          []
+          '0x'
         )
       ).to.be.equal(true);
 
       await permissionCondition.setAnswer(false);
       expect(
-        await pm.callStatic.isGranted(
+        await pm.isGranted.staticCall(
           pm.address,
           otherSigner.address,
           ADMIN_PERMISSION_ID,
-          []
+          '0x'
         )
       ).to.be.equal(false);
     });
