@@ -754,7 +754,7 @@ describe('DAO', function () {
         let allowFailureMap = 0n as any;
         allowFailureMap = flipBitBigInt(allowFailureMap, 0) as any; // allow the action to fail
 
-        const expectedGas = await dao.estimateGas.execute(
+        const expectedGas = await dao.getFunction('execute').estimateGas(
           ZERO_BYTES32,
           [gasConsumingAction],
           allowFailureMap
@@ -792,7 +792,7 @@ describe('DAO', function () {
         let allowFailureMap = 0n as any;
         allowFailureMap = flipBitBigInt(allowFailureMap, 0) as any; // allow the action to fail
 
-        const expectedGas = await dao.estimateGas.execute(
+        const expectedGas = await dao.getFunction('execute').estimateGas(
           ZERO_BYTES32,
           [gasConsumingAction],
           allowFailureMap

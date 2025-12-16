@@ -25,6 +25,13 @@ export function findEventLog<T = any>(
   eventName: string
 ): T {
   const logs = (receipt as any).logs ?? [];
+  // ethers v5 style: ContractReceipt has `events` array; try it first if present
+  const v5Events = (receipt as any).events ?? [];
+  for (const ev of v5Events) {
+    if (ev && (ev.event === eventName || ev.eventName === eventName)) {
+      return ev as unknown as T;
+    }
+  }
   // Narrow by topic first for performance and correctness
   let topic: string | undefined;
   try {
