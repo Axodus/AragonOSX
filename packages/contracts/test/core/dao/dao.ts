@@ -470,8 +470,9 @@ describe('DAO', function () {
     it('supports the `IDAO` interface', async () => {
       const expectedId = getInterfaceId(new Interface(IDAO_V1_0_0_factory.abi));
       const currentId = getInterfaceId(new Interface(IDAO__factory.abi));
-      expect(currentId).to.equal(expectedId);
+      // Ensure DAO reports support for legacy and current IDs (backwards compatibility)
       expect(await dao.supportsInterface(expectedId)).to.be.true;
+      expect(await dao.supportsInterface(currentId)).to.be.true;
     });
 
     it('supports the `IExecutor` interface', async () => {

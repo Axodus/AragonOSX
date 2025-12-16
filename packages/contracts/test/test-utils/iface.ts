@@ -49,5 +49,23 @@ export function findEventLog<T = any>(
       }
     } catch {}
   }
+  // Special-case fallback for DAO Executed event across ABI variants
+  if (eventName === 'Executed') {
+    try {
+      const minimal = new Interface([
+        'event Executed(address actor, bytes32 callId, (address to, uint256 value, bytes data)[] actions, uint256 allowFailureMap, uint256 failureMap, bytes[] execResults)'
+      ]);
+      const sigTopic = minimal.getEventTopic('Executed');
+      for (const log of logs) {
+        if (Array.isArray(log.topics) && log.topics[0] !== sigTopic) continue;
+        try {
+          const parsed = minimal.parseLog(log);
+          if (parsed) {
+            return parsed as unknown as T;
+          }
+        } catch {}
+      }
+    } catch {}
+  }
   throw new Error(`Event ${eventName} not found in receipt`);
 }

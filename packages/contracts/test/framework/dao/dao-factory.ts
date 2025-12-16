@@ -373,18 +373,22 @@ describe('DAOFactory: ', function () {
           daoFactory.address,
           dao,
           anyValue,
-          pluginSetupMockRepoAddress,
+          pluginRepoPointer[0],
           (val: any) =>
             expect([Number(val.release), Number(val.build)]).to.deep.equal([
               1,
               1,
             ]),
-          EMPTY_DATA,
-          expectedPlugin,
+          (val: any) => {
+            expect(val.plugin).to.equal(expectedPlugin);
+            expect(val.currentHelpers).to.deep.equal(helpers);
+            expect(val.data).to.equal(pluginInstallationData.data);
+          },
           (val: any) => {
             expect(val.helpers).to.deep.equal(helpers);
             expect(val.permissions).to.deep.equal(permissions);
-          }
+          },
+          anyValue
         )
         .to.emit(psp, EVENTS.InstallationApplied)
         .withArgs(

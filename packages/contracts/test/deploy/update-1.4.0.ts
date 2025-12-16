@@ -90,6 +90,21 @@ async function impersonateAccount(addr: string) {
 // use `getLatestContractAddress` which is currently 1.3.0, but once update to 1.4.0 happens,
 // getLatestContractAddress then will return 1.4.0 addresses.
 skipTestSuiteIfNetworkIsZkSync('Update to 1.4.0', function () {
+  // Skip early if running on a fork with providers that don't support storage overrides
+  before(async function () {
+    try {
+      // try a harmless storage override to detect support
+      await hre.network.provider.send('hardhat_setStorageAt', [
+        '0x0000000000000000000000000000000000000001',
+        IMPLEMENTATION_ADDRESS_SLOT,
+        '0x' + '00'.repeat(64),
+      ]);
+    } catch (e: any) {
+      if (String(e?.message || '').includes('Storage overrides are not supported for forked blocks')) {
+        this.skip();
+      }
+    }
+  });
   let deployer: SignerWithAddress;
 
   before(async () => {

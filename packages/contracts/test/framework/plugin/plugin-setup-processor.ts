@@ -1108,13 +1108,12 @@ describe('PluginSetupProcessor', function () {
               permissionsUV1
             )
           )
-        )
-          .to.be.revertedWithCustomError(psp, 'SetupApplicationUnauthorized')
-          .withArgs(
-            targetDao.address,
-            ownerAddress,
-            PLUGIN_SETUP_PROCESSOR_PERMISSIONS.APPLY_UNINSTALLATION_PERMISSION_ID
-          );
+          ).to.be.revertedWithCustomError(psp, 'SetupApplicationUnauthorized')
+            .withArgs(
+              targetDao.address,
+              ownerAddress,
+              PLUGIN_SETUP_PROCESSOR_PERMISSIONS.APPLY_UNINSTALLATION_PERMISSION_ID
+            );
       });
 
       it("reverts if PluginSetupProcessor does not have DAO's `ROOT_PERMISSION`", async () => {
@@ -1142,13 +1141,12 @@ describe('PluginSetupProcessor', function () {
               permissions
             )
           )
-        )
-          .to.be.revertedWithCustomError(targetDao, 'Unauthorized')
-          .withArgs(
-            targetDao.address,
-            psp.address,
-            DAO_PERMISSIONS.ROOT_PERMISSION_ID
-          );
+          ).to.be.revertedWithCustomError(targetDao, 'Unauthorized')
+            .withArgs(
+              targetDao.address,
+              psp.address,
+              DAO_PERMISSIONS.ROOT_PERMISSION_ID
+            );
       });
 
       it('reverts if uninstallation is not prepared first', async () => {
@@ -1187,7 +1185,7 @@ describe('PluginSetupProcessor', function () {
 
         // Confirm that first preparation can be applied.
         await expect(
-          psp.callStatic.applyUninstallation(
+          psp.applyUninstallation.staticCall(
             targetDao.address,
             createApplyUninstallationParams(
               proxy,
@@ -1214,7 +1212,7 @@ describe('PluginSetupProcessor', function () {
 
         // Check that second preparation can be applied.
         await expect(
-          psp.callStatic.applyUninstallation(
+          psp.applyUninstallation.staticCall(
             targetDao.address,
             createApplyUninstallationParams(
               proxy,
@@ -1863,7 +1861,7 @@ describe('PluginSetupProcessor', function () {
         )
       )
         .to.be.revertedWithCustomError(psp, 'PluginProxyUpgradeFailed')
-        .withArgs(proxy, await setupUV2.callStatic.implementation(), initData);
+        .withArgs(proxy, await setupUV2.implementation.staticCall(), initData);
     });
 
     it('reverts if preparation has not happened yet for update', async () => {
@@ -1934,7 +1932,7 @@ describe('PluginSetupProcessor', function () {
       );
 
       await expect(
-        psp.callStatic.applyUpdate(
+        psp.applyUpdate.staticCall(
           targetDao.address,
           createApplyUpdateParams(
             proxy,
@@ -1947,7 +1945,7 @@ describe('PluginSetupProcessor', function () {
       ).not.to.be.reverted;
 
       await expect(
-        psp.callStatic.applyUpdate(
+        psp.applyUpdate.staticCall(
           targetDao.address,
           createApplyUpdateParams(
             proxy,
@@ -2178,8 +2176,8 @@ describe('PluginSetupProcessor', function () {
 
       it('points to the V1 implementation', async () => {
         expect(
-          await PluginUV1.attach(proxy).callStatic.implementation()
-        ).to.equal(await setupUV1.callStatic.implementation());
+          await PluginUV1.attach(proxy).implementation.staticCall()
+        ).to.equal(await setupUV1.implementation.staticCall());
       });
 
       it('initializes the members', async () => {
@@ -2247,8 +2245,8 @@ describe('PluginSetupProcessor', function () {
 
         it('points to the V2 implementation', async () => {
           expect(
-            await PluginUV2.attach(proxy).callStatic.implementation()
-          ).to.equal(await setupUV2.callStatic.implementation());
+            await PluginUV2.attach(proxy).implementation.staticCall()
+          ).to.equal(await setupUV2.implementation.staticCall());
         });
 
         it('initializes the members', async () => {
@@ -2305,8 +2303,8 @@ describe('PluginSetupProcessor', function () {
 
           it('points to the V3 implementation', async () => {
             expect(
-              await PluginUV3.attach(proxy).callStatic.implementation()
-            ).to.equal(await setupUV3.callStatic.implementation());
+              await PluginUV3.attach(proxy).implementation.staticCall()
+            ).to.equal(await setupUV3.implementation.staticCall());
           });
 
           it('initializes the members', async () => {
@@ -2352,8 +2350,8 @@ describe('PluginSetupProcessor', function () {
 
         it('points to the V3 implementation', async () => {
           expect(
-            await PluginUV3.attach(proxy).callStatic.implementation()
-          ).to.equal(await setupUV3.callStatic.implementation());
+            await PluginUV3.attach(proxy).implementation.staticCall()
+          ).to.equal(await setupUV3.implementation.staticCall());
         });
 
         it('initializes the members', async () => {
@@ -2403,8 +2401,8 @@ describe('PluginSetupProcessor', function () {
 
       it('points to the V2 implementation', async () => {
         expect(
-          await PluginUV2.attach(proxy).callStatic.implementation()
-        ).to.equal(await setupUV2.callStatic.implementation());
+          await PluginUV2.attach(proxy).implementation.staticCall()
+        ).to.equal(await setupUV2.implementation.staticCall());
       });
 
       it('initializes the members', async () => {
@@ -2461,8 +2459,8 @@ describe('PluginSetupProcessor', function () {
 
         it('points to the V3 implementation', async () => {
           expect(
-            await PluginUV3.attach(proxy).callStatic.implementation()
-          ).to.equal(await setupUV3.callStatic.implementation());
+            await PluginUV3.attach(proxy).implementation.staticCall()
+          ).to.equal(await setupUV3.implementation.staticCall());
         });
 
         it('initializes the members', async () => {
@@ -2513,8 +2511,8 @@ describe('PluginSetupProcessor', function () {
 
       it('points to the V3 implementation', async () => {
         expect(
-          await PluginUV3.attach(proxy).callStatic.implementation()
-        ).to.equal(await setupUV3.callStatic.implementation());
+          await PluginUV3.attach(proxy).implementation.staticCall()
+        ).to.equal(await setupUV3.implementation.staticCall());
       });
 
       it('initializes the members', async () => {
