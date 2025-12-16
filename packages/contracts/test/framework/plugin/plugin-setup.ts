@@ -10,6 +10,7 @@ import {osxContractsVersion} from '../../test-utils/protocol-version';
 import {getInterfaceId} from '@aragon/osx-commons-sdk';
 import {expect} from 'chai';
 import hre, {ethers} from 'hardhat';
+import {Interface} from 'ethers';
 
 describe('PluginSetup', function () {
   let setupMock: PluginCloneableSetupV1Mock;
@@ -29,19 +30,19 @@ describe('PluginSetup', function () {
     });
 
     it('supports the `IERC165` interface', async () => {
-      const iface = IERC165__factory.createInterface();
+      const iface = new Interface(IERC165__factory.abi);
       expect(await setupMock.supportsInterface(getInterfaceId(iface))).to.be
         .true;
     });
 
     it('supports the `IPluginSetup` interface', async () => {
-      const iface = IPluginSetup__factory.createInterface();
+      const iface = new Interface(IPluginSetup__factory.abi);
       expect(await setupMock.supportsInterface(getInterfaceId(iface))).to.be
         .true;
     });
 
     it('supports the `IProtocolVersion` interface', async () => {
-      const iface = IProtocolVersion__factory.createInterface();
+      const iface = new Interface(IProtocolVersion__factory.abi);
       expect(await setupMock.supportsInterface(getInterfaceId(iface))).to.be
         .true;
     });

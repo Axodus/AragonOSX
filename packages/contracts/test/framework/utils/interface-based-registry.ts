@@ -11,8 +11,9 @@ import {getInterfaceId} from '@aragon/osx-commons-sdk';
 import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers';
 import {expect} from 'chai';
 import hre, {ethers} from 'hardhat';
+import {Interface, id} from 'ethers';
 
-const REGISTER_PERMISSION_ID = ethers.utils.id('REGISTER_PERMISSION');
+const REGISTER_PERMISSION_ID = id('REGISTER_PERMISSION');
 
 const EVENTS = {
   Registered: 'Registered',
@@ -41,7 +42,7 @@ describe('InterfaceBasedRegistry', function () {
     // Let the interface registry register `DAO` contracts for testing purposes
     await interfaceBasedRegistryMock.initialize(
       dao.address,
-      getInterfaceId(IDAO__factory.createInterface())
+      getInterfaceId(new Interface(IDAO__factory.abi))
     );
 
     // grant REGISTER_PERMISSION_ID to registrer
