@@ -2,8 +2,7 @@ import {ProxyCreatedEvent} from '../../../typechain/ProxyFactory';
 import {HardhatClass} from './hardhat';
 import {ZkSync} from './zksync';
 import {findEvent} from '@aragon/osx-commons-sdk';
-import {BigNumberish, Contract, Wallet} from 'ethers';
-import {providers} from 'ethers';
+import {BigNumberish, Contract, Wallet, AbstractProvider, parseEther} from 'ethers';
 import hre, {ethers} from 'hardhat';
 
 // TODO: generate paths programatically.
@@ -100,7 +99,7 @@ export class Wrapper {
   // on hardhat, it's 20. Tests are heavily using the numbers in the Signers
   // object from 10 to 20. So We make 10 custom addresses rich-funded to
   // allow tests use the same approach on zksync as on hardhat.
-  static async create(networkName: string, provider: providers.BaseProvider) {
+  static async create(networkName: string, provider: AbstractProvider) {
     if (networkName == 'zkLocalTestnet' || networkName == 'zkSyncLocal') {
       const signers = await ethers.getSigners();
       const allSigners = signers.map(signer => signer.address);
@@ -108,7 +107,7 @@ export class Wrapper {
       for (let i = 10; i < 20; i++) {
         await signers[0].sendTransaction({
           to: allSigners[i],
-          value: ethers.utils.parseEther('0.5'),
+          value: parseEther('0.5'),
         });
       }
 

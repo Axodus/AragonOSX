@@ -12,7 +12,8 @@ import {
 import {ensDomainHash, ensLabelHash} from '../../utils/ens';
 import {ARTIFACT_SOURCES} from './wrapper';
 import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers';
-import hre, {ethers} from 'hardhat';
+import hre from 'hardhat';
+import {namehash} from 'ethers';
 
 export async function deployENSSubdomainRegistrar(
   owner: SignerWithAddress,
@@ -55,7 +56,7 @@ export async function deployENSSubdomainRegistrar(
     .setApprovalForAll(ensSubdomainRegistrar.address, true);
 
   // Initialize it with the domain
-  const node = ethers.utils.namehash(domain);
+  const node = namehash(domain);
   await ensSubdomainRegistrar.initialize(
     managingDao.address,
     ensRegistry.address,
