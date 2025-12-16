@@ -175,7 +175,7 @@ describe('DAORegistry', function () {
 
     await daoRegistry.initialize(
       managingDao.address,
-      ethers.constants.AddressZero
+      ethers.ZeroAddress
     );
 
     await managingDao.grant(

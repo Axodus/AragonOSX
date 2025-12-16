@@ -34,13 +34,12 @@ import {
 } from '../../test-utils/repo';
 import {ARTIFACT_SOURCES} from '../../test-utils/wrapper';
 import {
-  findEventTopicLog,
   DAO_PERMISSIONS,
   DAO_REGISTRY_PERMISSIONS,
   PLUGIN_REGISTRY_PERMISSIONS,
   PLUGIN_SETUP_PROCESSOR_PERMISSIONS,
-  getInterfaceId,
 } from '@aragon/osx-commons-sdk';
+import {getInterfaceId, findEventLog} from '../../test-utils/iface';
 import {PluginUUPSUpgradeableV2Mock__factory} from '@aragon/osx-ethers-v1.2.0';
 import {anyValue} from '@nomicfoundation/hardhat-chai-matchers/withArgs';
 import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers';
@@ -272,7 +271,7 @@ describe('DAOFactory: ', function () {
       '0x00',
       '0x00'
     );
-    const event = findEventTopicLog<PluginRepoRegisteredEvent>(
+    const event = findEventLog<PluginRepoRegisteredEvent>(
       await tx.wait(),
       PluginRepoRegistry__factory.createInterface(),
       EVENTS.PluginRepoRegistered

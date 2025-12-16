@@ -1107,7 +1107,7 @@ describe('DAO', function () {
   });
 
   describe('Deposit through deposit function:', async () => {
-    const amount = ethers.utils.parseEther('1.23');
+    const amount = ethers.parseEther('1.23');
     let token: ERC20Mock;
 
     beforeEach(async () => {
@@ -1158,7 +1158,7 @@ describe('DAO', function () {
       const options = {value: amount};
 
       // is empty at the beginning
-      expect(await ethers.provider.getBalance(dao.address)).to.equal(0);
+      expect(await ethers.provider.getBalance(dao.address)).to.equal(0n);
 
       await expect(
         dao.deposit(ethers.constants.AddressZero, amount, 'ref', options)
@@ -1259,7 +1259,7 @@ describe('DAO', function () {
   });
 
   describe('hasPermission', async () => {
-    const permission = ethers.utils.id('PERMISSION_TEST');
+    const permission = ethers.id('PERMISSION_TEST');
 
     it('returns `false` if the permission is not set', async () => {
       expect(
@@ -1294,7 +1294,7 @@ describe('DAO', function () {
       mockConditionFactory = new PermissionConditionMock__factory(caller);
 
       message = 'The message!';
-      hash = ethers.utils.hashMessage(message);
+      hash = ethers.hashMessage(message);
       signature = await signer.signMessage(message);
     });
 

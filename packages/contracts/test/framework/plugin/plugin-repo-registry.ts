@@ -126,7 +126,7 @@ describe('PluginRepoRegistry', function () {
 
     await pluginRepoRegistry.initialize(
       managingDAO.address,
-      ethers.constants.AddressZero
+      ethers.ZeroAddress
     );
 
     await managingDAO.grant(

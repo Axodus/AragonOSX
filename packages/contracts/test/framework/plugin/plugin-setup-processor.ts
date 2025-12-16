@@ -32,6 +32,7 @@ import {
   PluginCloneableSetupV1MockBad__factory,
 } from '../../../typechain';
 import {PluginRepoRegisteredEvent} from '../../../typechain/PluginRepoRegistry';
+import {findEventLog} from '../../test-utils/iface';
 import {expect} from '../../chai-setup';
 import {deployNewDAO, ZERO_BYTES32} from '../../test-utils/dao';
 import {deployENSSubdomainRegistrar} from '../../test-utils/ens';
@@ -231,7 +232,7 @@ describe('PluginSetupProcessor', function () {
     );
 
     const PluginRepoRegisteredEvent1 =
-      findEventTopicLog<PluginRepoRegisteredEvent>(
+      findEventLog<PluginRepoRegisteredEvent>(
         await tx.wait(),
         PluginRepoRegistry__factory.createInterface(),
         EVENTS.PluginRepoRegistered
@@ -255,7 +256,7 @@ describe('PluginSetupProcessor', function () {
     );
 
     const PluginRepoRegisteredEvent2 =
-      findEventTopicLog<PluginRepoRegisteredEvent>(
+      findEventLog<PluginRepoRegisteredEvent>(
         await tx.wait(),
         PluginRepoRegistry__factory.createInterface(),
         EVENTS.PluginRepoRegistered

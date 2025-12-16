@@ -14,6 +14,7 @@ import {
   hexlify,
   toUtf8Bytes,
   zeroPadValue,
+  toBeHex,
 } from 'ethers';
 import hre, {ethers} from 'hardhat';
 
@@ -60,7 +61,7 @@ export async function getActions() {
       value: 0,
     },
     failActionMessage: hexlify(toUtf8Bytes('ActionExecute:Revert')).substring(2),
-    successActionResult: zeroPadValue(hexlify(num), 32),
+    successActionResult: zeroPadValue(toBeHex(num), 32),
   };
 }
 

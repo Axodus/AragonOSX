@@ -14,6 +14,7 @@ export async function readStorage(
 ): Promise<string> {
   const abi = new AbiCoder();
   return ethers.provider
-    .getStorageAt(contractAddress, location)
+    // ethers v6: use `getStorage(address, position)` instead of `getStorageAt`
+    .getStorage(contractAddress, location)
     .then(encoded => abi.decode(types, encoded)[0]);
 }
