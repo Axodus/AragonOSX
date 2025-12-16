@@ -211,17 +211,12 @@ export function supportRevertedWithCustomError(
 
       const iface: any = contract.interface;
 
+      // Try best-effort resolution of the expected custom error from the interface.
+      // Don't throw early if not found; defer comparison until we decode the revert data.
       const expectedCustomError = findCustomErrorByName(
         iface,
         expectedCustomErrorName
       );
-
-      // check that interface contains the given custom error
-      if (expectedCustomError === undefined) {
-        throw new Error(
-          `The given contract doesn't have a custom error named '${expectedCustomErrorName}'`
-        );
-      }
 
       const onSuccess = () => {
         const assert = buildAssert(negated, onSuccess);
@@ -256,7 +251,11 @@ export function supportRevertedWithCustomError(
             })`
           );
         } else if (decodedReturnData.kind === 'Custom') {
-          if (decodedReturnData.id === expectedCustomError.id) {
+          // If we resolved the expected error from the iface, compare by selector first
+          if (
+            expectedCustomError !== undefined &&
+            decodedReturnData.id === expectedCustomError.id
+          ) {
             // add flag with the data needed for .withArgs
             const customErrorAssertionData: CustomErrorAssertionData = {
               contractInterface: iface,
@@ -271,22 +270,39 @@ export function supportRevertedWithCustomError(
               `Expected transaction NOT to be reverted with custom error '${expectedCustomErrorName}', but it was`
             );
           } else {
-            // try to decode the actual custom error
-            // this will only work when the error comes from the given contract
+            // Try to resolve actual error from iface by selector and compare names
             const actualCustomError = findCustomErrorById(
               iface,
               decodedReturnData.id
             );
 
-            if (actualCustomError === undefined) {
+            // If expected wasn't found earlier but actual is found, accept match by name
+            if (
+              actualCustomError !== undefined &&
+              actualCustomError.name === expectedCustomErrorName
+            ) {
+              // We couldn't resolve the expected fragment earlier, but the actual name matches
+              const customErrorAssertionData: CustomErrorAssertionData = {
+                contractInterface: iface,
+                customError: actualCustomError,
+                returnData,
+              };
+              this.customErrorData = customErrorAssertionData;
+
+              assert(
+                true,
+                undefined,
+                `Expected transaction NOT to be reverted with custom error '${expectedCustomErrorName}', but it was`
+              );
+            } else if (actualCustomError !== undefined) {
               assert(
                 false,
-                `Expected transaction to be reverted with custom error '${expectedCustomErrorName}', but it reverted with a different custom error`
+                `Expected transaction to be reverted with custom error '${expectedCustomErrorName}', but it reverted with custom error '${actualCustomError.name}'`
               );
             } else {
               assert(
                 false,
-                `Expected transaction to be reverted with custom error '${expectedCustomErrorName}', but it reverted with custom error '${actualCustomError.name}'`
+                `Expected transaction to be reverted with custom error '${expectedCustomErrorName}', but it reverted with a different custom error`
               );
             }
           }
@@ -384,12 +400,29 @@ function findCustomErrorByName(
   iface: any,
   name: string
 ): CustomError | undefined {
+  // Prefer ethers v6 Interface.getError if available
+  try {
+    if (typeof iface?.getError === 'function') {
+      const fragment = iface.getError(name);
+      if (fragment) {
+        const signature = fragment.format();
+        return {
+          id: id(signature).slice(0, 10),
+          name: fragment.name,
+          signature,
+        };
+      }
+    }
+  } catch (_) {
+    // fall through to legacy scanning below
+  }
+
   const errors = iface?.errors ?? {};
+  const entries: Array<[string, any]> = Array.isArray(errors)
+    ? (errors as any)
+    : Object.entries(errors);
 
-  const customErrorEntry = Object.entries(errors).find(
-    ([, fragment]: any) => fragment?.name === name
-  );
-
+  const customErrorEntry = entries.find(([, fragment]: any) => fragment?.name === name);
   if (customErrorEntry === undefined) {
     return undefined;
   }
@@ -408,21 +441,19 @@ function findCustomErrorById(
   iface: any,
   selector: string
 ): CustomError | undefined {
-  const errors = iface?.errors ?? {};
-
-  const customErrorEntry: any = Object.entries(errors).find(
-    ([signature]: any) => id(signature).slice(0, 10) === selector
-  );
-
-  if (customErrorEntry === undefined) {
-    return undefined;
+  // Prefer ethers v6 Interface.getError if available by scanning fragments
+  try {
+    if (typeof iface?.errors === 'object') {
+      for (const [sig, fragment] of Object.entries(iface.errors)) {
+        if (id(sig).slice(0, 10) === selector) {
+          return {id: selector, name: (fragment as any)?.name, signature: sig};
+        }
+      }
+    }
+  } catch (_) {
+    // ignore and fall through
   }
-
-  return {
-    id: selector,
-    name: customErrorEntry[1]?.name,
-    signature: customErrorEntry[0],
-  };
+  return undefined;
 }
 
 export function supportReverted(Assertion: Chai.AssertionStatic) {
