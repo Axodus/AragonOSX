@@ -1,22 +1,3 @@
-/*
- Script: Create Admin PluginRepo on a target network
- Usage:
-   npx hardhat run scripts/create-admin-repo.ts --network harmony \
-     --show-stack-traces
-
- Required env vars:
-   - MAINTAINER: EOA que será o maintainer do repo
-
- Optional env vars:
-   - SUBDOMAIN: subdomínio ENS do repo (padrão: "admin")
-   - PLUGIN_REPO_FACTORY: endereço do PluginRepoFactory (fallback: lido de deployed_contracts.json)
-   - ADMIN_PLUGIN_SETUP: endereço do AdminPluginSetup para publicar a primeira versão
-   - RELEASE_METADATA_URI: string/URI de release metadata (opcional)
-   - BUILD_METADATA_URI: string/URI de build metadata (opcional)
-
- Se ADMIN_PLUGIN_SETUP estiver definido, o script chamará createPluginRepoWithFirstVersion(1.1).
- Caso contrário, criará apenas o repo vazio via createPluginRepo.
-*/
 
 import { ethers } from 'hardhat';
 import { Interface, id, toUtf8Bytes } from 'ethers';
@@ -81,15 +62,19 @@ async function main() {
     console.log(`Registry: ${registryAddr}`);
   } catch {}
 
+  // Harmony não suporta EIP-1559 plenamente; usa transações legacy (type:0)
+  const gasOverrides = await getLegacyGasOverrides();
+
   const tx = adminSetup
     ? await factory.createPluginRepoWithFirstVersion(
         subdomain,
         adminSetup,
         maintainer,
         toUtf8Bytes(releaseMetaStr),
-        toUtf8Bytes(buildMetaStr)
+        toUtf8Bytes(buildMetaStr),
+        gasOverrides
       )
-    : await factory.createPluginRepo(subdomain, maintainer);
+    : await factory.createPluginRepo(subdomain, maintainer, gasOverrides);
 
   console.log('Tx sent:', tx.hash);
   const receipt = await tx.wait();
@@ -111,3 +96,18 @@ main().catch((err) => {
   console.error(err);
   process.exit(1);
 });
+
+// Helpers
+async function getLegacyGasOverrides() {
+  try {
+    const gasPrice = await ethers.provider.getGasPrice();
+    // GasLimit conservador para criação + registro ENS (se aplicável)
+    const gasLimit = BigInt(2_000_000);
+    return { type: 0, gasPrice, gasLimit } as const;
+  } catch {
+    // Fallback para RPCs que não suportam getGasPrice
+    const gasPrice = BigInt(1_000_000_000); // 1 gwei
+    const gasLimit = BigInt(2_000_000);
+    return { type: 0, gasPrice, gasLimit } as const;
+  }
+}
