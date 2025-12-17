@@ -100,13 +100,15 @@ main().catch((err) => {
 // Helpers
 async function getLegacyGasOverrides() {
   try {
-    const gasPrice = await ethers.provider.getGasPrice();
+    const networkMin = BigInt(200_000_000_000); // 200 gwei
+    let gasPrice = await ethers.provider.getGasPrice();
+    if (gasPrice < networkMin) gasPrice = networkMin;
     // GasLimit conservador para criação + registro ENS (se aplicável)
     const gasLimit = BigInt(2_000_000);
     return { type: 0, gasPrice, gasLimit } as const;
   } catch {
-    // Fallback para RPCs que não suportam getGasPrice
-    const gasPrice = BigInt(1_000_000_000); // 1 gwei
+    // Fallback para RPCs que não suportam getGasPrice: usa 200 gwei
+    const gasPrice = BigInt(200_000_000_000); // 200 gwei
     const gasLimit = BigInt(2_000_000);
     return { type: 0, gasPrice, gasLimit } as const;
   }
