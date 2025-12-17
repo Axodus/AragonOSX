@@ -5,8 +5,16 @@ type DeployOverrides = { type: 0; gasPrice: bigint; gasLimit: bigint };
 
 async function legacyOverrides() {
   const min = BigInt(200_000_000_000); // 200 gwei
-  let gasPrice = await ethers.provider.getGasPrice().catch(() => min);
-  if (gasPrice < min) gasPrice = min;
+  let gasPrice: bigint = min;
+  try {
+    const hex = await (ethers.provider as any).send('eth_gasPrice', []);
+    if (hex) {
+      const gp = BigInt(hex);
+      gasPrice = gp < min ? min : gp;
+    }
+  } catch {
+    // fallback ao mínimo
+  }
   return { type: 0, gasPrice, gasLimit: BigInt(1_000_000) } as const;
 }
 

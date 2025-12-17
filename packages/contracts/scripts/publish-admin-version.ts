@@ -40,17 +40,19 @@ main().catch((err) => {
 
 // Harmony/legado: usa gasPrice e type 0
 async function getLegacyGasOverrides() {
+  const networkMin = BigInt(200_000_000_000); // 200 gwei
+  let gasPrice: bigint = networkMin;
   try {
-    const networkMin = BigInt(200_000_000_000); // 200 gwei
-    let gasPrice = await ethers.provider.getGasPrice();
-    if (gasPrice < networkMin) gasPrice = networkMin;
-    const gasLimit = BigInt(1_000_000);
-    return { type: 0, gasPrice, gasLimit } as const;
+    const hex = await (ethers.provider as any).send('eth_gasPrice', []);
+    if (hex) {
+      const gp = BigInt(hex);
+      gasPrice = gp < networkMin ? networkMin : gp;
+    }
   } catch {
-    const gasPrice = BigInt(200_000_000_000);
-    const gasLimit = BigInt(1_000_000);
-    return { type: 0, gasPrice, gasLimit } as const;
+    // fallback permanece networkMin
   }
+  const gasLimit = BigInt(1_000_000);
+  return { type: 0, gasPrice, gasLimit } as const;
 }
 
 async function ensureMaintainer(repo: any, repoAddr: string, maintainer: string) {
