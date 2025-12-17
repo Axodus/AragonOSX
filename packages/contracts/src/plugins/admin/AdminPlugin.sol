@@ -24,8 +24,8 @@ contract AdminPlugin is ERC165, IPlugin {
     }
 
     /// @inheritdoc IPlugin
-    function pluginType() external pure returns (PluginType) {
-        // Minimal, non-upgradeable plugin.
-        return PluginType.Standard;
+    function pluginType() external view returns (PluginType) {
+        // Non-upgradeable (constructed via `new`).
+        return PluginType.Constructable;
     }
 }
