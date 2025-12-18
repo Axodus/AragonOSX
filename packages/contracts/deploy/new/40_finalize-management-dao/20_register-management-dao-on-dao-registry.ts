@@ -52,7 +52,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     // do bloco. Aqui fazemos clamp com base no `latest block gasLimit`.
     try {
       const latestBlock = await hre.ethers.provider.getBlock('latest');
-      const blockGasLimit = (latestBlock as any)?.gasLimit as bigint | undefined;
+      const blockGasLimit = (latestBlock as any)?.gasLimit;
       if (blockGasLimit && blockGasLimit > zero) {
         const safetyMargin = ethers.toBigInt(100000);
         const maxAllowed =
@@ -149,8 +149,10 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     );
 
     if (
-      owner != daoENSSubdomainRegistrar &&
-      owner != ((ethers as any).ZeroAddress || '0x0000000000000000000000000000000000000000')
+      owner !== daoENSSubdomainRegistrar &&
+      owner !==
+        ((ethers as any).ZeroAddress ||
+          '0x0000000000000000000000000000000000000000')
     ) {
       throw new Error(
         `A DAO with ${daoSubdomain}.${daoDomain} is registered and owned by someone other than ENSSubdomainRegistrar ${daoENSSubdomainRegistrar}.`

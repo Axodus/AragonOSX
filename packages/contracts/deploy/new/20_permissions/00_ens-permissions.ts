@@ -3,12 +3,22 @@ import {getContractAddress, managePermissions} from '../../helpers';
 import {Operation} from '@aragon/osx-commons-sdk';
 import {DeployFunction} from 'hardhat-deploy/types';
 import {HardhatRuntimeEnvironment} from 'hardhat/types';
+import {countryRegistryEnv} from '../../../utils/environment';
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   console.log(`\nSetting framework permission.`);
 
-  const {ethers} = hre;
+  const {ethers, network} = hre;
   const [deployer] = await ethers.getSigners();
+
+  const isHarmony = (network.name || '').toLowerCase().includes('harmony');
+  const countryRegistry = countryRegistryEnv(network);
+  const ensDisabled =
+    isHarmony || (countryRegistry && countryRegistry.trim().length > 0);
+  if (ensDisabled) {
+    console.log('[ENS_Permissions] ENS desabilitado; pulando.');
+    return;
+  }
 
   // Get `managementDAO` address.
   const managementDAOAddress = await getContractAddress(
@@ -88,4 +98,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   await managePermissions(managementDaoContract, grantPermissions);
 };
 export default func;
-func.tags = ['New', 'ENS_Permissions'];
+func.tags = ['new', 'ENS_Permissions'];

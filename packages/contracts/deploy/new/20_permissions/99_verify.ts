@@ -3,14 +3,20 @@ import {checkPermission, delay, getContractAddress} from '../../helpers';
 import {Operation} from '@aragon/osx-commons-sdk';
 import {DeployFunction} from 'hardhat-deploy/types';
 import {HardhatRuntimeEnvironment} from 'hardhat/types';
+import {countryRegistryEnv} from '../../../utils/environment';
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   console.log('\nVerifying permissions');
 
-  const {ethers} = hre;
+  const {ethers, network} = hre;
 
   const [deployer] = await ethers.getSigners();
   const multisigEnv = process.env.HARMONY_MANAGEMENT_DAO_MULTISIG || process.env.HARMONYTESTNET_MANAGEMENT_DAO_MULTISIG;
+
+  const isHarmony = (network.name || '').toLowerCase().includes('harmony');
+  const countryRegistry = countryRegistryEnv(network);
+  const ensDisabled =
+    isHarmony || (countryRegistry && countryRegistry.trim().length > 0);
 
   // Get `ManagementDAOProxy` address.
   const managementDAOAddress = await getContractAddress(
@@ -37,18 +43,6 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     hre
   );
 
-  // Get DAO's `DAOENSSubdomainRegistrarProxy` address.
-  const daoEnsSubdomainRegistrarAddress = await getContractAddress(
-    'DAOENSSubdomainRegistrarProxy',
-    hre
-  );
-
-  // Get Plugin's `PluginENSSubdomainRegistrarProxy` address.
-  const pluginEnsSubdomainRegistrarAddress = await getContractAddress(
-    'PluginENSSubdomainRegistrarProxy',
-    hre
-  );
-
   // Get `DAOFactory` address.
   const daoFactoryAddress = await getContractAddress('DAOFactory', hre);
 
@@ -59,25 +53,44 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   );
 
   // ENS PERMISSIONS
-  await checkPermission(managementDaoContract, {
-    operation: Operation.Grant,
-    where: {
-      name: 'DAOENSSubdomainRegistrarProxy',
-      address: daoEnsSubdomainRegistrarAddress,
-    },
-    who: {name: 'DAORegistryProxy', address: daoRegistryAddress},
-    permission: 'REGISTER_ENS_SUBDOMAIN_PERMISSION',
-  });
+  if (ensDisabled) {
+    console.log('[Verify] ENS desabilitado; pulando verificação de ENS permissions.');
+  } else {
+    // Get DAO's `DAOENSSubdomainRegistrarProxy` address.
+    const daoEnsSubdomainRegistrarAddress = await getContractAddress(
+      'DAOENSSubdomainRegistrarProxy',
+      hre
+    );
 
-  await checkPermission(managementDaoContract, {
-    operation: Operation.Grant,
-    where: {
-      name: 'PluginENSSubdomainRegistrarProxy',
-      address: pluginEnsSubdomainRegistrarAddress,
-    },
-    who: {name: 'PluginRepoRegistryProxy', address: pluginRepoRegistryAddress},
-    permission: 'REGISTER_ENS_SUBDOMAIN_PERMISSION',
-  });
+    // Get Plugin's `PluginENSSubdomainRegistrarProxy` address.
+    const pluginEnsSubdomainRegistrarAddress = await getContractAddress(
+      'PluginENSSubdomainRegistrarProxy',
+      hre
+    );
+
+    await checkPermission(managementDaoContract, {
+      operation: Operation.Grant,
+      where: {
+        name: 'DAOENSSubdomainRegistrarProxy',
+        address: daoEnsSubdomainRegistrarAddress,
+      },
+      who: {name: 'DAORegistryProxy', address: daoRegistryAddress},
+      permission: 'REGISTER_ENS_SUBDOMAIN_PERMISSION',
+    });
+
+    await checkPermission(managementDaoContract, {
+      operation: Operation.Grant,
+      where: {
+        name: 'PluginENSSubdomainRegistrarProxy',
+        address: pluginEnsSubdomainRegistrarAddress,
+      },
+      who: {
+        name: 'PluginRepoRegistryProxy',
+        address: pluginRepoRegistryAddress,
+      },
+      permission: 'REGISTER_ENS_SUBDOMAIN_PERMISSION',
+    });
+  }
 
   // DAO REGISTRY PERMISSIONS
   if (!multisigEnv || multisigEnv.length === 0) {
@@ -110,7 +123,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 };
 export default func;
 func.tags = [
-  'New',
+  'new',
   'ENS_Permissions',
   'DAO_Registry_Permissions',
   'Plugin_Registry_Permissions',
