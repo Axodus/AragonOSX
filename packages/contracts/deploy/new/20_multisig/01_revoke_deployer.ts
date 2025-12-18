@@ -5,7 +5,10 @@ import {DeployFunction} from 'hardhat-deploy/types';
 import {HardhatRuntimeEnvironment} from 'hardhat/types';
 
 /**
- * Revoga EXECUTE_PERMISSION do deployer após instalar o Multisig.
+ * (MANUAL) Revoga permissões do deployer.
+ *
+ * Em Harmony, manter o deployer com EXECUTE durante o processo de deploy/finalize
+ * evita dead-ends. Use este passo manualmente depois, se desejar.
  */
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {ethers} = hre;
@@ -14,7 +17,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const managementDAOAddress = await getContractAddress('ManagementDAOProxy', hre);
   const managementDaoContract = DAO__factory.connect(managementDAOAddress, deployer);
 
-  console.log(`[multisig] Revogando EXECUTE_PERMISSION e ROOT_PERMISSION do Deployer ${deployer.address}`);
+  console.log(`[multisig/manual] Revogando EXECUTE_PERMISSION e ROOT_PERMISSION do Deployer ${deployer.address}`);
 
   await managePermissions(managementDaoContract, [
     {
@@ -34,8 +37,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   ]);
 };
 
-func.tags = ['new', 'ManagementDaoMultisig'];
-// Revoke only after framework permissions have been set
-func.dependencies = ['ManagementDaoPermissions', 'DAO_Registry_Permissions'];
+// NÃO roda automaticamente no deploy padrão.
+func.tags = ['manual', 'ManagementDaoRevokeDeployer'];
 
 export default func;

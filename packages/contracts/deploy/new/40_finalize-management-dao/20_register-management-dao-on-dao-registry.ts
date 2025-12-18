@@ -14,7 +14,6 @@ import {HardhatRuntimeEnvironment} from 'hardhat/types';
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {ethers, network} = hre;
   const [deployer] = await ethers.getSigners();
-  const multisigEnv = process.env.HARMONY_MANAGEMENT_DAO_MULTISIG || process.env.HARMONYTESTNET_MANAGEMENT_DAO_MULTISIG;
 
   // Get info from .env
   const daoSubdomain = managementDaoSubdomainEnv(network);
@@ -46,19 +45,11 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     return;
   }
 
-  // Em fluxo Multisig-first, evitamos quaisquer conexões/execuções via deployer neste passo
-  if (multisigEnv) {
-    console.log('[Finalize/Register] Multisig configurado; pulando finalize (registro/metadata) via deployer.');
-    return;
-  }
-
-  // Registro no DAORegistry: somente quando não há Multisig (fluxo deployer)
-  if (!multisigEnv) {
-    // Get `DAORegistryProxy` contract somente quando necessário
-    const daoRegistryContract = DAORegistry__factory.connect(
-      daoRegistryAddress,
-      deployer
-    );
+  // Get `DAORegistryProxy` contract
+  const daoRegistryContract = DAORegistry__factory.connect(
+    daoRegistryAddress,
+    deployer
+  );
 
     // Harmony não tem ENS oficial; se falhar, trate como não registrado
     let owner = ethers.ZeroAddress;
@@ -87,21 +78,20 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
       );
     }
 
-    if (owner === (ethers as any).ZeroAddress) {
-      // Register `managingDAO` on `DAORegistry`.
-      try {
-        const registerTx = await daoRegistryContract.register(
-          managementDAOAddress,
-          deployer.address,
-          daoSubdomain
-        );
-        await registerTx.wait();
-        console.log(
-          `Registered the (managingDAO: ${managementDAOAddress}) on (DAORegistry: ${daoRegistryAddress}), see (tx: ${registerTx.hash})`
-        );
-      } catch (e) {
-        console.log('[Finalize/Register] Falha ao registrar via deployer; provavelmente requer execução via Multisig. Pulando.');
-      }
+  if (owner === (ethers as any).ZeroAddress) {
+    // Register `managingDAO` on `DAORegistry`.
+    try {
+      const registerTx = await daoRegistryContract.register(
+        managementDAOAddress,
+        deployer.address,
+        daoSubdomain
+      );
+      await registerTx.wait();
+      console.log(
+        `Registered the (managingDAO: ${managementDAOAddress}) on (DAORegistry: ${daoRegistryAddress}), see (tx: ${registerTx.hash})`
+      );
+    } catch (e) {
+      console.log('[Finalize/Register] Falha ao registrar via deployer; pulando.');
     }
   }
 
@@ -138,8 +128,8 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
       ethers.hexlify(ethers.toUtf8Bytes(metadataCIDPath))
     );
     await setMetadataTX.wait();
-  } else if (multisigEnv) {
-    console.log('[Finalize/Metadata] Deployer sem SET_METADATA_PERMISSION com Multisig configurado; aplicar metadata via Multisig.');
+  } else {
+    console.log('[Finalize/Metadata] Deployer sem SET_METADATA_PERMISSION; pulando.');
   }
 };
 export default func;

@@ -8,13 +8,9 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {ethers} = hre;
   const [deployer] = await ethers.getSigners();
 
-  const multisigEnv = process.env.HARMONY_MANAGEMENT_DAO_MULTISIG || process.env.HARMONYTESTNET_MANAGEMENT_DAO_MULTISIG;
-  if (multisigEnv && multisigEnv.length > 0) {
-    console.log(
-      `Multisig is configured (${multisigEnv}). Skipping temporary EXECUTE grant to deployer.`
-    );
-    return;
-  }
+  // NOTE: Mesmo quando um Multisig está configurado, o deploy automatizado precisa
+  // do deployer com EXECUTE para chamar DAO.execute (managePermissions) enquanto ele
+  // ainda é o owner temporário do ManagementDAO.
 
   console.log(`Granting ${deployer.address} temp EXECUTE permission`);
 
@@ -31,13 +27,33 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   // Bootstrap: as initialOwner, the deployer holds ROOT and can grant EXECUTE directly
   const permissionId = ethers.keccak256(ethers.toUtf8Bytes('EXECUTE_PERMISSION'));
+  // Se já está concedido, não faça tx.
+  try {
+    const already = await (managementDaoContract as any).hasPermission(
+      managementDAOAddress,
+      deployer.address,
+      permissionId,
+      '0x'
+    );
+    if (already) {
+      console.log('EXECUTE_PERMISSION já concedida ao deployer. Pulando.');
+      return;
+    }
+  } catch (_) {
+    // ignore
+  }
   try {
     const tx = await managementDaoContract.grant(
       managementDAOAddress,
       deployer.address,
       permissionId,
       '0x',
-      {gasLimit: 600000}
+      (() => {
+        const envGas = process.env.HARMONY_GAS_PRICE;
+        const gasPrice = envGas ? BigInt(envGas) : 300_000_000_000n;
+        const gasLimit = BigInt(process.env.HARMONY_LEGACY_GAS_LIMIT || '1500000');
+        return {type: 0, gasPrice, gasLimit};
+      })()
     );
     console.log(`Granted EXECUTE_PERMISSION with ${tx.hash}. Waiting for confirmation...`);
     await tx.wait();
@@ -52,7 +68,15 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
         permissionId,
       ],
     ];
-    const tx2 = await managementDaoContract.applyMultiTargetPermissions(items, {gasLimit: 1_500_000});
+    const tx2 = await managementDaoContract.applyMultiTargetPermissions(
+      items,
+      (() => {
+        const envGas = process.env.HARMONY_GAS_PRICE;
+        const gasPrice = envGas ? BigInt(envGas) : 300_000_000_000n;
+        const gasLimit = BigInt(process.env.HARMONY_LEGACY_GAS_LIMIT || '1500000');
+        return {type: 0, gasPrice, gasLimit};
+      })()
+    );
     console.log(`Set permissions with ${tx2.hash}. Waiting for confirmation...`);
     await tx2.wait();
   }

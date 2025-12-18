@@ -23,6 +23,12 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
       operation: Operation.Grant,
       where: {name: 'ManagementDAOProxy', address: managementDAOAddress},
       who: {name: 'ManagementMultisig', address: multisigAddress},
+      permission: 'ROOT_PERMISSION',
+    },
+    {
+      operation: Operation.Grant,
+      where: {name: 'ManagementDAOProxy', address: managementDAOAddress},
+      who: {name: 'ManagementMultisig', address: multisigAddress},
       permission: 'EXECUTE_PERMISSION',
     },
   ]);

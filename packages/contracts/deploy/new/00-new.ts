@@ -8,6 +8,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   console.log(`[new] Nenhum passo de deploy específico implementado para '${hre.network.name}'.`);
 };
 
-func.tags = ['new'];
+// Não deve rodar no deploy padrão.
+func.tags = ['manual'];
 
 export default func;
