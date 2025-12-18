@@ -38,13 +38,15 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   if (!pluginRepoFactoryDeployment) missing.push('PluginRepoFactory');
 
   if (missing.length) {
-    throw new Error(
-      `[adherence] Deployments existentes em '${network.name}' estão incompletos: ${missing.join(
-        ', '
-      )}.\n` +
         `Recuso reutilizar. Use --reset ou apague deployments/${network.name}.`
+    // Deployments parciais normalmente indicam um deploy anterior interrompido.
+    // Nesse caso, permita continuar o deploy ao invés de forçar reset.
+    console.log(
+      `[adherence] Deployments parciais detectados em '${network.name}' (${missing.join(
+        ', '
+      )}). Prosseguindo para continuar o deploy.`
     );
-  }
+    return;
 
   // Narrow types after the explicit completeness check above.
   if (
