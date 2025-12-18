@@ -117,7 +117,9 @@ export function getLatestContractAddress(
     if (isLocal(hre.network)) {
       return '';
     }
-    throw new Error(`Failed to find network ${networkName}`);
+    // Custom networks (e.g., Harmony) may not exist in @aragon/osx-commons-configs.
+    // In that case we simply don't have a "latest deployment" fallback.
+    return '';
   }
 
   const latestNetworkDeployment = getLatestNetworkDeployment(osxNetworkName);
