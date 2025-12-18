@@ -16,12 +16,36 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {ethers, network} = hre;
   const [deployer] = await ethers.getSigners();
 
-  const txOverrides = (() => {
+  const txOverrides = await (async () => {
     const envGas = process.env.HARMONY_GAS_PRICE;
     if (!envGas) return {};
+
     const gasPrice = BigInt(envGas);
-    const gasLimit = BigInt(process.env.HARMONY_LEGACY_GAS_LIMIT || '1500000');
-    return {type: 0, gasPrice, gasLimit};
+    const requestedGasLimit = BigInt(
+      process.env.HARMONY_LEGACY_GAS_LIMIT || '1500000'
+    );
+
+    // Harmony RPC frequentemente não implementa `eth_estimateGas`, então sempre
+    // passamos `gasLimit`. Porém, alguns RPCs rejeitam quando ele excede o limite
+    // do bloco. Aqui fazemos clamp com base no `latest block gasLimit`.
+    try {
+      const latestBlock = await hre.ethers.provider.getBlock('latest');
+      const blockGasLimit = (latestBlock as any)?.gasLimit as bigint | undefined;
+      if (blockGasLimit && blockGasLimit > 0n) {
+        const safetyMargin = 100_000n;
+        const maxAllowed =
+          blockGasLimit > safetyMargin
+            ? blockGasLimit - safetyMargin
+            : blockGasLimit;
+
+        const gasLimit = requestedGasLimit > maxAllowed ? maxAllowed : requestedGasLimit;
+        return {type: 0, gasPrice, gasLimit};
+      }
+    } catch (e) {
+      // Se o RPC falhar no getBlock, seguimos com o limite configurado.
+    }
+
+    return {type: 0, gasPrice, gasLimit: requestedGasLimit};
   })();
 
   const isHarmony = (network.name || '').toLowerCase().includes('harmony');
