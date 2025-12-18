@@ -16,6 +16,14 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {ethers, network} = hre;
   const [deployer] = await ethers.getSigners();
 
+  const txOverrides = (() => {
+    const envGas = process.env.HARMONY_GAS_PRICE;
+    if (!envGas) return {};
+    const gasPrice = BigInt(envGas);
+    const gasLimit = BigInt(process.env.HARMONY_LEGACY_GAS_LIMIT || '1500000');
+    return {type: 0, gasPrice, gasLimit};
+  })();
+
   const isHarmony = (network.name || '').toLowerCase().includes('harmony');
   const countryRegistry = countryRegistryEnv(network);
   const ensDisabled = isHarmony || (countryRegistry && countryRegistry.trim().length > 0);
@@ -65,7 +73,8 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
       const registerTx = await daoRegistryContract.register(
         managementDAOAddress,
         deployer.address,
-        ''
+        '',
+        txOverrides
       );
       await registerTx.wait();
       console.log(
@@ -106,7 +115,8 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
         const registerTx = await daoRegistryContract.register(
           managementDAOAddress,
           deployer.address,
-          daoSubdomain
+          daoSubdomain,
+          txOverrides
         );
         await registerTx.wait();
         console.log(
@@ -148,7 +158,8 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   if (hasMetadataPermission) {
     const setMetadataTX = await managementDaoContract.setMetadata(
-      ethers.hexlify(ethers.toUtf8Bytes(metadataCIDPath))
+      ethers.hexlify(ethers.toUtf8Bytes(metadataCIDPath)),
+      txOverrides
     );
     await setMetadataTX.wait();
   } else {
