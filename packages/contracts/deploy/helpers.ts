@@ -228,40 +228,28 @@ export async function managePermissions(
       permissions.length - items.length
     }`
   );
-  // Para conceder/revogar permissões, precisamos de ROOT. O DAO normalmente possui ROOT.
-  // Usamos `DAO.execute` para que a chamada ocorra no contexto do contrato DAO
-  // (msg.sender = DAO), enquanto o deployer apenas precisa de EXECUTE_PERMISSION.
-  const calldata = permissionManagerContract.interface.encodeFunctionData(
-    'applyMultiTargetPermissions',
-    [
-      items.map(item => [
-        item.operation,
-        item.where.address,
-        item.who.address,
-        item.condition || (ethers as any).ZeroAddress || '0x0000000000000000000000000000000000000000',
-        ethers.keccak256(ethers.toUtf8Bytes(item.permission)),
-      ]),
-    ]
-  );
+  // Para conceder/revogar permissões, precisamos de ROOT no PermissionManager.
+  // Durante o deploy, o deployer é o owner temporário do ManagementDAO e tem ROOT,
+  // então chamamos direto `applyMultiTargetPermissions` (mais confiável em Harmony).
+  const txOverrides = (() => {
+    const envGas = process.env.HARMONY_GAS_PRICE;
+    if (!envGas) return {};
+    const gasPrice = BigInt(envGas);
+    const gasLimit = BigInt(process.env.HARMONY_LEGACY_GAS_LIMIT || '1500000');
+    return {type: 0, gasPrice, gasLimit};
+  })();
 
-  const callId = ethers.keccak256(ethers.toUtf8Bytes('Set_Permissions'));
-  const tx = await (permissionManagerContract as any).execute(
-    callId,
-    [
-      {
-        to: (permissionManagerContract as any).target || (permissionManagerContract as any).address,
-        value: 0n,
-        data: calldata,
-      },
-    ],
-    0,
-    // RPC Harmony: forçar transação legacy (type:0) com gasPrice e gasLimit fixos
-    (() => {
-      const envGas = process.env.HARMONY_GAS_PRICE;
-      const gasPrice = envGas ? BigInt(envGas) : BigInt(300_000_000_000);
-      const gasLimit = BigInt(process.env.HARMONY_LEGACY_GAS_LIMIT || '1500000');
-      return {type: 0, gasPrice, gasLimit};
-    })()
+  const tx = await (permissionManagerContract as any).applyMultiTargetPermissions(
+    items.map(item => [
+      item.operation,
+      item.where.address,
+      item.who.address,
+      item.condition ||
+        (ethers as any).ZeroAddress ||
+        '0x0000000000000000000000000000000000000000',
+      ethers.keccak256(ethers.toUtf8Bytes(item.permission)),
+    ]),
+    txOverrides
   );
   console.log(`Set permissions with ${tx.hash}. Waiting for confirmation...`);
   await tx.wait();
