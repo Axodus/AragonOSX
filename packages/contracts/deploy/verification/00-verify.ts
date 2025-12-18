@@ -11,6 +11,11 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const all = await deployments.all();
   let names = Object.keys(all);
 
+  const isHexAddress = (value: unknown): value is string =>
+    typeof value === 'string' && /^0x[0-9a-fA-F]{40}$/.test(value);
+  const isHexData = (value: unknown): value is string =>
+    typeof value === 'string' && /^0x[0-9a-fA-F]*$/.test(value);
+
   const report: {
     network: string;
     generatedAt: string;
@@ -60,6 +65,23 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     const address = d.address;
     let args = d.args || [];
 
+    // Verificação de proxies (ERC1967/UUPS) costuma ser instável em alguns explorers
+    // e pode gerar warnings duplicados (Proxy vs Proxy_Proxy) via hardhat-upgrades.
+    // Para manter o processo determinístico, verificamos apenas implementações e contratos não-proxy.
+    const isProxyDeployment = /Proxy$/i.test(name) || /Proxy_Proxy$/i.test(name);
+    if (isProxyDeployment) {
+      report.results.push({
+        name,
+        address,
+        status: 'skipped',
+        reason: 'Proxy; verificando apenas implementação',
+      });
+      report.totals.skipped++;
+      continue;
+    }
+
+    const contract = undefined;
+
     // Implementations behind proxies usually have zero-arg constructors.
     // Force empty args for any deployment labeled as an implementation.
     const isImplementation = /Implementation$/i.test(name) || /Proxy_Implementation/i.test(name);
@@ -68,7 +90,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     }
 
     try {
-      await run('verify:verify', {address, constructorArguments: args});
+      await run('verify:verify', {address, constructorArguments: args, contract});
       console.log(`[verify] Contrato '${name}' verificado em ${address}.`);
       report.results.push({name, address, status: 'verified'});
       report.totals.verified++;
