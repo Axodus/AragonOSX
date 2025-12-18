@@ -6,7 +6,7 @@ import {
   managementDaoSubdomainEnv,
   countryRegistryEnv,
 } from '../../../utils/environment';
-import {getContractAddress, getENSAddress, uploadToIPFS} from '../../helpers';
+import {getContractAddress, getENSAddress} from '../../helpers';
 import MANAGEMENT_DAO_METADATA from '../../management-dao-metadata.json';
 import {uploadToPinata} from '@aragon/osx-commons-sdk';
 import {DeployFunction} from 'hardhat-deploy/types';
@@ -17,29 +17,33 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const [deployer] = await ethers.getSigners();
 
   const txOverrides = await (async () => {
+    const zero = ethers.toBigInt(0);
+    const ten = ethers.toBigInt(10);
+    const twelve = ethers.toBigInt(12);
     const envGas = process.env.HARMONY_GAS_PRICE;
-    const requestedGasPrice = envGas ? BigInt(envGas) : 0n;
+    const requestedGasPrice = envGas ? ethers.toBigInt(envGas) : zero;
 
-    let rpcGasPrice = 0n;
+    let rpcGasPrice = zero;
     try {
       const hex = (await hre.ethers.provider.send('eth_gasPrice', [])) as string;
-      rpcGasPrice = hex ? BigInt(hex) : 0n;
+      rpcGasPrice = hex ? ethers.toBigInt(hex) : zero;
     } catch (e) {
-      rpcGasPrice = 0n;
+      rpcGasPrice = zero;
     }
 
     // Evita `transaction underpriced` (Harmony costuma exigir >= eth_gasPrice).
     // Bump de 20% para reduzir flakiness.
-    const bumpedRpcGasPrice = rpcGasPrice > 0n ? (rpcGasPrice * 12n) / 10n : 0n;
+    const bumpedRpcGasPrice =
+      rpcGasPrice > zero ? (rpcGasPrice * twelve) / ten : zero;
     const gasPrice =
       requestedGasPrice > bumpedRpcGasPrice
         ? requestedGasPrice
         : bumpedRpcGasPrice;
 
     // Sem gasPrice (env nem rpc): não forçar overrides.
-    if (gasPrice === 0n) return {};
+    if (gasPrice === zero) return {};
 
-    const requestedGasLimit = BigInt(
+    const requestedGasLimit = ethers.toBigInt(
       process.env.HARMONY_LEGACY_GAS_LIMIT || '1500000'
     );
 
@@ -49,14 +53,15 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     try {
       const latestBlock = await hre.ethers.provider.getBlock('latest');
       const blockGasLimit = (latestBlock as any)?.gasLimit as bigint | undefined;
-      if (blockGasLimit && blockGasLimit > 0n) {
-        const safetyMargin = 100_000n;
+      if (blockGasLimit && blockGasLimit > zero) {
+        const safetyMargin = ethers.toBigInt(100000);
         const maxAllowed =
           blockGasLimit > safetyMargin
             ? blockGasLimit - safetyMargin
             : blockGasLimit;
 
-        const gasLimit = requestedGasLimit > maxAllowed ? maxAllowed : requestedGasLimit;
+        const gasLimit =
+          requestedGasLimit > maxAllowed ? maxAllowed : requestedGasLimit;
         return {type: 0, gasPrice, gasLimit};
       }
     } catch (e) {
