@@ -47,6 +47,33 @@ async function main() {
     console.log('Signer has ROOT (hasPermission):', hasRootAlt);
   }
 
+  // Check known env addresses
+  const envMultisig = process.env.HARMONY_MANAGEMENT_DAO_MULTISIG;
+  const envApprovers = (process.env.MANAGEMENT_DAO_MULTISIG_APPROVERS || '')
+    .split(',')
+    .map(s => s.trim())
+    .filter(Boolean);
+  if (envMultisig) {
+    try {
+      const hasRootMs = await dao.isGranted(managingDao, envMultisig, ROOT, '0x');
+      console.log('Multisig has ROOT:', hasRootMs, envMultisig);
+    } catch (_) {
+      const hasRootMsAlt = await dao.hasPermission(managingDao, envMultisig, ROOT, '0x');
+      console.log('Multisig has ROOT (hasPermission):', hasRootMsAlt, envMultisig);
+    }
+  }
+  if (envApprovers.length) {
+    for (const addr of envApprovers) {
+      try {
+        const hasRootAp = await dao.isGranted(managingDao, addr, ROOT, '0x');
+        console.log('Approver has ROOT:', hasRootAp, addr);
+      } catch (_) {
+        const hasRootApAlt = await dao.hasPermission(managingDao, addr, ROOT, '0x');
+        console.log('Approver has ROOT (hasPermission):', hasRootApAlt, addr);
+      }
+    }
+  }
+
   // Check if DAOFactory already has REGISTER_DAO_PERMISSION on Registry
   try {
     const granted = await dao.isGranted(registryAddr, daoFactoryAddr, REGISTER_ID, '0x');
@@ -65,7 +92,29 @@ async function main() {
     toBlock: 'latest' as any,
   };
 
-  const logs = await ethers.provider.getLogs(filter as any);
+  let logs: any[] = [];
+  try {
+    logs = await ethers.provider.getLogs(filter as any);
+  } catch (e) {
+    // Fallback: paginate logs to avoid RPC limits
+    try {
+      const latest = await ethers.provider.getBlockNumber();
+      const step = 1000;
+      const topicGranted = filter.topics![0];
+      for (let from = 0; from <= latest; from += step) {
+        const to = Math.min(from + step - 1, latest);
+        const chunk = await ethers.provider.getLogs({
+          address: managingDao,
+          topics: [topicGranted, ROOT],
+          fromBlock: from,
+          toBlock: to,
+        } as any);
+        logs.push(...chunk);
+      }
+    } catch (e2) {
+      console.warn('Log scan skipped due to RPC limits:', (e2 as any)?.message || e2);
+    }
+  }
   const iface = new ethers.Interface([
     'event Granted(bytes32 permissionId,address here,address where,address who,address condition)',
   ]);

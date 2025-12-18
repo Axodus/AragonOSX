@@ -34,17 +34,23 @@ async function main() {
 
   // Harmony legacy overrides
   const provider = ethers.provider;
+  // Gas price: prefer env override, fallback to RPC, enforce minimum
   let gasPrice = BigInt(0);
+  const envGasRaw = process.env.HARMONY_GAS_PRICE;
+  const envGas = envGasRaw ? BigInt(envGasRaw) : undefined;
   try {
     const gasPriceHex = await provider.send('eth_gasPrice', []);
     gasPrice = BigInt(gasPriceHex);
   } catch (e) {
     gasPrice = BigInt('200000000000');
   }
+  if (envGas && envGas > gasPrice) {
+    gasPrice = envGas;
+  }
   const MIN_GWEI = BigInt('200000000000');
   const legacyOverrides: any = {
     type: 0,
-    gasLimit: BigInt(1000000),
+    gasLimit: BigInt(process.env.HARMONY_LEGACY_GAS_LIMIT || '2000000'),
     gasPrice: gasPrice < MIN_GWEI ? MIN_GWEI : gasPrice,
   };
 
