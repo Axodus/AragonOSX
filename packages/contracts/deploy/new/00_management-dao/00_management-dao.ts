@@ -1,6 +1,5 @@
 import daoArtifactJson from '../../../artifacts/src/core/dao/DAO.sol/DAO.json';
 import {ArtifactData, DeployFunction} from 'hardhat-deploy/types';
-import {managementDaoMultisigAddressEnv} from '../../../utils/environment';
 import {HardhatRuntimeEnvironment} from 'hardhat/types';
 
 /** NOTE:
@@ -19,7 +18,11 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
       ` At the final step when Multisig is available, it will be installed on managementDAO and all roles for the Deployer will be revoked.`
   );
 
-  const initialOwnerAddress = managementDaoMultisigAddressEnv(network) || deployer.address;
+  // Para garantir que todas as permissões/grants possam ser aplicadas on-chain
+  // durante o deploy automatizado (especialmente em Harmony), inicializamos o
+  // ManagementDAO com o Deployer como owner temporário. Na fase de finalize,
+  // o Multisig será habilitado com EXECUTE e os privilégios do Deployer serão revogados.
+  const initialOwnerAddress = deployer.address;
 
   const initializeParams = {
     metadata: '0x',

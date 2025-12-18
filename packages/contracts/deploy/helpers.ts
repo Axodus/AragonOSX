@@ -255,9 +255,13 @@ export async function managePermissions(
       },
     ],
     0,
-    // Alguns RPCs (ex.: Harmony) não implementam corretamente eth_estimateGas.
-    // Forçamos limites explícitos para evitar falha de ProviderError: not implemented.
-    {gasLimit: 1_500_000}
+    // RPC Harmony: forçar transação legacy (type:0) com gasPrice e gasLimit fixos
+    (() => {
+      const envGas = process.env.HARMONY_GAS_PRICE;
+      const gasPrice = envGas ? BigInt(envGas) : BigInt(300_000_000_000);
+      const gasLimit = BigInt(process.env.HARMONY_LEGACY_GAS_LIMIT || '1500000');
+      return {type: 0, gasPrice, gasLimit};
+    })()
   );
   console.log(`Set permissions with ${tx.hash}. Waiting for confirmation...`);
   await tx.wait();

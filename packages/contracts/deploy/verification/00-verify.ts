@@ -28,13 +28,6 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   console.log(`[verify] Iniciando verificação de ${names.length} contratos em '${network.name}'.`);
 
-  const report: Array<{
-    name: string;
-    address: string;
-    verified: boolean;
-    message?: string;
-  }> = [];
-
   for (const name of names) {
     const d = all[name];
     const address = d.address;
@@ -50,30 +43,14 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     try {
       await run('verify:verify', {address, constructorArguments: args});
       console.log(`[verify] Contrato '${name}' verificado em ${address}.`);
-      report.push({name, address, verified: true});
     } catch (err: any) {
       const msg = String(err?.message || err);
       if (msg.includes('Already Verified') || msg.includes('Contract source code already verified')) {
         console.log(`[verify] Contrato '${name}' já verificado: ${address}.`);
-        report.push({name, address, verified: true, message: 'Already Verified'});
       } else {
         console.warn(`[verify] Falha ao verificar '${name}' (${address}): ${msg}`);
-        report.push({name, address, verified: false, message: msg});
       }
     }
-  }
-
-  // Persistir relatório em JSON
-  try {
-    const fs = await import('fs');
-    const path = await import('path');
-    const outDir = path.resolve(__dirname, '..', 'deployments', network.name);
-    fs.mkdirSync(outDir, {recursive: true});
-    const outFile = path.join(outDir, 'verification-report.json');
-    fs.writeFileSync(outFile, JSON.stringify({network: network.name, report}, null, 2));
-    console.log(`[verify] Relatório salvo em ${outFile}`);
-  } catch (e) {
-    console.warn('[verify] Não foi possível salvar verification-report.json:', (e as any)?.message || e);
   }
 };
 
