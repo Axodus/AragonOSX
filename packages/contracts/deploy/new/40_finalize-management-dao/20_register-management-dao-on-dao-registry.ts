@@ -4,6 +4,7 @@ import {
   daoDomainEnv,
   isLocal,
   managementDaoSubdomainEnv,
+  countryRegistryEnv,
 } from '../../../utils/environment';
 import {getContractAddress, getENSAddress, uploadToIPFS} from '../../helpers';
 import MANAGEMENT_DAO_METADATA from '../../management-dao-metadata.json';
@@ -15,16 +16,22 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {ethers, network} = hre;
   const [deployer] = await ethers.getSigners();
 
-  // Get info from .env
+  const isHarmony = (network.name || '').toLowerCase().includes('harmony');
+  const countryRegistry = countryRegistryEnv(network);
+  const ensDisabled = isHarmony || (countryRegistry && countryRegistry.trim().length > 0);
+
+  // Get info from .env (apenas quando ENS estiver habilitado)
   const daoSubdomain = managementDaoSubdomainEnv(network);
   const daoDomain = daoDomainEnv(network);
 
-  if (!daoSubdomain)
+  if (!ensDisabled && !daoSubdomain)
     throw new Error('ManagementDAO subdomain has not been set in .env');
 
-  const node = (ethers as any).namehash
-    ? (ethers as any).namehash(`${daoSubdomain}.${daoDomain}`)
-    : require('eth-ens-namehash').hash(`${daoSubdomain}.${daoDomain}`);
+  const node = !ensDisabled
+    ? ((ethers as any).namehash
+        ? (ethers as any).namehash(`${daoSubdomain}.${daoDomain}`)
+        : require('eth-ens-namehash').hash(`${daoSubdomain}.${daoDomain}`))
+    : null;
 
   // Get `ManagementDAOProxy` address.
   const managementDAOAddress = await getContractAddress(
@@ -51,47 +58,63 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     deployer
   );
 
-    // Harmony não tem ENS oficial; se falhar, trate como não registrado
-    let owner = ethers.ZeroAddress;
+  // Em redes sem ENS (Harmony/Country Registry), registre com subdomain vazio.
+  // Isso mantém o DAORegistry funcional sem depender de ENS.
+  if (ensDisabled) {
+    try {
+      const registerTx = await daoRegistryContract.register(
+        managementDAOAddress,
+        deployer.address,
+        ''
+      );
+      await registerTx.wait();
+      console.log(
+        `Registered the (managingDAO: ${managementDAOAddress}) on (DAORegistry: ${daoRegistryAddress}) with empty subdomain, see (tx: ${registerTx.hash})`
+      );
+    } catch (e) {
+      console.log('[Finalize/Register] Falha ao registrar (no-ENS); pulando.');
+    }
+  } else {
+    // ENS habilitado: valida ownership do subdomain antes de registrar.
+    let owner = (ethers as any).ZeroAddress || '0x0000000000000000000000000000000000000000';
     try {
       const ensRegistryContract = ENSRegistry__factory.connect(
         await getENSAddress(hre),
         deployer
       );
-      owner = await ensRegistryContract.owner(node);
+      owner = await ensRegistryContract.owner(node as string);
     } catch (e) {
-      owner = ethers.ZeroAddress;
+      owner = (ethers as any).ZeroAddress || '0x0000000000000000000000000000000000000000';
     }
 
-    let daoENSSubdomainRegistrar = await getContractAddress(
+    const daoENSSubdomainRegistrar = await getContractAddress(
       'DAOENSSubdomainRegistrarProxy',
       hre
     );
 
     if (
       owner != daoENSSubdomainRegistrar &&
-      owner != (ethers as any).ZeroAddress
+      owner != ((ethers as any).ZeroAddress || '0x0000000000000000000000000000000000000000')
     ) {
       throw new Error(
-        `A DAO with ${daoSubdomain}.${daoDomain} is registered and owned by 
-        someone other than ENSSubdomainRegistrar ${daoENSSubdomainRegistrar}.`
+        `A DAO with ${daoSubdomain}.${daoDomain} is registered and owned by someone other than ENSSubdomainRegistrar ${daoENSSubdomainRegistrar}.`
       );
     }
 
-  if (owner === (ethers as any).ZeroAddress) {
-    // Register `managingDAO` on `DAORegistry`.
-    try {
-      const registerTx = await daoRegistryContract.register(
-        managementDAOAddress,
-        deployer.address,
-        daoSubdomain
-      );
-      await registerTx.wait();
-      console.log(
-        `Registered the (managingDAO: ${managementDAOAddress}) on (DAORegistry: ${daoRegistryAddress}), see (tx: ${registerTx.hash})`
-      );
-    } catch (e) {
-      console.log('[Finalize/Register] Falha ao registrar via deployer; pulando.');
+    if (owner === ((ethers as any).ZeroAddress || '0x0000000000000000000000000000000000000000')) {
+      try {
+        const registerTx = await daoRegistryContract.register(
+          managementDAOAddress,
+          deployer.address,
+          daoSubdomain
+        );
+        await registerTx.wait();
+        console.log(
+          `Registered the (managingDAO: ${managementDAOAddress}) on (DAORegistry: ${daoRegistryAddress}), see (tx: ${registerTx.hash})`
+        );
+      } catch (e) {
+        console.log('[Finalize/Register] Falha ao registrar via deployer; pulando.');
+      }
     }
   }
 
@@ -117,7 +140,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   }
 
   const hasMetadataPermission = await managementDaoContract.hasPermission(
-    managementDaoContract.address,
+    managementDAOAddress,
     deployer.address,
     ethers.keccak256(ethers.toUtf8Bytes('SET_METADATA_PERMISSION')),
     '0x'
