@@ -218,12 +218,5 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   console.log('Framework deployment verified');
 };
 export default func;
-func.tags = [
-  'new',
-  'ENSSubdomainRegistrar',
-  'DAORegistry',
-  'PluginRepoRegistry',
-  'PluginRepoFactory',
-  'PluginSetupProcessor',
-  'DAOFactory',
-];
+func.runAtTheEnd = true;
+func.tags = ['new', 'Verify'];
