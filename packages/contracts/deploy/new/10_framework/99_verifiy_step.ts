@@ -18,11 +18,25 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {ethers} = hre;
   const [deployer] = await ethers.getSigners();
 
+  const isAddress = (value: string): boolean => {
+    const fn = (ethers as any).isAddress ?? (ethers as any).utils?.isAddress;
+    if (typeof fn === 'function') return !!fn(value);
+    return /^0x[0-9a-fA-F]{40}$/.test(value);
+  };
+
+  const requireDeployedAddress = async (deploymentName: string): Promise<string> => {
+    const addr = await getContractAddress(deploymentName, hre);
+    if (!addr || !isAddress(addr)) {
+      throw new Error(
+        `[verify] Deployment ausente/inválido para '${deploymentName}' na rede '${hre.network.name}'. ` +
+          `Valor retornado: '${addr}'.`
+      );
+    }
+    return addr;
+  };
+
   // Get `managementDAO` address.
-  const managementDAOAddress = await getContractAddress(
-    'ManagementDAOProxy',
-    hre
-  );
+  const managementDAOAddress = await requireDeployedAddress('ManagementDAOProxy');
 
   // If network has no ENS (e.g., Harmony), skip ENS-related verifications
   const ensDisabled = (hre.network.name || '').toLowerCase().includes('harmony');
@@ -102,7 +116,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   }
 
   // VERIFYING DAO REGISTRY
-  const DAORegistryAddress = await getContractAddress('DAORegistryProxy', hre);
+  const DAORegistryAddress = await requireDeployedAddress('DAORegistryProxy');
   const DAORegistry = DAORegistry__factory.connect(
     DAORegistryAddress,
     deployer
@@ -122,9 +136,8 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   }
 
   // VERIFYING PLUGIN REPO REGISTRY
-  const PluginRepoRegistryAddress = await getContractAddress(
-    'PluginRepoRegistryProxy',
-    hre
+  const PluginRepoRegistryAddress = await requireDeployedAddress(
+    'PluginRepoRegistryProxy'
   );
   const PluginRepoRegistry = PluginRepoRegistry__factory.connect(
     PluginRepoRegistryAddress,
@@ -145,10 +158,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   }
 
   // VERIFYING PLUGIN REPO FACTORY
-  const PluginRepoFactoryAddress = await getContractAddress(
-    'PluginRepoFactory',
-    hre
-  );
+  const PluginRepoFactoryAddress = await requireDeployedAddress('PluginRepoFactory');
   const PluginRepoFactory = PluginRepoFactory__factory.connect(
     PluginRepoFactoryAddress,
     deployer
@@ -165,9 +175,8 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   }
 
   // VERIFYING PSP
-  const PluginSetupProcessorAddress = await getContractAddress(
-    'PluginSetupProcessor',
-    hre
+  const PluginSetupProcessorAddress = await requireDeployedAddress(
+    'PluginSetupProcessor'
   );
   const PluginSetupProcessor = PluginSetupProcessor__factory.connect(
     PluginSetupProcessorAddress,
@@ -185,7 +194,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   }
 
   // VERIFYING DAO FACTORY
-  const DAOFactoryAddress = await getContractAddress('DAOFactory', hre);
+  const DAOFactoryAddress = await requireDeployedAddress('DAOFactory');
   const DAOFactory = DAOFactory__factory.connect(DAOFactoryAddress, deployer);
   // scope to reuse same const again
   {
