@@ -38,7 +38,6 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   if (!pluginRepoFactoryDeployment) missing.push('PluginRepoFactory');
 
   if (missing.length) {
-        `Recuso reutilizar. Use --reset ou apague deployments/${network.name}.`
     // Deployments parciais normalmente indicam um deploy anterior interrompido.
     // Nesse caso, permita continuar o deploy ao invés de forçar reset.
     console.log(
@@ -47,6 +46,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
       )}). Prosseguindo para continuar o deploy.`
     );
     return;
+  }
 
   // Narrow types after the explicit completeness check above.
   if (
