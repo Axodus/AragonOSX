@@ -10,7 +10,10 @@ import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.s
 contract DaoProxyFactory {
     event DaoProxyDeployed(address proxy, address implementation);
 
-    function deployDaoProxy(address implementation, bytes calldata initData) external returns (address) {
+    function deployDaoProxy(
+        address implementation,
+        bytes calldata initData
+    ) external returns (address) {
         ERC1967Proxy proxy = new ERC1967Proxy(implementation, initData);
         emit DaoProxyDeployed(address(proxy), implementation);
         return address(proxy);

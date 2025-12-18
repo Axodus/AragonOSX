@@ -13,6 +13,19 @@ async function main() {
 
   const [signer] = await ethers.getSigners();
 
+  // Harmony legacy overrides
+  const provider = ethers.provider;
+  let gasPrice = BigInt(0);
+  try {
+    const gasPriceHex = await provider.send('eth_gasPrice', []);
+    gasPrice = BigInt(gasPriceHex);
+  } catch (e) {
+    // fallback para 200 gwei se o RPC não suportar eth_gasPrice
+    gasPrice = BigInt('200000000000');
+  }
+  const MIN_GWEI = BigInt('200000000000');
+  const legacyOverrides: any = { type: 0, gasLimit: BigInt(1000000), gasPrice: gasPrice < MIN_GWEI ? MIN_GWEI : gasPrice };
+
   // Compose initialize calldata for DAO.initialize(bytes,address,address,string)
   const daoIface = new ethers.Interface([
     'function initialize(bytes _metadata, address _initialOwner, address _trustedForwarder, string daoURI_)',
@@ -25,16 +38,9 @@ async function main() {
   ]);
 
   const Factory = await ethers.getContractFactory('DaoProxyFactory');
-  const factory = await Factory.deploy();
+  const factory = await Factory.deploy(legacyOverrides);
   await factory.waitForDeployment();
   console.log('DaoProxyFactory:', await factory.getAddress());
-
-  // Harmony legacy overrides
-  const provider = ethers.provider;
-  const gasPriceHex = await provider.send('eth_gasPrice', []);
-  const gasPrice = BigInt(gasPriceHex);
-  const MIN_GWEI = 200n * 10n ** 9n;
-  const legacyOverrides: any = { type: 0, gasLimit: 1_000_000n, gasPrice: gasPrice < MIN_GWEI ? MIN_GWEI : gasPrice };
 
   const tx = await factory.deployDaoProxy(daoImpl, initCalldata, legacyOverrides);
   console.log('Deploy tx:', tx.hash);
