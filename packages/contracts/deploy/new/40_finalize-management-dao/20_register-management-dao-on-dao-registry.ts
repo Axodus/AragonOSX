@@ -18,9 +18,27 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const txOverrides = await (async () => {
     const envGas = process.env.HARMONY_GAS_PRICE;
-    if (!envGas) return {};
+    const requestedGasPrice = envGas ? BigInt(envGas) : 0n;
 
-    const gasPrice = BigInt(envGas);
+    let rpcGasPrice = 0n;
+    try {
+      const hex = (await hre.ethers.provider.send('eth_gasPrice', [])) as string;
+      rpcGasPrice = hex ? BigInt(hex) : 0n;
+    } catch (e) {
+      rpcGasPrice = 0n;
+    }
+
+    // Evita `transaction underpriced` (Harmony costuma exigir >= eth_gasPrice).
+    // Bump de 20% para reduzir flakiness.
+    const bumpedRpcGasPrice = rpcGasPrice > 0n ? (rpcGasPrice * 12n) / 10n : 0n;
+    const gasPrice =
+      requestedGasPrice > bumpedRpcGasPrice
+        ? requestedGasPrice
+        : bumpedRpcGasPrice;
+
+    // Sem gasPrice (env nem rpc): não forçar overrides.
+    if (gasPrice === 0n) return {};
+
     const requestedGasLimit = BigInt(
       process.env.HARMONY_LEGACY_GAS_LIMIT || '1500000'
     );
