@@ -1,6 +1,6 @@
 import ensSubdomainRegistrarArtifact from '../../../artifacts/src/framework/utils/ens/ENSSubdomainRegistrar.sol/ENSSubdomainRegistrar.json';
 import {DAO__factory, ENSRegistry__factory} from '../../../typechain';
-import {daoDomainEnv, pluginDomainEnv} from '../../../utils/environment';
+import {countryRegistryEnv, daoDomainEnv, pluginDomainEnv} from '../../../utils/environment';
 import {getContractAddress, getENSAddress} from '../../helpers';
 import {DeployFunction} from 'hardhat-deploy/types';
 import {HardhatRuntimeEnvironment} from 'hardhat/types';
@@ -14,6 +14,14 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     return;
   }
 
+  const countryRegistry = countryRegistryEnv(network);
+  if (countryRegistry && countryRegistry.trim().length > 0) {
+    console.log(
+      `[ENS] Country Registry configurado (${countryRegistry}). Pulando subdomain registrars.`
+    );
+    return;
+  }
+
   const [deployer] = await ethers.getSigners();
 
   // Get `managementDAO` address.
@@ -23,7 +31,13 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   );
   const managementDAO = DAO__factory.connect(managementDAOAddress, deployer);
 
-  const ensRegistryAddress = await getENSAddress(hre);
+  let ensRegistryAddress: string | null = null;
+  try {
+    ensRegistryAddress = await getENSAddress(hre);
+  } catch (e) {
+    console.log('[ENS] No deployment/address for ENSRegistry. Pulando subdomain registrars.');
+    return;
+  }
   // If ENS is not available on this network, skip.
   if (!ensRegistryAddress) {
     console.log("[ENS] Registro não disponível nesta rede. Pulando subdomain registrars.");

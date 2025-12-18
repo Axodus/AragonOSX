@@ -1,6 +1,10 @@
 import {ENSRegistry__factory} from '../../../typechain';
 import {ENSRegistry} from '../../../typechain/ENSRegistry';
-import {daoDomainEnv, pluginDomainEnv} from '../../../utils/environment';
+import {
+  countryRegistryEnv,
+  daoDomainEnv,
+  pluginDomainEnv,
+} from '../../../utils/environment';
 import {
   getContractAddress,
   getENSAddress,
@@ -56,11 +60,37 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {ethers, network} = hre;
   const [deployer] = await ethers.getSigners();
 
+  // Harmony não tem ENS oficial (usa 1.country). Não tente resolver ENSRegistry via deployments.
+  if ((network.name || '').toLowerCase().includes('harmony')) {
+    console.log(`[ENS] Rede '${network.name}' sem suporte ENS oficial. Pulando subdomains.`);
+    return;
+  }
+
+  // Se um Country Registry estiver configurado, o fluxo de ENS não deve rodar.
+  const countryRegistry = countryRegistryEnv(network);
+  if (countryRegistry && countryRegistry.trim().length > 0) {
+    console.log(
+      `[ENS] Country Registry configurado (${countryRegistry}). Pulando subdomains.`
+    );
+    return;
+  }
+
   // Get ENS subdomains
   const daoDomain = daoDomainEnv(network);
   const pluginDomain = pluginDomainEnv(network);
 
-  const ensRegistryAddress = await getENSAddress(hre);
+  let ensRegistryAddress: string | null = null;
+  try {
+    ensRegistryAddress = await getENSAddress(hre);
+  } catch (e) {
+    console.log(`[ENS] No deployment/address for ENSRegistry. Pulando subdomains.`);
+    return;
+  }
+
+  if (!ensRegistryAddress) {
+    console.log(`[ENS] ENSRegistry address vazio. Pulando subdomains.`);
+    return;
+  }
   const ensRegistryContract = ENSRegistry__factory.connect(
     ensRegistryAddress,
     deployer
@@ -72,10 +102,6 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   );
 
   // Check if domains are owned by the managementDAO
-  if (network.name === 'harmony' || network.name === 'harmonyTestnet') {
-    console.log(`[ENS] Rede '${network.name}' sem suporte ENS oficial. Pulando subdomains.`);
-    return;
-  }
   const daoNode = (ethers as any).namehash
     ? (ethers as any).namehash(daoDomain)
     : require('eth-ens-namehash').hash(daoDomain);

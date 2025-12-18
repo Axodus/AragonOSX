@@ -16,7 +16,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const officialEnsRegistryAddress = ENS_ADDRESSES[network.name];
 
   // Harmony redes usam 1.country; se houver registry configurado, apenas valida domínios via leitura posteriormente.
-  if (network.name === 'harmony' || network.name === 'harmonyTestnet') {
+  if ((network.name || '').toLowerCase().includes('harmony')) {
     const countryRegistry = countryRegistryEnv(network);
     if (countryRegistry && countryRegistry.trim().length > 0) {
       console.log(`[Country] Registry configurado (${countryRegistry}). Pulando deploy ENS padrão.`);
