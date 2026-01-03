@@ -187,6 +187,11 @@ contract DAOFactory is ERC165, ProtocolVersion {
         // Set the rest of DAO's permissions.
         _setDAOPermissions(daoAddress);
 
+        // Ensure the DAO creator can perform post-creation governance setup.
+        // Without this, the creator may be unable to grant/revoke permissions (e.g. during initial plugin/governance configuration)
+        // and the same issue would repeat for every new DAO.
+        createdDao.grant(daoAddress, msg.sender, ROOT_PERMISSION_ID);
+
         // Revoke Temporarily `ROOT_PERMISSION_ID` that implicitly granted to this `DaoFactory`
         // at the create dao step `address(this)` being the initial owner of the new created DAO.
         createdDao.revoke(daoAddress, address(this), ROOT_PERMISSION_ID);

@@ -419,6 +419,23 @@ describe('DAOFactory: ', function () {
       }
     });
 
+    it('grants ROOT_PERMISSION to the DAO creator', async () => {
+      const tx = await daoFactory.createDao(daoSettings, [pluginInstallationData]);
+      const {dao, creator} = await extractInfoFromCreateDaoTx(tx);
+
+      const factory = new DAO__factory(signers[0]);
+      const daoContract = factory.attach(dao);
+
+      expect(
+        await daoContract.hasPermission(
+          dao,
+          creator,
+          DAO_PERMISSIONS.ROOT_PERMISSION_ID,
+          '0x'
+        )
+      ).to.equal(true);
+    });
+
     it('creates a dao and sets its own permissions correctly on itself', async () => {
       const tx = await daoFactory.createDao(daoSettings, [
         pluginInstallationData,
@@ -654,6 +671,28 @@ describe('DAOFactory: ', function () {
           createdDao,
           ownerAddress,
           DAO_PERMISSIONS.EXECUTE_PERMISSION_ID,
+          '0x'
+        )
+      ).to.equal(true);
+    });
+
+    it('should grant ROOT_PERMISSION to the DAO creator', async function () {
+      const tx = await daoFactory.createDao(daoSettings, []);
+
+      const createdDao = findEventLog<DAORegisteredEvent>(
+        await tx.wait(),
+        DAORegistry__factory.createInterface(),
+        EVENTS.DAORegistered
+      ).args.dao;
+
+      const factory = new DAO__factory(signers[0]);
+      const daoContract = factory.attach(createdDao);
+
+      expect(
+        await daoContract.hasPermission(
+          createdDao,
+          ownerAddress,
+          DAO_PERMISSIONS.ROOT_PERMISSION_ID,
           '0x'
         )
       ).to.equal(true);
