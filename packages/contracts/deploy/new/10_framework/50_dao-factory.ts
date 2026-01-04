@@ -31,11 +31,17 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     rescueMultisig = (process.env.HARDHAT_MANAGEMENT_DAO_MULTISIG || '').trim() || ethers.ZeroAddress;
   }
 
+  // hardhat-deploy will skip if a deployment with the same name already exists.
+  // This flag allows forcing a redeploy (useful when constructor/bytecode changed).
+  const forceDeploy =
+    (process.env.FORCE_DEPLOY_DAOFACTORY || '').trim().toLowerCase() === 'true';
+
   await deploy('DAOFactory', {
     contract: daoFactoryArtifact,
     from: deployer.address,
     args: [daoRegistryAddress, pluginSetupProcessorAddress, rescueMultisig],
     log: true,
+    skipIfAlreadyDeployed: !forceDeploy,
   });
 };
 export default func;
