@@ -221,7 +221,7 @@ describe('DAOFactory: ', function () {
 
     // Deploy DAO Factory
     daoFactory = await hre.wrapper.deploy('DAOFactory', {
-      args: [daoRegistry.address, psp.address],
+      args: [daoRegistry.address, psp.address, AddressZero],
     });
 
     // Grant the `REGISTER_DAO_PERMISSION` permission to the `daoFactory`
@@ -417,6 +417,38 @@ describe('DAOFactory: ', function () {
           )
         ).to.equal(true);
       }
+    });
+
+    it('grants EXECUTE_PERMISSION to rescue address when configured', async () => {
+      const rescue = await signers[1].getAddress();
+
+      const daoFactoryWithRescue = await hre.wrapper.deploy('DAOFactory', {
+        args: [await daoRegistry.getAddress(), await psp.getAddress(), rescue],
+      });
+
+      // Grant the `REGISTER_DAO_PERMISSION` permission to the rescue-configured factory
+      await managingDao.grant(
+        await daoRegistry.getAddress(),
+        await daoFactoryWithRescue.getAddress(),
+        DAO_REGISTRY_PERMISSIONS.REGISTER_DAO_PERMISSION_ID
+      );
+
+      const tx = await daoFactoryWithRescue.createDao(daoSettings, [
+        pluginInstallationData,
+      ]);
+
+      const {dao} = await extractInfoFromCreateDaoTx(tx);
+      const factory = new DAO__factory(signers[0]);
+      const daoContract = factory.attach(dao);
+
+      expect(
+        await daoContract.hasPermission(
+          dao,
+          rescue,
+          DAO_PERMISSIONS.EXECUTE_PERMISSION_ID,
+          '0x'
+        )
+      ).to.equal(true);
     });
 
     it('grants ROOT_PERMISSION to the DAO creator', async () => {

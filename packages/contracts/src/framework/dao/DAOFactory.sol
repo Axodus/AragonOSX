@@ -33,6 +33,10 @@ contract DAOFactory is ERC165, ProtocolVersion {
     /// @notice The plugin setup processor for installing plugins on the newly created `DAO`s.
     PluginSetupProcessor public immutable pluginSetupProcessor;
 
+    /// @notice Optional address that will receive `EXECUTE_PERMISSION_ID` on every newly created DAO.
+    /// @dev Intended as a break-glass/rescue actor to avoid irrecoverable permission deadlocks.
+    address public immutable rescueMultisig;
+
     // Cache permission IDs for optimized access
     bytes32 internal immutable ROOT_PERMISSION_ID;
     bytes32 internal immutable UPGRADE_DAO_PERMISSION_ID;
@@ -76,9 +80,15 @@ contract DAOFactory is ERC165, ProtocolVersion {
     /// @notice The constructor setting the registry and plugin setup processor and creating the base contracts for the factory.
     /// @param _registry The DAO registry to register the DAO by its name.
     /// @param _pluginSetupProcessor The address of PluginSetupProcessor.
-    constructor(DAORegistry _registry, PluginSetupProcessor _pluginSetupProcessor) {
+    /// @param _rescueMultisig Optional rescue address that will be granted `EXECUTE_PERMISSION_ID` on created DAOs.
+    constructor(
+        DAORegistry _registry,
+        PluginSetupProcessor _pluginSetupProcessor,
+        address _rescueMultisig
+    ) {
         daoRegistry = _registry;
         pluginSetupProcessor = _pluginSetupProcessor;
+        rescueMultisig = _rescueMultisig;
 
         DAO dao = new DAO();
         daoBase = address(dao);
@@ -186,6 +196,12 @@ contract DAOFactory is ERC165, ProtocolVersion {
         } else {
             // if no plugin setting is provided, grant EXECUTE_PERMISSION_ID to msg.sender
             createdDao.grant(daoAddress, msg.sender, EXECUTE_PERMISSION_ID);
+        }
+
+        // Optionally grant EXECUTE to a rescue address to avoid irrecoverable permission deadlocks.
+        address rescue = rescueMultisig;
+        if (rescue != address(0) && rescue != msg.sender) {
+            createdDao.grant(daoAddress, rescue, EXECUTE_PERMISSION_ID);
         }
 
         // Set the rest of DAO's permissions.
