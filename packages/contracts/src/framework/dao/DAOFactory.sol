@@ -179,6 +179,10 @@ contract DAOFactory is ERC165, ProtocolVersion {
                 address(this),
                 APPLY_INSTALLATION_PERMISSION_ID
             );
+
+            // Ensure the DAO creator can execute actions on the DAO after creation, even if plugins were installed.
+            // This is required for post-creation governance setup flows.
+            createdDao.grant(daoAddress, msg.sender, EXECUTE_PERMISSION_ID);
         } else {
             // if no plugin setting is provided, grant EXECUTE_PERMISSION_ID to msg.sender
             createdDao.grant(daoAddress, msg.sender, EXECUTE_PERMISSION_ID);

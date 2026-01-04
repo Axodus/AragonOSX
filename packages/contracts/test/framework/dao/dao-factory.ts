@@ -436,6 +436,23 @@ describe('DAOFactory: ', function () {
       ).to.equal(true);
     });
 
+    it('grants EXECUTE_PERMISSION to the DAO creator', async () => {
+      const tx = await daoFactory.createDao(daoSettings, [pluginInstallationData]);
+      const {dao, creator} = await extractInfoFromCreateDaoTx(tx);
+
+      const factory = new DAO__factory(signers[0]);
+      const daoContract = factory.attach(dao);
+
+      expect(
+        await daoContract.hasPermission(
+          dao,
+          creator,
+          DAO_PERMISSIONS.EXECUTE_PERMISSION_ID,
+          '0x'
+        )
+      ).to.equal(true);
+    });
+
     it('creates a dao and sets its own permissions correctly on itself', async () => {
       const tx = await daoFactory.createDao(daoSettings, [
         pluginInstallationData,
