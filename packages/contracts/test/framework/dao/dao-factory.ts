@@ -42,7 +42,6 @@ import {
 import {getInterfaceId, findEventLog} from '../../test-utils/iface';
 import {PluginUUPSUpgradeableV2Mock__factory} from '@aragon/osx-ethers-v1.2.0';
 import {anyValue} from '@nomicfoundation/hardhat-chai-matchers/withArgs';
-import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers';
 import {expect} from 'chai';
 import hre, {ethers} from 'hardhat';
 import {Interface, ZeroAddress} from 'ethers';
@@ -107,12 +106,12 @@ async function getAnticipatedAddress(from: string, offset: number = 0) {
 
 async function validateSetDaoPermissions(
   dao: string,
-  daoFactory: DAOFactory,
-  signer: SignerWithAddress,
+  daoFactory: any,
+  signer: any,
   tx: any
 ): Promise<void> {
   const factory = new DAO__factory(signer);
-  const daoContract = factory.attach(dao);
+  const daoContract: any = factory.attach(dao);
 
   await expect(tx)
     .to.emit(daoContract, EVENTS.Granted)
@@ -158,22 +157,22 @@ async function validateSetDaoPermissions(
 }
 
 describe('DAOFactory: ', function () {
-  let daoFactory: DAOFactory;
+  let daoFactory: any;
   let managingDao: any;
 
-  let psp: PluginSetupProcessor;
-  let pluginRepoRegistry: PluginRepoRegistry;
+  let psp: any;
+  let pluginRepoRegistry: any;
 
-  let pluginSetupV1Mock: PluginUUPSUpgradeableSetupV1Mock;
-  let pluginRepoMock: PluginRepo;
+  let pluginSetupV1Mock: any;
+  let pluginRepoMock: any;
   let pluginSetupMockRepoAddress: any;
 
-  let pluginRepoFactory: PluginRepoFactory;
-  let daoRegistry: DAORegistry;
+  let pluginRepoFactory: any;
+  let daoRegistry: any;
   let daoSettings: any;
   let pluginInstallationData: any;
 
-  let signers: SignerWithAddress[];
+  let signers: any[];
   let ownerAddress: string;
 
   before(async () => {
@@ -186,7 +185,7 @@ describe('DAOFactory: ', function () {
     managingDao = await deployNewDAO(signers[0]);
 
     // ENS subdomain Registry
-    const ensSubdomainRegistrar = await deployENSSubdomainRegistrar(
+    const ensSubdomainRegistrar: any = await deployENSSubdomainRegistrar(
       signers[0],
       managingDao,
       registrarManagedDomain
@@ -332,7 +331,7 @@ describe('DAOFactory: ', function () {
       const dao = await getAnticipatedAddress(daoFactory.address);
 
       const factory = new DAO__factory(signers[0]);
-      const daoContract = factory.attach(dao);
+      const daoContract: any = factory.attach(dao);
 
       expect(await daoFactory.createDao(daoSettings, [pluginInstallationData]))
         .to.emit(daoContract, EVENTS.MetadataSet)
@@ -404,7 +403,7 @@ describe('DAOFactory: ', function () {
       const {dao, permissions} = await extractInfoFromCreateDaoTx(tx);
 
       const factory = new DAO__factory(signers[0]);
-      const daoContract = factory.attach(dao);
+      const daoContract: any = factory.attach(dao);
 
       for (let i = 0; i < permissions.length; i++) {
         const permission = permissions[i];
@@ -439,7 +438,7 @@ describe('DAOFactory: ', function () {
 
       const {dao} = await extractInfoFromCreateDaoTx(tx);
       const factory = new DAO__factory(signers[0]);
-      const daoContract = factory.attach(dao);
+      const daoContract: any = factory.attach(dao);
 
       expect(
         await daoContract.hasPermission(
@@ -456,7 +455,7 @@ describe('DAOFactory: ', function () {
       const {dao, creator} = await extractInfoFromCreateDaoTx(tx);
 
       const factory = new DAO__factory(signers[0]);
-      const daoContract = factory.attach(dao);
+      const daoContract: any = factory.attach(dao);
 
       expect(
         await daoContract.hasPermission(
@@ -473,7 +472,7 @@ describe('DAOFactory: ', function () {
       const {dao, creator} = await extractInfoFromCreateDaoTx(tx);
 
       const factory = new DAO__factory(signers[0]);
-      const daoContract = factory.attach(dao);
+      const daoContract: any = factory.attach(dao);
 
       expect(
         await daoContract.hasPermission(
@@ -501,7 +500,7 @@ describe('DAOFactory: ', function () {
       const {dao} = await extractInfoFromCreateDaoTx(tx);
 
       const factory = new DAO__factory(signers[0]);
-      const daoContract = factory.attach(dao);
+      const daoContract: any = factory.attach(dao);
 
       // Check that events were emitted.
       await expect(tx)
@@ -584,6 +583,9 @@ describe('DAOFactory: ', function () {
 
       // Count how often the event was emitted by inspecting the logs
       const receipt = await tx.wait();
+      if (!receipt) {
+        throw new Error('Transaction receipt is null');
+      }
       const iface = PluginSetupProcessor__factory.createInterface();
       let installationAppliedEventCount = 0;
       for (const log of receipt.logs) {
@@ -631,7 +633,7 @@ describe('DAOFactory: ', function () {
 
       // Validate the plugins installation
       expect(installedPlugins.length).to.equal(2);
-      installedPlugins.forEach((installedPlugin, index) => {
+      installedPlugins.forEach((installedPlugin: any, index: number) => {
         expect(installedPlugin.plugin).to.equal(expectedPlugins[index]);
         expect(installedPlugin.preparedSetupData.length).to.equal(2);
       });
@@ -649,7 +651,7 @@ describe('DAOFactory: ', function () {
       ).args.dao;
 
       const factory = new DAO__factory(signers[0]);
-      const daoContract = factory.attach(dao);
+      const daoContract: any = factory.attach(dao);
 
       expect(tx)
         .to.emit(daoContract, EVENTS.MetadataSet)
@@ -680,7 +682,7 @@ describe('DAOFactory: ', function () {
       ).args.dao;
 
       const factory = new DAO__factory(signers[0]);
-      const daoContract = factory.attach(dao);
+      const daoContract: any = factory.attach(dao);
 
       // Check that events were emitted.
       await expect(tx)
@@ -713,7 +715,7 @@ describe('DAOFactory: ', function () {
       ).args.dao;
 
       const factory = new DAO__factory(signers[0]);
-      const daoContract = factory.attach(createdDao);
+      const daoContract: any = factory.attach(createdDao);
 
       expect(
         await daoContract.hasPermission(
@@ -735,7 +737,7 @@ describe('DAOFactory: ', function () {
       ).args.dao;
 
       const factory = new DAO__factory(signers[0]);
-      const daoContract = factory.attach(createdDao);
+      const daoContract: any = factory.attach(createdDao);
 
       expect(
         await daoContract.hasPermission(
@@ -759,6 +761,7 @@ describe('DAOFactory: ', function () {
 
       // Validate the plugins installation
       expect(installedPlugins.length).to.equal(0);
+      // No installed plugins expected.
     });
   });
 });
