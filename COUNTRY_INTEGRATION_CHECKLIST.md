@@ -88,7 +88,7 @@ Objetivo: deploy limpo do framework para parar de criar DAOs com permissões err
     2.3 Persistência do "nome preferido"
 
 - [x] Definir modelo: `primaryName` (string) para DAOs.
-- [ ] Expor nos endpoints de DAO list/detail.
+- [x] Expor nos endpoints de DAO list/detail.
 
   2.4 Opção A (vincular nome existente)
 
@@ -101,12 +101,12 @@ Objetivo: deploy limpo do framework para parar de criar DAOs com permissões err
 
   2.5 Opção B (registrar via admin/proposal)
 
-- [ ] Fornecer endpoint ou util (app) para gerar actions:
-  - [ ] `commit(bytes32)` (se necessário)
-  - [ ] `register(...)` (controller)
-  - [ ] `setResolver(node, PublicResolver)` (registry or wrapper)
-  - [ ] `setAddr(node, daoAddress)` (PublicResolver)
-- [ ] Documentar o fluxo 2 etapas se existir commitment.
+- [x] Fornecer endpoint ou util (app) para gerar actions:
+  - [x] `commit(bytes32)` (se necessário)
+  - [x] `register(...)` (controller)
+  - [x] `setResolver(node, PublicResolver)` (registry or wrapper)
+  - [x] `setAddr(node, daoAddress)` (PublicResolver)
+- [x] Documentar o fluxo 2 etapas se existir commitment.
 
 ---
 
@@ -118,7 +118,7 @@ Objetivo: deploy limpo do framework para parar de criar DAOs com permissões err
 
   3.2 Aceitar `.country` como identificador
 
-- [ ] Ajustar `daoUtils` para reconhecer `.country`.
+- [x] Ajustar `daoUtils` para reconhecer `.country`.
 - [ ] Roteamento: permitir carregar DAO por nome `.country` via backend.
 
   3.3 UI Admin
