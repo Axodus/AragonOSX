@@ -50,7 +50,7 @@ Objetivo: deploy limpo do framework para parar de criar DAOs com permissões err
   - [ ] Explorer key (se aplicável)
   - [ ] `HARMONY_*` necessários (multisig, gas overrides etc.)
 
-  1.2 Deploy (Hardhat)
+    1.2 Deploy (Hardhat)
 
 - [ ] Em `AragonOSX/packages/contracts`, rodar dry-run local:
   - [ ] `yarn deploy --deploy-scripts deploy/new --network hardhat --reset`
@@ -58,7 +58,7 @@ Objetivo: deploy limpo do framework para parar de criar DAOs com permissões err
 
   - [ ] `yarn deploy --network harmony --reset --tags new`
 
-  1.3 Pós-deploy
+    1.3 Pós-deploy
 
 - [ ] Validar output em `AragonOSX/packages/contracts/deployed_contracts.json`.
 - [ ] Rodar verificação de permissões do deploy (script `99_verify` em deploy/new/20_permissions).
@@ -78,23 +78,26 @@ Objetivo: deploy limpo do framework para parar de criar DAOs com permissões err
   - [ ] (opcional) `HARMONY_MAINNET_PUBLIC_RESOLVER=0x46E370...415D`
   - [ ] (opcional) `HARMONY_MAINNET_REGISTRAR_CONTROLLER=0x76c6fE...94Fb`
 
-  2.2 Resolver
+    2.2 Resolver
 
-- [ ] Confirmar que `Aragon-app-backend/src/helpers/nameResolver.ts` usa:
+- [x] Confirmar que `Aragon-app-backend/src/helpers/nameResolver.ts` usa:
 
-  - [ ] `registry.resolver(node)`
-  - [ ] `resolver.addr(node)`
+  - [x] `registry.resolver(node)`
+  - [x] `resolver.addr(node)`
 
-  2.3 Persistência do “nome preferido”
+    2.3 Persistência do "nome preferido"
 
-- [ ] Definir modelo: `primaryName` (string) para DAOs.
+- [x] Definir modelo: `primaryName` (string) para DAOs.
 - [ ] Expor nos endpoints de DAO list/detail.
 
   2.4 Opção A (vincular nome existente)
 
-- [ ] Admin fornece `daoName.country`.
-- [ ] Backend valida `resolve(daoName.country) == daoAddress`.
-- [ ] Backend salva `primaryName` e retorna.
+- [x] Admin fornece `daoName.country`.
+- [x] Backend valida `resolve(daoName.country) == daoAddress`.
+- [x] Backend salva `primaryName` e retorna.
+- [x] Criar endpoint `POST /set-primary-name` no admin API
+- [x] Adicionar validação Joi para `primaryName` (pattern `.country`)
+- [ ] Testar endpoint localmente
 
   2.5 Opção B (registrar via admin/proposal)
 
