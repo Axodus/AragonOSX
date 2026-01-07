@@ -1,6 +1,7 @@
 # Checklist end-to-end — Integração 1.country + Aragon (Harmony mainnet)
 
 Este documento é o guia único de execução para:
+
 - `.country` como identificador/alias de DAO
 - Vincular nome existente (A)
 - Registrar nome on-chain via admin/proposal (B)
@@ -27,6 +28,7 @@ Este documento é o guia único de execução para:
   - https://github.com/polymorpher/ens-deployer/tree/main/contract/abi
 
 Decisões de produto:
+
 - (A) Vincular nome existente exige: `addr(namehash(daoName.country)) == daoAddress`.
 - (B) Registrar via proposal: pode exigir **2 etapas** (commit e register) se houver commit-reveal.
 - Política de “proof”:
@@ -40,19 +42,24 @@ Decisões de produto:
 Objetivo: deploy limpo do framework para parar de criar DAOs com permissões erradas.
 
 1.1 Preparação
+
 - [ ] Seguir [DEPLOYMENT_CHECKLIST.md](DEPLOYMENT_CHECKLIST.md) no repo AragonOSX.
 - [ ] Configurar `.env` em `AragonOSX/packages/contracts`:
+
   - [ ] `ETH_KEY`
   - [ ] Explorer key (se aplicável)
   - [ ] `HARMONY_*` necessários (multisig, gas overrides etc.)
 
-1.2 Deploy (Hardhat)
+  1.2 Deploy (Hardhat)
+
 - [ ] Em `AragonOSX/packages/contracts`, rodar dry-run local:
   - [ ] `yarn deploy --deploy-scripts deploy/new --network hardhat --reset`
 - [ ] Rodar deploy na Harmony:
+
   - [ ] `yarn deploy --network harmony --reset --tags new`
 
-1.3 Pós-deploy
+  1.3 Pós-deploy
+
 - [ ] Validar output em `AragonOSX/packages/contracts/deployed_contracts.json`.
 - [ ] Rodar verificação de permissões do deploy (script `99_verify` em deploy/new/20_permissions).
 - [ ] Atualizar endereços em:
@@ -64,26 +71,33 @@ Objetivo: deploy limpo do framework para parar de criar DAOs com permissões err
 ## 2) Backend — suporte a `.country`
 
 2.1 Config
+
 - [ ] Setar envs (Harmony) do backend:
+
   - [ ] `HARMONY_MAINNET_COUNTRY_REGISTRY=0x547942...446D` (DC)
   - [ ] (opcional) `HARMONY_MAINNET_PUBLIC_RESOLVER=0x46E370...415D`
   - [ ] (opcional) `HARMONY_MAINNET_REGISTRAR_CONTROLLER=0x76c6fE...94Fb`
 
-2.2 Resolver
+  2.2 Resolver
+
 - [ ] Confirmar que `Aragon-app-backend/src/helpers/nameResolver.ts` usa:
+
   - [ ] `registry.resolver(node)`
   - [ ] `resolver.addr(node)`
 
-2.3 Persistência do “nome preferido”
+  2.3 Persistência do “nome preferido”
+
 - [ ] Definir modelo: `primaryName` (string) para DAOs.
 - [ ] Expor nos endpoints de DAO list/detail.
 
-2.4 Opção A (vincular nome existente)
+  2.4 Opção A (vincular nome existente)
+
 - [ ] Admin fornece `daoName.country`.
 - [ ] Backend valida `resolve(daoName.country) == daoAddress`.
 - [ ] Backend salva `primaryName` e retorna.
 
-2.5 Opção B (registrar via admin/proposal)
+  2.5 Opção B (registrar via admin/proposal)
+
 - [ ] Fornecer endpoint ou util (app) para gerar actions:
   - [ ] `commit(bytes32)` (se necessário)
   - [ ] `register(...)` (controller)
@@ -95,13 +109,24 @@ Objetivo: deploy limpo do framework para parar de criar DAOs com permissões err
 
 ## 3) Frontend — aceitar `.country` e administrar
 
-3.1 Aceitar `.country` como identificador
+3.1 Config de rede
+
+- [x] Adicionar endereços do `.country` (Registry/Controller/Resolver) em `aragon-app/src/shared/constants/networkDefinitions.ts`.
+
+  3.2 Aceitar `.country` como identificador
+
 - [ ] Ajustar `daoUtils` para reconhecer `.country`.
 - [ ] Roteamento: permitir carregar DAO por nome `.country` via backend.
 
-3.2 UI Admin
-- [ ] A: Tela/ação para “Vincular nome .country” (input + validação).
-- [ ] B: Tela/ação para “Registrar nome .country” criando proposal(s).
+  3.3 UI Admin
+
+- [ ] A: Tela/ação para "Vincular nome .country" (input + validação).
+- [x] B: Tela/ação para "Registrar nome .country" criando proposal(s):
+  - [x] Criar módulo de actions (`src/plugins/shared/countryRegistrar/`)
+  - [x] Componentes `CountryCommitAction` e `CountryRegisterAction`
+  - [x] Integrar actions nos plugins de governança (token/multisig/lockToVote/spp/admin)
+  - [x] Adicionar traduções (i18n) em `en.json`
+  - [ ] Validar que actions aparecem no Action Composer ao criar proposal
 
 ---
 
