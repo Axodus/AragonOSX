@@ -78,7 +78,9 @@ Objetivo: deploy limpo do framework para parar de criar DAOs com permissões err
   - [ ] (opcional) `HARMONY_MAINNET_PUBLIC_RESOLVER=0x46E370...415D`
   - [ ] (opcional) `HARMONY_MAINNET_REGISTRAR_CONTROLLER=0x76c6fE...94Fb`
 
-    2.2 Resolver
+- [x] Corrigir deploy local (Docker): criar redes externas `internal-net` e `public-net` quando ausentes.
+
+  2.2 Resolver
 
 - [x] Confirmar que `Aragon-app-backend/src/helpers/nameResolver.ts` usa:
 
@@ -97,6 +99,7 @@ Objetivo: deploy limpo do framework para parar de criar DAOs com permissões err
 - [x] Backend salva `primaryName` e retorna.
 - [x] Criar endpoint `POST /set-primary-name` no admin API
 - [x] Adicionar validação Joi para `primaryName` (pattern `.country`)
+- [x] Corrigir build do `aragon-admin-api` (tipagem/asserções no controller).
 - [ ] Testar endpoint localmente
 
   2.5 Opção B (registrar via admin/proposal)
