@@ -119,15 +119,19 @@ Objetivo: deploy limpo do framework para parar de criar DAOs com permissões err
   3.2 Aceitar `.country` como identificador
 
 - [x] Ajustar `daoUtils` para reconhecer `.country`.
-- [ ] Roteamento: permitir carregar DAO por nome `.country` via backend.
+- [x] Roteamento: permitir carregar DAO por nome `.country` via backend.
 
   3.3 UI Admin
 
-- [ ] A: Tela/ação para "Vincular nome .country" (input + validação).
+- [x] A: Tela/ação para "Vincular nome .country" (input + validação).
+  - [x] Criar serviço `daoAdminService` com método `setPrimaryName`
+  - [x] Criar hook `useSetPrimaryName`
+  - [x] Criar componente `DaoPrimaryNameCard`
+  - [x] Adicionar traduções i18n
+  - [x] Integrar componente na página de settings
 - [x] B: Tela/ação para "Registrar nome .country" criando proposal(s):
-  - [x] Criar módulo de actions (`src/plugins/shared/countryRegistrar/`)
-  - [x] Componentes `CountryCommitAction` e `CountryRegisterAction`
-  - [x] Integrar actions nos plugins de governança (token/multisig/lockToVote/spp/admin)
+  - [x] Criar módulo `countryRegistrar` com tipos, componentes e utils
+  - [x] Integrar nos 5 plugins de governança (token/multisig/lockToVote/spp/admin)
   - [x] Adicionar traduções (i18n) em `en.json`
   - [ ] Validar que actions aparecem no Action Composer ao criar proposal
 
