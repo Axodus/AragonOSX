@@ -1,7 +1,9 @@
 import {
   daoDomainEnv,
   ethKeyEnv,
+  countryRegistryEnv,
   managementDaoMultisigApproversEnv,
+  managementDaoMultisigAddressEnv,
   managementDaoMultisigListedOnlyEnv,
   managementDaoMultisigMinApprovalsEnv,
   managementDaoSubdomainEnv,
@@ -33,6 +35,12 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     managementDaoMultisigListedOnlyEnv(network);
   const ethKey = ethKeyEnv(network);
 
+  const isHarmony = (network.name || '').toLowerCase().includes('harmony');
+  const harmonyCountryRegistry = isHarmony ? countryRegistryEnv(network) : '';
+  const harmonyManagementMultisig = isHarmony
+    ? managementDaoMultisigAddressEnv(network)
+    : '';
+
   // technically redundant as the above functions throw if the env var is missing
   if (
     !daoDomain ||
@@ -41,7 +49,8 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     !managementDaoMultisigApprovers ||
     !managementDaoMultisigMinApprovals ||
     !managementDaoMultisigListedOnly ||
-    !ethKey
+    !ethKey ||
+    (isHarmony && (!harmonyCountryRegistry || !harmonyManagementMultisig))
   ) {
     throw new Error('Missing required env vars');
   }

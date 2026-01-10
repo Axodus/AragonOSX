@@ -22,11 +22,15 @@ dotenv.config();
 const ETH_KEY = process.env.ETH_KEY;
 const accounts = ETH_KEY ? ETH_KEY.split(',') : [];
 
-// check alchemy Api key existence
+// Alchemy API key is only required when deploying to networks whose RPC URLs are
+// derived from Alchemy. Keep it optional so custom networks (e.g. Harmony) can
+// deploy without needing unrelated credentials.
 if (process.env.ALCHEMY_API_KEY) {
   addRpcUrlToNetwork(process.env.ALCHEMY_API_KEY);
 } else {
-  throw new Error('ALCHEMY_API_KEY in .env not set');
+  console.log(
+    'WARNING: ALCHEMY_API_KEY in .env not set. Alchemy-based networks may be unavailable.'
+  );
 }
 
 // add accounts to network configs
@@ -104,7 +108,7 @@ task('test').setAction(async (args, hre, runSuper) => {
 
   const wrapper = await imp.Wrapper.create(
     hre.network.name,
-    hre.ethers.provider
+    hre.ethers.provider as any
   );
   hre.wrapper = wrapper;
 

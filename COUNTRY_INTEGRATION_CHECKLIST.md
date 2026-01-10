@@ -48,20 +48,23 @@ Objetivo: deploy limpo do framework para parar de criar DAOs com permissões err
 
   - [ ] `ETH_KEY`
   - [ ] Explorer key (se aplicável)
-  - [ ] `HARMONY_*` necessários (multisig, gas overrides etc.)
+  - [ ] `HARMONY_MAINNET_RPC=https://api.harmony.one`
+  - [ ] `HARMONY_COUNTRY_REGISTRY=0x547942748Cc8840FEc23daFdD01E6457379B446D`
+  - [ ] `HARMONY_MANAGEMENT_DAO_MULTISIG=<multisig final do ManagementDAO>`
+  - [ ] (opcional) `HARMONY_GAS_PRICE` / `HARMONY_LEGACY_GAS_LIMIT` (se precisar evitar `underpriced`/`estimateGas`)
 
     1.2 Deploy (Hardhat)
 
 - [ ] Em `AragonOSX/packages/contracts`, rodar dry-run local:
-  - [ ] `yarn deploy --deploy-scripts deploy/new --network hardhat --reset`
+  - [ ] `yarn deploy --network hardhat --reset`
 - [ ] Rodar deploy na Harmony:
 
-  - [ ] `yarn deploy --network harmony --reset --tags new`
+  - [ ] `yarn deploy --network harmony --reset`
 
     1.3 Pós-deploy
 
 - [ ] Validar output em `AragonOSX/packages/contracts/deployed_contracts.json`.
-- [ ] Rodar verificação de permissões do deploy (script `99_verify` em deploy/new/20_permissions).
+- [ ] Rodar verificação de permissões do deploy (script `99_verify` em deploy/new/20_permissions/99_verify.ts).
 - [ ] Atualizar endereços em:
   - [ ] Frontend `aragon-app/src/shared/constants/networkDefinitions.ts`
   - [ ] Backend `Aragon-app-backend/config/contracts/harmonyMainnet.json`
@@ -74,9 +77,11 @@ Objetivo: deploy limpo do framework para parar de criar DAOs com permissões err
 
 - [ ] Setar envs (Harmony) do backend:
 
-  - [ ] `HARMONY_MAINNET_COUNTRY_REGISTRY=0x547942...446D` (DC)
+  - [x] `HARMONY_MAINNET_COUNTRY_REGISTRY=0x547942...446D` (DC)
   - [ ] (opcional) `HARMONY_MAINNET_PUBLIC_RESOLVER=0x46E370...415D`
   - [ ] (opcional) `HARMONY_MAINNET_REGISTRAR_CONTROLLER=0x76c6fE...94Fb`
+
+- [x] Rodar testes unitários do backend (`yarn test:unit`) com sucesso.
 
 - [x] Corrigir deploy local (Docker): criar redes externas `internal-net` e `public-net` quando ausentes.
 
