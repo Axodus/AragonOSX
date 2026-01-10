@@ -248,7 +248,18 @@ export async function managePermissions(
       const chainIdHex = (await provider.send('eth_chainId', [])) as string;
       chainId = chainIdHex ? BigInt(chainIdHex) : 0n;
     } catch (e) {
-      chainId = 0n;
+      // Alguns RPCs (incl. Harmony) podem não implementar eth_chainId.
+      // Nesses casos, a probabilidade de eth_estimateGas também falhar é alta.
+      // Para evitar que o ethers tente estimar gas, sempre passamos gasLimit.
+      const gasLimit = BigInt(
+        process.env.HARMONY_LEGACY_GAS_LIMIT || '1500000'
+      );
+      const envGas = process.env.HARMONY_GAS_PRICE;
+      const requestedGasPrice = envGas ? BigInt(envGas) : 0n;
+      if (requestedGasPrice) {
+        return {type: 0, gasPrice: requestedGasPrice, gasLimit};
+      }
+      return {gasLimit};
     }
 
     const isHarmony = chainId === 1666600000n || chainId === 1666700000n;
