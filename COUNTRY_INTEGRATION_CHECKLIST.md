@@ -43,32 +43,52 @@ Objetivo: deploy limpo do framework para parar de criar DAOs com permissões err
 
 1.1 Preparação
 
-- [ ] Seguir [DEPLOYMENT_CHECKLIST.md](DEPLOYMENT_CHECKLIST.md) no repo AragonOSX.
-- [ ] Configurar `.env` em `AragonOSX/packages/contracts`:
+- [x] Seguir [DEPLOYMENT_CHECKLIST.md](DEPLOYMENT_CHECKLIST.md) no repo AragonOSX.
+- [x] Configurar `.env` em `AragonOSX/packages/contracts`:
 
-  - [ ] `ETH_KEY`
-  - [ ] Explorer key (se aplicável)
-  - [ ] `HARMONY_MAINNET_RPC=https://api.harmony.one`
-  - [ ] `HARMONY_COUNTRY_REGISTRY=0x547942748Cc8840FEc23daFdD01E6457379B446D`
-  - [ ] `HARMONY_MANAGEMENT_DAO_MULTISIG=<multisig final do ManagementDAO>`
-  - [ ] (recomendado) `HARMONY_GAS_PRICE` (wei). Ex: `30000000000` (30 gwei). Se ainda der `transaction underpriced`, tente `50000000000` (50 gwei) ou `100000000000` (100 gwei).
-  - [ ] (opcional) `HARMONY_LEGACY_GAS_LIMIT` (ex: `1500000`) se o RPC falhar em `eth_estimateGas`
+  - [x] `ETH_KEY`
+  - [x] Explorer key (se aplicável)
+  - [x] `HARMONY_MAINNET_RPC=https://api.harmony.one`
+  - [x] `HARMONY_COUNTRY_REGISTRY=0x547942748Cc8840FEc23daFdD01E6457379B446D`
+  - [x] `HARMONY_MANAGEMENT_DAO_MULTISIG=0xC3caEc518EdACd3fdbBB0a67DC98612EDbbcE738`
+  - [x] (recomendado) `HARMONY_GAS_PRICE` (wei). Se der `transaction underpriced`, aumentar (Harmony é sensível a underpriced).
+  - [x] (opcional) `HARMONY_LEGACY_GAS_LIMIT` (ex: `1500000`) se o RPC falhar em `eth_estimateGas`
 
     1.2 Deploy (Hardhat)
 
-- [ ] Em `AragonOSX/packages/contracts`, rodar dry-run local:
-  - [ ] `yarn deploy --network hardhat --reset`
-- [ ] Rodar deploy na Harmony:
+- [x] Em `AragonOSX/packages/contracts`, rodar dry-run local:
+  - [x] `yarn deploy --network hardhat --reset`
+- [x] Rodar deploy na Harmony:
 
-  - [ ] `yarn deploy --network harmony --reset`
+  - [x] `yarn deploy --network harmony --reset`
 
-    1.3 Pós-deploy
+  1.3 Pós-deploy
 
-- [ ] Validar output em `AragonOSX/packages/contracts/deployed_contracts.json`.
-- [ ] Rodar verificação de permissões do deploy (script `99_verify` em deploy/new/20_permissions/99_verify.ts).
+- [x] Validar output em `AragonOSX/packages/contracts/deployed_contracts.json` e `AragonOSX/packages/contracts/deploy/deployments/harmony/deployed_contracts.json`.
+- [x] Rodar verificação de permissões do deploy (script `99_verify` em deploy/new/20_permissions/99_verify.ts).
+- [x] Finalização do ManagementDAO (revogar permissões temporárias do deployer) concluída.
+
+Endereços (Harmony / OSx framework)
+
+- `DAOFactory`: `0xBbfff9D297762931ae7Dc37F0cc33a397bC50Ba0`
+- `DAORegistryProxy`: `0xf0d596798761e2597e3Dc06b219eBbF1db0B9518`
+- `PluginRepoRegistryProxy`: `0x24416Fcd035314C952A16549b47E8251aCdd844E`
+- `PluginRepoFactory`: `0x753e32a799F319d25aCf138b343003ce0A5171eB`
+- `PluginSetupProcessor`: `0x6300477942944d2501db08cD5b7e37DC6423E77C`
+- `GlobalExecutor`: `0xC5066174C2ED21acbdcAd9Bb4d3BdeeDdd56CE37`
+- `DAOBase` (DAOFactory.daoBase): `0x14B83cf98a6a311D8ff3c311D781ac392348316b`
+- `ManagementDAOProxy`: `0x8f9a805603B6fd5df7e8d284CA66CcaF77C3BeF6`
+- `Multisig` (rescue/final): `0xC3caEc518EdACd3fdbBB0a67DC98612EDbbcE738`
+
+Notas
+
+- Harmony não tem ENS oficial → scripts pulam ENS registrars/subdomains.
+- Verificação no explorer pode emitir warnings (ex.: “Failed to link proxy … Reason: null”) e timeouts; não invalida o deploy on-chain.
+- Nameservice (adapter/registrar) pode ser deployado múltiplas vezes durante iterações; trate `deploy/deployments/harmony/deployed_contracts.json` como fonte de verdade para o último estado gerado.
+
 - [ ] Atualizar endereços em:
-  - [ ] Frontend `aragon-app/src/shared/constants/networkDefinitions.ts`
-  - [ ] Backend `Aragon-app-backend/config/contracts/harmonyMainnet.json`
+  - [x] Frontend `aragon-app/src/shared/constants/networkDefinitions.ts`
+  - [x] Backend `Aragon-app-backend/config/contracts/harmonyMainnet.json`
 
 ---
 
