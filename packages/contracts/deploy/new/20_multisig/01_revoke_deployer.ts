@@ -11,6 +11,15 @@ import {HardhatRuntimeEnvironment} from 'hardhat/types';
  * evita dead-ends. Use este passo manualmente depois, se desejar.
  */
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+  // IMPORTANTE: hardhat-deploy executa scripts mesmo sem filtrar por tags.
+  // Este arquivo é "manual" e não deve rodar no deploy padrão.
+  if (process.env.RUN_MANUAL_REVOKE_DEPLOYER !== 'true') {
+    console.log(
+      '[multisig/manual] RUN_MANUAL_REVOKE_DEPLOYER != true; pulando revogação do deployer.'
+    );
+    return;
+  }
+
   const {ethers} = hre;
   const [deployer] = await ethers.getSigners();
 
@@ -39,5 +48,11 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
 // NÃO roda automaticamente no deploy padrão.
 func.tags = ['manual', 'ManagementDaoRevokeDeployer'];
+
+// Garante que, quando explicitamente habilitado, só rode após verificações.
+func.dependencies = ['PermissionsVerified', 'FinalizeVerified'];
+
+// Segunda barreira: faz hardhat-deploy pular o script por padrão.
+func.skip = async () => process.env.RUN_MANUAL_REVOKE_DEPLOYER !== 'true';
 
 export default func;

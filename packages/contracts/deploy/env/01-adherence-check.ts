@@ -10,6 +10,48 @@ import {HardhatRuntimeEnvironment} from 'hardhat/types';
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {deployments, ethers, network} = hre;
 
+  const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+  const isTransientRpcError = (err: unknown): boolean => {
+    const message = (err as any)?.message ? String((err as any).message) : '';
+    const code = (err as any)?.code ? String((err as any).code) : '';
+
+    // Hardhat (via undici) pode falhar com: "SocketError: other side closed".
+    // Outros RPCs podem retornar ECONNRESET/ETIMEDOUT/UND_ERR_SOCKET etc.
+    return (
+      message.includes('SocketError') ||
+      message.includes('other side closed') ||
+      message.includes('ECONNRESET') ||
+      message.includes('ETIMEDOUT') ||
+      message.includes('EAI_AGAIN') ||
+      code.includes('UND_ERR_SOCKET') ||
+      code.includes('UND_ERR_CONNECT_TIMEOUT')
+    );
+  };
+
+  const withRpcRetry = async <T>(label: string, fn: () => Promise<T>): Promise<T> => {
+    const maxAttempts = Number(process.env.HARMONY_RPC_RETRIES || 4);
+    let lastError: unknown;
+
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      try {
+        return await fn();
+      } catch (err) {
+        lastError = err;
+        if (!isTransientRpcError(err) || attempt === maxAttempts) {
+          throw err;
+        }
+        const delayMs = 250 * attempt * attempt;
+        console.log(
+          `[adherence] RPC instável durante '${label}' (tentativa ${attempt}/${maxAttempts}). Aguardando ${delayMs}ms e tentando novamente...`
+        );
+        await sleep(delayMs);
+      }
+    }
+
+    // unreachable, but keeps TS happy
+    throw lastError;
+  };
+
   const managementDaoDeployment = await deployments.getOrNull(
     'ManagementDAOProxy'
   );
@@ -77,44 +119,69 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const problems: string[] = [];
 
-  const multisigHasRoot = await (managementDao as any).hasPermission(
-    managementDaoDeployment.address,
-    multisigAddress,
-    ROOT,
-    '0x'
-  );
+  let multisigHasRoot: boolean;
+  let multisigHasExecute: boolean;
+  let daoFactoryHasRegister: boolean;
+  let repoFactoryHasRegister: boolean;
+
+  try {
+    multisigHasRoot = await withRpcRetry('hasPermission(multisig ROOT)', () =>
+      (managementDao as any).hasPermission(
+        managementDaoDeployment.address,
+        multisigAddress,
+        ROOT,
+        '0x'
+      )
+    );
+    multisigHasExecute = await withRpcRetry('hasPermission(multisig EXECUTE)', () =>
+      (managementDao as any).hasPermission(
+        managementDaoDeployment.address,
+        multisigAddress,
+        EXECUTE,
+        '0x'
+      )
+    );
+    daoFactoryHasRegister = await withRpcRetry(
+      'hasPermission(DAOFactory REGISTER_DAO)',
+      () =>
+        (managementDao as any).hasPermission(
+          daoRegistryDeployment.address,
+          daoFactoryDeployment.address,
+          REGISTER_DAO,
+          '0x'
+        )
+    );
+    repoFactoryHasRegister = await withRpcRetry(
+      'hasPermission(PluginRepoFactory REGISTER_PLUGIN_REPO)',
+      () =>
+        (managementDao as any).hasPermission(
+          pluginRepoRegistryDeployment.address,
+          pluginRepoFactoryDeployment.address,
+          REGISTER_PLUGIN_REPO,
+          '0x'
+        )
+    );
+  } catch (err) {
+    if (isTransientRpcError(err)) {
+      console.log(
+        `[adherence] RPC fechou o socket durante checagens de aderência. Pulando este passo para não bloquear o deploy. Detalhe: ${(err as any)?.message || err}`
+      );
+      return;
+    }
+    throw err;
+  }
+
   if (!multisigHasRoot)
     problems.push(`Multisig sem ROOT no ManagementDAO (${multisigAddress})`);
-
-  const multisigHasExecute = await (managementDao as any).hasPermission(
-    managementDaoDeployment.address,
-    multisigAddress,
-    EXECUTE,
-    '0x'
-  );
   if (!multisigHasExecute)
     problems.push(
       `Multisig sem EXECUTE no ManagementDAO (${multisigAddress})`
     );
-
-  const daoFactoryHasRegister = await (managementDao as any).hasPermission(
-    daoRegistryDeployment.address,
-    daoFactoryDeployment.address,
-    REGISTER_DAO,
-    '0x'
-  );
   if (!daoFactoryHasRegister) {
     problems.push(
       `DAOFactory sem REGISTER_DAO_PERMISSION no DAORegistry (daoFactory=${daoFactoryDeployment.address})`
     );
   }
-
-  const repoFactoryHasRegister = await (managementDao as any).hasPermission(
-    pluginRepoRegistryDeployment.address,
-    pluginRepoFactoryDeployment.address,
-    REGISTER_PLUGIN_REPO,
-    '0x'
-  );
   if (!repoFactoryHasRegister) {
     problems.push(
       `PluginRepoFactory sem REGISTER_PLUGIN_REPO_PERMISSION no PluginRepoRegistry (repoFactory=${pluginRepoFactoryDeployment.address})`

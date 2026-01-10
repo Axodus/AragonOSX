@@ -237,9 +237,23 @@ export async function managePermissions(
   // Em Harmony, o provider pode retornar feeData/gasPrice baixo e causar `transaction underpriced`;
   // aqui forçamos tx legacy (type 0) e usamos um gasPrice >= `eth_gasPrice` (com bump).
   const txOverrides = await (async () => {
-    const provider = (permissionManagerContract as any)?.provider;
+    const gasLimit = process.env.HARMONY_LEGACY_GAS_LIMIT || '1500000';
+    const envGas = process.env.HARMONY_GAS_PRICE;
+    const requestedGasPrice = envGas ? BigInt(envGas) : 0n;
+
+    const contractAny = permissionManagerContract as any;
+    const provider =
+      contractAny?.runner?.provider ||
+      contractAny?.provider ||
+      (ethers as any)?.provider;
+
+    // Sem provider.send (ou provider inexistente): sempre passe gasLimit para evitar estimateGas.
+    // Se houver gasPrice configurado via env, force tx legacy (type 0) também.
     if (!provider || typeof provider.send !== 'function') {
-      return {};
+      if (requestedGasPrice) {
+        return {type: 0, gasPrice: requestedGasPrice.toString(), gasLimit};
+      }
+      return {gasLimit};
     }
 
     // Detecta Harmony por chainId via RPC (hex string)
@@ -251,27 +265,21 @@ export async function managePermissions(
       // Alguns RPCs (incl. Harmony) podem não implementar eth_chainId.
       // Nesses casos, a probabilidade de eth_estimateGas também falhar é alta.
       // Para evitar que o ethers tente estimar gas, sempre passamos gasLimit.
-      const gasLimit = BigInt(
-        process.env.HARMONY_LEGACY_GAS_LIMIT || '1500000'
-      );
+      const gasLimit = process.env.HARMONY_LEGACY_GAS_LIMIT || '1500000';
       const envGas = process.env.HARMONY_GAS_PRICE;
       const requestedGasPrice = envGas ? BigInt(envGas) : 0n;
       if (requestedGasPrice) {
-        return {type: 0, gasPrice: requestedGasPrice, gasLimit};
+        return {type: 0, gasPrice: requestedGasPrice.toString(), gasLimit};
       }
       return {gasLimit};
     }
 
     const isHarmony = chainId === 1666600000n || chainId === 1666700000n;
-    const envGas = process.env.HARMONY_GAS_PRICE;
-    const requestedGasPrice = envGas ? BigInt(envGas) : 0n;
-
-    const gasLimit = BigInt(process.env.HARMONY_LEGACY_GAS_LIMIT || '1500000');
 
     // Fora da Harmony: só aplica override se o env estiver setado explicitamente.
     if (!isHarmony) {
       if (!requestedGasPrice) return {};
-      return {type: 0, gasPrice: requestedGasPrice, gasLimit};
+      return {type: 0, gasPrice: requestedGasPrice.toString(), gasLimit};
     }
 
     // Harmony: usa eth_gasPrice com bump de 20% e permite override via env (max).
@@ -299,21 +307,98 @@ export async function managePermissions(
 
     return {
       type: 0,
-      gasPrice: gasPrice > 0n ? gasPrice : defaultGasPrice,
+      gasPrice: (gasPrice > 0n ? gasPrice : defaultGasPrice).toString(),
       gasLimit,
     };
   })();
 
+  // Se o signer não possui ROOT no PermissionManager, é comum que chamadas diretas a
+  // `applyMultiTargetPermissions` revertam com Unauthorized. Nesses casos, quando o
+  // PermissionManager também é um DAO, podemos usar `DAO.execute` para que o próprio
+  // DAO (que normalmente detém ROOT em si mesmo durante o bootstrap) aplique as permissões.
+  const shouldUseDaoExecute = await (async () => {
+    const contractAny = permissionManagerContract as any;
+    const hasPermission = contractAny?.hasPermission;
+    const execute = contractAny?.execute;
+    if (typeof hasPermission !== 'function' || typeof execute !== 'function') {
+      return false;
+    }
+
+    // Resolve o endereço do signer/runner para checar permissões.
+    let signerAddress: string | undefined;
+    try {
+      if (contractAny?.runner && typeof contractAny.runner.getAddress === 'function') {
+        signerAddress = await contractAny.runner.getAddress();
+      } else if (contractAny?.signer && typeof contractAny.signer.getAddress === 'function') {
+        signerAddress = await contractAny.signer.getAddress();
+      }
+    } catch (_) {
+      signerAddress = undefined;
+    }
+
+    if (!signerAddress) return false;
+
+    const rootPermissionId = ethers.keccak256(ethers.toUtf8Bytes('ROOT_PERMISSION'));
+    try {
+      const hasRoot = await contractAny.hasPermission(
+        permissionManagerContract.address,
+        signerAddress,
+        rootPermissionId,
+        '0x'
+      );
+      return !hasRoot;
+    } catch (_) {
+      // Se não conseguimos checar, não mudamos o comportamento: tentamos o caminho direto.
+      return false;
+    }
+  })();
+
+  const multiTargetItems = items.map(item => [
+    item.operation,
+    item.where.address,
+    item.who.address,
+    item.condition ||
+      (ethers as any).ZeroAddress ||
+      '0x0000000000000000000000000000000000000000',
+    ethers.keccak256(ethers.toUtf8Bytes(item.permission)),
+  ]);
+
+  if (shouldUseDaoExecute) {
+    const daoAny = permissionManagerContract as any;
+    const calldata = daoAny.interface.encodeFunctionData(
+      'applyMultiTargetPermissions',
+      [multiTargetItems]
+    );
+    const callId = ethers.keccak256(
+      ethers.toUtf8Bytes(`managePermissions:${Date.now().toString()}`)
+    );
+
+    const action = {
+      to: permissionManagerContract.address,
+      value: 0,
+      data: calldata,
+    };
+
+    const tx = await daoAny.execute(callId, [action], 0, txOverrides);
+    console.log(`Set permissions with ${tx.hash}. Waiting for confirmation...`);
+    await tx.wait();
+
+    items.forEach(permission => {
+      console.log(
+        `${
+          permission.operation === Operation.Grant ? 'Granted' : 'Revoked'
+        } the ${permission.permission} of (${permission.where.name}: ${
+          permission.where.address
+        }) for (${permission.who.name}: ${permission.who.address}), see (tx: ${
+          tx.hash
+        })`
+      );
+    });
+    return;
+  }
+
   const tx = await (permissionManagerContract as any).applyMultiTargetPermissions(
-    items.map(item => [
-      item.operation,
-      item.where.address,
-      item.who.address,
-      item.condition ||
-        (ethers as any).ZeroAddress ||
-        '0x0000000000000000000000000000000000000000',
-      ethers.keccak256(ethers.toUtf8Bytes(item.permission)),
-    ]),
+    multiTargetItems,
     txOverrides
   );
   console.log(`Set permissions with ${tx.hash}. Waiting for confirmation...`);
