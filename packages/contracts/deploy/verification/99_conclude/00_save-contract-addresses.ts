@@ -9,29 +9,39 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const deployedContracts = await deployments.all();
   const deployedContractAddresses: {[index: string]: string} = {};
 
+  const isHexAddress = (value: unknown): value is string =>
+    typeof value === 'string' && /^0x[0-9a-fA-F]{40}$/.test(value);
+
   for (const deployment in deployedContracts) {
+    const address = deployedContracts[deployment]?.address;
+
+    // Ignore non-contract artifacts that do not have an address
+    if (!isHexAddress(address)) {
+      continue;
+    }
+
     // skip proxies because they are included twice
     if (!deployment.endsWith('_Proxy')) {
       switch (deployment) {
         case 'ManagementDAOProxy':
           deployedContractAddresses['ManagementDAOProxy'] =
-            deployedContracts[deployment].address;
+            address;
           console.log(
-            `Management DAO: ${deployedContracts[deployment].address}`
+            `Management DAO: ${address}`
           );
           break;
         case 'ManagementDAOProxy_Implementation':
           deployedContractAddresses['ManagementDAOProxyImplementation'] =
-            deployedContracts[deployment].address;
+            address;
           console.log(
-            `Management DAO Implementation: ${deployedContracts[deployment].address}`
+            `Management DAO Implementation: ${address}`
           );
           break;
         default:
           deployedContractAddresses[deployment] =
-            deployedContracts[deployment].address;
+            address;
           console.log(
-            `${deployment}: ${deployedContracts[deployment].address}`
+            `${deployment}: ${address}`
           );
       }
     }

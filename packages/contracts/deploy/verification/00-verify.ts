@@ -13,8 +13,6 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const isHexAddress = (value: unknown): value is string =>
     typeof value === 'string' && /^0x[0-9a-fA-F]{40}$/.test(value);
-  const isHexData = (value: unknown): value is string =>
-    typeof value === 'string' && /^0x[0-9a-fA-F]*$/.test(value);
 
   const report: {
     network: string;
@@ -30,6 +28,20 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     totals: {total: 0, verified: 0, alreadyVerified: 0, failed: 0, skipped: 0},
     results: [],
   };
+
+  // Alguns "deployments" podem ser apenas artefatos internos (ex.: relatórios) e não têm address.
+  // Filtramos antes para não quebrar o `verify:verify` com "You didn’t provide any address".
+  const invalidAddressNames = names.filter(n => !isHexAddress(all[n]?.address));
+  for (const name of invalidAddressNames) {
+    report.results.push({
+      name,
+      address: String(all[name]?.address ?? ''),
+      status: 'skipped',
+      reason: 'Deployment sem address válido',
+    });
+    report.totals.skipped++;
+  }
+  names = names.filter(n => isHexAddress(all[n]?.address));
 
   // Em redes sem suporte a ENS (ex.: harmony), pule verificações de registrars ENS
   const noEnsNetworks = new Set(['harmony', 'harmonytestnet']);

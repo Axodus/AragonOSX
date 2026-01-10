@@ -11,7 +11,13 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const all = await deployments.all();
   const result: Record<string, {address: string; txHash?: string}> = {};
 
+  const isHexAddress = (value: unknown): value is string =>
+    typeof value === 'string' && /^0x[0-9a-fA-F]{40}$/.test(value);
+
   for (const [name, d] of Object.entries(all)) {
+    if (!isHexAddress(d.address)) {
+      continue;
+    }
     result[name] = {address: d.address, txHash: d.receipt?.transactionHash};
   }
 
