@@ -26,7 +26,7 @@ function parseGasPriceWei(value: string | undefined, fallback: number): number {
 
 // Harmony costuma rejeitar txs com gasPrice muito baixo ("transaction underpriced").
 // Mantemos um mínimo razoável e ainda permitimos override via env (em wei).
-const MIN_HARMONY_GAS_PRICE_WEI = 500_000_000_000; // 500 gwei
+const MIN_HARMONY_GAS_PRICE_WEI = 700_000_000_000; // 700 gwei
 
 const ETH_KEY = process.env.ETH_KEY;
 const accounts = ETH_KEY ? ETH_KEY.split(',') : [];

@@ -230,15 +230,67 @@ export async function managePermissions(
       permissions.length - items.length
     }`
   );
+
   // Para conceder/revogar permissões, precisamos de ROOT no PermissionManager.
   // Durante o deploy, o deployer é o owner temporário do ManagementDAO e tem ROOT,
-  // então chamamos direto `applyMultiTargetPermissions` (mais confiável em Harmony).
-  const txOverrides = (() => {
+  // então chamamos direto `applyMultiTargetPermissions`.
+  // Em Harmony, o provider pode retornar feeData/gasPrice baixo e causar `transaction underpriced`;
+  // aqui forçamos tx legacy (type 0) e usamos um gasPrice >= `eth_gasPrice` (com bump).
+  const txOverrides = await (async () => {
+    const provider = (permissionManagerContract as any)?.provider;
+    if (!provider || typeof provider.send !== 'function') {
+      return {};
+    }
+
+    // Detecta Harmony por chainId via RPC (hex string)
+    let chainId = 0n;
+    try {
+      const chainIdHex = (await provider.send('eth_chainId', [])) as string;
+      chainId = chainIdHex ? BigInt(chainIdHex) : 0n;
+    } catch (e) {
+      chainId = 0n;
+    }
+
+    const isHarmony = chainId === 1666600000n || chainId === 1666700000n;
     const envGas = process.env.HARMONY_GAS_PRICE;
-    if (!envGas) return {};
-    const gasPrice = BigInt(envGas);
+    const requestedGasPrice = envGas ? BigInt(envGas) : 0n;
+
     const gasLimit = BigInt(process.env.HARMONY_LEGACY_GAS_LIMIT || '1500000');
-    return {type: 0, gasPrice, gasLimit};
+
+    // Fora da Harmony: só aplica override se o env estiver setado explicitamente.
+    if (!isHarmony) {
+      if (!requestedGasPrice) return {};
+      return {type: 0, gasPrice: requestedGasPrice, gasLimit};
+    }
+
+    // Harmony: usa eth_gasPrice com bump de 20% e permite override via env (max).
+    let rpcGasPrice = 0n;
+    try {
+      const gasPriceHex = (await provider.send('eth_gasPrice', [])) as string;
+      rpcGasPrice = gasPriceHex ? BigInt(gasPriceHex) : 0n;
+    } catch (e) {
+      rpcGasPrice = 0n;
+    }
+
+    const bumpedRpcGasPrice = rpcGasPrice ? (rpcGasPrice * 12n) / 10n : 0n;
+    // Fallback mínimo para não depender de RPCs que não implementam eth_gasPrice
+    // ou retornam valores inconsistentes.
+    const defaultGasPrice = 30_000_000_000n; // 30 gwei
+    const gasPrice =
+      requestedGasPrice > bumpedRpcGasPrice
+        ? requestedGasPrice
+        : bumpedRpcGasPrice;
+
+    // Sempre definir gasLimit em Harmony para evitar `eth_estimateGas` (muitos RPCs retornam "not implemented").
+    if (!gasPrice) {
+      return {gasLimit};
+    }
+
+    return {
+      type: 0,
+      gasPrice: gasPrice > 0n ? gasPrice : defaultGasPrice,
+      gasLimit,
+    };
   })();
 
   const tx = await (permissionManagerContract as any).applyMultiTargetPermissions(
