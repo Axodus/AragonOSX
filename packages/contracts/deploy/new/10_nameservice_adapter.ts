@@ -16,10 +16,19 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     return;
   }
 
+  const isHexAddress = (value: unknown): value is string =>
+    typeof value === 'string' && /^0x[0-9a-fA-F]{40}$/.test(value);
+
+  // Backfill mode (no redeploy): allow providing already deployed addresses.
+  const existingAdapterAddress = process.env.NAMESERVICE_ADAPTER_ADDRESS;
+  const existingRegistrarAddress = process.env.NAMESERVICE_REGISTRAR_ADDRESS;
+  const shouldUseExistingAddresses =
+    isHexAddress(existingAdapterAddress) && isHexAddress(existingRegistrarAddress);
+
   // Harmony RPCs often do not implement eth_estimateGas for contract deployments.
   // Default behavior: skip deployment on Harmony unless explicitly enabled via env.
   const enableNameservice = process.env.ENABLE_NAMESERVICE_ADAPTER === 'true';
-  if (!enableNameservice) {
+  if (!enableNameservice && !shouldUseExistingAddresses) {
     console.log(
       `[nameservice] Skipping nameservice on '${network}' (provider lacks estimateGas). Set ENABLE_NAMESERVICE_ADAPTER=true to force.`
     );
@@ -89,39 +98,48 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     return {type: 0, gasPrice, gasLimit};
   })();
 
-  console.log(`[nameservice] Deploying CountryNameServiceAdapter on '${network}'...`);
-  const Adapter = await ethers.getContractFactory('CountryNameServiceAdapter');
   let adapterAddress = '';
   let adapterTxHash = '';
-  try {
-    const adapterDeployTx = await Adapter.getDeployTransaction(txOverrides as any);
-    const signer = (await ethers.getSigners())[0];
-    const sent = await signer.sendTransaction(adapterDeployTx);
-    const receipt = await sent.wait();
-    adapterTxHash = sent.hash;
-    adapterAddress = receipt?.contractAddress ?? '';
-  } catch (e) {
-    console.warn(`[nameservice] Adapter deployment failed, skipping nameservice:`, e);
-    return;
-  }
-  console.log(`[nameservice] Adapter deployed at: ${adapterAddress}`);
-
-  console.log(`[nameservice] Deploying NameServiceSubdomainRegistrar on '${network}'...`);
-  const Registrar = await ethers.getContractFactory('NameServiceSubdomainRegistrar');
   let registrarAddress = '';
   let registrarTxHash = '';
-  try {
-    const registrarDeployTx = await Registrar.getDeployTransaction(txOverrides as any);
-    const signer = (await ethers.getSigners())[0];
-    const sent = await signer.sendTransaction(registrarDeployTx);
-    const receipt = await sent.wait();
-    registrarTxHash = sent.hash;
-    registrarAddress = receipt?.contractAddress ?? '';
-  } catch (e) {
-    console.warn(`[nameservice] Registrar deployment failed, skipping nameservice:`, e);
-    return;
+
+  if (shouldUseExistingAddresses) {
+    adapterAddress = existingAdapterAddress;
+    registrarAddress = existingRegistrarAddress;
+    console.log(
+      `[nameservice] Using existing deployments on '${network}': adapter=${adapterAddress}, registrar=${registrarAddress}`
+    );
+  } else {
+    console.log(`[nameservice] Deploying CountryNameServiceAdapter on '${network}'...`);
+    const Adapter = await ethers.getContractFactory('CountryNameServiceAdapter');
+    try {
+      const adapterDeployTx = await Adapter.getDeployTransaction(txOverrides as any);
+      const signer = (await ethers.getSigners())[0];
+      const sent = await signer.sendTransaction(adapterDeployTx);
+      const receipt = await sent.wait();
+      adapterTxHash = sent.hash;
+      adapterAddress = receipt?.contractAddress ?? '';
+    } catch (e) {
+      console.warn(`[nameservice] Adapter deployment failed, skipping nameservice:`, e);
+      return;
+    }
+    console.log(`[nameservice] Adapter deployed at: ${adapterAddress}`);
+
+    console.log(`[nameservice] Deploying NameServiceSubdomainRegistrar on '${network}'...`);
+    const Registrar = await ethers.getContractFactory('NameServiceSubdomainRegistrar');
+    try {
+      const registrarDeployTx = await Registrar.getDeployTransaction(txOverrides as any);
+      const signer = (await ethers.getSigners())[0];
+      const sent = await signer.sendTransaction(registrarDeployTx);
+      const receipt = await sent.wait();
+      registrarTxHash = sent.hash;
+      registrarAddress = receipt?.contractAddress ?? '';
+    } catch (e) {
+      console.warn(`[nameservice] Registrar deployment failed, skipping nameservice:`, e);
+      return;
+    }
+    console.log(`[nameservice] Registrar deployed at: ${registrarAddress}`);
   }
-  console.log(`[nameservice] Registrar deployed at: ${registrarAddress}`);
 
   // Initialize registrar
   const envNode = process.env.NAME_SERVICE_NODE;
