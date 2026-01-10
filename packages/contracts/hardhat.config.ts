@@ -19,6 +19,15 @@ import 'solidity-docgen';
 
 dotenv.config();
 
+function parseGasPriceWei(value: string | undefined, fallback: number): number {
+  const parsed = value ? Number(value) : Number.NaN;
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+}
+
+// Harmony costuma rejeitar txs com gasPrice muito baixo ("transaction underpriced").
+// Mantemos um mínimo razoável e ainda permitimos override via env (em wei).
+const MIN_HARMONY_GAS_PRICE_WEI = 500_000_000_000; // 500 gwei
+
 const ETH_KEY = process.env.ETH_KEY;
 const accounts = ETH_KEY ? ETH_KEY.split(',') : [];
 
@@ -147,14 +156,26 @@ const config: HardhatUserConfig = {
     harmony: {
       url: process.env.HARMONY_MAINNET_RPC || '',
       chainId: 1666600000,
-      gasPrice: Number(process.env.HARMONY_GAS_PRICE || '1000000000'),
+      gasPrice: Math.max(
+        parseGasPriceWei(
+          process.env.HARMONY_GAS_PRICE,
+          MIN_HARMONY_GAS_PRICE_WEI
+        ),
+        MIN_HARMONY_GAS_PRICE_WEI
+      ),
       accounts,
       deploy: ['./deploy/env', './deploy/new', './deploy/verification'],
     },
     harmonyTestnet: {
       url: process.env.HARMONY_TESTNET_RPC || '',
       chainId: 1666700000,
-      gasPrice: Number(process.env.HARMONY_TESTNET_GAS_PRICE || '1000000000'),
+      gasPrice: Math.max(
+        parseGasPriceWei(
+          process.env.HARMONY_TESTNET_GAS_PRICE,
+          MIN_HARMONY_GAS_PRICE_WEI
+        ),
+        MIN_HARMONY_GAS_PRICE_WEI
+      ),
       accounts,
       deploy: ['./deploy/env', './deploy/new', './deploy/verification'],
     },
