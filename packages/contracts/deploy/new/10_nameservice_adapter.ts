@@ -5,6 +5,8 @@ import fs from 'fs';
 import path from 'path';
 
 const DEPLOYED_JSON = path.resolve(__dirname, '../../deployed_contracts.json');
+const NETWORK_DEPLOYED_JSON = (network: string) =>
+  path.resolve(__dirname, `../deployments/${network}/deployed_contracts.json`);
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const network = hre.network.name;
@@ -90,11 +92,13 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   console.log(`[nameservice] Deploying CountryNameServiceAdapter on '${network}'...`);
   const Adapter = await ethers.getContractFactory('CountryNameServiceAdapter');
   let adapterAddress = '';
+  let adapterTxHash = '';
   try {
     const adapterDeployTx = await Adapter.getDeployTransaction(txOverrides as any);
     const signer = (await ethers.getSigners())[0];
     const sent = await signer.sendTransaction(adapterDeployTx);
     const receipt = await sent.wait();
+    adapterTxHash = sent.hash;
     adapterAddress = receipt?.contractAddress ?? '';
   } catch (e) {
     console.warn(`[nameservice] Adapter deployment failed, skipping nameservice:`, e);
@@ -105,11 +109,13 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   console.log(`[nameservice] Deploying NameServiceSubdomainRegistrar on '${network}'...`);
   const Registrar = await ethers.getContractFactory('NameServiceSubdomainRegistrar');
   let registrarAddress = '';
+  let registrarTxHash = '';
   try {
     const registrarDeployTx = await Registrar.getDeployTransaction(txOverrides as any);
     const signer = (await ethers.getSigners())[0];
     const sent = await signer.sendTransaction(registrarDeployTx);
     const receipt = await sent.wait();
+    registrarTxHash = sent.hash;
     registrarAddress = receipt?.contractAddress ?? '';
   } catch (e) {
     console.warn(`[nameservice] Registrar deployment failed, skipping nameservice:`, e);
@@ -163,6 +169,35 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     console.log(`[nameservice] Updated deployed_contracts.json for '${network}'.`);
   } catch (e) {
     console.warn(`[nameservice] Failed to update deployed_contracts.json:`, e);
+  }
+
+  // Persist também no registry por rede usado pelo fluxo de deploy (deploy/deployments/<network>/deployed_contracts.json)
+  try {
+    const networkFile = NETWORK_DEPLOYED_JSON(network);
+    const raw = fs.readFileSync(networkFile, 'utf8');
+    const json = JSON.parse(raw);
+    json.contracts = json.contracts || {};
+
+    // Mantenha o mesmo formato dos demais contratos: { address, txHash }
+    json.contracts.CountryNameServiceAdapter = {
+      address: adapterAddress,
+      txHash: adapterTxHash,
+    };
+    json.contracts.NameServiceSubdomainRegistrar = {
+      address: registrarAddress,
+      txHash: registrarTxHash,
+    };
+    json.generatedAt = new Date().toISOString();
+
+    fs.writeFileSync(networkFile, JSON.stringify(json, null, 2));
+    console.log(
+      `[nameservice] Updated deploy/deployments/${network}/deployed_contracts.json.`
+    );
+  } catch (e) {
+    console.warn(
+      `[nameservice] Failed to update deploy/deployments/${network}/deployed_contracts.json:`,
+      e
+    );
   }
 
   console.log('[nameservice] Reminder: grant REGISTER_ENS_SUBDOMAIN_PERMISSION_ID to registrar via DAO if needed.');
