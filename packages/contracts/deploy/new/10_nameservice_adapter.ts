@@ -25,13 +25,73 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   }
 
   // Optional explicit gas limit to avoid estimateGas call paths. Defaults to 6,000,000.
-  const gasLimit = BigInt(process.env.NAMESERVICE_DEPLOY_GAS_LIMIT || '6000000');
+  const provider = hre.ethers.provider;
+  const requestedGasLimit = BigInt(
+    process.env.NAMESERVICE_DEPLOY_GAS_LIMIT || '6000000'
+  );
+
+  const txOverrides = await (async () => {
+    const envGas = process.env.HARMONY_GAS_PRICE;
+    const requestedGasPrice = envGas ? BigInt(envGas) : 0n;
+
+    let rpcGasPrice = 0n;
+    try {
+      const gasPriceHex = (await provider.send('eth_gasPrice', [])) as string;
+      rpcGasPrice = gasPriceHex ? BigInt(gasPriceHex) : 0n;
+    } catch (_) {
+      rpcGasPrice = 0n;
+    }
+
+    const bumpedRpcGasPrice = rpcGasPrice ? (rpcGasPrice * 12n) / 10n : 0n;
+    const gasPrice =
+      requestedGasPrice > bumpedRpcGasPrice
+        ? requestedGasPrice
+        : bumpedRpcGasPrice;
+
+    let blockGasLimit = 0n;
+    try {
+      const latestBlock: any = await provider.getBlock('latest');
+      const bg = latestBlock?.gasLimit;
+      blockGasLimit =
+        typeof bg === 'bigint'
+          ? bg
+          : bg
+            ? BigInt(bg.toString())
+            : 0n;
+    } catch (_) {
+      blockGasLimit = 0n;
+    }
+
+    const safetyMargin = 100_000n;
+    const maxAllowed =
+      blockGasLimit && blockGasLimit > safetyMargin
+        ? blockGasLimit - safetyMargin
+        : blockGasLimit;
+    const gasLimit =
+      maxAllowed && requestedGasLimit > maxAllowed
+        ? maxAllowed
+        : requestedGasLimit;
+
+    if (blockGasLimit) {
+      console.log(
+        `[nameservice] latest block gasLimit=${blockGasLimit.toString()} => usando gasLimit=${gasLimit.toString()}`
+      );
+    } else {
+      console.log(
+        `[nameservice] não foi possível ler block gasLimit; usando gasLimit=${gasLimit.toString()}`
+      );
+    }
+
+    // Harmony: use tx legacy (type 0) e defina gasLimit para evitar estimateGas.
+    if (!gasPrice) return {gasLimit};
+    return {type: 0, gasPrice, gasLimit};
+  })();
 
   console.log(`[nameservice] Deploying CountryNameServiceAdapter on '${network}'...`);
   const Adapter = await ethers.getContractFactory('CountryNameServiceAdapter');
   let adapterAddress = '';
   try {
-    const adapterDeployTx = await Adapter.getDeployTransaction({gasLimit});
+    const adapterDeployTx = await Adapter.getDeployTransaction(txOverrides as any);
     const signer = (await ethers.getSigners())[0];
     const sent = await signer.sendTransaction(adapterDeployTx);
     const receipt = await sent.wait();
@@ -46,7 +106,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const Registrar = await ethers.getContractFactory('NameServiceSubdomainRegistrar');
   let registrarAddress = '';
   try {
-    const registrarDeployTx = await Registrar.getDeployTransaction({gasLimit});
+    const registrarDeployTx = await Registrar.getDeployTransaction(txOverrides as any);
     const signer = (await ethers.getSigners())[0];
     const sent = await signer.sendTransaction(registrarDeployTx);
     const receipt = await sent.wait();
@@ -74,7 +134,12 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
           console.log(
             `[nameservice] Initializing registrar with DAO ${daoProxy}, adapter ${adapterAddress}, node ${envNode}...`
           );
-          const tx = await registrar.initialize(daoProxy, adapterAddress, envNode, {gasLimit});
+          const tx = await registrar.initialize(
+            daoProxy,
+            adapterAddress,
+            envNode,
+            txOverrides as any
+          );
           await tx.wait();
           console.log('[nameservice] Registrar initialized.');
         } catch (initErr) {

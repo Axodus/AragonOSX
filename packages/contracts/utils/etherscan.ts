@@ -54,26 +54,69 @@ export const runTaskWithRetry = async (
   msDelay: number,
   cleanup: () => void
 ) => {
-  let counter = times;
-  await delay(msDelay);
-
-  try {
-    if (times) {
-      await HRE.run(task, params);
-      cleanup();
-    } else {
-      cleanup();
-      console.error(
-        'Errors after all the retries, check the logs for more information.'
-      );
+  const timeoutMs = Number(process.env.VERIFY_TASK_TIMEOUT_MS || 300_000);
+  const runWithTimeout = async () => {
+    if (!timeoutMs || timeoutMs <= 0) {
+      return HRE.run(task, params);
     }
-  } catch (error: any) {
-    counter--;
-    // This is not the ideal check, but it's all that's possible for now https://github.com/nomiclabs/hardhat/issues/1301
-    if (!/already verified/i.test(error.message)) {
-      console.log(`Retrying attemps: ${counter}.`);
-      console.error(error.message);
-      await runTaskWithRetry(task, params, counter, msDelay, cleanup);
+
+    let timeoutHandle: NodeJS.Timeout | undefined;
+    try {
+      return await Promise.race([
+        HRE.run(task, params),
+        new Promise((_, reject) => {
+          timeoutHandle = setTimeout(() => {
+            const err = new Error(
+              `verify task timeout after ${timeoutMs}ms (task=${task})`
+            ) as any;
+            err.code = 'VERIFY_TIMEOUT';
+            reject(err);
+          }, timeoutMs);
+        }),
+      ]);
+    } finally {
+      if (timeoutHandle) clearTimeout(timeoutHandle);
+    }
+  };
+
+  let attemptsLeft = Number(times || 0);
+
+  while (attemptsLeft > 0) {
+    await delay(msDelay);
+
+    try {
+      await runWithTimeout();
+      cleanup();
+      return;
+    } catch (error: any) {
+      const message = error?.message ? String(error.message) : String(error);
+
+      // Se já está verificado, consideramos sucesso.
+      if (/already verified/i.test(message) || /has already been verified/i.test(message)) {
+        cleanup();
+        return;
+      }
+
+      // Timeout de verificação: não bloqueia deploy (explorer pode estar lento).
+      if (error?.code === 'VERIFY_TIMEOUT') {
+        console.warn(`Verify task timed out (${timeoutMs}ms). Skipping.`);
+        cleanup();
+        return;
+      }
+
+      attemptsLeft -= 1;
+      if (attemptsLeft <= 0) {
+        cleanup();
+        console.error(
+          'Errors after all the retries, check the logs for more information.'
+        );
+        return;
+      }
+
+      console.log(`Retrying attemps: ${attemptsLeft}.`);
+      console.error(message);
     }
   }
+
+  cleanup();
 };
