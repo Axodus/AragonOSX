@@ -39,6 +39,46 @@ function asChecksumAddress(value: string, name: string): string {
   }
 }
 
+function asBytes32(value: any, name: string): string {
+  try {
+    const hex = typeof value === 'string' ? value : ethers.hexlify(value);
+    if (!ethers.isHexString(hex, 32)) {
+      throw new Error('not-bytes32');
+    }
+    return hex;
+  } catch {
+    throw new Error(`${name} inválido (bytes32)`);
+  }
+}
+
+type MultiTargetPermission = {
+  operation: number;
+  where: string;
+  who: string;
+  condition: string;
+  permissionId: string;
+};
+
+function normalizeMultiTargetPermissions(value: any): MultiTargetPermission[] {
+  if (!Array.isArray(value)) return [];
+
+  return value.map((raw, i) => {
+    const operation = raw?.operation ?? raw?.[0];
+    const where = raw?.where ?? raw?.[1];
+    const who = raw?.who ?? raw?.[2];
+    const condition = raw?.condition ?? raw?.[3];
+    const permissionId = raw?.permissionId ?? raw?.[4];
+
+    return {
+      operation: Number(operation),
+      where: asChecksumAddress(String(where), `permissions[${i}].where`),
+      who: asChecksumAddress(String(who), `permissions[${i}].who`),
+      condition: asChecksumAddress(String(condition), `permissions[${i}].condition`),
+      permissionId: asBytes32(permissionId, `permissions[${i}].permissionId`),
+    };
+  });
+}
+
 // Harmony/legado: usa gasPrice e type 0
 async function getLegacyGasOverrides(gasLimit: bigint) {
   const networkMin = BigInt(200_000_000_000); // 200 gwei
@@ -56,7 +96,16 @@ async function getLegacyGasOverrides(gasLimit: bigint) {
 }
 
 async function main() {
-  const [signer] = await ethers.getSigners();
+  // Preferimos `ADMIN_KEY` (do `.env.install`) para este script, para não depender do `ETH_KEY`
+  // usado em deploys/Hardhat config.
+  // - Aceita múltiplas chaves separadas por vírgula; usa a primeira.
+  // - Fallback: primeiro signer do Hardhat.
+  const adminKeyRaw = (process.env.ADMIN_KEY ?? '').trim();
+  const adminKey = adminKeyRaw ? adminKeyRaw.split(',')[0].trim() : '';
+
+  const signer = adminKey
+    ? new ethers.Wallet(adminKey, ethers.provider)
+    : (await ethers.getSigners())[0];
   const network = await ethers.provider.getNetwork();
 
   const daoAddr = asChecksumAddress(requireEnv('DAO'), 'DAO');
@@ -225,7 +274,7 @@ async function main() {
   const preparedHelpers: string[] = (preparedSetupData?.helpers ?? []).map((h) =>
     asChecksumAddress(h, 'helper')
   );
-  const preparedPermissions = preparedSetupData?.permissions ?? [];
+  const preparedPermissions = normalizeMultiTargetPermissions(preparedSetupData?.permissions);
   console.log(
     `preparedSetupData: helpers=${preparedHelpers.length} permissions=${preparedPermissions.length}`
   );
@@ -352,19 +401,24 @@ async function main() {
 
   const tryDirectApply = async () => {
     // Diagnóstico: simula primeiro pra capturar custom error quando possível.
-    try {
-      await (psp as any).applyInstallation.staticCall(daoAddr, {
-        pluginSetupRef,
-        plugin: pluginAddr,
-        permissions: preparedPermissions,
-        helpersHash,
-      });
-    } catch (e: any) {
-      const name = e?.errorName ?? e?.shortMessage ?? e?.reason;
-      if (name) {
-        console.warn('applyInstallation staticCall revert:', name, e?.errorArgs ?? '');
-      } else {
-        console.warn('applyInstallation staticCall revert (sem reason):', e);
+    // Observação: em alguns cenários o ethers v6 pode falhar ao decodificar (TypeError com Result read-only)
+    // quando há arrays/tuples no payload; por isso, só tentamos o staticCall quando não há permissions.
+    const shouldStaticCall = !truthyEnv('SKIP_APPLY_STATICCALL') && preparedPermissions.length === 0;
+    if (shouldStaticCall) {
+      try {
+        await (psp as any).applyInstallation.staticCall(daoAddr, {
+          pluginSetupRef,
+          plugin: pluginAddr,
+          permissions: preparedPermissions,
+          helpersHash,
+        });
+      } catch (e: any) {
+        const name = e?.errorName ?? e?.shortMessage ?? e?.reason;
+        if (name) {
+          console.warn('applyInstallation staticCall revert:', name);
+        } else {
+          console.warn('applyInstallation staticCall revert (sem reason)');
+        }
       }
     }
 
