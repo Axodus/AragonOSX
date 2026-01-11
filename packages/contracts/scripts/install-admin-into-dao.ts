@@ -13,12 +13,21 @@ dotenv.config({
 
 const DAO_ABI = [
   'function execute(bytes32 _callId, tuple(address to, uint256 value, bytes data)[] _actions, uint256 _allowFailureMap) returns (bytes[] execResults, uint256 failureMap)',
+  'function hasPermission(address _where, address _who, bytes32 _permissionId, bytes _data) view returns (bool)',
+  'function grant(address _where, address _who, bytes32 _permissionId)',
+  'function EXECUTE_PERMISSION_ID() view returns (bytes32)',
+  'function ROOT_PERMISSION_ID() view returns (bytes32)',
 ];
 
 function requireEnv(name: string): string {
   const value = process.env[name];
   if (!value) throw new Error(`Defina ${name}`);
   return value;
+}
+
+function truthyEnv(name: string): boolean {
+  const value = (process.env[name] ?? '').trim().toLowerCase();
+  return value === '1' || value === 'true' || value === 'yes' || value === 'y';
 }
 
 function asChecksumAddress(value: string, name: string): string {
@@ -73,8 +82,85 @@ async function main() {
   );
   const dao = new ethers.Contract(daoAddr, DAO_ABI, signer);
 
+  // Sanity check: o PSP só aceita repos que existam no PluginRepoRegistry dele.
+  const repoRegistryAddr: string = await psp.repoRegistry();
+  const repoRegistry = await ethers.getContractAt(
+    'src/framework/plugin/repo/PluginRepoRegistry.sol:PluginRepoRegistry',
+    repoRegistryAddr,
+    signer
+  );
+  const isRepoRegistered: boolean = await (repoRegistry as any).entries(adminRepoAddr);
+  console.log(`RepoRegistry: ${repoRegistryAddr} | entries(repo)=${isRepoRegistered}`);
+
+  // Se não estiver registrado, tentamos registrar automaticamente.
+  // Isso requer REGISTER_PLUGIN_REPO_PERMISSION no PluginRepoRegistry, concedida pelo managing DAO.
+  if (!isRepoRegistered) {
+    if (truthyEnv('SKIP_REPO_REGISTRATION')) {
+      throw new Error(
+        `Admin repo não está registrado no PluginRepoRegistry do PSP e SKIP_REPO_REGISTRATION=1. ` +
+          `Repo=${adminRepoAddr} Registry=${repoRegistryAddr}`
+      );
+    }
+
+    const subdomain = (process.env.SUBDOMAIN ?? '').trim();
+    console.log(`Repo não registrado. Tentando registrar (subdomain="${subdomain}")...`);
+
+    const managingDaoAddr: string = await (repoRegistry as any).dao();
+    const registerPermId: string = await (repoRegistry as any).REGISTER_PLUGIN_REPO_PERMISSION_ID();
+    console.log(`Registry managing DAO: ${managingDaoAddr}`);
+    console.log(`REGISTER_PLUGIN_REPO_PERMISSION_ID: ${registerPermId}`);
+
+    const daoManaging = await ethers.getContractAt(
+      'src/core/dao/DAO.sol:DAO',
+      managingDaoAddr,
+      signer
+    );
+
+    // 1) Tenta registrar direto (se já tiver permissão).
+    try {
+      const tx = await (repoRegistry as any).registerPluginRepo(
+        subdomain,
+        adminRepoAddr,
+        await getLegacyGasOverrides(BigInt(700_000))
+      );
+      console.log('registerPluginRepo tx:', tx.hash);
+      await tx.wait();
+    } catch (e: any) {
+      const errName = e?.errorName ?? e?.shortMessage ?? e?.reason ?? '';
+      console.warn('registerPluginRepo falhou, tentando grant+retry...', errName);
+
+      // 2) Concede permissão ao signer no registry via managing DAO.
+      const grantTx = await (daoManaging as any).grant(
+        repoRegistryAddr,
+        signer.address,
+        registerPermId,
+        await getLegacyGasOverrides(BigInt(900_000))
+      );
+      console.log('DAO.grant tx:', grantTx.hash);
+      await grantTx.wait();
+
+      // 3) Tenta registrar novamente.
+      const tx2 = await (repoRegistry as any).registerPluginRepo(
+        subdomain,
+        adminRepoAddr,
+        await getLegacyGasOverrides(BigInt(700_000))
+      );
+      console.log('registerPluginRepo tx (retry):', tx2.hash);
+      await tx2.wait();
+    }
+
+    const isRepoRegisteredAfter: boolean = await (repoRegistry as any).entries(adminRepoAddr);
+    console.log(`entries(repo) after register=${isRepoRegisteredAfter}`);
+    if (!isRepoRegisteredAfter) {
+      throw new Error(
+        `Falha ao registrar o repo no PluginRepoRegistry. ` +
+          `Verifique permissões no managing DAO ${managingDaoAddr}.`
+      );
+    }
+  }
+
   const latestRelease: number = await repo.latestRelease();
-  const latestVersion = await repo.getLatestVersion(latestRelease);
+  const latestVersion = await (repo as any)['getLatestVersion(uint8)'](latestRelease);
 
   const release = Number(latestVersion.tag.release);
   const build = Number(latestVersion.tag.build);
@@ -93,6 +179,19 @@ async function main() {
   };
 
   console.log('1/2 prepareInstallation...');
+
+  // Diagnóstico: tenta simular para capturar custom error antes de gastar gas.
+  try {
+    await (psp as any).prepareInstallation.staticCall(daoAddr, { pluginSetupRef, data });
+  } catch (e: any) {
+    const name = e?.errorName ?? e?.shortMessage ?? e?.reason;
+    if (name) {
+      console.warn('prepareInstallation staticCall revert:', name, e?.errorArgs ?? '');
+    } else {
+      console.warn('prepareInstallation staticCall revert (sem reason):', e);
+    }
+  }
+
   const prepareTx = await psp.prepareInstallation(
     daoAddr,
     { pluginSetupRef, data },
@@ -128,20 +227,182 @@ async function main() {
     },
   ]);
 
-  console.log('2/2 DAO.execute(applyInstallation)...');
+  console.log('2/2 applyInstallation...');
+  const execPermId: string = await (dao as any).EXECUTE_PERMISSION_ID();
+  const rootPermId: string = await (dao as any).ROOT_PERMISSION_ID();
+  const applyPermId: string = await (psp as any).APPLY_INSTALLATION_PERMISSION_ID();
+
+  const canDirectApply: boolean = await (dao as any).hasPermission(
+    pspAddr,
+    signer.address,
+    applyPermId,
+    '0x'
+  );
+  const canExecute: boolean = await (dao as any).hasPermission(
+    daoAddr,
+    signer.address,
+    execPermId,
+    '0x'
+  );
+  const hasRoot: boolean = await (dao as any).hasPermission(
+    daoAddr,
+    signer.address,
+    rootPermId,
+    '0x'
+  );
+
+  console.log(
+    `Permissions: hasRoot=${hasRoot} canExecute=${canExecute} canDirectApply=${canDirectApply}`
+  );
+
+  // Caminhos possíveis:
+  // - Se o signer tem APPLY_INSTALLATION no PSP, pode chamar PSP.applyInstallation direto.
+  // - Caso contrário, se o signer tem EXECUTE no DAO, usa DAO.execute (PSP vê msg.sender=DAO).
+  // - Se faltar permissão, mas o signer tem ROOT no DAO, tenta grant e faz retry.
+
   const callId = ethers.keccak256(
     ethers.toUtf8Bytes(`install-admin:${daoAddr}:${adminRepoAddr}:${release}.${build}:${pluginAddr}`)
   );
 
-  const execTx = await dao.execute(
-    callId,
-    [{ to: pspAddr, value: 0, data: applyCalldata }],
-    0,
-    await getLegacyGasOverrides(BigInt(3_500_000))
-  );
-  console.log('execute tx:', execTx.hash);
-  const execReceipt = await execTx.wait();
-  console.log('execute block:', execReceipt?.blockNumber);
+  const tryDirectApply = async () => {
+    // Diagnóstico: simula primeiro pra capturar custom error quando possível.
+    try {
+      await (psp as any).applyInstallation.staticCall(daoAddr, {
+        pluginSetupRef,
+        plugin: pluginAddr,
+        permissions: [],
+        helpersHash,
+      });
+    } catch (e: any) {
+      const name = e?.errorName ?? e?.shortMessage ?? e?.reason;
+      if (name) {
+        console.warn('applyInstallation staticCall revert:', name, e?.errorArgs ?? '');
+      } else {
+        console.warn('applyInstallation staticCall revert (sem reason):', e);
+      }
+    }
+
+    const tx = await (psp as any).applyInstallation(
+      daoAddr,
+      {
+        pluginSetupRef,
+        plugin: pluginAddr,
+        permissions: [],
+        helpersHash,
+      },
+      await getLegacyGasOverrides(BigInt(3_500_000))
+    );
+    console.log('applyInstallation tx:', tx.hash);
+    const receipt = await tx.wait();
+    console.log('applyInstallation block:', receipt?.blockNumber);
+  };
+
+  const tryDaoExecute = async () => {
+    const tx = await (dao as any).execute(
+      callId,
+      [{ to: pspAddr, value: 0, data: applyCalldata }],
+      0,
+      await getLegacyGasOverrides(BigInt(3_500_000))
+    );
+    console.log('DAO.execute tx:', tx.hash);
+    const receipt = await tx.wait();
+    console.log('DAO.execute block:', receipt?.blockNumber);
+  };
+
+  if (canDirectApply) {
+    await tryDirectApply();
+  } else if (canExecute) {
+    await tryDaoExecute();
+  } else if (hasRoot) {
+    console.log(
+      'Signer não tem permissão para aplicar. Tentando grant(APPLY_INSTALLATION_PERMISSION_ID) e retry...'
+    );
+
+    // Concede permissão de aplicar instalação (para chamar PSP direto).
+    const grantApplyTx = await (dao as any).grant(
+      pspAddr,
+      signer.address,
+      applyPermId,
+      await getLegacyGasOverrides(BigInt(900_000))
+    );
+    console.log('DAO.grant (apply) tx:', grantApplyTx.hash);
+    await grantApplyTx.wait();
+
+    const canDirectApplyAfter: boolean = await (dao as any).hasPermission(
+      pspAddr,
+      signer.address,
+      applyPermId,
+      '0x'
+    );
+    console.log(`canDirectApply after grant=${canDirectApplyAfter}`);
+
+    if (canDirectApplyAfter) {
+      await tryDirectApply();
+    } else {
+      console.log('Grant(APPLY_INSTALLATION) não surtiu efeito. Tentando grant(EXECUTE) e DAO.execute...');
+
+      const grantExecTx = await (dao as any).grant(
+        daoAddr,
+        signer.address,
+        execPermId,
+        await getLegacyGasOverrides(BigInt(900_000))
+      );
+      console.log('DAO.grant (execute) tx:', grantExecTx.hash);
+      await grantExecTx.wait();
+
+      await tryDaoExecute();
+    }
+  } else {
+    // Dica prática: mesmo sem EXECUTE/ROOT, normalmente você consegue concluir o apply via um
+    // plugin de governança (TokenVoting/Multisig), propondo a execução da ação que chama o PSP.
+    // Para facilitar, imprimimos os payloads necessários.
+    const daoExecuteCalldata = dao.interface.encodeFunctionData('execute', [
+      callId,
+      [{ to: pspAddr, value: 0, data: applyCalldata }],
+      0,
+    ]);
+
+    console.log('');
+    console.log('--- Payloads para concluir a instalação ---');
+    console.log('Admin (init):', adminAddr);
+    console.log('Plugin (prepared):', pluginAddr);
+    console.log('PluginSetupRef:', JSON.stringify({ pluginSetupRepo: adminRepoAddr, versionTag: { release, build } }));
+    console.log('');
+    console.log('A) Se você tiver EXECUTE no DAO, pode chamar DAO.execute diretamente:');
+    console.log('DAO.execute calldata:', daoExecuteCalldata);
+    console.log('');
+    console.log('B) Se você for aplicar via governança (TokenVoting/Multisig), use esta ação (to/value/data):');
+    console.log(
+      JSON.stringify(
+        [
+          {
+            to: pspAddr,
+            value: '0',
+            data: applyCalldata,
+          },
+        ],
+        null,
+        2
+      )
+    );
+    console.log('--- fim ---');
+    console.log('');
+
+    throw new Error(
+      [
+        'Falha ao aplicar a instalação: o signer não tem permissão suficiente.',
+        `- Falta uma destas permissões no DAO ${daoAddr}:`,
+        `  - EXECUTE_PERMISSION_ID (para usar DAO.execute): ${execPermId}`,
+        `  - OU APPLY_INSTALLATION_PERMISSION_ID no PSP ${pspAddr} (para chamar PSP.applyInstallation): ${applyPermId}`,
+        `- ROOT_PERMISSION_ID no DAO (para auto-grant) também está ausente: ${rootPermId}`,
+        '',
+        'Como resolver:',
+        '- Execute o apply via o plugin de governança instalado (Multisig/TokenVoting) usando a ação impressa acima, ou',
+        '- Rode o script com uma conta que tenha ROOT/EXECUTE no DAO, ou',
+        '- Conceda manualmente EXECUTE_PERMISSION_ID ao seu signer e reexecute.',
+      ].join('\n')
+    );
+  }
 
   console.log('OK: Admin Plugin instalado (prepare+apply).');
 }
