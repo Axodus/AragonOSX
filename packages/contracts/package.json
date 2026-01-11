@@ -22,6 +22,7 @@
     "build": "hardhat compile && yarn typechain",
     "build:zksync": "hardhat compile --config hardhat-zksync.config.ts && yarn typechain",
     "build:npm": "rollup --config rollup.config.ts",
+    "install:admin:harmony": "hardhat run --network harmony scripts/install-admin-into-dao.ts",
     "coverage": "hardhat coverage --solcoverjs ./.solcover.js",
     "flatten": "hardhat flatten",
     "analyze": "mythx analyze",
