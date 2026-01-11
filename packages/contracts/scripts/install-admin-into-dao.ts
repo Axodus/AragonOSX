@@ -238,6 +238,15 @@ async function main() {
     applyPermId,
     '0x'
   );
+
+  // Observação importante: chamar `PSP.applyInstallation` via `DAO.execute` só funciona se o
+  // PRÓPRIO DAO tiver a permissão APPLY_INSTALLATION no PSP (porque, no PSP, `msg.sender` será o DAO).
+  const daoCanApplyOnPsp: boolean = await (dao as any).hasPermission(
+    pspAddr,
+    daoAddr,
+    applyPermId,
+    '0x'
+  );
   const canExecute: boolean = await (dao as any).hasPermission(
     daoAddr,
     signer.address,
@@ -252,12 +261,12 @@ async function main() {
   );
 
   console.log(
-    `Permissions: hasRoot=${hasRoot} canExecute=${canExecute} canDirectApply=${canDirectApply}`
+    `Permissions: hasRoot=${hasRoot} canExecute=${canExecute} canDirectApply=${canDirectApply} daoCanApplyOnPsp=${daoCanApplyOnPsp}`
   );
 
   // Caminhos possíveis:
   // - Se o signer tem APPLY_INSTALLATION no PSP, pode chamar PSP.applyInstallation direto.
-  // - Caso contrário, se o signer tem EXECUTE no DAO, usa DAO.execute (PSP vê msg.sender=DAO).
+  // - Caso contrário, se o signer tem EXECUTE no DAO E o DAO tem APPLY_INSTALLATION no PSP, usa DAO.execute.
   // - Se faltar permissão, mas o signer tem ROOT no DAO, tenta grant e faz retry.
 
   const callId = ethers.keccak256(
@@ -311,7 +320,7 @@ async function main() {
 
   if (canDirectApply) {
     await tryDirectApply();
-  } else if (canExecute) {
+  } else if (canExecute && daoCanApplyOnPsp) {
     await tryDaoExecute();
   } else if (hasRoot) {
     console.log(
@@ -368,13 +377,45 @@ async function main() {
     console.log('Plugin (prepared):', pluginAddr);
     console.log('PluginSetupRef:', JSON.stringify({ pluginSetupRepo: adminRepoAddr, versionTag: { release, build } }));
     console.log('');
+    console.log('Observação:');
+    console.log('- Para chamar PSP.applyInstallation diretamente, o executor precisa de APPLY_INSTALLATION no PSP (via DAO.grant).');
+    console.log('- Chamar via DAO.execute só funciona se o próprio DAO tiver APPLY_INSTALLATION no PSP.');
+    console.log('');
+
+    const multisigExecutor =
+      process.env.MULTISIG_EXECUTOR ||
+      process.env.SAFE_ADDRESS ||
+      process.env.EXECUTOR_ADDRESS ||
+      '';
+    const suggestedExecutor = multisigExecutor || signer.address;
+
+    const grantApplyCalldata = dao.interface.encodeFunctionData('grant', [
+      pspAddr,
+      suggestedExecutor,
+      applyPermId,
+    ]);
+
     console.log('A) Se você tiver EXECUTE no DAO, pode chamar DAO.execute diretamente:');
     console.log('DAO.execute calldata:', daoExecuteCalldata);
     console.log('');
-    console.log('B) Se você for aplicar via governança (TokenVoting/Multisig), use esta ação (to/value/data):');
+    console.log('B) Se você for aplicar via governança (TokenVoting/Multisig), faça 2 ações em sequência:');
+    console.log(`   1) DAO.grant(PSP, executor, APPLY_INSTALLATION) — executor sugerido: ${suggestedExecutor}`);
+    if (!multisigExecutor) {
+      console.log(
+        '      (Dica: defina MULTISIG_EXECUTOR / SAFE_ADDRESS / EXECUTOR_ADDRESS no env para imprimir com o endereço certo.)'
+      );
+    }
+    console.log('   2) PSP.applyInstallation(...)');
+    console.log('');
+    console.log('Ações (to/value/data):');
     console.log(
       JSON.stringify(
         [
+          {
+            to: daoAddr,
+            value: '0',
+            data: grantApplyCalldata,
+          },
           {
             to: pspAddr,
             value: '0',
