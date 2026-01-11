@@ -15,6 +15,7 @@ const DAO_ABI = [
   'function execute(bytes32 _callId, tuple(address to, uint256 value, bytes data)[] _actions, uint256 _allowFailureMap) returns (bytes[] execResults, uint256 failureMap)',
   'function hasPermission(address _where, address _who, bytes32 _permissionId, bytes _data) view returns (bool)',
   'function grant(address _where, address _who, bytes32 _permissionId)',
+  'function revoke(address _where, address _who, bytes32 _permissionId)',
   'function EXECUTE_PERMISSION_ID() view returns (bytes32)',
   'function ROOT_PERMISSION_ID() view returns (bytes32)',
 ];
@@ -216,13 +217,28 @@ async function main() {
   const pluginAddr = asChecksumAddress(parsed.args.plugin as string, 'plugin');
   console.log('plugin preparado:', pluginAddr);
 
-  const helpersHash = ethers.keccak256(coder.encode(['address[]'], [[]]));
+  const preparedSetupData = parsed.args.preparedSetupData as {
+    helpers: string[];
+    permissions: any[];
+  };
+
+  const preparedHelpers: string[] = (preparedSetupData?.helpers ?? []).map((h) =>
+    asChecksumAddress(h, 'helper')
+  );
+  const preparedPermissions = preparedSetupData?.permissions ?? [];
+  console.log(
+    `preparedSetupData: helpers=${preparedHelpers.length} permissions=${preparedPermissions.length}`
+  );
+
+  // IMPORTANT: o preparedSetupId depende do hash de helpers e permissions retornados no prepare.
+  // Não assuma arrays vazios aqui, pois setups reais (não-minimais) podem retornar permissões.
+  const helpersHash = ethers.keccak256(coder.encode(['address[]'], [preparedHelpers]));
   const applyCalldata = psp.interface.encodeFunctionData('applyInstallation', [
     daoAddr,
     {
       pluginSetupRef,
       plugin: pluginAddr,
-      permissions: [],
+      permissions: preparedPermissions,
       helpersHash,
     },
   ]);
@@ -273,13 +289,74 @@ async function main() {
     ethers.toUtf8Bytes(`install-admin:${daoAddr}:${adminRepoAddr}:${release}.${build}:${pluginAddr}`)
   );
 
+  const ensurePspHasRootIfNeeded = async () => {
+    if (!Array.isArray(preparedPermissions) || preparedPermissions.length === 0) {
+      return { granted: false };
+    }
+
+    const pspHasRoot: boolean = await (dao as any).hasPermission(
+      daoAddr,
+      pspAddr,
+      rootPermId,
+      '0x'
+    );
+
+    if (pspHasRoot) {
+      return { granted: false };
+    }
+
+    console.log(
+      'preparedPermissions não está vazio. Concedendo ROOT_PERMISSION_ID temporário ao PSP para aplicar permissions...'
+    );
+    const tx = await (dao as any).grant(
+      daoAddr,
+      pspAddr,
+      rootPermId,
+      await getLegacyGasOverrides(BigInt(900_000))
+    );
+    console.log('DAO.grant (ROOT->PSP) tx:', tx.hash);
+    await tx.wait();
+    return { granted: true };
+  };
+
+  const revokePspRootIfGranted = async () => {
+    if (!Array.isArray(preparedPermissions) || preparedPermissions.length === 0) {
+      return;
+    }
+    // Só revoga se o signer ainda tiver ROOT (para evitar travar em caso de mudanças externas).
+    const stillHasRoot: boolean = await (dao as any).hasPermission(
+      daoAddr,
+      signer.address,
+      rootPermId,
+      '0x'
+    );
+    if (!stillHasRoot) return;
+
+    const pspHasRoot: boolean = await (dao as any).hasPermission(
+      daoAddr,
+      pspAddr,
+      rootPermId,
+      '0x'
+    );
+    if (!pspHasRoot) return;
+
+    const tx = await (dao as any).revoke(
+      daoAddr,
+      pspAddr,
+      rootPermId,
+      await getLegacyGasOverrides(BigInt(900_000))
+    );
+    console.log('DAO.revoke (ROOT->PSP) tx:', tx.hash);
+    await tx.wait();
+  };
+
   const tryDirectApply = async () => {
     // Diagnóstico: simula primeiro pra capturar custom error quando possível.
     try {
       await (psp as any).applyInstallation.staticCall(daoAddr, {
         pluginSetupRef,
         plugin: pluginAddr,
-        permissions: [],
+        permissions: preparedPermissions,
         helpersHash,
       });
     } catch (e: any) {
@@ -291,22 +368,27 @@ async function main() {
       }
     }
 
-    const tx = await (psp as any).applyInstallation(
-      daoAddr,
-      {
-        pluginSetupRef,
-        plugin: pluginAddr,
-        permissions: [],
-        helpersHash,
-      },
-      await getLegacyGasOverrides(BigInt(3_500_000))
-    );
-    console.log('applyInstallation tx:', tx.hash);
-    const receipt = await tx.wait();
-    console.log('applyInstallation block:', receipt?.blockNumber);
+    const { granted } = await ensurePspHasRootIfNeeded();
+    try {
+      // Envia usando calldata explícito para evitar qualquer ambiguidade de encoding de structs.
+      const tx = await signer.sendTransaction({
+        to: pspAddr,
+        data: applyCalldata,
+        ...(await getLegacyGasOverrides(BigInt(3_500_000))),
+      } as any);
+
+      console.log('applyInstallation tx:', tx.hash);
+      const receipt = await tx.wait();
+      console.log('applyInstallation block:', receipt?.blockNumber);
+    } finally {
+      if (granted) {
+        await revokePspRootIfGranted();
+      }
+    }
   };
 
   const tryDaoExecute = async () => {
+    const { granted } = await ensurePspHasRootIfNeeded();
     const tx = await (dao as any).execute(
       callId,
       [{ to: pspAddr, value: 0, data: applyCalldata }],
@@ -316,6 +398,10 @@ async function main() {
     console.log('DAO.execute tx:', tx.hash);
     const receipt = await tx.wait();
     console.log('DAO.execute block:', receipt?.blockNumber);
+
+    if (granted) {
+      await revokePspRootIfGranted();
+    }
   };
 
   if (canDirectApply) {
@@ -395,17 +481,39 @@ async function main() {
       applyPermId,
     ]);
 
+    const grantRootToPspCalldata = dao.interface.encodeFunctionData('grant', [
+      daoAddr,
+      pspAddr,
+      rootPermId,
+    ]);
+
+    const revokeRootFromPspCalldata = dao.interface.encodeFunctionData('revoke', [
+      daoAddr,
+      pspAddr,
+      rootPermId,
+    ]);
+
     console.log('A) Se você tiver EXECUTE no DAO, pode chamar DAO.execute diretamente:');
     console.log('DAO.execute calldata:', daoExecuteCalldata);
     console.log('');
-    console.log('B) Se você for aplicar via governança (TokenVoting/Multisig), faça 2 ações em sequência:');
+    const needsRootForPsp = Array.isArray(preparedPermissions) && preparedPermissions.length > 0;
+
+    console.log(
+      `B) Se você for aplicar via governança (TokenVoting/Multisig), faça ${needsRootForPsp ? '4' : '2'} ações em sequência:`
+    );
     console.log(`   1) DAO.grant(PSP, executor, APPLY_INSTALLATION) — executor sugerido: ${suggestedExecutor}`);
     if (!multisigExecutor) {
       console.log(
         '      (Dica: defina MULTISIG_EXECUTOR / SAFE_ADDRESS / EXECUTOR_ADDRESS no env para imprimir com o endereço certo.)'
       );
     }
-    console.log('   2) PSP.applyInstallation(...)');
+    if (needsRootForPsp) {
+      console.log('   2) DAO.grant(DAO, PSP, ROOT_PERMISSION_ID) [temporário]');
+      console.log('   3) PSP.applyInstallation(...)');
+      console.log('   4) DAO.revoke(DAO, PSP, ROOT_PERMISSION_ID) [cleanup]');
+    } else {
+      console.log('   2) PSP.applyInstallation(...)');
+    }
     console.log('');
     console.log('Ações (to/value/data):');
     console.log(
@@ -416,11 +524,29 @@ async function main() {
             value: '0',
             data: grantApplyCalldata,
           },
+          ...(needsRootForPsp
+            ? [
+                {
+                  to: daoAddr,
+                  value: '0',
+                  data: grantRootToPspCalldata,
+                },
+              ]
+            : []),
           {
             to: pspAddr,
             value: '0',
             data: applyCalldata,
           },
+          ...(needsRootForPsp
+            ? [
+                {
+                  to: daoAddr,
+                  value: '0',
+                  data: revokeRootFromPspCalldata,
+                },
+              ]
+            : []),
         ],
         null,
         2

@@ -3,6 +3,7 @@
 node_modules
 .openzeppelin
 .env
+.env.install
 coverage
 coverage.json
 typechain
