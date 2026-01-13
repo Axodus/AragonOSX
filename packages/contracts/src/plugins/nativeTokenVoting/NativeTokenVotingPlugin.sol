@@ -2,10 +2,11 @@
 
 pragma solidity ^0.8.8;
 
-import {IDAO} from "@aragon/osx/core/dao/DAO.sol";
-import {PluginUUPSUpgradeable} from "@aragon/osx/core/plugin/PluginUUPSUpgradeable.sol";
-import {ProposalUpgradeable} from "@aragon/osx/core/plugin/proposal/ProposalUpgradeable.sol";
-import {RATIO_BASE, _applyRatioCeiled} from "@aragon/osx/plugins/utils/Ratio.sol";
+import {IDAO} from "@aragon/osx-commons-contracts/src/dao/IDAO.sol";
+import {Action} from "@aragon/osx-commons-contracts/src/executors/IExecutor.sol";
+import {PluginUUPSUpgradeable} from "@aragon/osx-commons-contracts/src/plugin/PluginUUPSUpgradeable.sol";
+import {ProposalUpgradeable} from "@aragon/osx-commons-contracts/src/plugin/extensions/proposal/ProposalUpgradeable.sol";
+import {RATIO_BASE, _applyRatioCeiled} from "@aragon/osx-commons-contracts/src/utils/math/Ratio.sol";
 
 /// @title NativeTokenVotingPlugin
 /// @notice A governance plugin that allows voting using native token (ONE, ETH, etc.) balances.
@@ -45,7 +46,7 @@ contract NativeTokenVotingPlugin is PluginUUPSUpgradeable, ProposalUpgradeable {
         uint256 no;
         uint256 abstain;
         mapping(address => VoteOption) votes;
-        IDAO.Action[] actions;
+        Action[] actions;
         uint256 allowFailureMap;
     }
 
@@ -114,34 +115,32 @@ contract NativeTokenVotingPlugin is PluginUUPSUpgradeable, ProposalUpgradeable {
         );
     }
 
-    /// @notice Creates a new proposal.
-    /// @param _metadata Proposal metadata.
-    /// @param _actions Actions to execute if proposal passes.
-    /// @param _startDate Voting start date.
-    /// @param _endDate Voting end date.
-    /// @param _votingMode Voting mode.
-    /// @param _allowFailureMap Bitmap for action failure tolerance.
-    /// @return proposalId The ID of the created proposal.
+    /// @inheritdoc IProposal
+    /// @dev Extra params are encoded in `_data` as: `uint8 votingMode, uint256 allowFailureMap`.
     function createProposal(
-        bytes calldata _metadata,
-        IDAO.Action[] calldata _actions,
-        uint32 _startDate,
-        uint32 _endDate,
-        VotingMode _votingMode,
-        uint256 _allowFailureMap
+        bytes memory _metadata,
+        Action[] memory _actions,
+        uint64 _startDate,
+        uint64 _endDate,
+        bytes memory _data
     ) external returns (uint256 proposalId) {
         uint256 voterBalance = address(msg.sender).balance;
         if (voterBalance < minProposerVotingPower) {
             revert NoVotingPower();
         }
 
-        uint64 _start = _startDate == 0 ? uint32(block.timestamp) : _startDate;
+        (VotingMode _votingMode, uint256 _allowFailureMap) = abi.decode(
+            _data,
+            (VotingMode, uint256)
+        );
+
+        uint64 _start = _startDate == 0 ? uint64(block.timestamp) : _startDate;
         uint64 _end = _endDate;
 
         require(_end > _start, "INVALID_DATES");
         require(_end - _start >= minDuration, "DURATION_TOO_SHORT");
 
-        proposalId = _createProposalId();
+        proposalId = _createProposalId(keccak256(_metadata));
 
         Proposal storage proposal = proposals[proposalId];
         proposal.parameters.votingMode = _votingMode;
@@ -236,7 +235,24 @@ contract NativeTokenVotingPlugin is PluginUUPSUpgradeable, ProposalUpgradeable {
 
         proposal.executed = true;
 
-        _executeProposal(dao(), _proposalId, proposal.actions, proposal.allowFailureMap);
+        _execute(bytes32(_proposalId), proposal.actions, proposal.allowFailureMap);
+
+        emit ProposalExecuted(_proposalId);
+    }
+
+    /// @inheritdoc IProposal
+    function canExecute(uint256 _proposalId) external view returns (bool) {
+        return _canExecute(_proposalId);
+    }
+
+    /// @inheritdoc IProposal
+    function hasSucceeded(uint256 _proposalId) external view returns (bool) {
+        return _isMinParticipationReached(_proposalId) && _isSupportThresholdReached(_proposalId);
+    }
+
+    /// @inheritdoc IProposal
+    function customProposalParamsABI() external pure returns (string memory) {
+        return "uint8 votingMode,uint256 allowFailureMap";
     }
 
     /// @notice Checks if a proposal can be executed.
