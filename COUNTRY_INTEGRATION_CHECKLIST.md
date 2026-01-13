@@ -62,7 +62,7 @@ Objetivo: deploy limpo do framework para parar de criar DAOs com permissões err
 
   - [x] `yarn deploy --network harmony --reset`
 
-  1.3 Pós-deploy
+    1.3 Pós-deploy
 
 - [x] Validar output em `AragonOSX/packages/contracts/deployed_contracts.json` e `AragonOSX/packages/contracts/deploy/deployments/harmony/deployed_contracts.json`.
 - [x] Rodar verificação de permissões do deploy (script `99_verify` em deploy/new/20_permissions/99_verify.ts).
@@ -86,7 +86,7 @@ Notas
 - Verificação no explorer pode emitir warnings (ex.: “Failed to link proxy … Reason: null”) e timeouts; não invalida o deploy on-chain.
 - Nameservice (adapter/registrar) pode ser deployado múltiplas vezes durante iterações; trate `deploy/deployments/harmony/deployed_contracts.json` como fonte de verdade para o último estado gerado.
 
-- [ ] Atualizar endereços em:
+- [x] Atualizar endereços em:
   - [x] Frontend `aragon-app/src/shared/constants/networkDefinitions.ts`
   - [x] Backend `Aragon-app-backend/config/contracts/harmonyMainnet.json`
 
@@ -96,7 +96,7 @@ Notas
 
 2.1 Config
 
-- [ ] Setar envs (Harmony) do backend:
+- [x] Setar envs (Harmony) do backend:
 
   - [x] `HARMONY_MAINNET_COUNTRY_REGISTRY=0x547942...446D` (DC)
   - [ ] (opcional) `HARMONY_MAINNET_PUBLIC_RESOLVER=0x46E370...415D`
@@ -159,10 +159,19 @@ Notas
   - [x] Adicionar traduções i18n
   - [x] Integrar componente na página de settings
 - [x] B: Tela/ação para "Registrar nome .country" criando proposal(s):
+
   - [x] Criar módulo `countryRegistrar` com tipos, componentes e utils
   - [x] Integrar nos 5 plugins de governança (token/multisig/lockToVote/spp/admin)
   - [x] Adicionar traduções (i18n) em `en.json`
   - [ ] Validar que actions aparecem no Action Composer ao criar proposal
+
+    3.4 Harmony — correções de governança/uninstall (OSx)
+
+- [x] Harmony (DAO novo): corrigir revert no "Execute Proposal" (Admin) ao agrupar actions via `DAO.execute(...)`.
+- [x] UX (Harmony): remover clique extra de "Finalize" com auto-approve no TransactionDialog (vai direto para a assinatura).
+- [x] Harmony (DAOs legacy): resolver `PluginSetupProcessor` por DAO (via DAOFactory do tx de criação → `pluginSetupProcessor()`) e propagar PSP no fluxo de uninstall (prepare/apply).
+- [x] Backend: fallback no uninstall para marcar plugin como `uninstalled` mesmo quando existe mismatch de `pluginSetupRepoAddress` no registro.
+- [ ] Indexer/backfill: reprocessar uninstalls já minerados para o UI refletir (ex.: tx `0xfcb34975290a3023a6e6e99f3bf87cf0e4f93ca9ad510616e624c0d2a85aa9a6`, PSP legacy `0xac1b0f953Ca517F4aB21Cc3E2cdb95b186DBF80D`).
 
 ---
 
