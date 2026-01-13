@@ -72,11 +72,7 @@ contract NativeTokenVotingSetup is PluginSetup {
     function prepareUninstallation(
         address _dao,
         SetupPayload calldata _payload
-    )
-        external
-        view
-        returns (PermissionLib.MultiTargetPermission[] memory permissions)
-    {
+    ) external view returns (PermissionLib.MultiTargetPermission[] memory permissions) {
         permissions = new PermissionLib.MultiTargetPermission[](2);
 
         // Revoke EXECUTE_PERMISSION on DAO from plugin

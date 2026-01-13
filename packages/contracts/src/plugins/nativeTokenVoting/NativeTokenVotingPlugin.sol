@@ -106,7 +106,12 @@ contract NativeTokenVotingPlugin is PluginUUPSUpgradeable, ProposalUpgradeable {
         uint64 _minDuration
     ) external initializer {
         __PluginUUPSUpgradeable_init(_dao);
-        _updateVotingSettings(_minProposerVotingPower, _minParticipation, _supportThreshold, _minDuration);
+        _updateVotingSettings(
+            _minProposerVotingPower,
+            _minParticipation,
+            _supportThreshold,
+            _minDuration
+        );
     }
 
     /// @notice Creates a new proposal.
@@ -206,8 +211,7 @@ contract NativeTokenVotingPlugin is PluginUUPSUpgradeable, ProposalUpgradeable {
 
         // Early execution if applicable
         if (
-            proposal.parameters.votingMode == VotingMode.EarlyExecution &&
-            _canExecute(_proposalId)
+            proposal.parameters.votingMode == VotingMode.EarlyExecution && _canExecute(_proposalId)
         ) {
             _execute(_proposalId);
         }
@@ -232,12 +236,7 @@ contract NativeTokenVotingPlugin is PluginUUPSUpgradeable, ProposalUpgradeable {
 
         proposal.executed = true;
 
-        _executeProposal(
-            dao(),
-            _proposalId,
-            proposal.actions,
-            proposal.allowFailureMap
-        );
+        _executeProposal(dao(), _proposalId, proposal.actions, proposal.allowFailureMap);
     }
 
     /// @notice Checks if a proposal can be executed.
@@ -262,25 +261,29 @@ contract NativeTokenVotingPlugin is PluginUUPSUpgradeable, ProposalUpgradeable {
     /// @notice Checks if a proposal is open for voting.
     function _isProposalOpen(Proposal storage proposal) internal view returns (bool) {
         uint64 currentTime = uint64(block.timestamp);
-        return currentTime >= proposal.parameters.startDate && currentTime < proposal.parameters.endDate;
+        return
+            currentTime >= proposal.parameters.startDate &&
+            currentTime < proposal.parameters.endDate;
     }
 
     /// @notice Checks if minimum participation is reached.
     function _isMinParticipationReached(uint256 _proposalId) internal view returns (bool) {
         Proposal storage proposal = proposals[_proposalId];
-        
+
         // Note: totalVotingPower should be calculated from total native token supply at snapshot
         // This is a simplified version
         uint256 totalVotingPower = address(dao()).balance; // Placeholder
         uint256 participation = proposal.yes + proposal.no + proposal.abstain;
 
-        return participation >= _applyRatioCeiled(totalVotingPower, proposal.parameters.minParticipation);
+        return
+            participation >=
+            _applyRatioCeiled(totalVotingPower, proposal.parameters.minParticipation);
     }
 
     /// @notice Checks if support threshold is reached.
     function _isSupportThresholdReached(uint256 _proposalId) internal view returns (bool) {
         Proposal storage proposal = proposals[_proposalId];
-        
+
         uint256 totalVotes = proposal.yes + proposal.no;
         if (totalVotes == 0) {
             return false;
@@ -301,7 +304,12 @@ contract NativeTokenVotingPlugin is PluginUUPSUpgradeable, ProposalUpgradeable {
         supportThreshold = _supportThreshold;
         minDuration = _minDuration;
 
-        emit VotingSettingsUpdated(_minParticipation, _supportThreshold, _minDuration, _minProposerVotingPower);
+        emit VotingSettingsUpdated(
+            _minParticipation,
+            _supportThreshold,
+            _minDuration,
+            _minProposerVotingPower
+        );
     }
 
     uint256[45] private __gap;
