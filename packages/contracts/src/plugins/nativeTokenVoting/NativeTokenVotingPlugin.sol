@@ -125,28 +125,62 @@ contract NativeTokenVotingPlugin is PluginUUPSUpgradeable, ProposalUpgradeable {
         uint64 _endDate,
         bytes memory _data
     ) external returns (uint256 proposalId) {
-        uint256 voterBalance = address(msg.sender).balance;
-        if (voterBalance < minProposerVotingPower) {
+        if (address(msg.sender).balance < minProposerVotingPower) {
             revert NoVotingPower();
         }
 
-        (VotingMode _votingMode, uint256 _allowFailureMap) = abi.decode(
+        (VotingMode votingMode, uint256 allowFailureMap) = abi.decode(
             _data,
             (VotingMode, uint256)
         );
 
-        uint64 _start = _startDate == 0 ? uint64(block.timestamp) : _startDate;
-        uint64 _end = _endDate;
-
-        require(_end > _start, "INVALID_DATES");
-        require(_end - _start >= minDuration, "DURATION_TOO_SHORT");
+        uint64 startDate = _startDate == 0 ? uint64(block.timestamp) : _startDate;
+        _validateProposalDates(startDate, _endDate);
 
         proposalId = _createProposalId(keccak256(_metadata));
 
-        Proposal storage proposal = proposals[proposalId];
+        _storeProposal(
+            proposalId,
+            votingMode,
+            startDate,
+            _endDate,
+            _actions,
+            allowFailureMap
+        );
+
+        _emitProposalCreated(
+            proposalId,
+            msg.sender,
+            startDate,
+            _endDate,
+            _metadata,
+            _actions,
+            allowFailureMap
+        );
+    }
+
+    function _validateProposalDates(uint64 _startDate, uint64 _endDate) internal view {
+        require(_endDate > _startDate, "INVALID_DATES");
+        require(_endDate - _startDate >= minDuration, "DURATION_TOO_SHORT");
+    }
+
+    function _storeProposal(
+        uint256 _proposalId,
+        VotingMode _votingMode,
+        uint64 _startDate,
+        uint64 _endDate,
+        Action[] memory _actions,
+        uint256 _allowFailureMap
+    ) internal {
+        Proposal storage proposal = proposals[_proposalId];
         proposal.parameters.votingMode = _votingMode;
-        proposal.parameters.startDate = _start;
-        proposal.parameters.endDate = _end;
+
+        // Store timestamps as uint32 for storage efficiency.
+        // This is safe for unix timestamps until year ~2106.
+        require(_startDate <= type(uint32).max, "START_DATE_TOO_LARGE");
+        require(_endDate <= type(uint32).max, "END_DATE_TOO_LARGE");
+        proposal.parameters.startDate = uint32(_startDate);
+        proposal.parameters.endDate = uint32(_endDate);
         proposal.parameters.snapshotBlock = uint32(block.number - 1);
         proposal.parameters.minParticipation = minParticipation;
         proposal.parameters.supportThreshold = supportThreshold;
@@ -155,16 +189,26 @@ contract NativeTokenVotingPlugin is PluginUUPSUpgradeable, ProposalUpgradeable {
             proposal.actions.push(_actions[i]);
         }
         proposal.allowFailureMap = _allowFailureMap;
+    }
 
-        emit ProposalCreated({
-            proposalId: proposalId,
-            creator: msg.sender,
-            startDate: uint64(_start),
-            endDate: uint64(_end),
-            metadata: _metadata,
-            actions: _actions,
-            allowFailureMap: _allowFailureMap
-        });
+    function _emitProposalCreated(
+        uint256 _proposalId,
+        address _creator,
+        uint64 _startDate,
+        uint64 _endDate,
+        bytes memory _metadata,
+        Action[] memory _actions,
+        uint256 _allowFailureMap
+    ) internal {
+        emit ProposalCreated(
+            _proposalId,
+            _creator,
+            _startDate,
+            _endDate,
+            _metadata,
+            _actions,
+            _allowFailureMap
+        );
     }
 
     /// @notice Casts a vote on a proposal.
@@ -327,6 +371,12 @@ contract NativeTokenVotingPlugin is PluginUUPSUpgradeable, ProposalUpgradeable {
             _minDuration,
             _minProposerVotingPower
         );
+    }
+
+    function supportsInterface(
+        bytes4 _interfaceId
+    ) public view virtual override(PluginUUPSUpgradeable, ProposalUpgradeable) returns (bool) {
+        return super.supportsInterface(_interfaceId);
     }
 
     uint256[45] private __gap;

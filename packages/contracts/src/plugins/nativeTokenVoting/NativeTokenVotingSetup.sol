@@ -94,8 +94,5 @@ contract NativeTokenVotingSetup is PluginSetup {
         });
     }
 
-    /// @inheritdoc IPluginSetup
-    function implementation() public view override returns (address) {
-        return IMPLEMENTATION;
-    }
+    // `implementation()` is already provided by the base `PluginSetup`.
 }

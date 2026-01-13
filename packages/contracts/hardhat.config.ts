@@ -140,6 +140,25 @@ const config: HardhatUserConfig = {
         },
       },
     },
+    overrides: {
+      // NativeTokenVotingPlugin hits "stack too deep" on the ProposalCreated emission.
+      // Enabling viaIR+optimizer for this file fixes it while keeping the rest of the
+      // repository on the standard compilation pipeline.
+      'src/plugins/nativeTokenVoting/NativeTokenVotingPlugin.sol': {
+        settings: {
+          viaIR: true,
+          optimizer: {
+            enabled: true,
+            runs: 2000,
+          },
+          outputSelection: {
+            '*': {
+              '*': ['storageLayout'],
+            },
+          },
+        },
+      },
+    },
   },
   defaultNetwork: 'hardhat',
   networks: {
