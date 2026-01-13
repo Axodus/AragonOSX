@@ -129,24 +129,14 @@ contract NativeTokenVotingPlugin is PluginUUPSUpgradeable, ProposalUpgradeable {
             revert NoVotingPower();
         }
 
-        (VotingMode votingMode, uint256 allowFailureMap) = abi.decode(
-            _data,
-            (VotingMode, uint256)
-        );
+        (VotingMode votingMode, uint256 allowFailureMap) = abi.decode(_data, (VotingMode, uint256));
 
         uint64 startDate = _startDate == 0 ? uint64(block.timestamp) : _startDate;
         _validateProposalDates(startDate, _endDate);
 
         proposalId = _createProposalId(keccak256(_metadata));
 
-        _storeProposal(
-            proposalId,
-            votingMode,
-            startDate,
-            _endDate,
-            _actions,
-            allowFailureMap
-        );
+        _storeProposal(proposalId, votingMode, startDate, _endDate, _actions, allowFailureMap);
 
         _emitProposalCreated(
             proposalId,
