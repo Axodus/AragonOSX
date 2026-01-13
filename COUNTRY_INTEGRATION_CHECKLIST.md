@@ -161,9 +161,13 @@ Notas
 - [x] B: Tela/ação para "Registrar nome .country" criando proposal(s):
 
   - [x] Criar módulo `countryRegistrar` com tipos, componentes e utils
-  - [x] Integrar nos 5 plugins de governança (token/multisig/lockToVote/spp/admin)
+  - [x] Refatorar para actions serem específicas do DAO (não duplicar por plugin)
+  - [x] Simplificar formulário: nome + meses (1-12, default 1), secret automático
   - [x] Adicionar traduções (i18n) em `en.json`
-  - [ ] Validar que actions aparecem no Action Composer ao criar proposal
+  - [x] Remover duplicação: actions `.country` aparecem somente no grupo "DAO (daoAddress)"
+  - [x] Registrar componentes como core (não dependem de pluginComponents)
+  - [x] Validar Codacy CLI (sem issues nos 9 arquivos editados)
+  - [ ] Validar que actions aparecem no Action Composer ao criar proposal (teste local/deploy)
 
     3.4 Harmony — correções de governança/uninstall (OSx)
 
@@ -189,13 +193,33 @@ Notas
 
 ---
 
-## 5) (Futuro) Import/Migrate de histórico
+## 5) Plugins Harmony e Native Token Voting
+
+5.1 Reformular plugins Harmony
+
+- [ ] **Harmony HIP (Harmony Improvement Proposal)**: avaliar arquitetura atual, integração com OSx, e propor melhorias ou redeploy se necessário.
+- [ ] **Harmony Delegator**: revisar mecanismo de delegação, compatibilidade com OSx, e alinhar com padrões de governança atuais.
+- [ ] Documentar dependências e diferenças em relação aos plugins padrão (token-voting/multisig).
+
+  5.2 Native Token Voting (proposta)
+
+- [ ] Permitir que token-voting use **Native token (0x00...00)** para voto.
+- [ ] Opções de implementação:
+  - [ ] Wrapper interno equivalente a `balanceOf(address)` para Native token (ex.: ler `address.balance`).
+  - [ ] Plugin dedicado ou extensão do token-voting que aceita Native como token de governança.
+- [ ] Definir se o wrapper é plugável/reutilizável ou específico do plugin.
+- [ ] Validar compatibilidade com delegation/snapshot e garantir que saldo reflete em tempo de proposta.
+- [ ] Testes e deploy em testnet antes de produção.
+
+---
+
+## 6) (Futuro) Import/Migrate de histórico
 
 - [ ] Snapshot import: ingestar proposals/votes/members e exibir como “histórico importado” read-only.
 - [ ] Legacy Harmony gov import: mapear fonte de dados e normalização.
 - [ ] Migrate AragonOS (se aplicável): ferramenta de migração para novo DAO.
 
-## 6) Test Coverage
+## 7) Test Coverage
 
 ------------------------------------------|---------|----------|---------|---------|--------------------------------------------------------------
 All tests passed!
