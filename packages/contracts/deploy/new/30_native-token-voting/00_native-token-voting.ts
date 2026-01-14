@@ -1,6 +1,8 @@
 import {HardhatRuntimeEnvironment} from 'hardhat/types';
 import {DeployFunction} from 'hardhat-deploy/types';
 import {Interface} from 'ethers';
+import fs from 'fs';
+import path from 'path';
 import {
   DAO_PERMISSIONS,
   getContractAddress,
@@ -57,6 +59,28 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   console.log(
     `\nRegistering NativeTokenVoting plugin repo with subdomain: ${pluginRepoSubdomain}`
   );
+
+  // Prevent creating multiple repos by accident when re-running the script.
+  // If an address is already recorded in deploy/deployed_contracts.json, reuse it.
+  try {
+    const deployedContractsPath = path.resolve(
+      __dirname,
+      '..',
+      '..',
+      'deployed_contracts.json'
+    );
+    const jsonRaw = fs.readFileSync(deployedContractsPath, 'utf8');
+    const json = JSON.parse(jsonRaw);
+    const existing = json?.contracts?.NativeTokenVotingPluginRepo?.address;
+    if (typeof existing === 'string' && existing.length > 0) {
+      console.log(
+        `NativeTokenVoting PluginRepo already recorded at: ${existing}. Skipping registration.`
+      );
+      return;
+    }
+  } catch {
+    // Ignore if file doesn't exist or is malformed.
+  }
 
   const registerTx = await pluginRepoFactory.createPluginRepoWithFirstVersion(
     pluginRepoSubdomain,
