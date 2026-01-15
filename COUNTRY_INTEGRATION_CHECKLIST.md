@@ -10,6 +10,12 @@ Este documento é o guia único de execução para:
 
 > Meta: `daoName.country` resolve on-chain para o DAO (addr record) e o app exibe/permite administrar isso com segurança.
 
+Status atual (2026-01-15)
+
+- OSx redeploy na Harmony concluído e endereços propagados para app + backend.
+- Fluxo de governança/uninstall em Harmony validado end-to-end (sem revert e sem passo “Grant ROOT” fantasma).
+- Nota de permissões (importante): alguns DAOs operam em modo **self-root** (o próprio DAO tem `ROOT_PERMISSION`). Nesses casos, alterações de permissão (`grant/revoke`) precisam ser executadas via `DAO.execute(...)` por um ator com `EXECUTE_PERMISSION`.
+
 ---
 
 ## 0) Entradas (pre-reqs)
@@ -53,6 +59,8 @@ Objetivo: deploy limpo do framework para parar de criar DAOs com permissões err
   - [x] `HARMONY_MANAGEMENT_DAO_MULTISIG=0xC3caEc518EdACd3fdbBB0a67DC98612EDbbcE738`
   - [x] (recomendado) `HARMONY_GAS_PRICE` (wei). Se der `transaction underpriced`, aumentar (Harmony é sensível a underpriced).
   - [x] (opcional) `HARMONY_LEGACY_GAS_LIMIT` (ex: `1500000`) se o RPC falhar em `eth_estimateGas`
+
+    Observação: alguns RPCs da Harmony retornam `not implemented` para `eth_estimateGas`. Nesses casos, usar tx legacy (`type=0`) com `gasPrice` + `gasLimit` fixos no script/CLI.
 
     1.2 Deploy (Hardhat)
 
@@ -176,6 +184,8 @@ Notas
 - [x] Harmony (DAOs legacy): resolver `PluginSetupProcessor` por DAO (via DAOFactory do tx de criação → `pluginSetupProcessor()`) e propagar PSP no fluxo de uninstall (prepare/apply).
 - [x] Backend: fallback no uninstall para marcar plugin como `uninstalled` mesmo quando existe mismatch de `pluginSetupRepoAddress` no registro.
 - [ ] Indexer/backfill: reprocessar uninstalls já minerados para o UI refletir (ex.: tx `0xfcb34975290a3023a6e6e99f3bf87cf0e4f93ca9ad510616e624c0d2a85aa9a6`, PSP legacy `0xac1b0f953Ca517F4aB21Cc3E2cdb95b186DBF80D`).
+
+- [x] Validação (Harmony): desinstalação do plugin travado operando normalmente após correção de helpers + correção de governança/execute.
 
 ---
 
