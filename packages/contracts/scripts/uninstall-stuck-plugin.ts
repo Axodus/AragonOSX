@@ -15,8 +15,8 @@ async function uninstallStuckPlugin() {
   console.log(`Plugin: ${pluginAddress}`);
   console.log(`Helper: ${helperAddress}\n`);
 
-  // Connect to DAO
-  const dao = await ethers.getContractAt('DAO', daoAddress);
+  // Connect to DAO (use fully qualified name to avoid artifact conflicts)
+  const dao = await ethers.getContractAt('src/core/dao/DAO.sol:DAO', daoAddress);
 
   // 1. Check if signer has permission to uninstall
   const ROOT_PERMISSION_ID = ethers.id('ROOT_PERMISSION');
@@ -45,19 +45,6 @@ async function uninstallStuckPlugin() {
   console.log(`   Tx: ${tx2.hash}`);
   await tx2.wait();
   console.log('   ✅ Helper permissions revoked');
-
-  // 4. Remove plugin from DAO's list (if it's a voting plugin)
-  console.log('\n📋 Step 3: Checking if plugin needs special cleanup...');
-  
-  try {
-    // Try to call a standard cleanup function if the plugin has one
-    const plugin = await ethers.getContractAt('Plugin', pluginAddress);
-    
-    // Most plugins don't have special cleanup, but check anyway
-    console.log('   Plugin has no special cleanup required');
-  } catch (error) {
-    console.log('   Plugin cleanup check skipped');
-  }
 
   console.log('\n✅ Plugin uninstalled successfully!');
   console.log('\n📊 Summary:');
