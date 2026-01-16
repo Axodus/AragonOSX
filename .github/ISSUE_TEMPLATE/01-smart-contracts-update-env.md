@@ -7,9 +7,11 @@ assignees: ''
 ---
 
 ## Objetivo
+
 Atualizar packages/contracts/.env.install com placeholders e exemplos claros; garantir que todos os contratos compilam e que testes unitários passam.
 
 ## Tarefas
+
 - Atualizar packages/contracts/.env.install com placeholders e instruções (não comitar segredos).
 - Atualizar README de contracts com passo-a-passo (build, test, anvil).
 - Rodar build/tests (forge ou hardhat) e corrigir falhas.
@@ -17,12 +19,14 @@ Atualizar packages/contracts/.env.install com placeholders e exemplos claros; ga
 - Abrir PR com mudanças e instruções de verificação.
 
 ## Critérios de aceitação
+
 - .env.install atualizado com exemplos (sem segredos).
 - README de contracts atualizado com comandos funcionais.
 - Todos os testes unitários passam localmente e em CI.
 - PR aberto em develop com checklist completo.
 
 ## Comandos úteis
+
 - forge build
 - forge test -v
 - anvil (para node local)
