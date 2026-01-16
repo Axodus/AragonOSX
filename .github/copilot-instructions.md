@@ -46,6 +46,28 @@ Monorepo for the Aragon OSx protocol: Solidity contracts, subgraph, and ethers w
 
 **FORBIDDEN: Do NOT use `codacy_get_pattern` tool** — This tool is incompatible with WSL environments and will fail. Use alternative Codacy tools for code quality analysis.
 
+## Language Standards
+
+**MANDATORY: All public-facing content MUST be in English:**
+
+- **Code comments**: All comments in source code must be written in English
+- **Logs and console output**: All log messages, debug output, and error messages must be in English
+- **GitHub Issues**: All issue titles, descriptions, and comments must be in English
+- **Commit messages**: All git commit messages must be in English following conventional commits format
+- **Documentation**: All README files, inline docs, and API documentation must be in English
+- **Variable/function names**: Use English for all identifiers in code
+
+**Examples:**
+```bash
+# ✅ CORRECT
+git commit -m "feat: add .country domain resolution to DAO creation flow"
+
+# ❌ INCORRECT
+git commit -m "adiciona resolução de domínio .country no fluxo de criação de DAO"
+```
+
+**Note**: This standard ensures international collaboration and maintainability. Internal planning documents (like `PLAN.md` for local work) may use Portuguese if needed, but all published content must be English.
+
 ## Workspaces & Tooling
 
 - Yarn workspaces (`package.json` root); run package-specific commands from each package directory.
