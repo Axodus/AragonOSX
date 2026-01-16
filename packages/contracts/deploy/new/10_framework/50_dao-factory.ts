@@ -17,12 +17,32 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     hre
   );
 
+  // Optional rescue address to prevent irrecoverable permission deadlocks.
+  // If not set (zero address), no extra EXECUTE permission is granted.
+  const network = hre.network.name;
+  let rescueMultisig = ethers.ZeroAddress;
+
+  if (network === 'harmony') {
+    rescueMultisig = (process.env.HARMONY_MANAGEMENT_DAO_MULTISIG || '').trim() || ethers.ZeroAddress;
+  } else if (network === 'harmonyTestnet') {
+    rescueMultisig =
+      (process.env.HARMONYTESTNET_MANAGEMENT_DAO_MULTISIG || '').trim() || ethers.ZeroAddress;
+  } else if (network === 'hardhat' || network === 'localhost') {
+    rescueMultisig = (process.env.HARDHAT_MANAGEMENT_DAO_MULTISIG || '').trim() || ethers.ZeroAddress;
+  }
+
+  // hardhat-deploy will skip if a deployment with the same name already exists.
+  // This flag allows forcing a redeploy (useful when constructor/bytecode changed).
+  const forceDeploy =
+    (process.env.FORCE_DEPLOY_DAOFACTORY || '').trim().toLowerCase() === 'true';
+
   await deploy('DAOFactory', {
     contract: daoFactoryArtifact,
     from: deployer.address,
-    args: [daoRegistryAddress, pluginSetupProcessorAddress],
+    args: [daoRegistryAddress, pluginSetupProcessorAddress, rescueMultisig],
     log: true,
+    skipIfAlreadyDeployed: !forceDeploy,
   });
 };
 export default func;
-func.tags = ['New', 'DAOFactory'];
+func.tags = ['new', 'DAOFactory'];

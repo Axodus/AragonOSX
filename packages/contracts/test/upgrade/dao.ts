@@ -11,15 +11,13 @@ import {UpgradedEvent} from '../../typechain/DAO';
 import {readStorage, ERC1967_IMPLEMENTATION_SLOT} from '../../utils/storage';
 import {daoExampleURI, ZERO_BYTES32} from '../test-utils/dao';
 import {ARTIFACT_SOURCES} from '../test-utils/wrapper';
-import {
-  IMPLICIT_INITIAL_PROTOCOL_VERSION,
-  findEventTopicLog,
-} from '@aragon/osx-commons-sdk';
+import {IMPLICIT_INITIAL_PROTOCOL_VERSION} from '@aragon/osx-commons-sdk';
+import {findEventLog, getInterfaceId} from '../test-utils/iface';
 import {DAO_PERMISSIONS} from '@aragon/osx-commons-sdk';
-import {getInterfaceId} from '@aragon/osx-commons-sdk';
 import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers';
 import {expect} from 'chai';
 import hre, {ethers} from 'hardhat';
+import {Interface, ZeroAddress, hexlify, id, toUtf8Bytes} from 'ethers';
 
 let signers: SignerWithAddress[];
 
@@ -29,9 +27,7 @@ let daoV130Implementation: DAO_V1_3_0;
 
 const EMPTY_DATA = '0x';
 
-const DUMMY_METADATA = ethers.utils.hexlify(
-  ethers.utils.toUtf8Bytes('0x123456789')
-);
+const DUMMY_METADATA = hexlify(toUtf8Bytes('0x123456789'));
 
 const FORWARDER_1 = `0x${'1'.repeat(40)}`;
 const FORWARDER_2 = `0x${'2'.repeat(40)}`;
@@ -56,7 +52,7 @@ describe('DAO Upgrade', function () {
         await daoV100Proxy.initialize(
           DUMMY_METADATA,
           signers[0].address,
-          ethers.constants.AddressZero,
+          ZeroAddress,
           daoExampleURI
         );
 
@@ -96,23 +92,24 @@ describe('DAO Upgrade', function () {
         );
         expect(implementationAfterUpgrade).to.not.equal(daoV100Implementation);
 
-        // Check the emitted implementation.
-        const emittedImplementation = findEventTopicLog<UpgradedEvent>(
-          await upgradeTx.wait(),
-          daoV130Implementation.interface,
-          'Upgraded'
+        const emittedImplementation = (
+          findEventLog<UpgradedEvent>(
+            await upgradeTx.wait(),
+            daoV130Implementation.interface as unknown as Interface,
+            'Upgraded'
+          ) as any
         ).args.implementation;
         expect(emittedImplementation).to.equal(daoV130Implementation.address);
 
         // Check that storage is not corrupted.
-        expect(await daoV100Proxy.callStatic.daoURI()).to.equal(daoExampleURI);
+        expect(await (daoV100Proxy as any).daoURI.staticCall()).to.equal(daoExampleURI);
       });
 
       it('does not corrupt permissions', async () => {
         await daoV100Proxy.grant(
           daoV100Proxy.address,
           signers[0].address,
-          ethers.utils.id('EXECUTE_PERMISSION')
+          id('EXECUTE_PERMISSION')
         );
 
         // Check that permissions are granted before the upgrade
@@ -120,7 +117,7 @@ describe('DAO Upgrade', function () {
           await daoV100Proxy.hasPermission(
             daoV100Proxy.address,
             signers[0].address,
-            ethers.utils.id('EXECUTE_PERMISSION'),
+            id('EXECUTE_PERMISSION'),
             EMPTY_DATA
           )
         ).to.be.true;
@@ -128,7 +125,7 @@ describe('DAO Upgrade', function () {
           await daoV100Proxy.hasPermission(
             daoV100Proxy.address,
             signers[0].address,
-            ethers.utils.id('ROOT_PERMISSION'),
+            id('ROOT_PERMISSION'),
             EMPTY_DATA
           )
         ).to.be.true;
@@ -138,7 +135,7 @@ describe('DAO Upgrade', function () {
           await daoV100Proxy.hasPermission(
             daoV100Proxy.address,
             signers[0].address,
-            ethers.utils.id('NOT_GRANTED'),
+            id('NOT_GRANTED'),
             EMPTY_DATA
           )
         ).to.be.false;
@@ -168,7 +165,7 @@ describe('DAO Upgrade', function () {
           await daoV100Proxy.hasPermission(
             daoV100Proxy.address,
             signers[0].address,
-            ethers.utils.id('EXECUTE_PERMISSION'),
+            id('EXECUTE_PERMISSION'),
             EMPTY_DATA
           )
         ).to.be.true;
@@ -176,7 +173,7 @@ describe('DAO Upgrade', function () {
           await daoV100Proxy.hasPermission(
             daoV100Proxy.address,
             signers[0].address,
-            ethers.utils.id('ROOT_PERMISSION'),
+            id('ROOT_PERMISSION'),
             EMPTY_DATA
           )
         ).to.be.true;
@@ -186,7 +183,7 @@ describe('DAO Upgrade', function () {
           await daoV100Proxy.hasPermission(
             daoV100Proxy.address,
             signers[0].address,
-            ethers.utils.id('NOT_GRANTED'),
+            id('NOT_GRANTED'),
             EMPTY_DATA
           )
         ).to.be.false;
@@ -196,14 +193,14 @@ describe('DAO Upgrade', function () {
         await daoV100Proxy.grant(
           daoV100Proxy.address,
           signers[0].address,
-          ethers.utils.id('EXECUTE_PERMISSION')
+          id('EXECUTE_PERMISSION')
         );
-
+          ethers.id('SET_TRUSTED_FORWARDER_PERMISSION')
         // We use the `setTrustedForwarder` to test execution and must give permission to the DAO (executor) to call it.
         await daoV100Proxy.grant(
           daoV100Proxy.address,
           daoV100Proxy.address,
-          ethers.utils.id('SET_TRUSTED_FORWARDER_PERMISSION')
+          ethers.id('SET_TRUSTED_FORWARDER_PERMISSION')
         );
 
         // Create an action to set forwarder1
@@ -280,7 +277,7 @@ describe('DAO Upgrade', function () {
       await daoV100Proxy.initialize(
         DUMMY_METADATA,
         signers[0].address,
-        ethers.constants.AddressZero,
+        ZeroAddress,
         daoExampleURI
       );
 
@@ -303,13 +300,13 @@ describe('DAO Upgrade', function () {
       await daoCurrentProxy.initialize(
         DUMMY_METADATA,
         signers[0].address,
-        ethers.constants.AddressZero,
+        ethers.ZeroAddress,
         daoExampleURI
       );
 
-      const protocolVersionSelector = new ethers.utils.Interface(
-        daoCurrentProxy.interface.fragments
-      ).getSighash('protocolVersion');
+      const protocolVersionSelector = daoCurrentProxy.interface
+        .getFunction('protocolVersion')
+        .selector;
 
       // for DAO prior to v1.3.0
       const daoV100 = ProtocolVersion__factory.connect(
@@ -333,8 +330,9 @@ describe('DAO Upgrade', function () {
     context('v1.0.0 to v1.3.0', function () {
       it('supports new protocol version interface after upgrade', async () => {
         // check that the old version do not support protocol version interface
-        const protocolVersionInterface =
-          ProtocolVersion__factory.createInterface();
+        const protocolVersionInterface = new Interface(
+          ProtocolVersion__factory.abi
+        );
 
         expect(
           await daoV100Proxy.supportsInterface(

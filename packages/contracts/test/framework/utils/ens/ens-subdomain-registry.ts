@@ -18,13 +18,11 @@ import {
   deployAndUpgradeSelfCheck,
 } from '../../../test-utils/uups-upgradeable';
 import {ARTIFACT_SOURCES} from '../../../test-utils/wrapper';
-import {
-  ENS_REGISTRAR_PERMISSIONS,
-  getProtocolVersion,
-} from '@aragon/osx-commons-sdk';
+import {ENS_REGISTRAR_PERMISSIONS} from '@aragon/osx-commons-sdk';
+import {getProtocolVersionCompat} from '../../../test-utils/protocol';
 import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers';
 import {expect} from 'chai';
-import {ContractFactory} from 'ethers';
+import {ContractFactory, ZeroAddress} from 'ethers';
 import hre, {ethers} from 'hardhat';
 
 // Setup ENS with signers[0] owning the ENS root node (''), the resolver node ('resolver'), the managing DAO, and the subdomain registrar
@@ -36,7 +34,7 @@ async function setupENS(
 
   // Deploy the Resolver
   const resolver = await hre.wrapper.deploy('PublicResolver', {
-    args: [ens.address, ethers.constants.AddressZero],
+    args: [ens.address, ZeroAddress],
   });
 
   await setupResolver(ens, resolver, owner);
@@ -107,14 +105,12 @@ describe('ENSSubdomainRegistrar', function () {
 
   describe('Check the initial ENS state', async () => {
     it('unregistered domains are owned by the zero address on ENS', async () => {
-      expect(await ens.owner(ensDomainHash('test'))).to.equal(
-        ethers.constants.AddressZero
-      );
+      expect(await ens.owner(ensDomainHash('test'))).to.equal(ZeroAddress);
     });
 
     it('unregistered domains resolve to the zero address on ENS', async () => {
       expect(await resolver['addr(bytes32)'](ensDomainHash('test'))).to.equal(
-        ethers.constants.AddressZero
+        ZeroAddress
       );
     });
   });
@@ -333,11 +329,13 @@ describe('ENSSubdomainRegistrar', function () {
         );
       expect(toImplementation).to.not.equal(fromImplementation);
 
-      const fromProtocolVersion = await getProtocolVersion(
-        legacyContractFactory.attach(fromImplementation)
+      const fromProtocolVersion = await getProtocolVersionCompat(
+        legacyContractFactory.attach(fromImplementation) as any,
+        [1, 0, 0]
       );
-      const toProtocolVersion = await getProtocolVersion(
-        currentContractFactory.attach(toImplementation)
+      const toProtocolVersion = await getProtocolVersionCompat(
+        currentContractFactory.attach(toImplementation) as any,
+        [1, 0, 0]
       );
 
       expect(fromProtocolVersion).to.not.deep.equal(toProtocolVersion);
@@ -365,11 +363,13 @@ describe('ENSSubdomainRegistrar', function () {
         );
       expect(toImplementation).to.not.equal(fromImplementation);
 
-      const fromProtocolVersion = await getProtocolVersion(
-        legacyContractFactory.attach(fromImplementation)
+      const fromProtocolVersion = await getProtocolVersionCompat(
+        legacyContractFactory.attach(fromImplementation) as any,
+        [1, 0, 0]
       );
-      const toProtocolVersion = await getProtocolVersion(
-        currentContractFactory.attach(toImplementation)
+      const toProtocolVersion = await getProtocolVersionCompat(
+        currentContractFactory.attach(toImplementation) as any,
+        [1, 0, 0]
       );
 
       expect(fromProtocolVersion).to.not.deep.equal(toProtocolVersion);
@@ -386,7 +386,7 @@ describe('ENSSubdomainRegistrar', function () {
           .initialize(managingDao.address, ens.address, ensDomainHash('test2'))
       )
         .to.be.revertedWithCustomError(registrar, 'InvalidResolver')
-        .withArgs(ensDomainHash('test2'), ethers.constants.AddressZero);
+        .withArgs(ensDomainHash('test2'), ZeroAddress);
     });
 
     it('reverts on attempted subnode registration', async () => {
@@ -399,7 +399,7 @@ describe('ENSSubdomainRegistrar', function () {
     });
 
     it('reverts on attempted default resolver setting', async () => {
-      const newResolverAddr = ethers.constants.AddressZero;
+      const newResolverAddr = ZeroAddress;
 
       // signers[1] can register subdomain
       await expect(
@@ -452,7 +452,7 @@ describe('ENSSubdomainRegistrar', function () {
         await expect(
           registrar
             .connect(signers[1])
-            .setDefaultResolver(ethers.constants.AddressZero)
+            .setDefaultResolver(ZeroAddress)
         )
           .to.be.revertedWithCustomError(registrar, 'DaoUnauthorized')
           .withArgs(
@@ -540,7 +540,7 @@ describe('ENSSubdomainRegistrar', function () {
         });
 
         it('revert if invalid resolver is set', async () => {
-          const newResolverAddr = ethers.constants.AddressZero;
+          const newResolverAddr = ZeroAddress;
 
           await expect(
             registrar.connect(signers[1]).setDefaultResolver(newResolverAddr)

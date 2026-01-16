@@ -9,7 +9,7 @@ import {HardhatRuntimeEnvironment} from 'hardhat/types';
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   console.log(`\nDeploying ManagementDAO.`);
 
-  const {deployments, ethers} = hre;
+  const {deployments, ethers, network} = hre;
   const {deploy} = deployments;
   const [deployer] = await ethers.getSigners();
 
@@ -18,10 +18,16 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
       ` At the final step when Multisig is available, it will be installed on managementDAO and all roles for the Deployer will be revoked.`
   );
 
+  // Para garantir que todas as permissões/grants possam ser aplicadas on-chain
+  // durante o deploy automatizado (especialmente em Harmony), inicializamos o
+  // ManagementDAO com o Deployer como owner temporário. Na fase de finalize,
+  // o Multisig será habilitado com EXECUTE e os privilégios do Deployer serão revogados.
+  const initialOwnerAddress = deployer.address;
+
   const initializeParams = {
     metadata: '0x',
-    initialOwner: deployer.address,
-    trustedForwarder: ethers.constants.AddressZero,
+    initialOwner: initialOwnerAddress,
+    trustedForwarder: (ethers as any).ZeroAddress || '0x0000000000000000000000000000000000000000',
     daoURI: '0x',
   };
 
@@ -33,7 +39,6 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     args: [],
     log: true,
     proxy: {
-      owner: deployer.address,
       proxyContract: 'ERC1967Proxy',
       proxyArgs: ['{implementation}', '{data}'],
       execute: {
@@ -51,5 +56,5 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   });
 };
 export default func;
-func.tags = ['New', 'ManagementDao'];
-func.dependencies = ['Env'];
+func.tags = ['new', 'ManagementDao'];
+func.dependencies = ['env'];

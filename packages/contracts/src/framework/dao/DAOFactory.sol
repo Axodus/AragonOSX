@@ -33,6 +33,10 @@ contract DAOFactory is ERC165, ProtocolVersion {
     /// @notice The plugin setup processor for installing plugins on the newly created `DAO`s.
     PluginSetupProcessor public immutable pluginSetupProcessor;
 
+    /// @notice Optional address that will receive `EXECUTE_PERMISSION_ID` on every newly created DAO.
+    /// @dev Intended as a break-glass/rescue actor to avoid irrecoverable permission deadlocks.
+    address public immutable rescueMultisig;
+
     // Cache permission IDs for optimized access
     bytes32 internal immutable ROOT_PERMISSION_ID;
     bytes32 internal immutable UPGRADE_DAO_PERMISSION_ID;
@@ -76,9 +80,15 @@ contract DAOFactory is ERC165, ProtocolVersion {
     /// @notice The constructor setting the registry and plugin setup processor and creating the base contracts for the factory.
     /// @param _registry The DAO registry to register the DAO by its name.
     /// @param _pluginSetupProcessor The address of PluginSetupProcessor.
-    constructor(DAORegistry _registry, PluginSetupProcessor _pluginSetupProcessor) {
+    /// @param _rescueMultisig Optional rescue address that will be granted `EXECUTE_PERMISSION_ID` on created DAOs.
+    constructor(
+        DAORegistry _registry,
+        PluginSetupProcessor _pluginSetupProcessor,
+        address _rescueMultisig
+    ) {
         daoRegistry = _registry;
         pluginSetupProcessor = _pluginSetupProcessor;
+        rescueMultisig = _rescueMultisig;
 
         DAO dao = new DAO();
         daoBase = address(dao);
@@ -179,13 +189,28 @@ contract DAOFactory is ERC165, ProtocolVersion {
                 address(this),
                 APPLY_INSTALLATION_PERMISSION_ID
             );
+
+            // Ensure the DAO creator can execute actions on the DAO after creation, even if plugins were installed.
+            // This is required for post-creation governance setup flows.
+            createdDao.grant(daoAddress, msg.sender, EXECUTE_PERMISSION_ID);
         } else {
             // if no plugin setting is provided, grant EXECUTE_PERMISSION_ID to msg.sender
             createdDao.grant(daoAddress, msg.sender, EXECUTE_PERMISSION_ID);
         }
 
+        // Optionally grant EXECUTE to a rescue address to avoid irrecoverable permission deadlocks.
+        address rescue = rescueMultisig;
+        if (rescue != address(0) && rescue != msg.sender) {
+            createdDao.grant(daoAddress, rescue, EXECUTE_PERMISSION_ID);
+        }
+
         // Set the rest of DAO's permissions.
         _setDAOPermissions(daoAddress);
+
+        // Ensure the DAO creator can perform post-creation governance setup.
+        // Without this, the creator may be unable to grant/revoke permissions (e.g. during initial plugin/governance configuration)
+        // and the same issue would repeat for every new DAO.
+        createdDao.grant(daoAddress, msg.sender, ROOT_PERMISSION_ID);
 
         // Revoke Temporarily `ROOT_PERMISSION_ID` that implicitly granted to this `DaoFactory`
         // at the create dao step `address(this)` being the initial owner of the new created DAO.

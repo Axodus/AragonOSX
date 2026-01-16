@@ -8,7 +8,14 @@ import {
 } from '../../typechain';
 import {ARTIFACT_SOURCES} from './wrapper';
 import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers';
-import {BigNumber} from 'ethers';
+import {
+  Interface,
+  ZeroAddress,
+  hexlify,
+  toUtf8Bytes,
+  zeroPadValue,
+  toBeHex,
+} from 'ethers';
 import hre, {ethers} from 'hardhat';
 
 export const ZERO_BYTES32 =
@@ -29,7 +36,7 @@ export async function deployNewDAO(signer: SignerWithAddress): Promise<DAO> {
   await dao.initialize(
     '0x00',
     signer.address,
-    ethers.constants.AddressZero,
+    ZeroAddress,
     daoExampleURI
   );
 
@@ -39,7 +46,7 @@ export async function deployNewDAO(signer: SignerWithAddress): Promise<DAO> {
 export async function getActions() {
   const signers = await ethers.getSigners();
   let ActionExecute = await hre.wrapper.deploy('ActionExecute');
-  const iface = new ethers.utils.Interface(ActionExecute__factory.abi);
+  const iface = new Interface(ActionExecute__factory.abi);
 
   const num = 20;
   return {
@@ -53,10 +60,8 @@ export async function getActions() {
       data: iface.encodeFunctionData('setTest', [num]),
       value: 0,
     },
-    failActionMessage: ethers.utils
-      .hexlify(ethers.utils.toUtf8Bytes('ActionExecute:Revert'))
-      .substring(2),
-    successActionResult: ethers.utils.hexZeroPad(ethers.utils.hexlify(num), 32),
+    failActionMessage: hexlify(toUtf8Bytes('ActionExecute:Revert')).substring(2),
+    successActionResult: zeroPadValue(toBeHex(num), 32),
   };
 }
 
@@ -67,7 +72,7 @@ export function getERC721TransferAction(
   tokenId: number,
   issafe: boolean = true
 ) {
-  const iface = new ethers.utils.Interface(ERC721Mock__factory.abi);
+  const iface = new Interface(ERC721Mock__factory.abi);
 
   const functionName = issafe
     ? 'safeTransferFrom(address, address, uint256)'
@@ -89,9 +94,9 @@ export function getERC721TransferAction(
 export function getERC20TransferAction(
   tokenAddress: string,
   to: string,
-  amount: number | BigNumber
+  amount: number | bigint
 ) {
-  const iface = new ethers.utils.Interface(ERC20Mock__factory.abi);
+  const iface = new Interface(ERC20Mock__factory.abi);
 
   const encodedData = iface.encodeFunctionData('transfer', [to, amount]);
   return {
@@ -106,9 +111,9 @@ export function getERC1155TransferAction(
   from: string,
   to: string,
   tokenId: number,
-  amount: number | BigNumber
+  amount: number | bigint
 ) {
-  const iface = new ethers.utils.Interface(ERC1155Mock__factory.abi);
+  const iface = new Interface(ERC1155Mock__factory.abi);
 
   const encodedData = iface.encodeFunctionData('safeTransferFrom', [
     from,

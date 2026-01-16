@@ -19,14 +19,27 @@ import 'solidity-docgen';
 
 dotenv.config();
 
+function parseGasPriceWei(value: string | undefined, fallback: number): number {
+  const parsed = value ? Number(value) : Number.NaN;
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+}
+
+// Harmony costuma rejeitar txs com gasPrice muito baixo ("transaction underpriced").
+// Mantemos um mínimo razoável e ainda permitimos override via env (em wei).
+const MIN_HARMONY_GAS_PRICE_WEI = 700_000_000_000; // 700 gwei
+
 const ETH_KEY = process.env.ETH_KEY;
 const accounts = ETH_KEY ? ETH_KEY.split(',') : [];
 
-// check alchemy Api key existence
+// Alchemy API key is only required when deploying to networks whose RPC URLs are
+// derived from Alchemy. Keep it optional so custom networks (e.g. Harmony) can
+// deploy without needing unrelated credentials.
 if (process.env.ALCHEMY_API_KEY) {
   addRpcUrlToNetwork(process.env.ALCHEMY_API_KEY);
 } else {
-  throw new Error('ALCHEMY_API_KEY in .env not set');
+  console.log(
+    'WARNING: ALCHEMY_API_KEY in .env not set. Alchemy-based networks may be unavailable.'
+  );
 }
 
 // add accounts to network configs
@@ -67,11 +80,44 @@ console.log('Is deploy test is enabled: ', ENABLE_DEPLOY_TEST);
 // Note that this also gets injected when running it through coverage.
 task('test').setAction(async (args, hre, runSuper) => {
   await hre.run('compile');
+  // Back-compat shim for ethers v6: expose .address like v5
+  try {
+    const {Contract} = await import('ethers');
+    if (
+      Contract &&
+      (Contract as any).prototype &&
+      !Object.getOwnPropertyDescriptor((Contract as any).prototype, 'address')
+    ) {
+      Object.defineProperty((Contract as any).prototype, 'address', {
+        get: function () {
+          // ethers v6 uses .target for contract address
+          return (this as any).target;
+        },
+      });
+    }
+    // Also patch Hardhat's re-exported ethers just in case
+    if (
+      (hre as any).ethers &&
+      (hre as any).ethers.Contract &&
+      !Object.getOwnPropertyDescriptor(
+        (hre as any).ethers.Contract.prototype,
+        'address'
+      )
+    ) {
+      Object.defineProperty((hre as any).ethers.Contract.prototype, 'address', {
+        get: function () {
+          return (this as any).target;
+        },
+      });
+    }
+  } catch (e) {
+    // no-op if import fails; tests may still work without the shim
+  }
   const imp = await import('./test/test-utils/wrapper');
 
   const wrapper = await imp.Wrapper.create(
     hre.network.name,
-    hre.ethers.provider
+    hre.ethers.provider as any
   );
   hre.wrapper = wrapper;
 
@@ -94,6 +140,25 @@ const config: HardhatUserConfig = {
         },
       },
     },
+    overrides: {
+      // NativeTokenVotingPlugin hits "stack too deep" on the ProposalCreated emission.
+      // Enabling viaIR+optimizer for this file fixes it while keeping the rest of the
+      // repository on the standard compilation pipeline.
+      'src/plugins/nativeTokenVoting/NativeTokenVotingPlugin.sol': {
+        settings: {
+          viaIR: true,
+          optimizer: {
+            enabled: true,
+            runs: 2000,
+          },
+          outputSelection: {
+            '*': {
+              '*': ['storageLayout'],
+            },
+          },
+        },
+      },
+    },
   },
   defaultNetwork: 'hardhat',
   networks: {
@@ -102,14 +167,36 @@ const config: HardhatUserConfig = {
       throwOnCallFailures: true,
       blockGasLimit: 3000000000, // really high to test some things that are only possible with a higher block gas limit
       gasPrice: 80000000000,
-      deploy: ENABLE_DEPLOY_TEST
-        ? ['./deploy']
-        : ['./deploy/env', './deploy/new', './deploy/verification'],
+      deploy: ['env', 'new', 'verification'],
     },
     localhost: {
-      deploy: ENABLE_DEPLOY_TEST
-        ? ['./deploy']
-        : ['./deploy/env', './deploy/new', './deploy/verification'],
+      deploy: ['env', 'new', 'verification'],
+    },
+    harmony: {
+      url: process.env.HARMONY_MAINNET_RPC || '',
+      chainId: 1666600000,
+      gasPrice: Math.max(
+        parseGasPriceWei(
+          process.env.HARMONY_GAS_PRICE,
+          MIN_HARMONY_GAS_PRICE_WEI
+        ),
+        MIN_HARMONY_GAS_PRICE_WEI
+      ),
+      accounts,
+      deploy: ['./deploy/env', './deploy/new', './deploy/verification'],
+    },
+    harmonyTestnet: {
+      url: process.env.HARMONY_TESTNET_RPC || '',
+      chainId: 1666700000,
+      gasPrice: Math.max(
+        parseGasPriceWei(
+          process.env.HARMONY_TESTNET_GAS_PRICE,
+          MIN_HARMONY_GAS_PRICE_WEI
+        ),
+        MIN_HARMONY_GAS_PRICE_WEI
+      ),
+      accounts,
+      deploy: ['./deploy/env', './deploy/new', './deploy/verification'],
     },
     ...hardhatNetworks,
   },
@@ -120,21 +207,10 @@ const config: HardhatUserConfig = {
   },
   etherscan: {
     apiKey: {
-      mainnet: process.env.ETHERSCAN_KEY || '',
-      rinkeby: process.env.ETHERSCAN_KEY || '',
-      goerli: process.env.ETHERSCAN_KEY || '',
-      sepolia: process.env.ETHERSCAN_KEY || '',
-      holesky: process.env.ETHERSCAN_KEY || '',
-      polygon: process.env.POLYGONSCAN_KEY || '',
-      polygonMumbai: process.env.POLYGONSCAN_KEY || '',
-      baseMainnet: process.env.BASESCAN_KEY || '',
-      baseGoerli: process.env.BASESCAN_KEY || '',
-      baseSepolia: process.env.BASESCAN_KEY || '',
-      arbitrumOne: process.env.ARBISCAN_KEY || '',
-      arbitrumGoerli: process.env.ARBISCAN_KEY || '',
-      arbitrumSepolia: process.env.ARBISCAN_KEY || '',
       modeTestnet: 'modeTestnet',
       modeMainnet: 'modeMainnet',
+      harmony: process.env.HARMONY_EXPLORER_KEY || '',
+      harmonyTestnet: process.env.HARMONY_TESTNET_EXPLORER_KEY || '',
     },
     customChains: [
       {
@@ -193,6 +269,22 @@ const config: HardhatUserConfig = {
           apiURL:
             'https://api.routescan.io/v2/network/mainnet/evm/34443/etherscan',
           browserURL: 'https://modescan.io',
+        },
+      },
+      {
+        network: 'harmony',
+        chainId: 1666600000,
+        urls: {
+          apiURL: process.env.HARMONY_EXPLORER_API_URL || '',
+          browserURL: process.env.HARMONY_EXPLORER_BROWSER_URL || '',
+        },
+      },
+      {
+        network: 'harmonyTestnet',
+        chainId: 1666700000,
+        urls: {
+          apiURL: process.env.HARMONY_TESTNET_EXPLORER_API_URL || '',
+          browserURL: process.env.HARMONY_TESTNET_EXPLORER_BROWSER_URL || '',
         },
       },
     ],

@@ -1,6 +1,10 @@
 import {ENSRegistry__factory} from '../../../typechain';
 import {ENSRegistry} from '../../../typechain/ENSRegistry';
-import {daoDomainEnv, pluginDomainEnv} from '../../../utils/environment';
+import {
+  countryRegistryEnv,
+  daoDomainEnv,
+  pluginDomainEnv,
+} from '../../../utils/environment';
 import {
   getContractAddress,
   getENSAddress,
@@ -24,7 +28,7 @@ async function registerAndTransferDomain(
   let owner = await ensRegistryContract.owner(node);
 
   // node hasn't been registered yet
-  if (owner === ethers.constants.AddressZero) {
+  if (owner === ((ethers as any).ZeroAddress || '0x0000000000000000000000000000000000000000')) {
     owner = await registerSubnodeRecord(
       domain,
       deployer,
@@ -56,11 +60,37 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {ethers, network} = hre;
   const [deployer] = await ethers.getSigners();
 
+  // Harmony não tem ENS oficial (usa 1.country). Não tente resolver ENSRegistry via deployments.
+  if ((network.name || '').toLowerCase().includes('harmony')) {
+    console.log(`[ENS] Rede '${network.name}' sem suporte ENS oficial. Pulando subdomains.`);
+    return;
+  }
+
+  // Se um Country Registry estiver configurado, o fluxo de ENS não deve rodar.
+  const countryRegistry = countryRegistryEnv(network);
+  if (countryRegistry && countryRegistry.trim().length > 0) {
+    console.log(
+      `[ENS] Country Registry configurado (${countryRegistry}). Pulando subdomains.`
+    );
+    return;
+  }
+
   // Get ENS subdomains
   const daoDomain = daoDomainEnv(network);
   const pluginDomain = pluginDomainEnv(network);
 
-  const ensRegistryAddress = await getENSAddress(hre);
+  let ensRegistryAddress: string | null = null;
+  try {
+    ensRegistryAddress = await getENSAddress(hre);
+  } catch (e) {
+    console.log(`[ENS] No deployment/address for ENSRegistry. Pulando subdomains.`);
+    return;
+  }
+
+  if (!ensRegistryAddress) {
+    console.log(`[ENS] ENSRegistry address vazio. Pulando subdomains.`);
+    return;
+  }
   const ensRegistryContract = ENSRegistry__factory.connect(
     ensRegistryAddress,
     deployer
@@ -72,8 +102,12 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   );
 
   // Check if domains are owned by the managementDAO
-  const daoNode = ethers.utils.namehash(daoDomain);
-  const pluginNode = ethers.utils.namehash(pluginDomain);
+  const daoNode = (ethers as any).namehash
+    ? (ethers as any).namehash(daoDomain)
+    : require('eth-ens-namehash').hash(daoDomain);
+  const pluginNode = (ethers as any).namehash
+    ? (ethers as any).namehash(pluginDomain)
+    : require('eth-ens-namehash').hash(pluginDomain);
 
   await registerAndTransferDomain(
     ensRegistryContract,
@@ -96,4 +130,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   );
 };
 export default func;
-func.tags = ['New', 'ENSSubdomains'];
+func.tags = ['new', 'ENSSubdomains'];

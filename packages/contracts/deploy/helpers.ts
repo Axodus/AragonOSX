@@ -117,7 +117,9 @@ export function getLatestContractAddress(
     if (isLocal(hre.network)) {
       return '';
     }
-    throw new Error(`Failed to find network ${networkName}`);
+    // Custom networks (e.g., Harmony) may not exist in @aragon/osx-commons-configs.
+    // In that case we simply don't have a "latest deployment" fallback.
+    return '';
   }
 
   const latestNetworkDeployment = getLatestNetworkDeployment(osxNetworkName);
@@ -188,7 +190,7 @@ export async function isPermissionSetCorrectly(
   permissionManagerContract: Contract,
   {operation, where, who, permission, data = '0x'}: Permission
 ): Promise<boolean> {
-  const permissionId = ethers.utils.id(permission);
+  const permissionId = ethers.keccak256(ethers.toUtf8Bytes(permission));
   const isGranted = await permissionManagerContract.isGranted(
     where.address,
     who.address,
@@ -228,14 +230,176 @@ export async function managePermissions(
       permissions.length - items.length
     }`
   );
-  const tx = await permissionManagerContract.applyMultiTargetPermissions(
-    items.map(item => [
-      item.operation,
-      item.where.address,
-      item.who.address,
-      item.condition || ethers.constants.AddressZero,
-      ethers.utils.id(item.permission),
-    ])
+
+  // Para conceder/revogar permissões, precisamos de ROOT no PermissionManager.
+  // Durante o deploy, o deployer é o owner temporário do ManagementDAO e tem ROOT,
+  // então chamamos direto `applyMultiTargetPermissions`.
+  // Em Harmony, o provider pode retornar feeData/gasPrice baixo e causar `transaction underpriced`;
+  // aqui forçamos tx legacy (type 0) e usamos um gasPrice >= `eth_gasPrice` (com bump).
+  const txOverrides = await (async () => {
+    const gasLimit = process.env.HARMONY_LEGACY_GAS_LIMIT || '1500000';
+    const envGas = process.env.HARMONY_GAS_PRICE;
+    const requestedGasPrice = envGas ? BigInt(envGas) : 0n;
+
+    const contractAny = permissionManagerContract as any;
+    const provider =
+      contractAny?.runner?.provider ||
+      contractAny?.provider ||
+      (ethers as any)?.provider;
+
+    // Sem provider.send (ou provider inexistente): sempre passe gasLimit para evitar estimateGas.
+    // Se houver gasPrice configurado via env, force tx legacy (type 0) também.
+    if (!provider || typeof provider.send !== 'function') {
+      if (requestedGasPrice) {
+        return {type: 0, gasPrice: requestedGasPrice.toString(), gasLimit};
+      }
+      return {gasLimit};
+    }
+
+    // Detecta Harmony por chainId via RPC (hex string)
+    let chainId = 0n;
+    try {
+      const chainIdHex = (await provider.send('eth_chainId', [])) as string;
+      chainId = chainIdHex ? BigInt(chainIdHex) : 0n;
+    } catch (e) {
+      // Alguns RPCs (incl. Harmony) podem não implementar eth_chainId.
+      // Nesses casos, a probabilidade de eth_estimateGas também falhar é alta.
+      // Para evitar que o ethers tente estimar gas, sempre passamos gasLimit.
+      const gasLimit = process.env.HARMONY_LEGACY_GAS_LIMIT || '1500000';
+      const envGas = process.env.HARMONY_GAS_PRICE;
+      const requestedGasPrice = envGas ? BigInt(envGas) : 0n;
+      if (requestedGasPrice) {
+        return {type: 0, gasPrice: requestedGasPrice.toString(), gasLimit};
+      }
+      return {gasLimit};
+    }
+
+    const isHarmony = chainId === 1666600000n || chainId === 1666700000n;
+
+    // Fora da Harmony: só aplica override se o env estiver setado explicitamente.
+    if (!isHarmony) {
+      if (!requestedGasPrice) return {};
+      return {type: 0, gasPrice: requestedGasPrice.toString(), gasLimit};
+    }
+
+    // Harmony: usa eth_gasPrice com bump de 20% e permite override via env (max).
+    let rpcGasPrice = 0n;
+    try {
+      const gasPriceHex = (await provider.send('eth_gasPrice', [])) as string;
+      rpcGasPrice = gasPriceHex ? BigInt(gasPriceHex) : 0n;
+    } catch (e) {
+      rpcGasPrice = 0n;
+    }
+
+    const bumpedRpcGasPrice = rpcGasPrice ? (rpcGasPrice * 12n) / 10n : 0n;
+    // Fallback mínimo para não depender de RPCs que não implementam eth_gasPrice
+    // ou retornam valores inconsistentes.
+    const defaultGasPrice = 30_000_000_000n; // 30 gwei
+    const gasPrice =
+      requestedGasPrice > bumpedRpcGasPrice
+        ? requestedGasPrice
+        : bumpedRpcGasPrice;
+
+    // Sempre definir gasLimit em Harmony para evitar `eth_estimateGas` (muitos RPCs retornam "not implemented").
+    if (!gasPrice) {
+      return {gasLimit};
+    }
+
+    return {
+      type: 0,
+      gasPrice: (gasPrice > 0n ? gasPrice : defaultGasPrice).toString(),
+      gasLimit,
+    };
+  })();
+
+  // Se o signer não possui ROOT no PermissionManager, é comum que chamadas diretas a
+  // `applyMultiTargetPermissions` revertam com Unauthorized. Nesses casos, quando o
+  // PermissionManager também é um DAO, podemos usar `DAO.execute` para que o próprio
+  // DAO (que normalmente detém ROOT em si mesmo durante o bootstrap) aplique as permissões.
+  const shouldUseDaoExecute = await (async () => {
+    const contractAny = permissionManagerContract as any;
+    const hasPermission = contractAny?.hasPermission;
+    const execute = contractAny?.execute;
+    if (typeof hasPermission !== 'function' || typeof execute !== 'function') {
+      return false;
+    }
+
+    // Resolve o endereço do signer/runner para checar permissões.
+    let signerAddress: string | undefined;
+    try {
+      if (contractAny?.runner && typeof contractAny.runner.getAddress === 'function') {
+        signerAddress = await contractAny.runner.getAddress();
+      } else if (contractAny?.signer && typeof contractAny.signer.getAddress === 'function') {
+        signerAddress = await contractAny.signer.getAddress();
+      }
+    } catch (_) {
+      signerAddress = undefined;
+    }
+
+    if (!signerAddress) return false;
+
+    const rootPermissionId = ethers.keccak256(ethers.toUtf8Bytes('ROOT_PERMISSION'));
+    try {
+      const hasRoot = await contractAny.hasPermission(
+        permissionManagerContract.address,
+        signerAddress,
+        rootPermissionId,
+        '0x'
+      );
+      return !hasRoot;
+    } catch (_) {
+      // Se não conseguimos checar, não mudamos o comportamento: tentamos o caminho direto.
+      return false;
+    }
+  })();
+
+  const multiTargetItems = items.map(item => [
+    item.operation,
+    item.where.address,
+    item.who.address,
+    item.condition ||
+      (ethers as any).ZeroAddress ||
+      '0x0000000000000000000000000000000000000000',
+    ethers.keccak256(ethers.toUtf8Bytes(item.permission)),
+  ]);
+
+  if (shouldUseDaoExecute) {
+    const daoAny = permissionManagerContract as any;
+    const calldata = daoAny.interface.encodeFunctionData(
+      'applyMultiTargetPermissions',
+      [multiTargetItems]
+    );
+    const callId = ethers.keccak256(
+      ethers.toUtf8Bytes(`managePermissions:${Date.now().toString()}`)
+    );
+
+    const action = {
+      to: permissionManagerContract.address,
+      value: 0,
+      data: calldata,
+    };
+
+    const tx = await daoAny.execute(callId, [action], 0, txOverrides);
+    console.log(`Set permissions with ${tx.hash}. Waiting for confirmation...`);
+    await tx.wait();
+
+    items.forEach(permission => {
+      console.log(
+        `${
+          permission.operation === Operation.Grant ? 'Granted' : 'Revoked'
+        } the ${permission.permission} of (${permission.where.name}: ${
+          permission.where.address
+        }) for (${permission.who.name}: ${permission.who.address}), see (tx: ${
+          tx.hash
+        })`
+      );
+    });
+    return;
+  }
+
+  const tx = await (permissionManagerContract as any).applyMultiTargetPermissions(
+    multiTargetItems,
+    txOverrides
   );
   console.log(`Set permissions with ${tx.hash}. Waiting for confirmation...`);
   await tx.wait();
@@ -263,7 +427,7 @@ export async function isENSDomainRegistered(
     signer
   );
 
-  return ensRegistryContract.recordExists(ethers.utils.namehash(domain));
+  return ensRegistryContract.recordExists((ethers as any).namehash ? (ethers as any).namehash(domain) : require('eth-ens-namehash').hash(domain));
 }
 
 export async function getENSAddress(
@@ -311,14 +475,14 @@ export async function registerSubnodeRecord(
     owner
   );
   const tx = await ensRegistryContract.setSubnodeRecord(
-    ethers.utils.namehash(parentDomain),
-    ethers.utils.keccak256(ethers.utils.toUtf8Bytes(subdomain)),
+    ((ethers as any).namehash ? (ethers as any).namehash(parentDomain) : require('eth-ens-namehash').hash(parentDomain)),
+    ethers.keccak256(ethers.toUtf8Bytes(subdomain)),
     owner.address,
     publicResolver,
     0
   );
   await tx.wait();
-  return ensRegistryContract.owner(ethers.utils.namehash(domain));
+  return ensRegistryContract.owner(((ethers as any).namehash ? (ethers as any).namehash(domain) : require('eth-ens-namehash').hash(domain)));
 }
 
 export async function transferSubnodeRecord(
@@ -338,8 +502,8 @@ export async function transferSubnodeRecord(
   );
 
   const tx = await ensRegistryContract.setSubnodeOwner(
-    ethers.utils.namehash(parentDomain),
-    ethers.utils.keccak256(ethers.utils.toUtf8Bytes(subdomain)),
+    ((ethers as any).namehash ? (ethers as any).namehash(parentDomain) : require('eth-ens-namehash').hash(parentDomain)),
+    ethers.keccak256(ethers.toUtf8Bytes(subdomain)),
     newOwner
   );
   console.log(
@@ -367,11 +531,11 @@ export async function transferSubnodeChain(
   // +1 on length because we also need to check the owner of the empty domain
   for (let i = 0; i < daoDomainSplitted.length + 1; i++) {
     const domainOwner = await ensRegistryContract.callStatic.owner(
-      ethers.utils.namehash(domain)
+      ((ethers as any).namehash ? (ethers as any).namehash(domain) : require('eth-ens-namehash').hash(domain))
     );
     if (domainOwner !== newOwner && domainOwner === currentOwner) {
       const tx = await ensRegistryContract.setOwner(
-        ethers.utils.namehash(domain),
+        ((ethers as any).namehash ? (ethers as any).namehash(domain) : require('eth-ens-namehash').hash(domain)),
         newOwner
       );
       console.log(

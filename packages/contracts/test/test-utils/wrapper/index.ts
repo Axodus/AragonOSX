@@ -2,8 +2,7 @@ import {ProxyCreatedEvent} from '../../../typechain/ProxyFactory';
 import {HardhatClass} from './hardhat';
 import {ZkSync} from './zksync';
 import {findEvent} from '@aragon/osx-commons-sdk';
-import {BigNumberish, Contract, Wallet} from 'ethers';
-import {providers} from 'ethers';
+import {BigNumberish, Contract, Wallet, AbstractProvider, parseEther} from 'ethers';
 import hre, {ethers} from 'hardhat';
 
 // TODO: generate paths programatically.
@@ -100,7 +99,7 @@ export class Wrapper {
   // on hardhat, it's 20. Tests are heavily using the numbers in the Signers
   // object from 10 to 20. So We make 10 custom addresses rich-funded to
   // allow tests use the same approach on zksync as on hardhat.
-  static async create(networkName: string, provider: providers.BaseProvider) {
+  static async create(networkName: string, provider: AbstractProvider) {
     if (networkName == 'zkLocalTestnet' || networkName == 'zkSyncLocal') {
       const signers = await ethers.getSigners();
       const allSigners = signers.map(signer => signer.address);
@@ -108,7 +107,7 @@ export class Wrapper {
       for (let i = 10; i < 20; i++) {
         await signers[0].sendTransaction({
           to: allSigners[i],
-          value: ethers.utils.parseEther('0.5'),
+          value: parseEther('0.5'),
         });
       }
 
@@ -128,10 +127,13 @@ export class Wrapper {
       artifactName,
       constructorArgs
     );
+    // Normalize ethers v6 contract instance to always expose `target` and `.address`
+    contract = await this.normalizeContract(contract);
     if (isProxy) {
       const {contract: proxyFactoryContract} = await this.network.deploy(
         'ProxyFactory',
-        [contract.address]
+        // ethers v6 exposes contract address as .target
+        [(contract as any).target ?? (contract as any).address]
       );
 
       // Currently, always deploys with UUPS
@@ -144,18 +146,19 @@ export class Wrapper {
         );
       }
 
-      const tx = await proxyFactoryContract.deployUUPSProxy(data);
-
-      const event = findEvent<ProxyCreatedEvent>(
-        await tx.wait(),
-        'ProxyCreated'
+      // v6-safe: precompute proxy address via static call, then send tx and wait
+      const expectedProxy = await proxyFactoryContract.deployUUPSProxy.staticCall(
+        data
       );
+      const tx = await proxyFactoryContract.deployUUPSProxy(data);
+      await tx.wait();
 
       contract = new hre.ethers.Contract(
-        event.args.proxy,
+        expectedProxy,
         artifact.abi,
         (await hre.ethers.getSigners())[0]
       );
+      contract = await this.normalizeContract(contract);
     }
 
     return contract;
@@ -210,3 +213,30 @@ export class Wrapper {
     );
   }
 }
+
+// Helpers
+// Ensure returned contract has a valid `target` and `.address` getter in ethers v6
+Wrapper.prototype.normalizeContract = async function (contract: any) {
+  if (contract && !(contract as any).target && typeof contract.getAddress === 'function') {
+    try {
+      (contract as any).target = await contract.getAddress();
+    } catch (_) {
+      // ignore, will fail later if truly unset
+    }
+  }
+  if (
+    contract &&
+    !Object.getOwnPropertyDescriptor((contract as any).__proto__, 'address')
+  ) {
+    try {
+      Object.defineProperty((contract as any).__proto__, 'address', {
+        get: function () {
+          return (this as any).target;
+        },
+      });
+    } catch (_) {
+      // ignore
+    }
+  }
+  return contract;
+};

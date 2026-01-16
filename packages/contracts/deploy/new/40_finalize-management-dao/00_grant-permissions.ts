@@ -28,6 +28,19 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     deployer
   );
 
+  // Requer EXECUTE para chamar DAO.execute (managePermissions).
+  const execPermissionId = ethers.keccak256(ethers.toUtf8Bytes('EXECUTE_PERMISSION'));
+  const hasExecute = await (DAO__factory.connect(managementDAOAddress, deployer) as any).hasPermission(
+    managementDAOAddress,
+    deployer.address,
+    execPermissionId,
+    '0x'
+  );
+  if (!hasExecute) {
+    console.log('[Finalize] Deployer sem EXECUTE; pulando grants finais.');
+    return;
+  }
+
   const grantPermissions = [
     {
       operation: Operation.Grant,
@@ -46,4 +59,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   await managePermissions(managementDaoContract, grantPermissions);
 };
 export default func;
-func.tags = ['New', 'RegisterManagementDAO'];
+func.tags = ['new', 'RegisterManagementDAO'];

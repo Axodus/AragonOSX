@@ -69,3 +69,16 @@ export const managementDaoMultisigListedOnlyEnv = (network: Network): string =>
 
 export const ethKeyEnv = (network: Network): string =>
   env(network, 'ETH_KEY', HARDHAT_ACCOUNTS[1].KEY);
+
+export const managementDaoMultisigAddressEnv = (network: Network): string =>
+  env(
+    network,
+    `${network.name.toUpperCase()}_MANAGEMENT_DAO_MULTISIG`,
+    process.env.HARDHAT_MANAGEMENT_DAO_MULTISIG || HARDHAT_ACCOUNTS[0].ADDRESS
+  );
+
+export const countryRegistryEnv = (network: Network): string =>
+  env(network, `${network.name.toUpperCase()}_COUNTRY_REGISTRY`, '');
+
+export const countryControllerEnv = (network: Network): string =>
+  env(network, `${network.name.toUpperCase()}_COUNTRY_CONTROLLER`, '');

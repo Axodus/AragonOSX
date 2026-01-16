@@ -1,7 +1,7 @@
-import {decodeReturnData} from '@nomicfoundation/hardhat-chai-matchers/internal/reverted/utils.js';
 import {buildAssert} from '@nomicfoundation/hardhat-chai-matchers/utils.js';
 import {AssertionError} from 'chai';
 import chai from 'chai';
+import {AbiCoder, dataSlice, id, toBeHex} from 'ethers';
 
 /// The below code overwrites the behaviour of the `revertedWith` matcher to support how zkSync and ethers-v5
 /// encode and handle errors. The functions below are lifted from the `hardhat-chai-matchers` package and modified
@@ -16,6 +16,46 @@ chai.use(({Assertion}) => {
   supportRevertedWith(Assertion);
   supportRevertedWithCustomError(Assertion, chai.util);
 });
+
+type DecodedReturnData =
+  | {kind: 'Empty'}
+  | {kind: 'Error'; reason: string}
+  | {kind: 'Panic'; code: bigint; description: string}
+  | {kind: 'Custom'; id: string};
+
+function decodeReturnData(returnData: string): DecodedReturnData {
+  if (!returnData || returnData === '0x') {
+    return {kind: 'Empty'};
+  }
+
+  const selector = returnData.slice(0, 10);
+  // Error(string)
+  if (selector === '0x08c379a0') {
+    const [reason] = new AbiCoder().decode(['string'], dataSlice(returnData, 4));
+    return {kind: 'Error', reason};
+  }
+  // Panic(uint256)
+  if (selector === '0x4e487b71') {
+    const [code] = new AbiCoder().decode(['uint256'], dataSlice(returnData, 4)) as [bigint];
+    // Description mapping (subset)
+    const descriptions: Record<string, string> = {
+      [toBeHex(0x01)]: 'assert(false)',
+      [toBeHex(0x11)]: 'arithmetic overflow/underflow',
+      [toBeHex(0x12)]: 'division or modulo by zero',
+      [toBeHex(0x21)]: 'invalid enum value',
+      [toBeHex(0x22)]: 'storage byte array that is incorrectly encoded',
+      [toBeHex(0x31)]: 'pop on empty array',
+      [toBeHex(0x32)]: 'array index out of bounds',
+      [toBeHex(0x41)]: 'memory allocation overflow',
+      [toBeHex(0x51)]: 'zero-initialized function call',
+    };
+    const key = toBeHex(Number(code));
+    return {kind: 'Panic', code, description: descriptions[key] ?? 'panic'};
+  }
+
+  // Custom error: return selector only; args decoded later if needed
+  return {kind: 'Custom', id: selector};
+}
 
 /**
  * Try to obtain the return data of a transaction from the given value.
@@ -171,17 +211,12 @@ export function supportRevertedWithCustomError(
 
       const iface: any = contract.interface;
 
+      // Try best-effort resolution of the expected custom error from the interface.
+      // Don't throw early if not found; defer comparison until we decode the revert data.
       const expectedCustomError = findCustomErrorByName(
         iface,
         expectedCustomErrorName
       );
-
-      // check that interface contains the given custom error
-      if (expectedCustomError === undefined) {
-        throw new Error(
-          `The given contract doesn't have a custom error named '${expectedCustomErrorName}'`
-        );
-      }
 
       const onSuccess = () => {
         const assert = buildAssert(negated, onSuccess);
@@ -216,7 +251,11 @@ export function supportRevertedWithCustomError(
             })`
           );
         } else if (decodedReturnData.kind === 'Custom') {
-          if (decodedReturnData.id === expectedCustomError.id) {
+          // If we resolved the expected error from the iface, compare by selector first
+          if (
+            expectedCustomError !== undefined &&
+            decodedReturnData.id === expectedCustomError.id
+          ) {
             // add flag with the data needed for .withArgs
             const customErrorAssertionData: CustomErrorAssertionData = {
               contractInterface: iface,
@@ -231,22 +270,39 @@ export function supportRevertedWithCustomError(
               `Expected transaction NOT to be reverted with custom error '${expectedCustomErrorName}', but it was`
             );
           } else {
-            // try to decode the actual custom error
-            // this will only work when the error comes from the given contract
+            // Try to resolve actual error from iface by selector and compare names
             const actualCustomError = findCustomErrorById(
               iface,
               decodedReturnData.id
             );
 
-            if (actualCustomError === undefined) {
+            // If expected wasn't found earlier but actual is found, accept match by name
+            if (
+              actualCustomError !== undefined &&
+              actualCustomError.name === expectedCustomErrorName
+            ) {
+              // We couldn't resolve the expected fragment earlier, but the actual name matches
+              const customErrorAssertionData: CustomErrorAssertionData = {
+                contractInterface: iface,
+                customError: actualCustomError,
+                returnData,
+              };
+              this.customErrorData = customErrorAssertionData;
+
+              assert(
+                true,
+                undefined,
+                `Expected transaction NOT to be reverted with custom error '${expectedCustomErrorName}', but it was`
+              );
+            } else if (actualCustomError !== undefined) {
               assert(
                 false,
-                `Expected transaction to be reverted with custom error '${expectedCustomErrorName}', but it reverted with a different custom error`
+                `Expected transaction to be reverted with custom error '${expectedCustomErrorName}', but it reverted with custom error '${actualCustomError.name}'`
               );
             } else {
               assert(
                 false,
-                `Expected transaction to be reverted with custom error '${expectedCustomErrorName}', but it reverted with custom error '${actualCustomError.name}'`
+                `Expected transaction to be reverted with custom error '${expectedCustomErrorName}', but it reverted with a different custom error`
               );
             }
           }
@@ -344,18 +400,35 @@ function findCustomErrorByName(
   iface: any,
   name: string
 ): CustomError | undefined {
-  const ethers = require('ethers');
+  // Prefer ethers v6 Interface.getError if available
+  try {
+    if (typeof iface?.getError === 'function') {
+      const fragment = iface.getError(name);
+      if (fragment) {
+        const signature = fragment.format();
+        return {
+          id: id(signature).slice(0, 10),
+          name: fragment.name,
+          signature,
+        };
+      }
+    }
+  } catch (_) {
+    // fall through to legacy scanning below
+  }
 
-  const customErrorEntry = Object.entries(iface.errors).find(
-    ([, fragment]: any) => fragment.name === name
-  );
+  const errors = iface?.errors ?? {};
+  const entries: Array<[string, any]> = Array.isArray(errors)
+    ? (errors as any)
+    : Object.entries(errors);
 
+  const customErrorEntry = entries.find(([, fragment]: any) => fragment?.name === name);
   if (customErrorEntry === undefined) {
     return undefined;
   }
 
   const [customErrorSignature] = customErrorEntry;
-  const customErrorId = ethers.utils.id(customErrorSignature).slice(0, 10);
+  const customErrorId = id(customErrorSignature).slice(0, 10);
 
   return {
     id: customErrorId,
@@ -364,22 +437,23 @@ function findCustomErrorByName(
   };
 }
 
-function findCustomErrorById(iface: any, id: string): CustomError | undefined {
-  const ethers = require('ethers');
-
-  const customErrorEntry: any = Object.entries(iface.errors).find(
-    ([signature]: any) => ethers.utils.id(signature).slice(0, 10) === id
-  );
-
-  if (customErrorEntry === undefined) {
-    return undefined;
+function findCustomErrorById(
+  iface: any,
+  selector: string
+): CustomError | undefined {
+  // Prefer ethers v6 Interface.getError if available by scanning fragments
+  try {
+    if (typeof iface?.errors === 'object') {
+      for (const [sig, fragment] of Object.entries(iface.errors)) {
+        if (id(sig).slice(0, 10) === selector) {
+          return {id: selector, name: (fragment as any)?.name, signature: sig};
+        }
+      }
+    }
+  } catch (_) {
+    // ignore and fall through
   }
-
-  return {
-    id,
-    name: customErrorEntry[1].name,
-    signature: customErrorEntry[0],
-  };
+  return undefined;
 }
 
 export function supportReverted(Assertion: Chai.AssertionStatic) {

@@ -16,8 +16,9 @@ import {
   createPrepareUpdateParams,
 } from './create-params';
 import {PermissionOperation, PluginRepoPointer} from './types';
-import {findEvent} from '@aragon/osx-commons-sdk';
-import {BytesLike} from 'ethers';
+import {BytesLike, Interface} from 'ethers';
+import {PluginSetupProcessor__factory} from '../../../typechain';
+import {findEventLog} from '../iface';
 
 export async function prepareInstallation(
   psp: PluginSetupProcessor,
@@ -30,8 +31,9 @@ export async function prepareInstallation(
     createPrepareInstallationParams(pluginRepoPointer, data)
   );
 
-  const event = findEvent<InstallationPreparedEvent>(
+  const event = findEventLog<InstallationPreparedEvent>(
     await tx.wait(),
+    PluginSetupProcessor__factory.createInterface(),
     'InstallationPrepared'
   );
 
@@ -56,8 +58,9 @@ export async function applyInstallation(
     )
   );
 
-  const event = findEvent<InstallationAppliedEvent>(
+  const event = findEventLog<InstallationAppliedEvent>(
     await tx.wait(),
+    PluginSetupProcessor__factory.createInterface(),
     'InstallationApplied'
   );
 
@@ -86,8 +89,9 @@ export async function prepareUpdate(
     )
   );
 
-  const event = findEvent<UpdatePreparedEvent>(
+  const event = findEventLog<UpdatePreparedEvent>(
     await tx.wait(),
+    PluginSetupProcessor__factory.createInterface(),
     'UpdatePrepared'
   );
 
@@ -114,7 +118,11 @@ export async function applyUpdate(
     )
   );
 
-  const event = findEvent<UpdateAppliedEvent>(await tx.wait(), 'UpdateApplied');
+  const event = findEventLog<UpdateAppliedEvent>(
+    await tx.wait(),
+    PluginSetupProcessor__factory.createInterface(),
+    'UpdateApplied'
+  );
 
   return event.args;
 }
@@ -132,8 +140,9 @@ export async function prepareUninstallation(
     createPrepareUninstallationParams(plugin, pluginRepoPointer, helpers, data)
   );
 
-  const event = findEvent<UninstallationPreparedEvent>(
+  const event = findEventLog<UninstallationPreparedEvent>(
     await tx.wait(),
+    PluginSetupProcessor__factory.createInterface(),
     'UninstallationPrepared'
   );
 
@@ -152,8 +161,9 @@ export async function applyUninstallation(
     createApplyUninstallationParams(plugin, pluginRepoPointer, permissions)
   );
 
-  const event = findEvent<UninstallationAppliedEvent>(
+  const event = findEventLog<UninstallationAppliedEvent>(
     await tx.wait(),
+    PluginSetupProcessor__factory.createInterface(),
     'UninstallationApplied'
   );
 

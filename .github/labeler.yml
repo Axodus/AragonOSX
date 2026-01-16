@@ -1,7 +1,7 @@
 contracts:
   - changed-files:
-    - any-glob-to-any-file: 'packages/contracts/**/*'
+      - any-glob-to-any-file: 'packages/contracts/**/*'
 
 subgraph:
   - changed-files:
-    - any-glob-to-any-file: 'packages/subgraph/**/*'
+      - any-glob-to-any-file: 'packages/subgraph/**/*'

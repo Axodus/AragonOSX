@@ -42,6 +42,49 @@ The private key provided by default is a hardhat publically known key for `0xf39
 
 > Tests can be sped up if needed. See [the test performance optimization](#performance-optimizations) section for more info.
 
+### Deploying to Harmony
+
+Support for Harmony (mainnet and testnet) is included in `hardhat.config.ts` as the networks `harmony` and `harmonyTestnet`.
+
+1. Create and fill your `.env` (based on `.env.example`):
+
+```
+ETH_KEY=0x<private-key>
+HARMONY_MAINNET_RPC=https://api.harmony.one
+HARMONY_TESTNET_RPC=https://api.s0.b.hmny.io
+# Optional gas price overrides (wei)
+# HARMONY_GAS_PRICE=1000000000
+# HARMONY_TESTNET_GAS_PRICE=1000000000
+
+# ENS-like labels used by the deploy scripts (required by env check)
+HARMONY_DAO_ENS_DOMAIN=dao.eth
+HARMONY_PLUGIN_ENS_DOMAIN=plugin.dao.eth
+HARMONYTESTNET_DAO_ENS_DOMAIN=dao.eth
+HARMONYTESTNET_PLUGIN_ENS_DOMAIN=plugin.dao.eth
+```
+
+2. Run a fresh build and deploy (from this package):
+
+```bash
+yarn build
+npx hardhat deploy --network harmonyTestnet
+# or
+npx hardhat deploy --network harmony
+```
+
+3. Save the deployed addresses. You will need at minimum:
+
+- `DAORegistry`
+- `PluginRepoRegistry`
+- `PluginSetupProcessor`
+
+Record them to use with the subgraph and the web app.
+
+Notes:
+
+- Harmony uses chain IDs 1666600000 (mainnet) and 1666700000 (testnet). If transactions hang, try lowering `gasPrice` via the env overrides above.
+- Contract verification depends on the explorer’s API. If your explorer is not Etherscan-compatible, use a Blockscout verification flow or verify manually in the explorer UI.
+
 ## Documentation
 
 You can find all documentation regarding how to use this protocol in [Aragon's Developer Portal here](https://devs.aragon.org).

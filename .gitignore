@@ -1,6 +1,6 @@
 # dependencies
 node_modules
-
+.yarn
 # testing
 coverage
 
@@ -45,3 +45,7 @@ schema-introspection.json
 # docs
 packages/subgraph/docs/developer-portal/
 schema-introspection-partial.json
+
+
+#Ignore vscode AI rules
+.github\instructions\codacy.instructions.md

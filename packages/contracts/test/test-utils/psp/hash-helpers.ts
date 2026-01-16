@@ -1,22 +1,21 @@
 import {hashHelpers} from '../../../utils/psp';
 import {PermissionOperation, PluginRepoPointer, PreparationType} from './types';
-import {BytesLike} from 'ethers';
-import {defaultAbiCoder, keccak256, solidityPack} from 'ethers/lib/utils';
+import {AbiCoder, BytesLike, keccak256, solidityPacked} from 'ethers';
 
 const ZERO_BYTES_HASH = keccak256(
-  defaultAbiCoder.encode(
+  new AbiCoder().encode(
     ['bytes32'],
     ['0x0000000000000000000000000000000000000000000000000000000000000000']
   )
 );
 
 export function tagHash(release: number, build: number) {
-  return keccak256(solidityPack(['uint8', 'uint16'], [release, build]));
+  return keccak256(solidityPacked(['uint8', 'uint16'], [release, build]));
 }
 
 export function hashPermissions(permissions: PermissionOperation[]) {
   return keccak256(
-    defaultAbiCoder.encode(
+    new AbiCoder().encode(
       ['tuple(uint8,address,address,address,bytes32)[]'],
       [permissions]
     )
@@ -25,7 +24,7 @@ export function hashPermissions(permissions: PermissionOperation[]) {
 
 export function getPluginInstallationId(dao: string, plugin: string) {
   return keccak256(
-    defaultAbiCoder.encode(['address', 'address'], [dao, plugin])
+    new AbiCoder().encode(['address', 'address'], [dao, plugin])
   );
 }
 
@@ -37,7 +36,7 @@ export function getPreparedSetupId(
   preparationType: PreparationType
 ) {
   return keccak256(
-    defaultAbiCoder.encode(
+    new AbiCoder().encode(
       [
         'tuple(uint8, uint16)',
         'address',
@@ -63,7 +62,7 @@ export function getAppliedSetupId(
   helpers: string[]
 ) {
   return keccak256(
-    defaultAbiCoder.encode(
+    new AbiCoder().encode(
       ['tuple(uint8, uint16)', 'address', 'bytes32'],
       [
         [pluginRepoPointer[1], pluginRepoPointer[2]],

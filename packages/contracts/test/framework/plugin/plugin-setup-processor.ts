@@ -32,6 +32,7 @@ import {
   PluginCloneableSetupV1MockBad__factory,
 } from '../../../typechain';
 import {PluginRepoRegisteredEvent} from '../../../typechain/PluginRepoRegistry';
+import {findEventLog} from '../../test-utils/iface';
 import {expect} from '../../chai-setup';
 import {deployNewDAO, ZERO_BYTES32} from '../../test-utils/dao';
 import {deployENSSubdomainRegistrar} from '../../test-utils/ens';
@@ -77,7 +78,6 @@ import {
   deployPluginRepoFactory,
   deployPluginRepoRegistry,
 } from '../../test-utils/repo';
-import {findEventTopicLog} from '@aragon/osx-commons-sdk';
 import {Operation} from '@aragon/osx-commons-sdk';
 import {
   DAO_PERMISSIONS,
@@ -231,7 +231,7 @@ describe('PluginSetupProcessor', function () {
     );
 
     const PluginRepoRegisteredEvent1 =
-      findEventTopicLog<PluginRepoRegisteredEvent>(
+      findEventLog<PluginRepoRegisteredEvent>(
         await tx.wait(),
         PluginRepoRegistry__factory.createInterface(),
         EVENTS.PluginRepoRegistered
@@ -255,7 +255,7 @@ describe('PluginSetupProcessor', function () {
     );
 
     const PluginRepoRegisteredEvent2 =
-      findEventTopicLog<PluginRepoRegisteredEvent>(
+      findEventLog<PluginRepoRegisteredEvent>(
         await tx.wait(),
         PluginRepoRegistry__factory.createInterface(),
         EVENTS.PluginRepoRegistered
@@ -304,11 +304,12 @@ describe('PluginSetupProcessor', function () {
         EMPTY_DATA
       );
 
-      const proxy = await pluginFactory
-        .attach(plugin)
-        .callStatic.implementation();
+      const proxy = await (pluginFactory
+        .attach(plugin) as any).implementation.staticCall();
 
-      expect(proxy).to.equal(await setup.callStatic.implementation());
+      expect(proxy).to.equal(
+        await (setup as any).implementation.staticCall()
+      );
     }
   });
 
@@ -480,11 +481,18 @@ describe('PluginSetupProcessor', function () {
             targetDao.address,
             preparedSetupId,
             pluginRepoPointer[0],
-            (val: any) => expect(val).to.deep.equal([1, 1]),
+              (val: any) => {
+                const r = Number(val?.release ?? val?.[0]);
+                const b = Number(val?.build ?? val?.[1]);
+                return r === 1 && b === 1;
+              },
             data,
             anyValue,
-            (val: any) =>
-              expect(val).to.deep.equal([expectedHelpers, expectedPermissions])
+            (val: any) => {
+              expect(val.helpers).to.deep.equal(expectedHelpers);
+              expect(val.permissions).to.deep.equal(expectedPermissions);
+              return true;
+            }
           );
       });
     });
@@ -503,8 +511,8 @@ describe('PluginSetupProcessor', function () {
           psp.applyInstallation(
             targetDao.address,
             createApplyInstallationParams(
-              ethers.constants.AddressZero,
-              [ethers.constants.AddressZero, 1, 1],
+              ethers.ZeroAddress,
+              [ethers.ZeroAddress, 1, 1],
               [],
               []
             )
@@ -703,7 +711,7 @@ describe('PluginSetupProcessor', function () {
           )
         ).not.to.be.reverted;
         await expect(
-          psp.callStatic.applyInstallation(
+          (psp as any).applyInstallation.staticCall(
             targetDao.address,
             createApplyInstallationParams(
               plugin,
@@ -714,7 +722,7 @@ describe('PluginSetupProcessor', function () {
           )
         ).not.to.be.reverted;
         await expect(
-          psp.callStatic.applyInstallation(
+          (psp as any).applyInstallation.staticCall(
             targetDao.address,
             createApplyInstallationParams(
               plugin,
@@ -942,7 +950,7 @@ describe('PluginSetupProcessor', function () {
       it('reverts if the plugin was uninstalled and tries to prepare uninstallation for it', async () => {
         // make sure that prepare uninstall doesn't revert before applying uninstall.
         await expect(
-          psp.callStatic.prepareUninstallation(
+          (psp as any).prepareUninstallation.staticCall(
             targetDao.address,
             createPrepareUninstallationParams(
               proxy,
@@ -1023,8 +1031,14 @@ describe('PluginSetupProcessor', function () {
           )
         )
           .to.emit(setupUV1, 'UninstallationPrepared')
-          .withArgs(targetDao.address, (val: any) =>
-            expect(val).to.deep.equal([proxy, helpersUV1, data])
+          .withArgs(
+            targetDao.address,
+            (val: any) => {
+              expect(val.plugin).to.equal(proxy);
+              expect(val.currentHelpers).to.deep.equal(helpersUV1);
+              expect(val.data).to.equal(data);
+              return true;
+            }
           );
       });
 
@@ -1062,9 +1076,21 @@ describe('PluginSetupProcessor', function () {
             targetDao.address,
             preparedSetupId,
             pluginRepoPointer[0],
-            (val: any) => expect(val).to.deep.equal([1, 1]),
-            (val: any) => expect(val).to.deep.equal([proxy, helpersUV1, data]),
-            (val: any) => expect(val).to.deep.equal(uninstallPermissions)
+            (val: any) => {
+              const r = Number(val?.release ?? val?.[0]);
+              const b = Number(val?.build ?? val?.[1]);
+              return r === 1 && b === 1;
+            },
+            (val: any) => {
+              expect(val.plugin).to.equal(proxy);
+              expect(val.currentHelpers).to.deep.equal(helpersUV1);
+              expect(val.data).to.equal(data);
+              return true;
+            },
+            (val: any) => {
+              expect(val).to.deep.equal(uninstallPermissions);
+              return true;
+            }
           );
       });
     });
@@ -1088,13 +1114,12 @@ describe('PluginSetupProcessor', function () {
               permissionsUV1
             )
           )
-        )
-          .to.be.revertedWithCustomError(psp, 'SetupApplicationUnauthorized')
-          .withArgs(
-            targetDao.address,
-            ownerAddress,
-            PLUGIN_SETUP_PROCESSOR_PERMISSIONS.APPLY_UNINSTALLATION_PERMISSION_ID
-          );
+          ).to.be.revertedWithCustomError(psp, 'SetupApplicationUnauthorized')
+            .withArgs(
+              targetDao.address,
+              ownerAddress,
+              PLUGIN_SETUP_PROCESSOR_PERMISSIONS.APPLY_UNINSTALLATION_PERMISSION_ID
+            );
       });
 
       it("reverts if PluginSetupProcessor does not have DAO's `ROOT_PERMISSION`", async () => {
@@ -1122,13 +1147,12 @@ describe('PluginSetupProcessor', function () {
               permissions
             )
           )
-        )
-          .to.be.revertedWithCustomError(targetDao, 'Unauthorized')
-          .withArgs(
-            targetDao.address,
-            psp.address,
-            DAO_PERMISSIONS.ROOT_PERMISSION_ID
-          );
+          ).to.be.revertedWithCustomError(targetDao, 'Unauthorized')
+            .withArgs(
+              targetDao.address,
+              psp.address,
+              DAO_PERMISSIONS.ROOT_PERMISSION_ID
+            );
       });
 
       it('reverts if uninstallation is not prepared first', async () => {
@@ -1167,7 +1191,7 @@ describe('PluginSetupProcessor', function () {
 
         // Confirm that first preparation can be applied.
         await expect(
-          psp.callStatic.applyUninstallation(
+          psp.applyUninstallation.staticCall(
             targetDao.address,
             createApplyUninstallationParams(
               proxy,
@@ -1194,7 +1218,7 @@ describe('PluginSetupProcessor', function () {
 
         // Check that second preparation can be applied.
         await expect(
-          psp.callStatic.applyUninstallation(
+          psp.applyUninstallation.staticCall(
             targetDao.address,
             createApplyUninstallationParams(
               proxy,
@@ -1625,8 +1649,15 @@ describe('PluginSetupProcessor', function () {
           )
         )
           .to.emit(setupUV2, 'UpdatePrepared')
-          .withArgs(targetDao.address, 1, (val: any) =>
-            expect(val).to.deep.equal([proxy, helpersUV1, data])
+          .withArgs(
+            targetDao.address,
+            1,
+            (val: any) => {
+              expect(val.plugin).to.equal(proxy);
+              expect(val.currentHelpers).to.deep.equal(helpersUV1);
+              expect(val.data).to.equal(data);
+              return true;
+            }
           );
       });
 
@@ -1669,11 +1700,24 @@ describe('PluginSetupProcessor', function () {
             targetDao.address,
             preparedSetupId,
             pluginRepoPointer[0],
-            (val: any) => expect(val).to.deep.equal(newVersion),
-            (val: any) =>
-              expect(val).to.deep.equal([proxy, helpersUV1, EMPTY_DATA]),
-            (val: any) =>
-              expect(val).to.deep.equal([expectedHelpers, expectedPermissions]),
+            (val: any) => {
+              expect([Number(val.release), Number(val.build)]).to.deep.equal([
+                newVersion[0],
+                newVersion[1],
+              ]);
+              return true;
+            },
+            (val: any) => {
+              expect(val.plugin).to.equal(proxy);
+              expect(val.currentHelpers).to.deep.equal(helpersUV1);
+              expect(val.data).to.equal(EMPTY_DATA);
+              return true;
+            },
+            (val: any) => {
+              expect(val.helpers).to.deep.equal(expectedHelpers);
+              expect(val.permissions).to.deep.equal(expectedPermissions);
+              return true;
+            },
             initData
           );
       });
@@ -1828,7 +1872,7 @@ describe('PluginSetupProcessor', function () {
         )
       )
         .to.be.revertedWithCustomError(psp, 'PluginProxyUpgradeFailed')
-        .withArgs(proxy, await setupUV2.callStatic.implementation(), initData);
+        .withArgs(proxy, await setupUV2.implementation.staticCall(), initData);
     });
 
     it('reverts if preparation has not happened yet for update', async () => {
@@ -1899,7 +1943,7 @@ describe('PluginSetupProcessor', function () {
       );
 
       await expect(
-        psp.callStatic.applyUpdate(
+        psp.applyUpdate.staticCall(
           targetDao.address,
           createApplyUpdateParams(
             proxy,
@@ -1912,7 +1956,7 @@ describe('PluginSetupProcessor', function () {
       ).not.to.be.reverted;
 
       await expect(
-        psp.callStatic.applyUpdate(
+        psp.applyUpdate.staticCall(
           targetDao.address,
           createApplyUpdateParams(
             proxy,
@@ -2143,8 +2187,8 @@ describe('PluginSetupProcessor', function () {
 
       it('points to the V1 implementation', async () => {
         expect(
-          await PluginUV1.attach(proxy).callStatic.implementation()
-        ).to.equal(await setupUV1.callStatic.implementation());
+          await PluginUV1.attach(proxy).implementation.staticCall()
+        ).to.equal(await setupUV1.implementation.staticCall());
       });
 
       it('initializes the members', async () => {
@@ -2212,8 +2256,8 @@ describe('PluginSetupProcessor', function () {
 
         it('points to the V2 implementation', async () => {
           expect(
-            await PluginUV2.attach(proxy).callStatic.implementation()
-          ).to.equal(await setupUV2.callStatic.implementation());
+            await PluginUV2.attach(proxy).implementation.staticCall()
+          ).to.equal(await setupUV2.implementation.staticCall());
         });
 
         it('initializes the members', async () => {
@@ -2270,8 +2314,8 @@ describe('PluginSetupProcessor', function () {
 
           it('points to the V3 implementation', async () => {
             expect(
-              await PluginUV3.attach(proxy).callStatic.implementation()
-            ).to.equal(await setupUV3.callStatic.implementation());
+              await PluginUV3.attach(proxy).implementation.staticCall()
+            ).to.equal(await setupUV3.implementation.staticCall());
           });
 
           it('initializes the members', async () => {
@@ -2317,8 +2361,8 @@ describe('PluginSetupProcessor', function () {
 
         it('points to the V3 implementation', async () => {
           expect(
-            await PluginUV3.attach(proxy).callStatic.implementation()
-          ).to.equal(await setupUV3.callStatic.implementation());
+            await PluginUV3.attach(proxy).implementation.staticCall()
+          ).to.equal(await setupUV3.implementation.staticCall());
         });
 
         it('initializes the members', async () => {
@@ -2368,8 +2412,8 @@ describe('PluginSetupProcessor', function () {
 
       it('points to the V2 implementation', async () => {
         expect(
-          await PluginUV2.attach(proxy).callStatic.implementation()
-        ).to.equal(await setupUV2.callStatic.implementation());
+          await PluginUV2.attach(proxy).implementation.staticCall()
+        ).to.equal(await setupUV2.implementation.staticCall());
       });
 
       it('initializes the members', async () => {
@@ -2426,8 +2470,8 @@ describe('PluginSetupProcessor', function () {
 
         it('points to the V3 implementation', async () => {
           expect(
-            await PluginUV3.attach(proxy).callStatic.implementation()
-          ).to.equal(await setupUV3.callStatic.implementation());
+            await PluginUV3.attach(proxy).implementation.staticCall()
+          ).to.equal(await setupUV3.implementation.staticCall());
         });
 
         it('initializes the members', async () => {
@@ -2478,8 +2522,8 @@ describe('PluginSetupProcessor', function () {
 
       it('points to the V3 implementation', async () => {
         expect(
-          await PluginUV3.attach(proxy).callStatic.implementation()
-        ).to.equal(await setupUV3.callStatic.implementation());
+          await PluginUV3.attach(proxy).implementation.staticCall()
+        ).to.equal(await setupUV3.implementation.staticCall());
       });
 
       it('initializes the members', async () => {

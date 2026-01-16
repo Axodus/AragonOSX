@@ -1,11 +1,10 @@
 import {DeployOptions, NetworkDeployment} from '.';
-import {BigNumberish, Contract, providers} from 'ethers';
-import {utils} from 'ethers';
+import {BigNumberish, Contract, AbstractProvider, getCreateAddress} from 'ethers';
 import hre from 'hardhat';
 
 export class HardhatClass implements NetworkDeployment {
-  provider: providers.BaseProvider;
-  constructor(_provider: providers.BaseProvider) {
+  provider: AbstractProvider;
+  constructor(_provider: AbstractProvider) {
     this.provider = _provider;
   }
 
@@ -18,6 +17,17 @@ export class HardhatClass implements NetworkDeployment {
       artifact.bytecode,
       signers[0]
     ).deploy(...args);
+
+    // Ensure deployment is mined so ethers v6 sets a valid `target`
+    await contract.waitForDeployment();
+    // Fallback: set `target` manually if still unset (environment/plugin quirks)
+    if (!(contract as any).target && typeof (contract as any).getAddress === 'function') {
+      try {
+        (contract as any).target = await (contract as any).getAddress();
+      } catch (_) {
+        // ignore, will fail fast later if truly unset
+      }
+    }
 
     return {artifact, contract};
   }
@@ -41,7 +51,7 @@ export class HardhatClass implements NetworkDeployment {
   }
 
   getCreateAddress(sender: string, nonce: BigNumberish): string {
-    return utils.getContractAddress({from: sender, nonce: nonce});
+    return getCreateAddress({from: sender, nonce: nonce});
   }
 
   async getNonce(

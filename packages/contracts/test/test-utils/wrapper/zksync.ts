@@ -1,6 +1,6 @@
 import {DeployOptions, NetworkDeployment} from '.';
 import {getTime} from '../voting';
-import {BigNumber, BigNumberish, Contract} from 'ethers';
+import {BigNumberish, Contract} from 'ethers';
 import hre from 'hardhat';
 import {Provider} from 'zksync-ethers';
 import {utils, ContractFactory} from 'zksync-ethers';
@@ -54,7 +54,7 @@ export class ZkSync implements NetworkDeployment {
       let signers = await ethers.getSigners();
       let contract = new ethers.Contract(NONCE_HOLDER_ADDRESS, abi, signers[0]);
       const nonce = await contract.getDeploymentNonce(sender);
-      return BigNumber.from(nonce).toNumber();
+      return Number(nonce);
     }
 
     return this.provider.getTransactionCount(sender);

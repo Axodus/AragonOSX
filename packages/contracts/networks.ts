@@ -9,6 +9,15 @@ export const networkExtensions: {[index: string]: NetworkExtension} = {
   sepolia: {
     deploy: ['./deploy'],
   },
+  goerli: {
+    deploy: ['./deploy'],
+  },
+  devSepolia: {
+    deploy: ['./deploy'],
+  },
+  holesky: {
+    deploy: ['./deploy'],
+  },
   polygon: {
     deploy: ['./deploy'],
   },
@@ -16,6 +25,9 @@ export const networkExtensions: {[index: string]: NetworkExtension} = {
     deploy: ['./deploy'],
   },
   baseMainnet: {
+    deploy: ['./deploy'],
+  },
+  baseGoerli: {
     deploy: ['./deploy'],
   },
   baseSepolia: {
@@ -27,10 +39,22 @@ export const networkExtensions: {[index: string]: NetworkExtension} = {
   arbitrumSepolia: {
     deploy: ['./deploy'],
   },
+  linea: {
+    deploy: ['./deploy'],
+  },
+  lineaSepolia: {
+    deploy: ['./deploy'],
+  },
   zksyncMainnet: {
     deploy: ['./deploy'],
   },
   zksyncSepolia: {
     deploy: ['./deploy'],
+  },
+  harmony: {
+    deploy: ['./deploy/env', './deploy/new', './deploy/verification'],
+  },
+  harmonyTestnet: {
+    deploy: ['./deploy/env', './deploy/new', './deploy/verification'],
   },
 };

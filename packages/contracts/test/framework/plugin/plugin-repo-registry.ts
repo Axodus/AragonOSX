@@ -17,10 +17,8 @@ import {
   deployAndUpgradeSelfCheck,
 } from '../../test-utils/uups-upgradeable';
 import {ARTIFACT_SOURCES} from '../../test-utils/wrapper';
-import {
-  PLUGIN_REGISTRY_PERMISSIONS,
-  getProtocolVersion,
-} from '@aragon/osx-commons-sdk';
+import {PLUGIN_REGISTRY_PERMISSIONS} from '@aragon/osx-commons-sdk';
+import {getProtocolVersionCompat} from '../../test-utils/protocol';
 import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers';
 import {expect} from 'chai';
 import {ContractFactory} from 'ethers';
@@ -126,7 +124,7 @@ describe('PluginRepoRegistry', function () {
 
     await pluginRepoRegistry.initialize(
       managingDAO.address,
-      ethers.constants.AddressZero
+      ethers.ZeroAddress
     );
 
     await managingDAO.grant(
@@ -346,11 +344,13 @@ describe('PluginRepoRegistry', function () {
         );
       expect(toImplementation).to.not.equal(fromImplementation);
 
-      const fromProtocolVersion = await getProtocolVersion(
-        legacyContractFactory.attach(fromImplementation)
+        const fromProtocolVersion = await getProtocolVersionCompat(
+        legacyContractFactory.attach(fromImplementation) as any,
+        [1, 0, 0]
       );
-      const toProtocolVersion = await getProtocolVersion(
-        currentContractFactory.attach(toImplementation)
+        const toProtocolVersion = await getProtocolVersionCompat(
+        currentContractFactory.attach(toImplementation) as any,
+        [1, 0, 0]
       );
 
       expect(fromProtocolVersion).to.not.deep.equal(toProtocolVersion);
@@ -378,11 +378,13 @@ describe('PluginRepoRegistry', function () {
         );
       expect(toImplementation).to.not.equal(fromImplementation);
 
-      const fromProtocolVersion = await getProtocolVersion(
-        legacyContractFactory.attach(fromImplementation)
+        const fromProtocolVersion = await getProtocolVersionCompat(
+        legacyContractFactory.attach(fromImplementation) as any,
+        [1, 0, 0]
       );
-      const toProtocolVersion = await getProtocolVersion(
-        currentContractFactory.attach(toImplementation)
+        const toProtocolVersion = await getProtocolVersionCompat(
+        currentContractFactory.attach(toImplementation) as any,
+        [1, 0, 0]
       );
 
       expect(fromProtocolVersion).to.not.deep.equal(toProtocolVersion);

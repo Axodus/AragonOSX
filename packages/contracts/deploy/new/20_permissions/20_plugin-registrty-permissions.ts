@@ -20,6 +20,8 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     deployer
   );
 
+  // Aplicamos permissões via DAO.execute durante o deploy (deployer tem EXECUTE no bootstrap).
+
   // Get `PluginRepoRegistryProxy` address.
   const pluginRepoRegistryAddress = await getContractAddress(
     'PluginRepoRegistryProxy',
@@ -57,4 +59,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   await managePermissions(managementDaoContract, grantPermissions);
 };
 export default func;
-func.tags = ['New', 'Plugin_Registry_Permissions'];
+func.tags = ['new', 'Plugin_Registry_Permissions'];

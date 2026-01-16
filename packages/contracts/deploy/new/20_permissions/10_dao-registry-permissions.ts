@@ -8,6 +8,10 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {ethers} = hre;
   const [deployer] = await ethers.getSigners();
 
+  // Sempre tentamos aplicar permissões via DAO.execute durante o deploy,
+  // pois o ManagementDAO é inicializado com owner temporário (deployer) e o
+  // deployer recebe EXECUTE_PERMISSION no bootstrap.
+
   // Get `managementDAO` address.
   const managementDAOAddress = await getContractAddress(
     'ManagementDAOProxy',
@@ -45,4 +49,6 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   await managePermissions(managementDaoContract, grantPermissions);
 };
 export default func;
-func.tags = ['New', 'DAO_Registry_Permissions'];
+func.tags = ['new', 'DAO_Registry_Permissions'];
+// Ensure this runs before revoking deployer permissions
+func.dependencies = ['ManagementDaoPermissions', 'PluginRepoRegistry', 'PluginRepoFactory', 'PluginSetupProcessor', 'DAOFactory'];
