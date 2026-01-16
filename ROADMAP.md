@@ -16,6 +16,7 @@ Roadmap de desenvolvimento e integração do ecossistema Aragon OSx (Contratos, 
 **Objetivo**: Estabelecer base sólida para desenvolvimento reproduzível
 
 #### [#7 - Atualizar .env.install e validar compilação/testes de contratos](https://github.com/mzfshark/AragonOSX/issues/7)
+
 - **Status**: 📝 Open
 - **Área**: Contracts
 - **Assignee**: @mzfshark
@@ -26,6 +27,7 @@ Roadmap de desenvolvimento e integração do ecossistema Aragon OSx (Contratos, 
   - ✅ PR em develop com checklist
 
 #### [#10 - CI / Pipeline para contracts + backend + frontend](https://github.com/mzfshark/AragonOSX/issues/10)
+
 - **Status**: 📝 Open
 - **Área**: CI/CD
 - **Assignee**: @mzfshark
@@ -40,6 +42,7 @@ Roadmap de desenvolvimento e integração do ecossistema Aragon OSx (Contratos, 
 **Objetivo**: APIs funcionais consumindo contratos
 
 #### [#8 - Integrar endpoints e configurar ambiente (Backend)](https://github.com/mzfshark/AragonOSX/issues/8)
+
 - **Status**: 📝 Open
 - **Área**: Backend
 - **Assignee**: @mzfshark
@@ -56,6 +59,7 @@ Roadmap de desenvolvimento e integração do ecossistema Aragon OSx (Contratos, 
 **Objetivo**: Frontend consumindo APIs e contratos
 
 #### [#9 - Adaptar frontend para novos endpoints e ABIs de contratos](https://github.com/mzfshark/AragonOSX/issues/9)
+
 - **Status**: 📝 Open
 - **Área**: Frontend
 - **Assignee**: @mzfshark
@@ -72,6 +76,7 @@ Roadmap de desenvolvimento e integração do ecossistema Aragon OSx (Contratos, 
 **Objetivo**: Validação end-to-end e garantia de qualidade
 
 #### [#11 - QA / Testes de integração e casos críticos](https://github.com/mzfshark/AragonOSX/issues/11)
+
 - **Status**: 📝 Open
 - **Área**: Testing/QA
 - **Assignee**: @mzfshark
@@ -88,6 +93,7 @@ Roadmap de desenvolvimento e integração do ecossistema Aragon OSx (Contratos, 
 **Objetivo**: Facilitar onboarding e manutenção
 
 #### [#12 - Documentação / CHANGELOG](https://github.com/mzfshark/AragonOSX/issues/12)
+
 - **Status**: 📝 Open
 - **Área**: Documentation
 - **Assignee**: @mzfshark
@@ -135,6 +141,7 @@ Phase 5 (Documentation)     ░░░░░░░░░░░░░░░█  [S
 ## 📝 Convenções
 
 ### Labels
+
 - `type:task` - Tarefas gerais de implementação
 - `type:feature` - Novas funcionalidades
 - `type:infra` - Infraestrutura e CI/CD
@@ -142,6 +149,7 @@ Phase 5 (Documentation)     ░░░░░░░░░░░░░░░█  [S
 - `type:docs` - Documentação
 
 ### Áreas
+
 - `area:contracts` - Smart contracts (Solidity/Hardhat/Foundry)
 - `area:backend` - Backend (Node.js/TypeScript)
 - `area:frontend` - Frontend (Next.js/React)
@@ -150,6 +158,7 @@ Phase 5 (Documentation)     ░░░░░░░░░░░░░░░█  [S
 - `area:product` - Produto e documentação
 
 ### Prioridades
+
 - `priority:high` 🔴 - Bloqueante ou crítico
 - `priority:medium` 🟡 - Importante mas não bloqueante
 - `priority:low` 🟢 - Nice to have
@@ -157,20 +166,24 @@ Phase 5 (Documentation)     ░░░░░░░░░░░░░░░█  [S
 ## 🎯 Milestones
 
 ### Milestone 1: Development Environment Ready
+
 - ✅ Contratos compilam (#7)
 - ✅ CI pipeline funcional (#10)
 - **ETA**: Semana 2
 
 ### Milestone 2: Backend Integration Complete
+
 - ✅ APIs documentadas e testadas (#8)
 - **ETA**: Semana 3
 
 ### Milestone 3: Full Stack Integration
+
 - ✅ Frontend consumindo backend (#9)
 - ✅ Fluxos críticos validados (#11)
 - **ETA**: Semana 4
 
 ### Milestone 4: Production Ready
+
 - ✅ Documentação completa (#12)
 - ✅ QA aprovado (#11)
 - **ETA**: Semana 5
