@@ -17,12 +17,14 @@ Monorepo for the Aragon OSx protocol: Solidity contracts, subgraph, and ethers w
 **CRITICAL: After completing planning and BEFORE starting implementation:**
 
 1. **Generate Plan Document**: Create `PLAN.md` at repository root containing:
+
    - [ ] Clear task breakdown with checkboxes
    - [ ] Implementation steps and guidelines
    - [ ] Dependencies and integration points
    - [ ] Expected outcomes and acceptance criteria
 
 2. **Sync with GitHub Project**: Using GitHub CLI (`gh` - already authenticated as mzfshark):
+
    ```bash
    # Create issue from PLAN.md
    gh issue create --title "[Plan] <descriptive-title>" --body-file PLAN.md --project "https://github.com/users/mzfshark/projects/5"
@@ -54,6 +56,7 @@ Monorepo for the Aragon OSx protocol: Solidity contracts, subgraph, and ethers w
 - **Variable/function names**: Use English for all identifiers in code
 
 **Examples:**
+
 ```bash
 # ✅ CORRECT
 git commit -m "feat: add .country domain resolution to DAO creation flow"

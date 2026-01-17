@@ -1,11 +1,13 @@
 # Sprint Execution Checklist
 
 ## Sprint Goal
+
 Complete HarmonyVoting E2E reliability implementation across all repositories.
 
 ## Execution Order (Linear, Coordinated)
 
 ### Phase 1: Backend Indexing Foundation (Week 1)
+
 **Repo**: Aragon-app-backend
 **Goal**: Reliable event indexing with backfill
 
@@ -20,10 +22,12 @@ Complete HarmonyVoting E2E reliability implementation across all repositories.
 **Acceptance**: All on-chain proposals visible in UI within 30s
 
 ### Phase 2: UI Resilience (Week 1-2)
+
 **Repo**: aragon-app
 **Goal**: Graceful degradation and fallbacks
 
 **Can run in parallel with Phase 1:**
+
 - [ ] Implement metadata fallback system
 - [ ] Add error boundaries around plugin components
 - [ ] Create loading states for all data fetches
@@ -33,6 +37,7 @@ Complete HarmonyVoting E2E reliability implementation across all repositories.
 **Acceptance**: UI works even when backend API is down
 
 ### Phase 3: Contract Event Completeness (Week 2)
+
 **Repo**: osx-plugin-foundry
 **Goal**: Audit and enhance events for indexing
 
@@ -45,6 +50,7 @@ Complete HarmonyVoting E2E reliability implementation across all repositories.
 **Acceptance**: Events provide all data needed by indexers
 
 ### Phase 4: Uninstall Safety (Week 2-3)
+
 **Repo**: osx-plugin-foundry
 **Goal**: Reliable uninstall flow
 
@@ -59,6 +65,7 @@ Complete HarmonyVoting E2E reliability implementation across all repositories.
 **Acceptance**: Uninstall works via governance, no orphan permissions
 
 ### Phase 5: UI Uninstall Integration (Week 3)
+
 **Repo**: aragon-app
 **Goal**: Uninstall UX with state cleanup
 
@@ -73,16 +80,19 @@ Complete HarmonyVoting E2E reliability implementation across all repositories.
 **Acceptance**: Clean uninstall UX with proper warnings
 
 ### Phase 6: Native Token Voting (Week 3-4)
+
 **Repo**: osx-plugin-foundry + Aragon-app-backend
 **Goal**: Native token power computation
 
 **Contracts:**
+
 - [ ] Design native token power provider interface
 - [ ] Implement wallet + staked balance queries
 - [ ] Add DAO action execution support
 - [ ] Test execution flow
 
 **Backend:**
+
 - [ ] Extend finalizer with native token mode
 - [ ] Implement RPC-based power queries
 - [ ] Add caching for power computation
@@ -93,6 +103,7 @@ Complete HarmonyVoting E2E reliability implementation across all repositories.
 **Acceptance**: Native token voting works with wallet + staked power
 
 ### Phase 7: E2E Validation (Week 4)
+
 **All Repos**
 **Goal**: Complete end-to-end testing
 
@@ -114,6 +125,7 @@ Complete HarmonyVoting E2E reliability implementation across all repositories.
 ## Daily Standups
 
 Document progress daily:
+
 ```bash
 # Update PLAN.md checkboxes
 # Sync with GitHub issue
@@ -123,6 +135,7 @@ gh issue edit <issue-number> --body-file PLAN.md
 ## Blockers & Dependencies
 
 Track blockers here:
+
 - [ ] GitHub CLI authentication (immediate)
 - [ ] Archive RPC access (Phase 1)
 - [ ] Harmony mainnet RPC rate limits (Phase 6)
@@ -130,6 +143,7 @@ Track blockers here:
 ## Rollback Plan
 
 If critical issues found:
+
 1. Identify affected phase
 2. Revert to last stable checkpoint
 3. Document issue in GitHub

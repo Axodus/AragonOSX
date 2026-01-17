@@ -1,24 +1,29 @@
 # HarmonyVoting E2E Reliability Plan
 
 ## Goal
+
 Deliver production-ready HarmonyVoting flow across contracts + indexer + backend + app, covering:
+
 - **Reliable indexing**: Events → DB → UI/API with backfill and reorg safety
 - **Safe plugin uninstall**: Full lifecycle + cleanup without reverts
 - **Metadata redundancy**: Resilient sources + fallbacks for proposal metadata
 - **Native-token voting**: Support for native token power computation and DAO action execution
 
 ## Scope
+
 - Harmony network support completion
 - E2E flows: install → propose/vote → execute → uninstall → re-install
 - Backward compatible changes unless explicitly versioned
 
 ## Dependencies / Integration Points
+
 - **Contracts**: AragonOSX packages/contracts (HarmonyVoting plugin + setup + executor)
 - **Indexing**: Subgraph + backend indexer pipelines (event schemas, handlers, persistence)
 - **App**: Network definitions, plugin UI, governance flows, uninstall UX
 - **Infra**: RPC endpoints, archive access, block explorer APIs, IPFS gateways
 
 ## Current Status
+
 - [x] HarmonyVoting contracts deployed (HIP + Delegation + Opt-In Registry)
 - [x] Basic UI for validator address input and proposal creation
 - [x] Backend event handlers added for ProposalCreated/VoteCast
@@ -30,12 +35,14 @@ Deliver production-ready HarmonyVoting flow across contracts + indexer + backend
 ## Milestones & Tasks
 
 ### 1) Baseline + Observability
+
 - [x] Define golden path E2E scenarios (install/vote/execute/uninstall)
 - [x] Capture current event set for HarmonyVoting (ProposalCreated, VoteCast)
 - [ ] Add structured logs/metrics for indexing gaps per event type
 - [x] Confirm chain IDs, RPCs, explorers for Harmony mainnet
 
 ### 2) Indexing (E2E Correctness + Resilience)
+
 - [x] Ensure backend handlers cover HarmonyVoting events (ProposalCreated, VoteCast)
 - [x] Enable historical indexing for HarmonyVoting events
 - [ ] Add reorg-safe handling (confirmations, idempotency keys, retries)
@@ -47,6 +54,7 @@ Deliver production-ready HarmonyVoting flow across contracts + indexer + backend
 - [ ] Monitor and verify proposals appear in UI after creation
 
 ### 3) Plugin Uninstall (Safety + Cleanup)
+
 - [ ] Define uninstall invariants (no orphan permissions, no stuck executors)
 - [ ] Contracts: verify uninstall path revokes permissions and clears references
 - [ ] Ensure uninstall emits events needed for indexers/UI reconciliation
@@ -55,6 +63,7 @@ Deliver production-ready HarmonyVoting flow across contracts + indexer + backend
 - [ ] Test uninstall with governance permissions (not just admin)
 
 ### 4) Metadata Redundancy (Resilient Proposal Metadata)
+
 - [x] Identify metadata sources (on-chain bytes32 hash, placeholder in backend)
 - [ ] Define deterministic fallback order (on-chain → cached → placeholder)
 - [ ] Backend: implement validation + TTL strategy (avoid serving malformed data)
@@ -63,6 +72,7 @@ Deliver production-ready HarmonyVoting flow across contracts + indexer + backend
 - [ ] Add "metadata unavailable" state that still allows core governance
 
 ### 5) Native-Token Voting Support
+
 - [ ] Define requirements: wallet balance + staked balance via RPC
 - [ ] Implement RPC-based power provider in backend finalizer
 - [ ] Contracts: validate execution path for native token value transfers
@@ -71,6 +81,7 @@ Deliver production-ready HarmonyVoting flow across contracts + indexer + backend
 - [ ] App: show correct fee/value semantics in review + execution confirmations
 
 ### 6) End-to-End Testing & Release Readiness
+
 - [ ] Add automated tests where repo patterns allow:
   - [ ] Contracts: install/uninstall + execution value transfer cases
   - [ ] Backend: handler unit tests for critical events
@@ -84,6 +95,7 @@ Deliver production-ready HarmonyVoting flow across contracts + indexer + backend
 - [ ] Produce operator runbook: sync start block, reindex steps, rollback steps
 
 ## Acceptance Criteria
+
 - **Indexing**:
   - All HarmonyVoting lifecycle states appear in UI/API within defined SLA after finality
   - Reindex/backfill produces identical final state (idempotent)
@@ -98,6 +110,7 @@ Deliver production-ready HarmonyVoting flow across contracts + indexer + backend
   - Indexing and UI clearly indicate native-token execution and resulting effects
 
 ## Risks / Rollback
+
 - **RPC instability / non-archive limitations**:
   - Mitigation: configurable start blocks, checkpointing, fallback RPCs
   - Rollback: pause indexing, switch RPC, rerun backfill
@@ -115,11 +128,13 @@ Deliver production-ready HarmonyVoting flow across contracts + indexer + backend
   - Rollback: feature flag native-token execution; fall back to token-based executor
 
 ## Out of Scope (for this plan)
+
 - New voting algorithms or tokenomics changes
 - Major UI redesign unrelated to HarmonyVoting flows
 - Non-Harmony networks unless required for shared code paths
 
 ## Related Plans
+
 - [aragon-app/PLAN.md](../aragon-app/PLAN.md) - UI/UX updates
 - [Aragon-app-backend/PLAN.md](../Aragon-app-backend/PLAN.md) - Backend indexing
 - [osx-plugin-foundry/PLAN.md](../osx-plugin-foundry/PLAN.md) - Contract implementations

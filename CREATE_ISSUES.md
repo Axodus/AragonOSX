@@ -3,12 +3,14 @@
 Due to GitHub CLI authentication issues, please run these commands manually after re-authenticating:
 
 ## 1. Re-authenticate GitHub CLI
+
 ```bash
 gh auth login -h github.com
 # Follow prompts to authenticate
 ```
 
 ## 2. Create Epic Issue (AragonOSX)
+
 ```bash
 cd "d:\Rede\Github\mzfshark\AragonOSX"
 gh issue create \
@@ -20,6 +22,7 @@ gh issue create \
 ```
 
 ## 3. Create Backend Indexing Issue
+
 ```bash
 cd "d:\Rede\Github\mzfshark\Aragon-app-backend"
 gh issue create \
@@ -31,6 +34,7 @@ gh issue create \
 ```
 
 ## 4. Create UI Resilience Issue
+
 ```bash
 cd "d:\Rede\Github\mzfshark\aragon-app"
 gh issue create \
@@ -42,6 +46,7 @@ gh issue create \
 ```
 
 ## 5. Create Contract Uninstall Issue
+
 ```bash
 cd "d:\Rede\Github\mzfshark\osx-plugin-foundry"
 gh issue create \
@@ -72,9 +77,10 @@ gh issue edit <epic-issue-number> --repo Axodus/AragonOSX --body "
 ## Alternative: Use GitHub Web UI
 
 If CLI continues to have issues, create issues via web:
+
 1. AragonOSX: https://github.com/Axodus/AragonOSX/issues/new
 2. Aragon-app-backend: https://github.com/Axodus/Aragon-app-backend/issues/new
 3. aragon-app: https://github.com/Axodus/aragon-app/issues/new
 4. osx-plugin-foundry: https://github.com/mzfshark/osx-plugin-foundry/issues/new
 
-Copy content from respective PLAN.md and plans/*.md files.
+Copy content from respective PLAN.md and plans/\*.md files.
