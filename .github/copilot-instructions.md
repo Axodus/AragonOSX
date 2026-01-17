@@ -26,19 +26,15 @@ Monorepo for the Aragon OSx protocol: Solidity contracts, subgraph, and ethers w
    ```bash
    # Create issue from PLAN.md
    gh issue create --title "[Plan] <descriptive-title>" --body-file PLAN.md --project "https://github.com/users/mzfshark/projects/5"
-   
-   # Commit and push the plan
-   git add PLAN.md
-   git commit -m "docs: add implementation plan for <feature>"
-   git push
    ```
 
-3. **Update Plan Progress**: As tasks complete, update checkboxes in `PLAN.md` and sync:
+3. **Update Plan Progress**: As tasks complete, update checkboxes in `PLAN.md` and sync with issue:
    ```bash
-   git add PLAN.md
-   git commit -m "docs: update plan progress"
-   git push
+   # Update the issue body with current PLAN.md
+   gh issue edit <issue-number> --body-file PLAN.md
    ```
+
+**IMPORTANT**: Never run `git commit` or `git push` automatically. Always ask the user before any git operations.
 
 **Never start implementation without a documented plan in `PLAN.md` and corresponding GitHub issue.**
 
