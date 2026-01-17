@@ -199,7 +199,6 @@ Phase 5 (Documentation)     ░░░░░░░░░░░░░░░█  [S
 ## 📚 Recursos Adicionais
 
 - [Copilot Instructions](.github/copilot-instructions.md) - Guia para AI agents
-- [Contribution Guide](CONTRIBUTION_GUIDE.md) - Como contribuir
 - [Deployment Checklist](DEPLOYMENT_CHECKLIST.md) - Checklist de deploy
 - [Country Integration Checklist](COUNTRY_INTEGRATION_CHECKLIST.md) - Integração de países
 
