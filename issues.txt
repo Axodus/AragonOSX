@@ -1,0 +1,185 @@
+185	OPEN	Produce operator runbook: sync start block, reindex steps, rollback steps		2026-01-17T21:02:29Z
+184	OPEN	Uninstall and confirm cleanup + UI state		2026-01-17T21:02:24Z
+183	OPEN	Verify UI reflects indexed state		2026-01-17T21:02:19Z
+182	OPEN	Execute (native-token path if applicable)		2026-01-17T21:02:13Z
+181	OPEN	Vote + reach outcome		2026-01-17T21:02:08Z
+180	OPEN	Create proposal		2026-01-17T21:02:00Z
+179	OPEN	Deploy/install plugin		2026-01-17T21:01:55Z
+178	OPEN	Run manual E2E checklist on Harmony:		2026-01-17T21:01:46Z
+177	OPEN	Backend: handler unit tests for critical events		2026-01-17T21:01:40Z
+176	OPEN	Contracts: install/uninstall + execution value transfer cases		2026-01-17T21:01:37Z
+175	OPEN	Add automated tests where repo patterns allow:		2026-01-17T21:01:31Z
+174	OPEN	App: show correct fee/value semantics in review + execution confirmations		2026-01-17T21:01:24Z
+173	OPEN	Indexing: ensure execution events distinguish native-token execution		2026-01-17T21:01:20Z
+172	OPEN	Validate permission model for execution (who can execute, when, conditions)		2026-01-17T21:01:15Z
+171	OPEN	Contracts: validate execution path for native token value transfers		2026-01-17T21:01:07Z
+170	OPEN	Implement RPC-based power provider in backend finalizer		2026-01-17T21:01:03Z
+169	OPEN	Define requirements: wallet balance + staked balance via RPC		2026-01-17T21:00:58Z
+168	OPEN	Add "metadata unavailable" state that still allows core governance		2026-01-17T21:00:51Z
+167	OPEN	Add integrity checks (format validation, size limits)		2026-01-17T21:00:46Z
+166	OPEN	App: fallback fetching + graceful degradation (no hard crash)		2026-01-17T21:00:41Z
+165	OPEN	Backend: implement validation + TTL strategy (avoid serving malformed data)		2026-01-17T21:00:34Z
+164	OPEN	Define deterministic fallback order (on-chain → cached → placeholder)		2026-01-17T21:00:27Z
+163	OPEN	Identify metadata sources (on-chain bytes32 hash, placeholder in backend)		2026-01-17T21:00:20Z
+162	OPEN	Test uninstall with governance permissions (not just admin)		2026-01-17T21:00:15Z
+161	OPEN	Backend/subgraph: handle "plugin removed" state correctly (no stale UI)		2026-01-17T21:00:09Z
+160	OPEN	App: implement uninstall UX with clear warnings + post-uninstall state		2026-01-17T21:00:04Z
+159	OPEN	Ensure uninstall emits events needed for indexers/UI reconciliation		2026-01-17T20:59:59Z
+158	OPEN	Contracts: verify uninstall path revokes permissions and clears references		2026-01-17T20:59:54Z
+157	OPEN	Define uninstall invariants (no orphan permissions, no stuck executors)		2026-01-17T20:59:49Z
+156	OPEN	Monitor and verify proposals appear in UI after creation		2026-01-17T20:59:40Z
+155	OPEN	Reorg simulation (where feasible)		2026-01-17T20:59:35Z
+154	OPEN	Mid-history backfill		2026-01-17T20:59:30Z
+153	OPEN	Fresh sync from deployment block		2026-01-17T20:59:25Z
+152	OPEN	Validate indexing on:		2026-01-17T20:59:14Z
+151	OPEN	Implement catch-up strategy (backfill from deployment block; checkpointing)		2026-01-17T20:59:08Z
+150	OPEN	Add reorg-safe handling (confirmations, idempotency keys, retries)		2026-01-17T20:59:02Z
+149	OPEN	Enable historical indexing for HarmonyVoting events		2026-01-17T20:58:57Z
+148	OPEN	Ensure backend handlers cover HarmonyVoting events (ProposalCreated, VoteCast)		2026-01-17T20:58:52Z
+147	OPEN	Confirm chain IDs, RPCs, explorers for Harmony mainnet		2026-01-17T20:58:45Z
+146	OPEN	Add structured logs/metrics for indexing gaps per event type		2026-01-17T20:58:39Z
+145	OPEN	Capture current event set for HarmonyVoting (ProposalCreated, VoteCast)		2026-01-17T20:58:33Z
+144	OPEN	Define golden path E2E scenarios (install/vote/execute/uninstall)		2026-01-17T20:58:28Z
+143	OPEN	Native token voting power computation		2026-01-17T20:58:22Z
+142	OPEN	Metadata redundancy implemented		2026-01-17T20:58:18Z
+141	OPEN	Uninstall flow tested and reliable		2026-01-17T20:58:13Z
+140	OPEN	End-to-end validation (proposals visible in UI after indexing)		2026-01-17T20:58:08Z
+139	OPEN	Backend event handlers added for ProposalCreated/VoteCast		2026-01-17T20:58:03Z
+138	OPEN	Basic UI for validator address input and proposal creation		2026-01-17T20:57:58Z
+137	OPEN	HarmonyVoting contracts deployed (HIP + Delegation + Opt-In Registry)		2026-01-17T20:57:51Z
+136	OPEN	Testes end-to-end com DAO usando tokens nativos (ONE)		2026-01-17T20:29:18Z
+135	OPEN	Adicionar documentação de uso		2026-01-17T20:29:13Z
+134	OPEN	Deploy em Harmony mainnet		2026-01-17T20:29:06Z
+133	OPEN	Adicionar NativeTokenVotingSetup.sol		2026-01-17T20:29:01Z
+132	OPEN	Implementar Native Token Voting plugin (sem ERC20/ERC721)		2026-01-17T20:28:54Z
+131	OPEN	Implementar/deploy Harmony Delegation plugin com configurable validatorAddress storage		2026-01-17T20:28:50Z
+130	OPEN	Atualizar allowlist via Management DAO		2026-01-17T20:28:44Z
+129	OPEN	Deploy novo HIPPluginSetup.sol		2026-01-17T20:28:38Z
+128	OPEN	Implementar Band Oracle integration no HIP plugin		2026-01-17T20:28:33Z
+127	OPEN	Testes com DAOs reais		2026-01-17T17:38:04Z
+126	OPEN	Preservar histórico de governança		2026-01-17T17:38:00Z
+125	OPEN	Wizard UI para migração de DAOs		2026-01-17T17:37:55Z
+124	OPEN	Ferramenta de migração AragonOS v1 → OSx		2026-01-17T17:37:51Z
+123	OPEN	Documentar mapeamento legacy → OSx		2026-01-17T17:37:46Z
+122	OPEN	Migração de votos e resultados históricos		2026-01-17T17:37:42Z
+121	OPEN	Resolver conflitos de address/naming		2026-01-17T17:37:37Z
+120	OPEN	Importar DAOs e propostas de deployment Harmony anterior		2026-01-17T17:37:33Z
+119	OPEN	Validação de integridade dos dados		2026-01-17T17:37:25Z
+118	OPEN	Script de migração batch		2026-01-17T17:37:20Z
+117	OPEN	Mapear estrutura de dados Snapshot → Aragon OSx		2026-01-17T17:37:16Z
+116	OPEN	Implementar importação de propostas históricas do Snapshot.org		2026-01-17T17:37:11Z
+115	OPEN	Deploy em produção no Vercel		2026-01-17T17:36:54Z
+114	OPEN	Arquivar DAOs de teste/velhos		2026-01-17T17:36:50Z
+113	OPEN	Verificar que resolve bem em ambas as direções (domínio → 0x, 0x → domínio)		2026-01-17T17:36:45Z
+112	OPEN	Registrar .country para DAO existente		2026-01-17T17:36:39Z
+111	OPEN	Criar DAO legacy sem .country		2026-01-17T17:36:36Z
+110	OPEN	Verificar Actions, Plugins, Proposals funcionam corretamente		2026-01-17T17:36:31Z
+109	OPEN	Validar que resolve endereço correto tanto com .country como 0x		2026-01-17T17:36:25Z
+108	OPEN	Criar DAO diretamente via .country usando UI		2026-01-17T17:36:22Z
+107	OPEN	Incluir seção "Como rodar CI localmente" e "Como abrir PR"		2026-01-17T17:30:39Z
+106	OPEN	Adicionar changelog / release notes para mudanças importantes		2026-01-17T17:30:34Z
+105	OPEN	Atualizar packages/contracts/.env.install com exemplos e placeholders		2026-01-17T17:30:30Z
+104	OPEN	Atualizar README principal com visão geral e links (contracts/backend/frontend)		2026-01-17T17:30:26Z
+103	OPEN	Validar correções e fechar issues bloqueadoras		2026-01-17T17:30:00Z
+102	OPEN	Reportar bugs com steps to reproduce e logs		2026-01-17T17:29:56Z
+101	OPEN	Executar testes de integração automatizados e testes manuais guiados		2026-01-17T17:29:52Z
+100	OPEN	Criar checklist de casos críticos (happy path + falhas: reverts, limites gas)		2026-01-17T17:29:49Z
+99	OPEN	Documentar como rodar CI localmente (act/docker-compose)		2026-01-17T17:29:35Z
+98	OPEN	Adicionar caching (cargo/npm) e secrets necessários nos ambientes de CI		2026-01-17T17:29:30Z
+97	OPEN	Provisionar anvil/ganache nos jobs de CI (service container ou setup job)		2026-01-17T17:29:25Z
+96	OPEN	Atualizar .github/workflows para rodar forge build/test e npm tests		2026-01-17T17:29:20Z
+95	OPEN	Atualizar/rodar testes unitários e E2E básicos		2026-01-17T17:29:01Z
+94	OPEN	Validar fluxos críticos (connect wallet, chamadas de leitura/escrita)		2026-01-17T17:28:54Z
+93	OPEN	Atualizar consumo de ABI / paths para artifacts		2026-01-17T17:28:49Z
+92	OPEN	Atualizar env do frontend (.env.local) com placeholders		2026-01-17T17:28:45Z
+91	OPEN	Documentar endpoints e exemplos de chamadas		2026-01-17T17:28:30Z
+90	OPEN	Criar testes de integração que rodem contra anvil/ganache		2026-01-17T17:28:26Z
+89	OPEN	Adicionar .env.template com variáveis necessárias		2026-01-17T17:28:22Z
+88	OPEN	Criar/atualizar rotas e services que leem/escrevem via RPC/ethers		2026-01-17T17:28:18Z
+87	OPEN	Travar versões críticas (OpenZeppelin, forge/hardhat) se necessário		2026-01-17T17:27:56Z
+86	OPEN	Atualizar README de contracts com passo-a-passo (build, test, anvil)		2026-01-17T17:27:53Z
+85	OPEN	Abrir PR com mudanças e instruções de verificação		2026-01-17T17:27:49Z
+84	OPEN	Rodar build/tests (forge ou hardhat) e corrigir falhas		2026-01-17T17:27:45Z
+83	OPEN	Atualizar packages/contracts/.env.install com placeholders e instruções (não comitar segredos)		2026-01-17T17:27:43Z
+82	OPEN	Incluir seção "Como rodar CI localmente" e "Como abrir PR"		2026-01-17T17:27:22Z
+81	OPEN	Atualizar packages/contracts/.env.install com exemplos e placeholders		2026-01-17T17:27:17Z
+80	OPEN	Adicionar changelog / release notes para mudanças importantes		2026-01-17T17:27:15Z
+79	OPEN	Atualizar README principal com visão geral e links (contracts/backend/frontend)		2026-01-17T17:27:12Z
+78	OPEN	Validar correções e fechar issues bloqueadoras		2026-01-17T17:26:42Z
+77	OPEN	Reportar bugs com steps to reproduce e logs		2026-01-17T17:26:37Z
+76	OPEN	Executar testes de integração automatizados e testes manuais guiados		2026-01-17T17:26:31Z
+75	OPEN	Criar checklist de casos críticos (happy path + falhas: reverts, limites gas)		2026-01-17T17:26:27Z
+74	OPEN	Documentar como rodar CI localmente (act/docker-compose)		2026-01-17T17:25:23Z
+73	OPEN	Adicionar caching (cargo/npm) e secrets necessários nos ambientes de CI		2026-01-17T17:25:16Z
+72	OPEN	Provisionar anvil/ganache nos jobs de CI (service container ou setup job)		2026-01-17T17:25:09Z
+71	OPEN	Atualizar .github/workflows para rodar forge build/test e npm tests		2026-01-17T17:25:06Z
+70	OPEN	Atualizar/rodar testes unitários e E2E básicos		2026-01-17T17:24:53Z
+69	OPEN	Validar fluxos críticos (connect wallet, chamadas de leitura/escrita)		2026-01-17T17:24:49Z
+68	OPEN	Atualizar consumo de ABI / paths para artifacts		2026-01-17T17:24:45Z
+67	OPEN	Atualizar env do frontend (.env.local) com placeholders		2026-01-17T17:24:41Z
+66	OPEN	Documentar endpoints e exemplos de chamadas		2026-01-17T17:24:18Z
+65	OPEN	Criar testes de integração que rodem contra anvil/ganache		2026-01-17T17:24:14Z
+64	OPEN	Adicionar .env.template com variáveis necessárias		2026-01-17T17:24:10Z
+63	OPEN	Criar/atualizar rotas e services que leem/escrevem via RPC/ethers		2026-01-17T17:24:06Z
+62	OPEN	Abrir PR com mudanças e instruções de verificação		2026-01-17T17:23:40Z
+61	OPEN	Travar versões críticas (OpenZeppelin, forge/hardhat) se necessário		2026-01-17T17:23:35Z
+60	OPEN	Rodar build/tests (forge ou hardhat) e corrigir falhas		2026-01-17T17:23:32Z
+59	OPEN	Atualizar README de contracts com passo-a-passo (build, test, anvil)		2026-01-17T17:23:27Z
+58	OPEN	Atualizar packages/contracts/.env.install com placeholders e instruções (não comitar segredos)		2026-01-17T17:23:22Z
+57	OPEN	Validação: desinstalação do plugin travado funcionando		2026-01-17T17:23:00Z
+56	OPEN	Backend: fallback no uninstall para marcar plugin como uninstalled		2026-01-17T17:22:55Z
+55	OPEN	Harmony DAOs legacy: resolver PSP por DAO		2026-01-17T17:22:49Z
+54	OPEN	UX Harmony: remover clique extra de Finalize		2026-01-17T17:22:44Z
+53	OPEN	Harmony (DAO novo): corrigir revert no Execute Proposal		2026-01-17T17:22:39Z
+52	OPEN	Documentar procedimento de backfill		2026-01-17T17:22:34Z
+51	OPEN	Verificar que UI reflete corretamente após backfill		2026-01-17T17:22:30Z
+50	OPEN	Processar PSP legacy: 0xac1b0f953Ca517F4aB21Cc3E2cdb95b186DBF80D		2026-01-17T17:22:26Z
+49	OPEN	Validar tx específica: 0xfcb34975290a3023a6e6e99f3bf87cf0e4f93ca9ad510616e624c0d2a85aa9a6		2026-01-17T17:22:22Z
+48	OPEN	Indexer/backfill: reprocessar uninstalls já minerados		2026-01-17T17:22:18Z
+47	OPEN	Validar que actions aparecem no Action Composer ao criar proposal (teste local)		2026-01-17T17:21:29Z
+46	OPEN	Validar que actions aparecem no Action Composer ao criar proposal (teste após deploy)		2026-01-17T17:21:25Z
+45	OPEN	Garantir que actions .country aparecem somente no grupo 'DAO (daoAddress)'		2026-01-17T17:21:21Z
+44	OPEN	Documentar fluxo completo de registro via proposal		2026-01-17T17:21:17Z
+43	OPEN	Validar Codacy CLI (sem issues nos 9 arquivos editados)		2026-01-17T17:21:13Z
+42	OPEN	Registrar componentes como core		2026-01-17T17:21:10Z
+41	OPEN	Remover duplicação de actions		2026-01-17T17:21:05Z
+40	OPEN	Adicionar traduções i18n em en.json		2026-01-17T17:21:00Z
+39	OPEN	Simplificar formulário: nome + meses (1-12), secret automático		2026-01-17T17:20:55Z
+38	OPEN	Refatorar para actions serem específicas do DAO		2026-01-17T17:20:51Z
+37	OPEN	Criar módulo countryRegistrar com tipos, componentes e utils		2026-01-17T17:20:47Z
+36	OPEN	Documentar fluxo 2 etapas		2026-01-17T17:19:21Z
+35	OPEN	Fornecer endpoint/util para gerar actions		2026-01-17T17:19:15Z
+34	OPEN	Corrigir build aragon-admin-api		2026-01-17T17:19:11Z
+33	OPEN	Adicionar validação Joi		2026-01-17T17:19:06Z
+32	OPEN	Criar endpoint POST /set-primary-name		2026-01-17T17:19:00Z
+31	OPEN	Validar resolve		2026-01-17T17:18:55Z
+30	OPEN	Admin fornece daoName.country		2026-01-17T17:18:51Z
+29	OPEN	Expor nos endpoints de DAO		2026-01-17T17:18:46Z
+28	OPEN	Definir modelo primaryName		2026-01-17T17:18:41Z
+27	OPEN	Confirmar nameResolver usa registry.resolver() e resolver.addr()		2026-01-17T17:18:36Z
+26	OPEN	Corrigir deploy local Docker		2026-01-17T17:18:32Z
+25	OPEN	Rodar testes unitários com sucesso		2026-01-17T17:18:27Z
+24	OPEN	Setar envs Harmony do backend		2026-01-17T17:18:23Z
+23	OPEN	Validar coverage do nameResolver.ts (atualmente 30.88%)		2026-01-17T17:18:18Z
+22	OPEN	Testar endpoint setPrimaryName localmente		2026-01-17T17:18:13Z
+21	OPEN	Configurar env opcional REGISTRAR_CONTROLLER		2026-01-17T17:18:08Z
+20	OPEN	Configurar env opcional PUBLIC_RESOLVER		2026-01-17T17:18:02Z
+19	OPEN	[Epic] Harmony Voting E2E: Indexing, Uninstall, Metadata, Native Executor	epic, harmony, feature	2026-01-17T21:02:30Z
+18	OPEN	[Country Integration] Import/Migrate Histórico (Futuro)		2026-01-17T17:38:04Z
+17	OPEN	[Country Integration] Plugins Harmony e Native Token Voting	bug, enhancement	2026-01-17T20:29:18Z
+16	OPEN	[Country Integration] Validação e Rollout End-to-End	bug, enhancement	2026-01-17T17:36:54Z
+15	OPEN	[Country Integration] Harmony - Indexer Backfill de Uninstalls	enhancement	2026-01-17T17:23:00Z
+14	OPEN	[Country Integration] Frontend - Validação de Actions no Action Composer	enhancement	2026-01-17T17:21:29Z
+13	OPEN	[Country Integration] Backend - Configurações e Testes	enhancement, breaking-change	2026-01-17T17:19:49Z
+12	OPEN	06 - Documentação / CHANGELOG		2026-01-17T17:30:39Z
+11	OPEN	05 - QA / Testes de integração e casos críticos		2026-01-17T17:30:00Z
+10	OPEN	04 - CI / Pipeline para contracts + backend + frontend		2026-01-17T17:29:35Z
+9	OPEN	03 - Adaptar frontend para novos endpoints e ABIs de contratos		2026-01-17T17:29:01Z
+8	OPEN	02 - Integrar endpoints e configurar ambiente (Backend)		2026-01-17T17:28:30Z
+7	OPEN	01 - Atualizar .env.install e validar compilação/testes de contratos		2026-01-17T17:27:57Z
+6	OPEN	06 - Documentação / CHANGELOG		2026-01-17T17:27:22Z
+5	OPEN	05 - QA / Testes de integração e casos críticos		2026-01-17T17:26:42Z
+4	OPEN	04 - CI / Pipeline para contracts + backend + frontend		2026-01-17T17:25:23Z
+3	OPEN	03 - Adaptar frontend para novos endpoints e ABIs de contratos		2026-01-17T17:24:54Z
+2	OPEN	02 - Integrar endpoints e configurar ambiente (Backend)		2026-01-17T17:24:19Z
+1	OPEN	01 - Atualizar .env.install e validar compilação/testes de contratos		2026-01-17T17:23:40Z
