@@ -1,140 +1,127 @@
-# HarmonyVoting E2E Reliability Plan
+# Plan: Repository Work Plan
 
-## Goal
+This plan is the source of truth for work tracking.
 
-Deliver production-ready HarmonyVoting flow across contracts + indexer + backend + app, covering:
+Rules:
 
-- **Reliable indexing**: Events → DB → UI/API with backfill and reorg safety
-- **Safe plugin uninstall**: Full lifecycle + cleanup without reverts
-- **Metadata redundancy**: Resilient sources + fallbacks for proposal metadata
-- **Native-token voting**: Support for native token power computation and DAO action execution
+- Every checkbox line MUST include tags for labels, status, priority, estimate, start/end dates.
+- Subtasks are indented by 2 spaces under their parent.
+- Prefer short, action-oriented titles and include a brief description.
 
-## Scope
+## Context: HarmonyVoting E2E Reliability
+
+Goal
+
+- Deliver production-ready HarmonyVoting flow across contracts + indexer + backend + app, covering:
+  - Reliable indexing: Events → DB → UI/API with backfill and reorg safety
+  - Safe plugin uninstall: Full lifecycle + cleanup without reverts
+  - Metadata redundancy: Resilient sources + fallbacks for proposal metadata
+  - Native-token voting: Support for native token power computation and DAO action execution
+
+Scope
 
 - Harmony network support completion
 - E2E flows: install → propose/vote → execute → uninstall → re-install
 - Backward compatible changes unless explicitly versioned
 
-## Dependencies / Integration Points
+Dependencies / Integration Points
 
-- **Contracts**: AragonOSX packages/contracts (HarmonyVoting plugin + setup + executor)
-- **Indexing**: Subgraph + backend indexer pipelines (event schemas, handlers, persistence)
-- **App**: Network definitions, plugin UI, governance flows, uninstall UX
-- **Infra**: RPC endpoints, archive access, block explorer APIs, IPFS gateways
+- Contracts: AragonOSX packages/contracts (HarmonyVoting plugin + setup + executor)
+- Indexing: Subgraph + backend indexer pipelines (event schemas, handlers, persistence)
+- App: Network definitions, plugin UI, governance flows, uninstall UX
+- Infra: RPC endpoints, archive access, block explorer APIs, IPFS gateways
 
-## Current Status
+Acceptance Criteria
 
-- [x] HarmonyVoting contracts deployed (HIP + Delegation + Opt-In Registry)
-- [x] Basic UI for validator address input and proposal creation
-- [x] Backend event handlers added for ProposalCreated/VoteCast
-- [ ] End-to-end validation (proposals visible in UI after indexing)
-- [ ] Uninstall flow tested and reliable
-- [ ] Metadata redundancy implemented
-- [ ] Native token voting power computation
-
-## Milestones & Tasks
-
-### 1) Baseline + Observability
-
-- [x] Define golden path E2E scenarios (install/vote/execute/uninstall)
-- [x] Capture current event set for HarmonyVoting (ProposalCreated, VoteCast)
-- [ ] Add structured logs/metrics for indexing gaps per event type
-- [x] Confirm chain IDs, RPCs, explorers for Harmony mainnet
-
-### 2) Indexing (E2E Correctness + Resilience)
-
-- [x] Ensure backend handlers cover HarmonyVoting events (ProposalCreated, VoteCast)
-- [x] Enable historical indexing for HarmonyVoting events
-- [ ] Add reorg-safe handling (confirmations, idempotency keys, retries)
-- [ ] Implement catch-up strategy (backfill from deployment block; checkpointing)
-- [ ] Validate indexing on:
-  - [ ] Fresh sync from deployment block
-  - [ ] Mid-history backfill
-  - [ ] Reorg simulation (where feasible)
-- [ ] Monitor and verify proposals appear in UI after creation
-
-### 3) Plugin Uninstall (Safety + Cleanup)
-
-- [ ] Define uninstall invariants (no orphan permissions, no stuck executors)
-- [ ] Contracts: verify uninstall path revokes permissions and clears references
-- [ ] Ensure uninstall emits events needed for indexers/UI reconciliation
-- [ ] App: implement uninstall UX with clear warnings + post-uninstall state
-- [ ] Backend/subgraph: handle "plugin removed" state correctly (no stale UI)
-- [ ] Test uninstall with governance permissions (not just admin)
-
-### 4) Metadata Redundancy (Resilient Proposal Metadata)
-
-- [x] Identify metadata sources (on-chain bytes32 hash, placeholder in backend)
-- [ ] Define deterministic fallback order (on-chain → cached → placeholder)
-- [ ] Backend: implement validation + TTL strategy (avoid serving malformed data)
-- [ ] App: fallback fetching + graceful degradation (no hard crash)
-- [ ] Add integrity checks (format validation, size limits)
-- [ ] Add "metadata unavailable" state that still allows core governance
-
-### 5) Native-Token Voting Support
-
-- [ ] Define requirements: wallet balance + staked balance via RPC
-- [ ] Implement RPC-based power provider in backend finalizer
-- [ ] Contracts: validate execution path for native token value transfers
-- [ ] Validate permission model for execution (who can execute, when, conditions)
-- [ ] Indexing: ensure execution events distinguish native-token execution
-- [ ] App: show correct fee/value semantics in review + execution confirmations
-
-### 6) End-to-End Testing & Release Readiness
-
-- [ ] Add automated tests where repo patterns allow:
-  - [ ] Contracts: install/uninstall + execution value transfer cases
-  - [ ] Backend: handler unit tests for critical events
-- [ ] Run manual E2E checklist on Harmony:
-  - [ ] Deploy/install plugin
-  - [ ] Create proposal
-  - [ ] Vote + reach outcome
-  - [ ] Execute (native-token path if applicable)
-  - [ ] Verify UI reflects indexed state
-  - [ ] Uninstall and confirm cleanup + UI state
-- [ ] Produce operator runbook: sync start block, reindex steps, rollback steps
-
-## Acceptance Criteria
-
-- **Indexing**:
+- Indexing:
   - All HarmonyVoting lifecycle states appear in UI/API within defined SLA after finality
   - Reindex/backfill produces identical final state (idempotent)
-- **Uninstall**:
+- Uninstall:
   - Uninstall revokes permissions and removes plugin from UI/API without stale remnants
   - Re-install works without manual intervention
-- **Metadata**:
+- Metadata:
   - UI/API works even if primary gateway is down (fallback succeeds)
   - Invalid metadata is rejected or safely degraded (no broken UI)
-- **Native-token voting**:
+- Native-token voting:
   - Proposal execution supports native token value transfers where intended
   - Indexing and UI clearly indicate native-token execution and resulting effects
 
-## Risks / Rollback
+Risks / Rollback
 
-- **RPC instability / non-archive limitations**:
-  - Mitigation: configurable start blocks, checkpointing, fallback RPCs
-  - Rollback: pause indexing, switch RPC, rerun backfill
-- **Reorgs causing inconsistent state**:
-  - Mitigation: confirmations + idempotent handlers + reorg-safe storage keys
-  - Rollback: reindex from last stable checkpoint
-- **Uninstall breaking active DAOs**:
-  - Mitigation: explicit UX warnings + preflight checks + staged rollout
-  - Rollback: disable uninstall UI, deploy hotfix to prevent execution paths
-- **Metadata gateway outages**:
-  - Mitigation: caching + multi-gateway strategy
-  - Rollback: serve cached metadata only; temporary "read-only metadata" mode
-- **Native-token execution edge cases**:
-  - Mitigation: explicit tests for value handling and permission gating
-  - Rollback: feature flag native-token execution; fall back to token-based executor
+- RPC instability / non-archive limitations
+- Reorgs causing inconsistent state
+- Uninstall breaking active DAOs
+- Metadata gateway outages
+- Native-token execution edge cases
 
-## Out of Scope (for this plan)
+Out of Scope
 
 - New voting algorithms or tokenomics changes
 - Major UI redesign unrelated to HarmonyVoting flows
 - Non-Harmony networks unless required for shared code paths
 
-## Related Plans
+Related Plans
 
-- [aragon-app/PLAN.md](../aragon-app/PLAN.md) - UI/UX updates
-- [Aragon-app-backend/PLAN.md](../Aragon-app-backend/PLAN.md) - Backend indexing
-- [osx-plugin-foundry/PLAN.md](../osx-plugin-foundry/PLAN.md) - Contract implementations
+- aragon-app/PLAN.md — UI/UX updates
+- Aragon-app-backend/PLAN.md — Backend indexing
+- osx-plugin-foundry/PLAN.md — Contract implementations
+
+## Milestone: Baseline & Observability
+
+- [x] Define golden path E2E scenarios (install/vote/execute/uninstall) [labels:type:docs, area:testing] [status:DONE] [priority:medium] [estimate:4h] [start:2025-12-12] [end:2025-12-13]
+- [x] Capture current event set for HarmonyVoting (ProposalCreated, VoteCast) [labels:type:docs, area:indexing] [status:DONE] [priority:medium] [estimate:3h] [start:2025-12-13] [end:2025-12-14]
+- [ ] Add structured logs/metrics for indexing gaps per event type [labels:type:task, area:backend, area:indexing] [status:TODO] [priority:medium] [estimate:6h] [start:2026-01-20] [end:2026-01-21]
+- [x] Confirm chain IDs, RPCs, explorers for Harmony mainnet [labels:type:docs, area:infra] [status:DONE] [priority:low] [estimate:1h] [start:2025-12-12] [end:2025-12-12]
+
+## Milestone: Indexing (E2E Correctness & Resilience)
+
+- [x] Ensure backend handlers cover HarmonyVoting events (ProposalCreated, VoteCast) [labels:type:task, area:backend, area:indexing] [status:DONE] [priority:high] [estimate:6h] [start:2025-12-18] [end:2025-12-19]
+- [x] Enable historical indexing for HarmonyVoting events [labels:type:task, area:indexing, area:backend] [status:DONE] [priority:high] [estimate:4h] [start:2025-12-19] [end:2025-12-20]
+- [ ] Add reorg-safe handling (confirmations, idempotency keys, retries) [labels:type:task, area:indexing] [status:TODO] [priority:high] [estimate:12h] [start:2026-01-20] [end:2026-01-22]
+- [ ] Implement catch-up strategy (backfill from deployment block; checkpointing) [labels:type:task, area:indexing, area:infra] [status:TODO] [priority:high] [estimate:10h] [start:2026-01-22] [end:2026-01-23]
+- [ ] Validate indexing scenarios [labels:type:qa, area:indexing] [status:TODO] [priority:high] [estimate:16h] [start:2026-01-23] [end:2026-01-26]
+  - [ ] Fresh sync from deployment block [labels:type:qa, area:indexing] [status:TODO] [priority:high] [estimate:6h] [start:2026-01-23] [end:2026-01-23]
+  - [ ] Mid-history backfill [labels:type:qa, area:indexing] [status:TODO] [priority:high] [estimate:4h] [start:2026-01-24] [end:2026-01-24]
+  - [ ] Reorg simulation (where feasible) [labels:type:qa, area:indexing] [status:TODO] [priority:medium] [estimate:6h] [start:2026-01-26] [end:2026-01-26]
+- [ ] Monitor and verify proposals appear in UI after creation [labels:type:qa, area:frontend, area:indexing] [status:TODO] [priority:high] [estimate:4h] [start:2026-01-27] [end:2026-01-27]
+
+## Milestone: Plugin Uninstall (Safety & Cleanup)
+
+- [ ] Define uninstall invariants (no orphan permissions, no stuck executors) [labels:type:task, area:contracts, area:security] [status:TODO] [priority:high] [estimate:6h] [start:2026-01-26] [end:2026-01-26]
+- [ ] Verify contracts uninstall revokes permissions and clears references [labels:type:qa, area:contracts] [status:TODO] [priority:high] [estimate:6h] [start:2026-01-26] [end:2026-01-27]
+- [ ] Ensure uninstall emits events for indexers/UI reconciliation [labels:type:task, area:contracts, area:indexing, area:frontend] [status:TODO] [priority:high] [estimate:4h] [start:2026-01-27] [end:2026-01-27]
+- [ ] Implement uninstall UX with warnings + post-uninstall state [labels:type:feature, area:frontend] [status:TODO] [priority:medium] [estimate:8h] [start:2026-01-28] [end:2026-01-28]
+- [ ] Handle "plugin removed" state in backend/subgraph (no stale UI) [labels:type:task, area:backend, area:indexing] [status:TODO] [priority:high] [estimate:8h] [start:2026-01-29] [end:2026-01-29]
+- [ ] Test uninstall with governance permissions (not just admin) [labels:type:qa, area:contracts, area:frontend] [status:TODO] [priority:high] [estimate:6h] [start:2026-01-30] [end:2026-01-30]
+
+## Milestone: Metadata Redundancy (Resilient Proposal Metadata)
+
+- [x] Identify metadata sources (on-chain hash, backend placeholder) [labels:type:docs, area:backend] [status:DONE] [priority:medium] [estimate:2h] [start:2025-12-16] [end:2025-12-16]
+- [ ] Define deterministic fallback order (on-chain → cached → placeholder) [labels:type:task, area:backend, area:frontend] [status:TODO] [priority:medium] [estimate:3h] [start:2026-01-20] [end:2026-01-20]
+- [ ] Backend validation + TTL strategy (avoid malformed data) [labels:type:task, area:backend] [status:TODO] [priority:medium] [estimate:6h] [start:2026-01-21] [end:2026-01-22]
+- [ ] App fallback fetching + graceful degradation [labels:type:feature, area:frontend] [status:TODO] [priority:medium] [estimate:6h] [start:2026-01-22] [end:2026-01-23]
+- [ ] Add integrity checks (format validation, size limits) [labels:type:task, area:backend, area:security] [status:TODO] [priority:medium] [estimate:4h] [start:2026-01-23] [end:2026-01-23]
+- [ ] "Metadata unavailable" state that still allows core governance [labels:type:feature, area:frontend] [status:TODO] [priority:low] [estimate:3h] [start:2026-01-24] [end:2026-01-24]
+
+## Milestone: Native-Token Voting Support
+
+- [ ] Define requirements: wallet + staked balance via RPC [labels:type:docs, area:backend, area:infra] [status:TODO] [priority:high] [estimate:4h] [start:2026-01-27] [end:2026-01-27]
+- [ ] Implement RPC-based power provider in backend finalizer [labels:type:feature, area:backend, area:indexing] [status:TODO] [priority:high] [estimate:12h] [start:2026-01-28] [end:2026-01-30]
+- [ ] Validate contracts execution path for native token value transfers [labels:type:qa, area:contracts] [status:TODO] [priority:high] [estimate:6h] [start:2026-01-30] [end:2026-01-30]
+- [ ] Validate permission model for execution (who/when/conditions) [labels:type:qa, area:contracts, area:security] [status:TODO] [priority:high] [estimate:6h] [start:2026-01-30] [end:2026-01-31]
+- [ ] Ensure indexing distinguishes native-token execution events [labels:type:task, area:indexing, area:backend] [status:TODO] [priority:medium] [estimate:4h] [start:2026-02-02] [end:2026-02-02]
+- [ ] App shows correct fee/value semantics in review/execution [labels:type:feature, area:frontend] [status:TODO] [priority:medium] [estimate:6h] [start:2026-02-03] [end:2026-02-03]
+
+## Milestone: End-to-End Testing & Release Readiness
+
+- [ ] Add automated tests where repo patterns allow [labels:type:test, area:contracts, area:backend] [status:TODO] [priority:medium] [estimate:14h] [start:2026-01-27] [end:2026-01-29]
+  - [ ] Contracts: install/uninstall + value transfer cases [labels:type:test, area:contracts] [status:TODO] [priority:medium] [estimate:8h] [start:2026-01-27] [end:2026-01-28]
+  - [ ] Backend: handler unit tests for critical events [labels:type:test, area:backend] [status:TODO] [priority:medium] [estimate:6h] [start:2026-01-28] [end:2026-01-29]
+- [ ] Run manual Harmony E2E checklist [labels:type:qa, area:testing] [status:TODO] [priority:high] [estimate:8h] [start:2026-02-04] [end:2026-02-04]
+  - [ ] Deploy/install plugin [labels:type:qa, area:contracts] [status:TODO] [priority:medium] [estimate:1h] [start:2026-02-04] [end:2026-02-04]
+  - [ ] Create proposal [labels:type:qa, area:frontend] [status:TODO] [priority:medium] [estimate:1h] [start:2026-02-04] [end:2026-02-04]
+  - [ ] Vote + reach outcome [labels:type:qa, area:frontend] [status:TODO] [priority:medium] [estimate:2h] [start:2026-02-04] [end:2026-02-04]
+  - [ ] Execute (native-token path if applicable) [labels:type:qa, area:contracts] [status:TODO] [priority:medium] [estimate:2h] [start:2026-02-04] [end:2026-02-04]
+  - [ ] Verify UI reflects indexed state [labels:type:qa, area:frontend, area:indexing] [status:TODO] [priority:medium] [estimate:1h] [start:2026-02-04] [end:2026-02-04]
+  - [ ] Uninstall and confirm cleanup + UI state [labels:type:qa, area:contracts, area:frontend] [status:TODO] [priority:medium] [estimate:1h] [start:2026-02-04] [end:2026-02-04]
+- [ ] Produce operator runbook: sync start block, reindex, rollback [labels:type:docs, area:ops] [status:TODO] [priority:low] [estimate:4h] [start:2026-02-05] [end:2026-02-05]
