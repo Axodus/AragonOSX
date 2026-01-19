@@ -1,0 +1,195 @@
+{
+  "file": "PLAN.md",
+  "items": [
+    {
+      "text": "HarmonyVoting contracts deployed (HIP + Delegation + Opt-In Registry)",
+      "checked": true,
+      "line": 27
+    },
+    {
+      "text": "Basic UI for validator address input and proposal creation",
+      "checked": true,
+      "line": 28
+    },
+    {
+      "text": "Backend event handlers added for ProposalCreated/VoteCast",
+      "checked": true,
+      "line": 29
+    },
+    {
+      "text": "End-to-end validation (proposals visible in UI after indexing)",
+      "checked": false,
+      "line": 30
+    },
+    {
+      "text": "Uninstall flow tested and reliable",
+      "checked": false,
+      "line": 31
+    },
+    {
+      "text": "Metadata redundancy implemented",
+      "checked": false,
+      "line": 32
+    },
+    {
+      "text": "Native token voting power computation",
+      "checked": false,
+      "line": 33
+    },
+    {
+      "text": "Define golden path E2E scenarios (install/vote/execute/uninstall)",
+      "checked": true,
+      "line": 39
+    },
+    {
+      "text": "Capture current event set for HarmonyVoting (ProposalCreated, VoteCast)",
+      "checked": true,
+      "line": 40
+    },
+    {
+      "text": "Add structured logs/metrics for indexing gaps per event type",
+      "checked": false,
+      "line": 41
+    },
+    {
+      "text": "Confirm chain IDs, RPCs, explorers for Harmony mainnet",
+      "checked": true,
+      "line": 42
+    },
+    {
+      "text": "Ensure backend handlers cover HarmonyVoting events (ProposalCreated, VoteCast)",
+      "checked": true,
+      "line": 46
+    },
+    {
+      "text": "Enable historical indexing for HarmonyVoting events",
+      "checked": true,
+      "line": 47
+    },
+    {
+      "text": "Add reorg-safe handling (confirmations, idempotency keys, retries)",
+      "checked": false,
+      "line": 48
+    },
+    {
+      "text": "Implement catch-up strategy (backfill from deployment block; checkpointing)",
+      "checked": false,
+      "line": 49
+    },
+    {
+      "text": "Validate indexing on:",
+      "checked": false,
+      "line": 50
+    },
+    {
+      "text": "Monitor and verify proposals appear in UI after creation",
+      "checked": false,
+      "line": 54
+    },
+    {
+      "text": "Define uninstall invariants (no orphan permissions, no stuck executors)",
+      "checked": false,
+      "line": 58
+    },
+    {
+      "text": "Contracts: verify uninstall path revokes permissions and clears references",
+      "checked": false,
+      "line": 59
+    },
+    {
+      "text": "Ensure uninstall emits events needed for indexers/UI reconciliation",
+      "checked": false,
+      "line": 60
+    },
+    {
+      "text": "App: implement uninstall UX with clear warnings + post-uninstall state",
+      "checked": false,
+      "line": 61
+    },
+    {
+      "text": "Backend/subgraph: handle \"plugin removed\" state correctly (no stale UI)",
+      "checked": false,
+      "line": 62
+    },
+    {
+      "text": "Test uninstall with governance permissions (not just admin)",
+      "checked": false,
+      "line": 63
+    },
+    {
+      "text": "Identify metadata sources (on-chain bytes32 hash, placeholder in backend)",
+      "checked": true,
+      "line": 67
+    },
+    {
+      "text": "Define deterministic fallback order (on-chain → cached → placeholder)",
+      "checked": false,
+      "line": 68
+    },
+    {
+      "text": "Backend: implement validation + TTL strategy (avoid serving malformed data)",
+      "checked": false,
+      "line": 69
+    },
+    {
+      "text": "App: fallback fetching + graceful degradation (no hard crash)",
+      "checked": false,
+      "line": 70
+    },
+    {
+      "text": "Add integrity checks (format validation, size limits)",
+      "checked": false,
+      "line": 71
+    },
+    {
+      "text": "Add \"metadata unavailable\" state that still allows core governance",
+      "checked": false,
+      "line": 72
+    },
+    {
+      "text": "Define requirements: wallet balance + staked balance via RPC",
+      "checked": false,
+      "line": 76
+    },
+    {
+      "text": "Implement RPC-based power provider in backend finalizer",
+      "checked": false,
+      "line": 77
+    },
+    {
+      "text": "Contracts: validate execution path for native token value transfers",
+      "checked": false,
+      "line": 78
+    },
+    {
+      "text": "Validate permission model for execution (who can execute, when, conditions)",
+      "checked": false,
+      "line": 79
+    },
+    {
+      "text": "Indexing: ensure execution events distinguish native-token execution",
+      "checked": false,
+      "line": 80
+    },
+    {
+      "text": "App: show correct fee/value semantics in review + execution confirmations",
+      "checked": false,
+      "line": 81
+    },
+    {
+      "text": "Add automated tests where repo patterns allow:",
+      "checked": false,
+      "line": 85
+    },
+    {
+      "text": "Run manual E2E checklist on Harmony:",
+      "checked": false,
+      "line": 88
+    },
+    {
+      "text": "Produce operator runbook: sync start block, reindex steps, rollback steps",
+      "checked": false,
+      "line": 95
+    }
+  ]
+}

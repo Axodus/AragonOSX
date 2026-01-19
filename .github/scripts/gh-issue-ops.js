@@ -3,6 +3,26 @@
 /* global require, process, console */
 const fs = require('fs');
 const {execFileSync} = require('child_process');
+const crypto = require('crypto');
+
+function sleep(ms) {
+  const start = Date.now();
+  while (Date.now() - start < ms) {
+    0;
+  }
+}
+function runGh(args, maxRetries = 3) {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      return execFileSync('gh', args, {encoding: 'utf8'});
+    } catch (e) {
+      if (attempt === maxRetries) throw e;
+      const backoff = 200 * attempt;
+      console.error('gh command failed, retrying in', backoff, 'ms');
+      sleep(backoff);
+    }
+  }
+}
 
 const input = process.argv[2];
 if (!input) {
@@ -25,20 +45,34 @@ function getRepo() {
     const m = out.match(/github\.com[:/](.+)\/([^/.]+)(?:\.git)?$/);
     if (m) return `${m[1]}/${m[2]}`;
   } catch (e) {
-    /* ignore */
+    void e;
+  }
+  try {
+    const out = runGh(
+      ['repo', 'view', '--json', 'nameWithOwner', '--jq', '.nameWithOwner'],
+      1
+    );
+    if (out) return out.trim();
+  } catch (e) {
+    void e;
   }
   throw new Error('Unable to determine repo (set GITHUB_REPOSITORY)');
 }
 
-function findExistingIssueByTitle(title) {
+function findExistingIssueByTitleOrId(title, stableId) {
   const repo = getRepo();
-  const out = execFileSync(
-    'gh',
-    ['api', `repos/${repo}/issues?state=all&per_page=100`],
-    {encoding: 'utf8'}
-  );
+  const out = runGh(['api', `repos/${repo}/issues?state=all&per_page=100`], 3);
   const issues = JSON.parse(out);
-  return issues.find(i => i.title === title);
+  let found = issues.find(i => i.title === title);
+  if (found) return found;
+  if (stableId) {
+    found = issues.find(
+      i =>
+        typeof i.body === 'string' && i.body.includes(`Stable-ID: ${stableId}`)
+    );
+    if (found) return found;
+  }
+  return null;
 }
 
 function createIssue(title, body, labels = []) {
@@ -51,8 +85,11 @@ function createIssue(title, body, labels = []) {
     '-f',
     `body=${body}`,
   ];
-  if (labels.length) args.push('-f', `labels=${JSON.stringify(labels)}`);
-  const out = execFileSync('gh', args, {encoding: 'utf8'});
+  if (labels.length) {
+    // Pass labels as repeated labels[] form fields
+    for (const lab of labels) args.push('-f', `labels[]=${lab}`);
+  }
+  const out = runGh(args, 3);
   return JSON.parse(out);
 }
 
@@ -60,7 +97,7 @@ function updateIssue(number, fields) {
   const repo = getRepo();
   const args = ['api', `repos/${repo}/issues/${number}`, '-X', 'PATCH'];
   Object.entries(fields).forEach(([k, v]) => args.push('-f', `${k}=${v}`));
-  const out = execFileSync('gh', args, {encoding: 'utf8'});
+  const out = runGh(args, 3);
   return JSON.parse(out);
 }
 
@@ -83,7 +120,7 @@ function attachToProjectIfPresent(issueObj) {
       '-f',
       `contentId=${contentId}`,
     ];
-    const out = execFileSync('gh', args, {encoding: 'utf8'});
+    const out = runGh(args, 3);
     return JSON.parse(out);
   } catch (e) {
     console.error('attachToProject failed:', e.message);
@@ -93,9 +130,13 @@ function attachToProjectIfPresent(issueObj) {
 
 console.log('Syncing issues for', json.file);
 for (const it of json.items) {
+  const stableId = crypto
+    .createHash('sha1')
+    .update(`${json.file}:${it.line}:${it.text}`)
+    .digest('hex');
   const title = `${it.text} [source:${json.file}]`;
-  const body = `Source: ${json.file}\n\nAutomated sync from PLAN.md.`;
-  const existing = findExistingIssueByTitle(title);
+  let body = `Source: ${json.file}\n\nAutomated sync from PLAN.md.\n\nStable-ID: ${stableId}`;
+  const existing = findExistingIssueByTitleOrId(title, stableId);
   if (!existing && !it.checked) {
     console.log('Creating issue:', title);
     const created = createIssue(title, body, ['sync-md']);
@@ -108,6 +149,18 @@ for (const it of json.items) {
     closeIssue(existing.number);
   } else if (existing) {
     console.log('Issue already exists:', existing.number, title);
+    if (!existing.body || !existing.body.includes(`Stable-ID: ${stableId}`)) {
+      try {
+        updateIssue(existing.number, {
+          body: (existing.body || '') + '\n\nStable-ID: ' + stableId,
+        });
+      } catch (e) {
+        console.error(
+          'Failed to update existing issue with Stable-ID',
+          e.message
+        );
+      }
+    }
     if (projectNodeId) {
       const res = attachToProjectIfPresent(existing);
       if (res) console.log('Ensured attached to project');
