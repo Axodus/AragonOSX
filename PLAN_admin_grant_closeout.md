@@ -19,12 +19,14 @@ Close the "add admin" investigation (DAO `0x4e48...` on Harmony) and record fina
 ## Completed Tasks
 
 - [x] Identify permission model and `permissionId` for admin grant on plugin.
+
   - Permission ID: `0xf281525e53675515a6ba7cc7bea8a81e649b3608423ee2d73be1752cea887889`
   - Plugin: `0x7422d841107b0a0e2fc74cf22b381b06ff3c6f55`
   - DAO: `0x4e4841FD33b0AB482C657b1e99F96e4A33E61053`
   - **Status:** ✓ Verified on-chain via `PermissionManager.hasPermission(...)`
 
 - [x] Diagnose why `executeProposal`-based admin grant reverts on problematic DAO.
+
   - Root cause: Proposal-layer validation failure (not DAO permission layer).
   - Evidence: Decoded "good DAO" tx (success, status `0x1`, 5 logs) vs "bad DAO" tx (revert, status `0x0`, no logs); identical calldata & action payloads.
   - **Status:** ✓ Narrowed to plugin proposal state; Harmony RPC lacks trace/revert detail.
@@ -39,34 +41,38 @@ Close the "add admin" investigation (DAO `0x4e48...` on Harmony) and record fina
 ## Pending Tasks
 
 - [ ] Document runbook for future reference.
+
   - [ ] Add entry to `docs/RUNBOOK_HARMONY_ADMIN_GRANT.md` describing: cause, workaround, verification commands.
   - [ ] Link from root `PLAN.md` and troubleshooting docs.
-  - **Owner:** TBD  
+  - **Owner:** TBD
   - **Estimate:** 0.5h
 
 - [ ] Update cross-repo PLAN.md files.
+
   - [ ] `AragonOSX/PLAN.md`: Add completed checkbox with tx hash and summary.
   - [ ] `aragon-app/PLAN.md`: Add note that admin grant completed; link to verify script location.
   - [ ] `Aragon-app-backend/PLAN.md`: Add cross-reference.
-  - **Owner:** TBD  
+  - **Owner:** TBD
   - **Estimate:** 0.5h
 
 - [ ] Add verification tooling.
+
   - [ ] Deploy `scripts/verify-grant.sh` (ready in this repo).
   - [ ] Document usage in `docs/SCRIPTS.md`.
-  - **Owner:** TBD  
+  - **Owner:** TBD
   - **Estimate:** 0.25h
 
 - [ ] Automation & metadata (optional — for future issue tracking enhancements).
+
   - [ ] Ensure `.gitissue/metadata.config.json` exists; create minimal skeleton if missing.
   - [ ] Generate `tmp/<org>-project-schema.json` capturing ProjectV2 schema.
-  - **Owner:** TBD  
+  - **Owner:** TBD
   - **Estimate:** 1h (mostly waiting on GraphQL queries)
 
 - [ ] GitHub issue creation (requires approval + GitHub CLI).
   - [ ] Draft and open GitHub issue from this plan.
   - [ ] Link to deployed scripts and verification steps.
-  - **Owner:** TBD  
+  - **Owner:** TBD
   - **Estimate:** 0.25h
 
 ---
@@ -82,12 +88,14 @@ Close the "add admin" investigation (DAO `0x4e48...` on Harmony) and record fina
 ## Verification Commands (Ready-to-copy)
 
 **1. Fetch raw receipt** (avoids Foundry deserialization issues on Harmony):
+
 ```bash
 cast rpc eth_getTransactionReceipt 0xec054a414b37e912909ed3b571be9d7fd11a320fcdb3004ae39bc4acf346fc47 --rpc-url https://api.harmony.one | jq '.status'
 # Expected: "0x1" (success)
 ```
 
 **2. Check on-chain permission** (confirms grant took effect):
+
 ```bash
 cast call --rpc-url https://api.harmony.one \
   0x4e4841FD33b0AB482C657b1e99F96e4A33E61053 \
@@ -100,6 +108,7 @@ cast call --rpc-url https://api.harmony.one \
 ```
 
 **3. Automated verification** (one-liner):
+
 ```bash
 bash scripts/verify-grant.sh 0xec054a414b37e912909ed3b571be9d7fd11a320fcdb3004ae39bc4acf346fc47 https://api.harmony.one
 # Expected: OK (status 0x1 + hasPermission true)
@@ -110,22 +119,26 @@ bash scripts/verify-grant.sh 0xec054a414b37e912909ed3b571be9d7fd11a320fcdb3004ae
 ## Technical Notes
 
 **Permission Model (Aragon OSx):**
+
 - Grants are stored in `PermissionManager.permissionsHashed[bytes32]` mapping (keyed on `keccak256(where, who, permissionId)`).
 - Auth check: `_auth(_permissionId)` calls `isGranted(address(this), msg.sender, permissionId, msg.data)`.
 - ROOT permission allows caller to `grant/revoke/bulk` any permission in the contract's context.
 
 **Why `executeProposal` failed on problematic DAO:**
+
 - The call chain: `Plugin.executeProposal(...)` → `DAO.execute(bytes,(address,uint256,bytes)[],uint256)` → `DAO.grant(address, address, bytes32)`.
 - Permission checks passed at each layer (plugin has EXECUTE on DAO; DAO.grant is guarded by ROOT on DAO).
 - Revert occurred inside `Plugin._canExecute(...)` or proposal state validation, not in the grant itself.
 - Harmony RPC does not surface revert reason; diagnosis via comparative tx decoding and event log analysis.
 
 **Harmony RPC Quirks:**
+
 - `eth_getTransactionReceipt` omits the `type` field (EIP-2718); some Foundry versions fail deserialization.
 - Workaround: Use `cast rpc eth_getTransactionReceipt <tx> | jq` to fetch and parse raw JSON.
 - `debug_traceTransaction` unavailable; revert reasons not returned.
 
 **Proxy Implementation:**
+
 - Both plugins (problematic and reference) are EIP-1167 minimal proxies → `0x9761d7030450c3b113322e386cb1131f07aa9374` (same impl).
 - Version parity confirmed; failure root cause not in contract code.
 
@@ -134,6 +147,7 @@ bash scripts/verify-grant.sh 0xec054a414b37e912909ed3b571be9d7fd11a320fcdb3004ae
 ## Follow-up Actions
 
 1. **Run verification script** once deployed:
+
    ```bash
    bash scripts/verify-grant.sh 0xec054a414b37e912909ed3b571be9d7fd11a320fcdb3004ae39bc4acf346fc47
    ```
@@ -141,6 +155,7 @@ bash scripts/verify-grant.sh 0xec054a414b37e912909ed3b571be9d7fd11a320fcdb3004ae
 2. **Link from troubleshooting docs** to this plan and `scripts/verify-grant.sh`.
 
 3. **Consider root-cause analysis for proposal-layer revert** (lower priority; workaround is reliable):
+
    - Requires off-chain proposal state inspection (e.g., fetch proposal metadata from subgraph/backend).
    - Or: raise GitHub issue to investigate proposal installation/validation on that DAO.
 

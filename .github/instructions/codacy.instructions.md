@@ -7,6 +7,17 @@
 # Codacy Rules
 Configuration for AI behavior when interacting with Codacy's MCP Server
 
+## NOTICE: auto-generated configs and unsupported linters
+- When integrating with Codacy you may see messages like:
+    - "Warning: Some tools are not supported: Stylelint, markdownlint, ShellCheck, Jackson Linter"
+    - "Created languages configuration file based on API data"
+    - "ESLint configuration created based on Codacy settings. Ignoring plugin rules. ESLint plugins are not supported yet."
+    - "Lizard configuration created based on Codacy settings"
+    - "Trivy configuration created based on Codacy settings"
+    - "Semgrep configuration created based on Codacy settings"
+
+These are informational: Codacy may generate or suggest configuration files and will report unsupported tool integrations. Agents should continue to follow the rules in this document and not attempt to locally install Codacy CLI unless explicitly requested by the user.
+
 ## CRITICAL: After ANY successful `edit_file` or `reapply` operation
 - YOU MUST IMMEDIATELY run the `codacy_cli_analyze` tool from Codacy's MCP Server for each file that was edited, with:
  - `rootPath`: set to the workspace path
