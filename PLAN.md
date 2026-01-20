@@ -57,67 +57,6 @@ Risks / Rollback
 Out of Scope
 
 - New voting algorithms or tokenomics changes
-
-```markdown
-# Plan: Repository Work Plan
-
-This plan is the source of truth for work tracking.
-
-Rules:
-
-- Every checkbox line MUST include tags for labels, status, priority, estimate, start/end dates.
-- Subtasks are indented by 2 spaces under their parent.
-- Prefer short, action-oriented titles and include a brief description.
-
-## Context: HarmonyVoting E2E Reliability
-
-Goal
-
-- Deliver production-ready HarmonyVoting flow across contracts + indexer + backend + app, covering:
-  - Reliable indexing: Events → DB → UI/API with backfill and reorg safety
-  - Safe plugin uninstall: Full lifecycle + cleanup without reverts
-  - Metadata redundancy: Resilient sources + fallbacks for proposal metadata
-  - Native-token voting: Support for native token power computation and DAO action execution
-
-Scope
-
-- Harmony network support completion
-- E2E flows: install → propose/vote → execute → uninstall → re-install
-- Backward compatible changes unless explicitly versioned
-
-Dependencies / Integration Points
-
-- Contracts: AragonOSX packages/contracts (HarmonyVoting plugin + setup + executor)
-- Indexing: Subgraph + backend indexer pipelines (event schemas, handlers, persistence)
-- App: Network definitions, plugin UI, governance flows, uninstall UX
-- Infra: RPC endpoints, archive access, block explorer APIs, IPFS gateways
-
-Acceptance Criteria
-
-- Indexing:
-  - All HarmonyVoting lifecycle states appear in UI/API within defined SLA after finality
-  - Reindex/backfill produces identical final state (idempotent)
-- Uninstall:
-  - Uninstall revokes permissions and removes plugin from UI/API without stale remnants
-  - Re-install works without manual intervention
-- Metadata:
-  - UI/API works even if primary gateway is down (fallback succeeds)
-  - Invalid metadata is rejected or safely degraded (no broken UI)
-- Native-token voting:
-  - Proposal execution supports native token value transfers where intended
-  - Indexing and UI clearly indicate native-token execution and resulting effects
-
-Risks / Rollback
-
-- RPC instability / non-archive limitations
-- Reorgs causing inconsistent state
-- Uninstall breaking active DAOs
-- Metadata gateway outages
-- Native-token execution edge cases
-
-Out of Scope
-
-- New voting algorithms or tokenomics changes
 - Major UI redesign unrelated to HarmonyVoting flows
 - Non-Harmony networks unless required for shared code paths
 
@@ -201,4 +140,12 @@ Notes:
 
 - The captured project contains items from multiple repositories and includes issues and pull requests; some items are labeled with prefixes (e.g., `01 - ...`, `[Plan]`, `[Country Integration]`, `[Epic] Harmony Voting E2E: ...`).
 - File with full raw JSON output: `GitIssue-Manager/tmp/mzfshark-project-15-items.json` (100 items).
-```
+
+## Milestone: ProjectV2 Schema & Sync
+
+- [ ] Verify .gitissue/metadata.config.json at repo root [labels:type:chore, area:planning] [status:TODO] [priority:low] [estimate:0.5h] [start:2026-01-19] [end:2026-01-19]
+- [ ] Capture org project schema to tmp/<org>-project-schema.json [labels:type:task, area:planning] [status:TODO] [priority:low] [estimate:0.5h] [start:2026-01-19] [end:2026-01-19]
+- [ ] Reconcile checklist items with project items captured at tmp/mzfshark-project-15-items.json [labels:type:task, area:planning] [status:TODO] [priority:low] [estimate:1h] [start:2026-01-19] [end:2026-01-19]
+- [ ] Generate .gitissue/metadata.generated.json from PLAN.md [labels:type:task, area:planning] [status:TODO] [priority:low] [estimate:0.5h] [start:2026-01-19] [end:2026-01-19]
+- [ ] Prepare gh issue create/edit commands for project sync (request approval before running) [labels:type:docs, area:planning] [status:TODO] [priority:low] [estimate:0.5h] [start:2026-01-19] [end:2026-01-19]
+- [ ] Document workaround for PARENT_ISSUE field limitation in GitHub ProjectV2 (manual UI linking or UI automation) [labels:type:docs, area:planning] [status:TODO] [priority:low] [estimate:0.5h] [start:2026-01-19] [end:2026-01-19]
