@@ -66,6 +66,14 @@ Related Plans
 - Aragon-app-backend/PLAN.md — Backend indexing
 - osx-plugin-foundry/PLAN.md — Contract implementations
 
+## Completed Side Tasks
+
+- [x] **Admin grant task on Harmony DAO 0x4e48...** [labels:type:maintenance, area:infra, harmony] [status:DONE] [priority:high] [estimate:4h] [start:2026-01-20] [end:2026-01-20]
+  - Detailed plan: `PLAN_admin_grant_closeout.md`
+  - Outcome: Direct `DAO.grant(...)` workaround implemented and verified; permission now active for admin `0x6fBb...`.
+  - Transaction: `0xec054a414b37e912909ed3b571be9d7fd11a320fcdb3004ae39bc4acf346fc47`
+  - Verification script: `scripts/verify-grant.sh`
+
 ## Milestone: Baseline & Observability
 
 - [x] Define golden path E2E scenarios (install/vote/execute/uninstall) [labels:type:docs, area:testing] [status:DONE] [priority:medium] [estimate:4h] [start:2025-12-12] [end:2025-12-13]

@@ -1,0 +1,27 @@
+{
+  "title": "Close admin-grant investigation: direct DAO.grant workaround verified",
+  "description": "Complete and document the admin grant task for Harmony DAO 0x4e48...",
+  "labels": [
+    "maintenance",
+    "infra",
+    "docs",
+    "harmony"
+  ],
+  "assignees": [],
+  "bodyFile": "PLAN_admin_grant_closeout.md",
+  "metadata": {
+    "status": "completed",
+    "priority": "high",
+    "estimateHours": 4,
+    "completedDate": "2026-01-20",
+    "transactionHash": "0xec054a414b37e912909ed3b571be9d7fd11a320fcdb3004ae39bc4acf346fc47",
+    "network": "harmony",
+    "chainId": 1666600000,
+    "dao": "0x4e4841FD33b0AB482C657b1e99F96e4A33E61053",
+    "affectedRepos": [
+      "AragonOSX",
+      "aragon-app",
+      "Aragon-app-backend"
+    ]
+  }
+}
