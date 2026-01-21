@@ -36,17 +36,20 @@ Plugin uninstall may leave orphan permissions if PermissionManager revoke fails 
 ### Root Cause
 
 **Hypotheses (under investigation):**
+
 - PermissionManager batch revoke may have size limits (revoke fails silently if batch too large)
 - Multiple permission sources (role-based + condition-based) not all cleaned up
 - Revert transaction not emitting REVOKE events properly
 
 **Related Code:**
+
 - `packages/contracts/src/setup/HarmonyVotingSetup.sol` — uninstall handler
 - `packages/contracts/src/permissions/PermissionManager.sol` — revoke logic
 
 ### Workaround
 
 Manually revoke remaining permissions via DAO admin interface:
+
 ```solidity
 dao.revoke(address(plugin), EXECUTE_ROLE)
 ```
@@ -81,23 +84,27 @@ Metadata fetch timeout causes entire proposal card to fail rather than gracefull
 ### Root Cause
 
 **Hypotheses (under investigation):**
+
 - Metadata fetch timeout (5s) not respected in UI promise handling
 - No fallback UI component for unavailable metadata
 - Blocking render until metadata arrives (should be async)
 
 **Related Code:**
+
 - `Aragon-app-backend/src/handlers/metadata.handler.ts` — fetch + TTL
 - `aragon-app/src/modules/governance/ProposalCard.tsx` — rendering
 
 ### Solution (Proposed)
 
 **Fallback Chain:**
+
 1. Try on-chain metadata hash (≤500ms)
 2. Try cached result (≤100ms)
 3. Show placeholder metadata + log warning
 4. Retry in background (non-blocking)
 
 **Implementation:**
+
 - [ ] Add 5s timeout to metadata fetch in backend [labels:type:fix] [status:TODO] [priority:MEDIUM] [estimate:2h]
 - [ ] Implement fallback UI component (title + "Metadata unavailable") [labels:type:feature] [status:TODO] [priority:MEDIUM] [estimate:4h]
 - [ ] Add async background retry with exponential backoff [labels:type:feature] [status:TODO] [priority:LOW] [estimate:3h]
@@ -139,11 +146,13 @@ Vote indexing produces duplicate records on block reorg, causing vote count infl
 
 **Commit:** `abc1234def567` (2026-01-22)  
 **Changes:**
+
 - Added idempotency key to `VoteIndexer.upsert()`
 - Migration script `20260122_cleanup_duplicate_votes.sql`
 - Validation: All votes now have unique `(proposalId, voterAddress)` pairs
 
 **Verification Steps:**
+
 - [x] Testnet vote count verified (47 duplicates cleaned) [labels:type:qa] [status:DONE] [priority:MEDIUM] [estimate:2h]
 - [x] Prod data audit (no duplicates found) [labels:type:qa] [status:DONE] [priority:MEDIUM] [estimate:1h]
 - [x] Reorg simulation test passed [labels:type:qa] [status:DONE] [priority:MEDIUM] [estimate:3h]
@@ -184,12 +193,14 @@ Proposals with native token value transfer not marked in indexing, preventing UI
 
 **Commit:** `def5678ghi901` (2026-02-02)  
 **Changes:**
+
 - Added `value` field to `ExecutionLog` schema (Solidity)
 - Updated GraphQL schema with `ExecutionLog.value` (BigInt)
 - Migration script `20260202_add_execution_value.sql`
 - Updated indexing handler to capture value from receipt
 
 **Verification Steps:**
+
 - [x] Testnet proposal execution validated (value field populated) [labels:type:qa] [status:DONE] [priority:MEDIUM] [estimate:2h]
 - [x] GraphQL query test: `proposal { execution { value, type } }` [labels:type:qa] [status:DONE] [priority:MEDIUM] [estimate:1h]
 - [x] Backward compatibility check (no breaking changes) [labels:type:qa] [status:DONE] [priority:MEDIUM] [estimate:2h]
@@ -238,16 +249,16 @@ Proposals created with old plugin versions may not parse correctly in UI. Re-ins
 
 ## Bug Lifecycle & Definitions
 
-| Stage | Definition | SLA |
-|-------|-----------|-----|
-| **BACKLOG** | Bug identified but not prioritized | — |
-| **TODO** | Bug prioritized and scheduled | — |
-| **INVESTIGATING** | Root cause being analyzed | HIGH: 2-4h, MEDIUM: 8-24h |
-| **IN_PROGRESS** | Fix in active development | HIGH: 4h per checkpoint |
-| **UNDER_REVIEW** | Fix ready for code review | HIGH: 2-4h |
-| **TESTING** | Fix undergoing QA validation | HIGH: 4-8h |
-| **FIXED** | Fix deployed to testnet | MEDIUM: 8-24h (total) |
-| **VERIFIED** | Fix verified on production | — |
+| Stage             | Definition                         | SLA                       |
+| ----------------- | ---------------------------------- | ------------------------- |
+| **BACKLOG**       | Bug identified but not prioritized | —                         |
+| **TODO**          | Bug prioritized and scheduled      | —                         |
+| **INVESTIGATING** | Root cause being analyzed          | HIGH: 2-4h, MEDIUM: 8-24h |
+| **IN_PROGRESS**   | Fix in active development          | HIGH: 4h per checkpoint   |
+| **UNDER_REVIEW**  | Fix ready for code review          | HIGH: 2-4h                |
+| **TESTING**       | Fix undergoing QA validation       | HIGH: 4-8h                |
+| **FIXED**         | Fix deployed to testnet            | MEDIUM: 8-24h (total)     |
+| **VERIFIED**      | Fix verified on production         | —                         |
 
 ---
 
@@ -268,21 +279,25 @@ Proposals created with old plugin versions may not parse correctly in UI. Re-ins
 **For Bugs with Investigation Status:**
 
 1. **Investigation Phase:**
+
    - Set status to `INVESTIGATING`
    - Document hypotheses and tests planned
    - Update status daily with findings
 
 2. **Fix Development:**
+
    - Create feature branch: `fix/BUG-NNN-short-title`
    - Implement idempotent fix (safe to re-apply)
    - Add tests demonstrating fix
 
 3. **Verification:**
+
    - Test on testnet first
    - Validate original reproduction steps
    - Check for regressions in related features
 
 4. **Deployment:**
+
    - Merge to develop
    - Tag version (e.g., v1.1.0-patch)
    - Release notes document fix

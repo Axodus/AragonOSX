@@ -22,6 +22,7 @@ This document tracks large, multi-phase initiatives that span multiple features,
 ### Vision
 
 Deliver production-ready HarmonyVoting plugin on Harmony mainnet with:
+
 - Reliable indexing (reorg-safe, catch-up backfill, SLA monitoring)
 - Safe plugin lifecycle (uninstall cleanup, re-install verification)
 - Resilient metadata sourcing (fallback chain, graceful degradation)
@@ -30,24 +31,28 @@ Deliver production-ready HarmonyVoting plugin on Harmony mainnet with:
 ### Acceptance Criteria
 
 **Indexing:**
+
 - [x] All HarmonyVoting events handled correctly
 - [x] Reorg detection and recovery working (5-20 block reorgs)
 - [ ] Backfill validates correctly (fresh + mid-history)
 - [ ] Proposals appear in UI within SLA (< 30 seconds)
 
 **Plugin Lifecycle:**
+
 - [x] Install creates plugin in DAO
 - [x] Uninstall revokes all permissions (zero orphans)
 - [x] Uninstall emits events for UI reconciliation
 - [ ] Re-install works without manual intervention
 
 **Metadata:**
+
 - [ ] Fallback chain (on-chain → cache → placeholder) implemented
 - [ ] Invalid metadata rejected or safely degraded
 - [ ] UI works even if primary gateway down
 - [ ] No broken proposal displays
 
 **Native-Token Voting:**
+
 - [x] Power computation via RPC (staked balance)
 - [x] Proposal execution supports value transfers
 - [x] Indexing distinguishes native-token executions
@@ -55,33 +60,34 @@ Deliver production-ready HarmonyVoting plugin on Harmony mainnet with:
 
 ### Deliverables (Features)
 
-| Feature | Status | Effort | Timeline |
-|---------|--------|--------|----------|
-| FEATURE-001: Indexing Resilience | 75% | 20h | 2026-01-20 to 2026-02-04 |
-| FEATURE-002: Plugin Uninstall | 83% | 26h | 2026-01-26 to 2026-02-04 |
-| FEATURE-003: Metadata Resilience | 33% | 19h | 2026-01-20 to 2026-02-11 |
-| FEATURE-004: Native-Token Voting | 83% | 28h | 2026-01-27 to 2026-02-03 |
-| **Total Active Features** | | **93h** | |
+| Feature                          | Status | Effort  | Timeline                 |
+| -------------------------------- | ------ | ------- | ------------------------ |
+| FEATURE-001: Indexing Resilience | 75%    | 20h     | 2026-01-20 to 2026-02-04 |
+| FEATURE-002: Plugin Uninstall    | 83%    | 26h     | 2026-01-26 to 2026-02-04 |
+| FEATURE-003: Metadata Resilience | 33%    | 19h     | 2026-01-20 to 2026-02-11 |
+| FEATURE-004: Native-Token Voting | 83%    | 28h     | 2026-01-27 to 2026-02-03 |
+| **Total Active Features**        |        | **93h** |                          |
 
 ### Deliverables (Tasks)
 
-| Task | Status | Effort | Timeline |
-|------|--------|--------|----------|
-| TASK-001: Testing & Validation | 50% | 22h | 2026-01-27 to 2026-02-04 |
-| TASK-002: Documentation & Runbooks | 0% | 4h | 2026-02-05 to 2026-02-05 |
-| **Total Tasks** | | **26h** | |
+| Task                               | Status | Effort  | Timeline                 |
+| ---------------------------------- | ------ | ------- | ------------------------ |
+| TASK-001: Testing & Validation     | 50%    | 22h     | 2026-01-27 to 2026-02-04 |
+| TASK-002: Documentation & Runbooks | 0%     | 4h      | 2026-02-05 to 2026-02-05 |
+| **Total Tasks**                    |        | **26h** |                          |
 
 ### Cross-Repo Dependencies
 
 **Dependent Repositories:**
 
-| Repo | Feature | Status | Blocking | Impact |
-|------|---------|--------|----------|--------|
-| **aragon-app** | Plugin UI updates | In Progress | Yes | FEATURE-002, 004 UI items |
-| **Aragon-app-backend** | Event handlers | In Progress | Yes | FEATURE-001, 003, 004 indexing |
-| **osx-plugin-foundry** | HarmonyVoting setup | Baseline | No | Not blocking |
+| Repo                   | Feature             | Status      | Blocking | Impact                         |
+| ---------------------- | ------------------- | ----------- | -------- | ------------------------------ |
+| **aragon-app**         | Plugin UI updates   | In Progress | Yes      | FEATURE-002, 004 UI items      |
+| **Aragon-app-backend** | Event handlers      | In Progress | Yes      | FEATURE-001, 003, 004 indexing |
+| **osx-plugin-foundry** | HarmonyVoting setup | Baseline    | No       | Not blocking                   |
 
 **Handoff Timeline:**
+
 1. 2026-01-22: AragonOSX contracts stabilize → share with backend
 2. 2026-01-27: Backend handlers ready → share with app
 3. 2026-02-04: All pieces integrate → begin E2E testing
@@ -89,30 +95,33 @@ Deliver production-ready HarmonyVoting plugin on Harmony mainnet with:
 
 ### Risks & Mitigations
 
-| Risk | Severity | Mitigation | Contingency |
-|------|----------|-----------|-------------|
-| RPC instability / non-archive node | Medium | Use multiple RPC endpoints | Manual fallback endpoint |
-| Reorg edge cases during testing | Medium | Extensive simulation + testnet | Continue testing in Q2 |
-| Uninstall permission cleanup gaps | High | Multi-batch revoke + audit | Manual cleanup script |
-| IPFS gateway reliability | Medium | Multi-gateway fallback + cache | On-chain metadata extraction |
-| Native-token execution edge cases | Low | Comprehensive testing + security audit | Deployment delay |
-| Schedule slippage (multi-repo coordination) | Medium | Weekly sync + daily standups | Reduce Q2 scope |
+| Risk                                        | Severity | Mitigation                             | Contingency                  |
+| ------------------------------------------- | -------- | -------------------------------------- | ---------------------------- |
+| RPC instability / non-archive node          | Medium   | Use multiple RPC endpoints             | Manual fallback endpoint     |
+| Reorg edge cases during testing             | Medium   | Extensive simulation + testnet         | Continue testing in Q2       |
+| Uninstall permission cleanup gaps           | High     | Multi-batch revoke + audit             | Manual cleanup script        |
+| IPFS gateway reliability                    | Medium   | Multi-gateway fallback + cache         | On-chain metadata extraction |
+| Native-token execution edge cases           | Low      | Comprehensive testing + security audit | Deployment delay             |
+| Schedule slippage (multi-repo coordination) | Medium   | Weekly sync + daily standups           | Reduce Q2 scope              |
 
 ### Phase Timeline
 
 **Phase 1: Foundation (Jan 21-26)**
+
 - [x] Indexing infrastructure (reorg-safe handling + catch-up)
 - [x] Native-token power provider
 - [x] Uninstall event emission
 - **Gate:** Reorg testing passing
 
 **Phase 2: Integration (Jan 27 - Feb 11)**
+
 - [ ] Metadata fallback chain
 - [ ] Uninstall permission cleanup
 - [ ] App native-token UX
 - **Gate:** All components integrated on testnet
 
 **Phase 3: E2E Testing (Feb 12-28)**
+
 - [ ] Manual E2E checklist
 - [ ] Reorg simulation (extended)
 - [ ] Performance baseline
@@ -120,6 +129,7 @@ Deliver production-ready HarmonyVoting plugin on Harmony mainnet with:
 - **Gate:** All E2E scenarios passing
 
 **Phase 4: Release (Mar 1-7)**
+
 - [ ] Security audit (external)
 - [ ] Final testnet verification
 - [ ] Production deployment
@@ -137,7 +147,7 @@ Deliver production-ready HarmonyVoting plugin on Harmony mainnet with:
 
 ### Lessons Learned (Post-Implementation)
 
-*To be completed at epic closure (2026-02-28)*
+_To be completed at epic closure (2026-02-28)_
 
 - Decision: [description]
 - Outcome: [what happened]
@@ -203,9 +213,9 @@ Deliver production-ready HarmonyVoting plugin on Harmony mainnet with:
 
 ### Deliverables
 
-| Item | Status | Effort | Timeline |
-|------|--------|--------|----------|
-| FEATURE-XXX | 0% | Xh | YYYY-MM-DD to YYYY-MM-DD |
+| Item        | Status | Effort | Timeline                 |
+| ----------- | ------ | ------ | ------------------------ |
+| FEATURE-XXX | 0%     | Xh     | YYYY-MM-DD to YYYY-MM-DD |
 
 ### Cross-Repo Dependencies
 
@@ -213,13 +223,14 @@ Deliver production-ready HarmonyVoting plugin on Harmony mainnet with:
 
 ### Risks & Mitigations
 
-| Risk | Severity | Mitigation |
-|------|----------|-----------|
-| Risk 1 | High | Solution 1 |
+| Risk   | Severity | Mitigation |
+| ------ | -------- | ---------- |
+| Risk 1 | High     | Solution 1 |
 
 ### Phase Timeline
 
 **Phase 1: [name] (dates)**
+
 - [ ] Item 1
 - [ ] Item 2
 

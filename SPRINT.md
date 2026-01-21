@@ -13,11 +13,11 @@
 
 ## Summary
 
-| Status | Count | Hours |
-|--------|-------|-------|
-| ✅ DONE | 11 | ~69% complete |
-| 🔄 TODO | 5 | ~47h remaining |
-| **Total** | **16** | **~160h** |
+| Status    | Count  | Hours          |
+| --------- | ------ | -------------- |
+| ✅ DONE   | 11     | ~69% complete  |
+| 🔄 TODO   | 5      | ~47h remaining |
+| **Total** | **16** | **~160h**      |
 
 ---
 
@@ -103,29 +103,30 @@
 
 ## Sprint Risks & Mitigations
 
-| Risk | Severity | Mitigation | Owner |
-|------|----------|-----------|-------|
-| RPC instability on Harmony | Medium | Multiple RPC endpoints + fallback | Backend |
-| Permission revoke batch limits | High | Idempotent multi-batch revoke | Contracts |
-| Metadata gateway outages | Medium | Multi-gateway fallback + cache | Backend |
-| Schedule slippage (features overlap) | Medium | Daily standups + prioritized backlog | PM |
-| Reorg handling edge cases | Medium | Testnet simulation + monitoring | Indexing |
+| Risk                                 | Severity | Mitigation                           | Owner     |
+| ------------------------------------ | -------- | ------------------------------------ | --------- |
+| RPC instability on Harmony           | Medium   | Multiple RPC endpoints + fallback    | Backend   |
+| Permission revoke batch limits       | High     | Idempotent multi-batch revoke        | Contracts |
+| Metadata gateway outages             | Medium   | Multi-gateway fallback + cache       | Backend   |
+| Schedule slippage (features overlap) | Medium   | Daily standups + prioritized backlog | PM        |
+| Reorg handling edge cases            | Medium   | Testnet simulation + monitoring      | Indexing  |
 
 ---
 
 ## Cross-Repository Dependencies
 
-| Dependency | Repository | Target | Owner | ETA |
-|-----------|-----------|--------|-------|-----|
-| HarmonyVoting plugin setup | AragonOSX | Feature branch | Contracts | 2026-01-22 |
-| Event indexing handlers | Aragon-app-backend | PR ready | Backend | 2026-01-27 |
-| Plugin UI + governance UX | aragon-app | PR review | Frontend | 2026-02-04 |
+| Dependency                 | Repository         | Target         | Owner     | ETA        |
+| -------------------------- | ------------------ | -------------- | --------- | ---------- |
+| HarmonyVoting plugin setup | AragonOSX          | Feature branch | Contracts | 2026-01-22 |
+| Event indexing handlers    | Aragon-app-backend | PR ready       | Backend   | 2026-01-27 |
+| Plugin UI + governance UX  | aragon-app         | PR review      | Frontend  | 2026-02-04 |
 
 ---
 
 ## Weekly Status Update Template
 
 **Week 1 (2026-01-21 to 2026-01-27):**
+
 - FEATURE-001 (Indexing): 75% → TARGET 85%
 - FEATURE-002 (Uninstall): 83% → TARGET 95%
 - FEATURE-003 (Metadata): 33% → TARGET 50%

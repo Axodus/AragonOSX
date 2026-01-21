@@ -28,8 +28,8 @@ See [SPRINT.md](SPRINT.md) for detailed tracking of:
 ### Plugin Marketplace
 
 - [ ] FEATURE-101: Plugin marketplace discovery [labels:type:feature, area:frontend] [status:BACKLOG] [priority:MEDIUM] [estimate:40h] [start:2026-03-01] [end:TBD]
-  **Description:** Enable DAO admins to discover and install approved third-party plugins.
-  
+      **Description:** Enable DAO admins to discover and install approved third-party plugins.
+
   - [ ] Design plugin registry schema [labels:type:design] [status:TODO] [priority:MEDIUM] [estimate:4h]
   - [ ] Implement registry contract [labels:type:feature, area:contracts] [status:TODO] [priority:MEDIUM] [estimate:12h]
   - [ ] Add frontend UI for discovery [labels:type:feature, area:frontend] [status:TODO] [priority:MEDIUM] [estimate:16h]
@@ -38,8 +38,8 @@ See [SPRINT.md](SPRINT.md) for detailed tracking of:
 ### Multi-Sig Governance
 
 - [ ] FEATURE-102: Multi-sig voting (M-of-N) [labels:type:feature, area:contracts] [status:BACKLOG] [priority:MEDIUM] [estimate:32h] [start:TBD] [end:TBD]
-  **Description:** Support voting by M-of-N signers instead of token-weighted voting.
-  
+      **Description:** Support voting by M-of-N signers instead of token-weighted voting.
+
   - [ ] Design multi-sig schema [labels:type:design] [status:TODO] [priority:MEDIUM] [estimate:4h]
   - [ ] Implement voting logic [labels:type:feature, area:contracts] [status:TODO] [priority:MEDIUM] [estimate:16h]
   - [ ] Add signature verification [labels:type:feature, area:contracts] [status:TODO] [priority:MEDIUM] [estimate:8h]
@@ -48,8 +48,8 @@ See [SPRINT.md](SPRINT.md) for detailed tracking of:
 ### Gas Optimization
 
 - [ ] FEATURE-103: Optimize plugin setup gas costs [labels:type:feature, area:contracts] [status:BACKLOG] [priority:LOW] [estimate:16h] [start:2026-04-01] [end:TBD]
-  **Description:** Reduce gas usage for plugin installation by 20-30%.
-  
+      **Description:** Reduce gas usage for plugin installation by 20-30%.
+
   - [ ] Profile current gas usage [labels:type:investigation] [status:TODO] [priority:LOW] [estimate:3h]
   - [ ] Identify optimization opportunities [labels:type:investigation] [status:TODO] [priority:LOW] [estimate:3h]
   - [ ] Implement optimizations [labels:type:feature, area:contracts] [status:TODO] [priority:LOW] [estimate:8h]
@@ -58,8 +58,8 @@ See [SPRINT.md](SPRINT.md) for detailed tracking of:
 ### Cross-Chain Support
 
 - [ ] FEATURE-104: Support additional chains (Polygon, Arbitrum) [labels:type:feature, area:infra] [status:BACKLOG] [priority:MEDIUM] [estimate:24h] [start:2026-05-01] [end:TBD]
-  **Description:** Deploy HarmonyVoting plugin to additional EVM chains.
-  
+      **Description:** Deploy HarmonyVoting plugin to additional EVM chains.
+
   - [ ] Verify contract compatibility [labels:type:qa, area:contracts] [status:TODO] [priority:MEDIUM] [estimate:6h]
   - [ ] Set up deployment scripts [labels:type:task, area:infra] [status:TODO] [priority:MEDIUM] [estimate:8h]
   - [ ] Deploy and verify on Polygon [labels:type:task, area:infra] [status:TODO] [priority:MEDIUM] [estimate:5h]
@@ -68,8 +68,8 @@ See [SPRINT.md](SPRINT.md) for detailed tracking of:
 ### Advanced Governance Features
 
 - [ ] FEATURE-105: Proposal simulation & preview [labels:type:feature, area:contracts] [status:BACKLOG] [priority:LOW] [estimate:20h] [start:2026-06-01] [end:TBD]
-  **Description:** Allow users to simulate proposal execution before voting.
-  
+      **Description:** Allow users to simulate proposal execution before voting.
+
   - [ ] Design simulation API [labels:type:design] [status:TODO] [priority:LOW] [estimate:3h]
   - [ ] Implement contract simulator [labels:type:feature, area:contracts] [status:TODO] [priority:LOW] [estimate:12h]
   - [ ] Add frontend UI [labels:type:feature, area:frontend] [status:TODO] [priority:LOW] [estimate:5h]
@@ -89,14 +89,15 @@ See [SPRINT.md](SPRINT.md) for detailed tracking of:
 
 ```markdown
 - [ ] FEATURE-XXX: Title [labels:type:feature, area:backend] [status:TODO] [priority:MEDIUM] [estimate:20h] [start:2026-01-21] [end:TBD]
-  **Description:** What is this feature? What problem does it solve?
-  
+      **Description:** What is this feature? What problem does it solve?
+
   **Acceptance Criteria:**
+
   - [ ] Works on mainnet and testnet
   - [ ] Zero performance regression
   - [ ] Full test coverage
   - [ ] Documentation updated
-  
+
   - [ ] Design phase [labels:type:design] [status:TODO] [priority:MEDIUM] [estimate:4h]
   - [ ] Implementation [labels:type:feature, area:contracts] [status:TODO] [priority:MEDIUM] [estimate:12h]
   - [ ] Testing [labels:type:test] [status:TODO] [priority:MEDIUM] [estimate:4h]
@@ -106,16 +107,16 @@ See [SPRINT.md](SPRINT.md) for detailed tracking of:
 
 ## Feature Priority Matrix
 
-| Feature | Effort | Impact | Priority | Status |
-|---------|--------|--------|----------|--------|
-| Indexing Resilience | 20h | High | CRITICAL | 75% |
-| Plugin Uninstall | 26h | High | HIGH | 83% |
-| Metadata Resilience | 19h | Medium | HIGH | 33% |
-| Native-Token Voting | 28h | High | HIGH | 83% |
-| Plugin Marketplace | 40h | Medium | MEDIUM | Backlog |
-| Multi-Sig Voting | 32h | Medium | MEDIUM | Backlog |
-| Gas Optimization | 16h | Low | LOW | Backlog |
-| Cross-Chain Support | 24h | Medium | MEDIUM | Backlog |
+| Feature             | Effort | Impact | Priority | Status  |
+| ------------------- | ------ | ------ | -------- | ------- |
+| Indexing Resilience | 20h    | High   | CRITICAL | 75%     |
+| Plugin Uninstall    | 26h    | High   | HIGH     | 83%     |
+| Metadata Resilience | 19h    | Medium | HIGH     | 33%     |
+| Native-Token Voting | 28h    | High   | HIGH     | 83%     |
+| Plugin Marketplace  | 40h    | Medium | MEDIUM   | Backlog |
+| Multi-Sig Voting    | 32h    | Medium | MEDIUM   | Backlog |
+| Gas Optimization    | 16h    | Low    | LOW      | Backlog |
+| Cross-Chain Support | 24h    | Medium | MEDIUM   | Backlog |
 
 ---
 
@@ -138,11 +139,11 @@ See [SPRINT.md](SPRINT.md) for detailed tracking of:
 
 ## Version History
 
-| Version | Date | Features | Status |
-|---------|------|----------|--------|
-| **1.0** | 2026-02-28 | FEATURE-001 through 004 | Target |
-| **1.1** | 2026-04-15 | FEATURE-101, 102 | Planned |
-| **2.0** | 2026-06-01 | FEATURE-103, 104, 105 | Future |
+| Version | Date       | Features                | Status  |
+| ------- | ---------- | ----------------------- | ------- |
+| **1.0** | 2026-02-28 | FEATURE-001 through 004 | Target  |
+| **1.1** | 2026-04-15 | FEATURE-101, 102        | Planned |
+| **2.0** | 2026-06-01 | FEATURE-103, 104, 105   | Future  |
 
 ---
 

@@ -13,6 +13,7 @@
 Complete HarmonyVoting E2E flow across contracts, indexing, backend, and app with focus on production reliability, safety, and observability. This is the master planning document for Sprint 1 (2026-01-21 to 2026-02-28).
 
 ### Key Metrics
+
 - **Total Planned Work:** 160 hours
 - **Completion:** 69% (11 of 16 sprint items done)
 - **Active Features:** 4 (Indexing, Uninstall, Metadata, Native-Token)
@@ -26,6 +27,7 @@ Complete HarmonyVoting E2E flow across contracts, indexing, backend, and app wit
 ### Goal
 
 Deliver production-ready HarmonyVoting flow covering:
+
 - **Reliable indexing:** Events → DB → UI/API with backfill and reorg safety
 - **Safe plugin uninstall:** Full lifecycle + cleanup without reverts
 - **Metadata resilience:** Fallback sourcing + graceful degradation
@@ -50,23 +52,23 @@ Deliver production-ready HarmonyVoting flow covering:
 
 ### Dependencies & Integration Points
 
-| Component | Repository | Status | Notes |
-|-----------|-----------|--------|-------|
-| **Plugin Setup** | AragonOSX/packages/contracts | In Progress | HarmonyVoting setup contract |
-| **Indexing** | Aragon-app-backend | In Progress | Event handlers + reorg recovery |
-| **Subgraph** | AragonOSX/packages/subgraph | Baseline | Event schema definitions |
-| **Frontend** | aragon-app | In Progress | Plugin UI + governance flows |
-| **RPC/Archive** | External | Stable | Harmony mainnet archive node |
+| Component        | Repository                   | Status      | Notes                           |
+| ---------------- | ---------------------------- | ----------- | ------------------------------- |
+| **Plugin Setup** | AragonOSX/packages/contracts | In Progress | HarmonyVoting setup contract    |
+| **Indexing**     | Aragon-app-backend           | In Progress | Event handlers + reorg recovery |
+| **Subgraph**     | AragonOSX/packages/subgraph  | Baseline    | Event schema definitions        |
+| **Frontend**     | aragon-app                   | In Progress | Plugin UI + governance flows    |
+| **RPC/Archive**  | External                     | Stable      | Harmony mainnet archive node    |
 
 ### Known Risks & Mitigations
 
-| Risk | Severity | Mitigation | Status |
-|------|----------|-----------|--------|
-| RPC instability / non-archive | Medium | Use multiple RPC endpoints + fallback | ✅ Active |
-| Reorgs causing inconsistent state | Medium | Idempotency keys + upsert pattern | ✅ Fixed |
-| Uninstall breaking active DAOs | High | Permission cleanup verification + tests | 🔄 In progress |
-| Metadata gateway outages | Medium | Multi-gateway fallback + cache | 🔄 In progress |
-| Native-token edge cases | Low | Execution path validation + tests | ✅ Fixed |
+| Risk                              | Severity | Mitigation                              | Status         |
+| --------------------------------- | -------- | --------------------------------------- | -------------- |
+| RPC instability / non-archive     | Medium   | Use multiple RPC endpoints + fallback   | ✅ Active      |
+| Reorgs causing inconsistent state | Medium   | Idempotency keys + upsert pattern       | ✅ Fixed       |
+| Uninstall breaking active DAOs    | High     | Permission cleanup verification + tests | 🔄 In progress |
+| Metadata gateway outages          | Medium   | Multi-gateway fallback + cache          | 🔄 In progress |
+| Native-token edge cases           | Low      | Execution path validation + tests       | ✅ Fixed       |
 
 ---
 
