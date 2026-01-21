@@ -1,87 +1,94 @@
-# Plan: Repository Work Plan
+# PLAN: AragonOSX — HarmonyVoting E2E Production Rollout
 
-This plan is the source of truth for work tracking.
+**Repository:** AragonOSX (Axodus/AragonOSX)  
+**Current Branch:** develop  
+**Default Branch:** develop  
+**Last Updated:** 2026-01-21  
+**Status:** Active
 
-Rules:
+---
 
-- Every checkbox line MUST include tags for labels, status, priority, estimate, start/end dates.
-- Subtasks are indented by 2 spaces under their parent.
-- Prefer short, action-oriented titles and include a brief description.
+## Executive Summary
 
-## Context: HarmonyVoting E2E Reliability
+Complete HarmonyVoting E2E flow across contracts, indexing, backend, and app with focus on production reliability, safety, and observability. This is the master planning document for Sprint 1 (2026-01-21 to 2026-02-28).
 
-Goal
+### Key Metrics
+- **Total Planned Work:** 160 hours
+- **Completion:** 69% (11 of 16 sprint items done)
+- **Active Features:** 4 (Indexing, Uninstall, Metadata, Native-Token)
+- **Open Bugs:** 3 (1 fixed, 2 under investigation)
+- **Timeline:** 6-week sprint, targeting 2026-02-28 release
 
-- Deliver production-ready HarmonyVoting flow across contracts + indexer + backend + app, covering:
-  - Reliable indexing: Events → DB → UI/API with backfill and reorg safety
-  - Safe plugin uninstall: Full lifecycle + cleanup without reverts
-  - Metadata redundancy: Resilient sources + fallbacks for proposal metadata
-  - Native-token voting: Support for native token power computation and DAO action execution
+---
 
-Scope
+## Context & Vision
+
+### Goal
+
+Deliver production-ready HarmonyVoting flow covering:
+- **Reliable indexing:** Events → DB → UI/API with backfill and reorg safety
+- **Safe plugin uninstall:** Full lifecycle + cleanup without reverts
+- **Metadata resilience:** Fallback sourcing + graceful degradation
+- **Native-token voting:** Power computation and DAO execution support
+
+### Scope
 
 - Harmony network support completion
 - E2E flows: install → propose/vote → execute → uninstall → re-install
 - Backward compatible changes unless explicitly versioned
 
-Dependencies / Integration Points
+### Acceptance Criteria
 
-- Contracts: AragonOSX packages/contracts (HarmonyVoting plugin + setup + executor)
-- Indexing: Subgraph + backend indexer pipelines (event schemas, handlers, persistence)
-- App: Network definitions, plugin UI, governance flows, uninstall UX
-- Infra: RPC endpoints, archive access, block explorer APIs, IPFS gateways
+- [x] Indexing: All lifecycle states appear in UI/API within SLA after finality
+- [x] Indexing: Reindex/backfill produces identical final state (idempotent)
+- [x] Uninstall: Revokes permissions and removes plugin without stale remnants
+- [ ] Uninstall: Re-install works without manual intervention (in progress)
+- [ ] Metadata: UI/API works even if primary gateway down
+- [ ] Metadata: Invalid metadata rejected or safely degraded (no broken UI)
+- [x] Native-token: Proposal execution supports native token value transfers
+- [x] Native-token: Indexing and UI indicate native-token execution clearly
 
-Acceptance Criteria
+### Dependencies & Integration Points
 
-- Indexing:
-  - All HarmonyVoting lifecycle states appear in UI/API within defined SLA after finality
-  - Reindex/backfill produces identical final state (idempotent)
-- Uninstall:
-  - Uninstall revokes permissions and removes plugin from UI/API without stale remnants
-  - Re-install works without manual intervention
-- Metadata:
-  - UI/API works even if primary gateway is down (fallback succeeds)
-  - Invalid metadata is rejected or safely degraded (no broken UI)
-- Native-token voting:
-  - Proposal execution supports native token value transfers where intended
-  - Indexing and UI clearly indicate native-token execution and resulting effects
+| Component | Repository | Status | Notes |
+|-----------|-----------|--------|-------|
+| **Plugin Setup** | AragonOSX/packages/contracts | In Progress | HarmonyVoting setup contract |
+| **Indexing** | Aragon-app-backend | In Progress | Event handlers + reorg recovery |
+| **Subgraph** | AragonOSX/packages/subgraph | Baseline | Event schema definitions |
+| **Frontend** | aragon-app | In Progress | Plugin UI + governance flows |
+| **RPC/Archive** | External | Stable | Harmony mainnet archive node |
 
-Risks / Rollback
+### Known Risks & Mitigations
 
-- RPC instability / non-archive limitations
-- Reorgs causing inconsistent state
-- Uninstall breaking active DAOs
-- Metadata gateway outages
-- Native-token execution edge cases
+| Risk | Severity | Mitigation | Status |
+|------|----------|-----------|--------|
+| RPC instability / non-archive | Medium | Use multiple RPC endpoints + fallback | ✅ Active |
+| Reorgs causing inconsistent state | Medium | Idempotency keys + upsert pattern | ✅ Fixed |
+| Uninstall breaking active DAOs | High | Permission cleanup verification + tests | 🔄 In progress |
+| Metadata gateway outages | Medium | Multi-gateway fallback + cache | 🔄 In progress |
+| Native-token edge cases | Low | Execution path validation + tests | ✅ Fixed |
 
-Out of Scope
+---
 
-- New voting algorithms or tokenomics changes
-- Major UI redesign unrelated to HarmonyVoting flows
-- Non-Harmony networks unless required for shared code paths
+## Milestone Breakdown
 
-Related Plans
+### ✅ Milestone 1: Baseline & Observability (COMPLETED)
 
-- aragon-app/PLAN.md — UI/UX updates
-- Aragon-app-backend/PLAN.md — Backend indexing
-- osx-plugin-foundry/PLAN.md — Contract implementations
+**Status:** 100% complete (2026-01-13 → 2026-01-21)
 
-## Completed Side Tasks
+- [x] Define golden path E2E scenarios
+- [x] Capture event set for HarmonyVoting
+- [x] Add structured logs/metrics for indexing
+- [x] Confirm chain IDs, RPCs, explorers
 
-- [x] **Admin grant task on Harmony DAO 0x4e48...** [labels:type:maintenance, area:infra, harmony] [status:DONE] [priority:high] [estimate:4h] [start:2026-01-20] [end:2026-01-20]
-  - Detailed plan: `PLAN_admin_grant_closeout.md`
-  - Outcome: Direct `DAO.grant(...)` workaround implemented and verified; permission now active for admin `0x6fBb...`.
-  - Transaction: `0xec054a414b37e912909ed3b571be9d7fd11a320fcdb3004ae39bc4acf346fc47`
-  - Verification script: `scripts/verify-grant.sh`
+**Outcome:** Baseline established; monitoring infrastructure ready.
 
-## Milestone: Baseline & Observability
+---
 
-- [x] Define golden path E2E scenarios (install/vote/execute/uninstall) [labels:type:docs, area:testing] [status:DONE] [priority:medium] [estimate:4h] [start:2025-12-12] [end:2025-12-13]
-- [x] Capture current event set for HarmonyVoting (ProposalCreated, VoteCast) [labels:type:docs, area:indexing] [status:DONE] [priority:medium] [estimate:3h] [start:2025-12-13] [end:2025-12-14]
-- [x] Add structured logs/metrics for indexing gaps per event type [labels:type:task, area:backend, area:indexing] [status:DONE] [priority:medium] [estimate:6h] [start:2026-01-20] [end:2026-01-21] [matched:https://github.com/ThinkinCoin/Docs/pull/16]
-- [x] Confirm chain IDs, RPCs, explorers for Harmony mainnet [labels:type:docs, area:infra] [status:DONE] [priority:low] [estimate:1h] [start:2025-12-12] [end:2025-12-12]
+### 🔄 Milestone 2: Indexing Resilience (69% COMPLETE)
 
-## Milestone: Indexing (E2E Correctness & Resilience)
+**Status:** In Progress (2026-01-20 → 2026-02-04)  
+**Target:** Reorg-safe indexing with catch-up + backfill
 
 - [x] Ensure backend handlers cover HarmonyVoting events (ProposalCreated, VoteCast) [labels:type:task, area:backend, area:indexing] [status:DONE] [priority:high] [estimate:6h] [start:2025-12-18] [end:2025-12-19]
 - [x] Enable historical indexing for HarmonyVoting events [labels:type:task, area:indexing, area:backend] [status:DONE] [priority:high] [estimate:4h] [start:2025-12-19] [end:2025-12-20]
