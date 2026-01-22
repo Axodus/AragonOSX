@@ -1,34 +1,62 @@
-# EPIC: Large Initiatives & Cross-Team Efforts — AragonOSX
+# #EPIC-001 - HarmonyVoting Production Release — E2E Reliability & Stability
 
 **Repository:** AragonOSX (Axodus/AragonOSX)  
-**Active Epics:** 1 (HarmonyVoting E2E)  
-**Last Updated:** 2026-01-21
+**End Date Goal:** 2026-02-28  
+**Priority:** HIGH  
+**Estimative Hours:** 160h  
+**Status:** in progress
 
 ---
 
-## Overview
+## Executive Summary
 
-This document tracks large, multi-phase initiatives that span multiple features, teams, or repositories. For active sprint features, see [SPRINT.md](SPRINT.md).
+Cross-repository epic to deliver HarmonyVoting as production-ready voting plugin on Harmony blockchain. Focus: reliability, safety, observability, backward compatibility.
+
+**Vision:** Enable DAOs to use HarmonyVoting with confidence — robust indexing, safe uninstall/reinstall, resilient metadata, native-token support.
+
+**Timeline:** 6-week sprint (2026-01-21 → 2026-02-28)
 
 ---
 
-## EPIC-001: HarmonyVoting E2E Production Rollout
+## Subtasks (Linked)
 
-**Status:** 🔄 IN_PROGRESS (Sprint 1 of 1)  
-**Timeline:** 2026-01-21 to 2026-02-28  
-**Priority:** CRITICAL  
-**Effort:** 160 hours total
+### EPIC-001: HarmonyVoting E2E Production Release
 
-### Vision
+[labels:type:epic, area:contracts, area:backend, area:frontend] [status:IN_PROGRESS] [priority:HIGH] [estimate:160h] [start:2026-01-20] [end:2026-02-28]
 
-Deliver production-ready HarmonyVoting plugin on Harmony mainnet with:
+**Vision:** Deliver production-ready HarmonyVoting plugin on Harmony mainnet with reliable indexing, safe plugin lifecycle, resilient metadata, native-token voting support.
 
-- Reliable indexing (reorg-safe, catch-up backfill, SLA monitoring)
-- Safe plugin lifecycle (uninstall cleanup, re-install verification)
-- Resilient metadata sourcing (fallback chain, graceful degradation)
-- Native-token voting support (power computation, execution semantics)
+**Phase 1 (2026-01-21 → 2026-01-27) — Foundation & Observability:**
 
-### Acceptance Criteria
+- [x] Event handler baseline (contracts, 40h) [labels:type:feature, area:backend] [status:DONE] [priority:CRITICAL] [estimate:40h]
+- [x] Indexing catch-up strategy (backend, 35h, 40%) [labels:type:feature, area:backend] [status:IN_PROGRESS] [priority:CRITICAL] [estimate:35h]
+- [ ] Monitoring setup — Prometheus + Grafana (observability, 30h) [labels:type:task, area:infra] [status:TODO] [priority:HIGH] [estimate:30h]
+- [x] Setup form + validator address (app, 20h) [labels:type:feature, area:frontend] [status:DONE] [priority:HIGH] [estimate:20h]
+
+**Phase 2 (2026-01-28 → 2026-02-11) — Resilience & Safety:**
+
+- [x] Reorg-safe indexing (backend, 35h, 40%) [labels:type:feature, area:backend] [status:IN_PROGRESS] [priority:CRITICAL] [estimate:35h]
+- [x] Plugin uninstall lifecycle (contracts, 38h, 67%) [labels:type:feature, area:contracts] [status:IN_PROGRESS] [priority:HIGH] [estimate:38h]
+- [ ] Metadata redundancy + fallback (backend/app, 24h) [labels:type:feature, area:backend, area:frontend] [status:TODO] [priority:MEDIUM] [estimate:24h]
+- [ ] UI resilience (app, 24h, 33%) [labels:type:feature, area:frontend] [status:IN_PROGRESS] [priority:HIGH] [estimate:24h]
+
+**Phase 3 (2026-02-12 → 2026-02-21) — Feature Completion:**
+
+- [ ] Native-token voting support (contracts/backend/app, 38h, 83%) [labels:type:feature, area:contracts, area:backend] [status:IN_PROGRESS] [priority:HIGH] [estimate:38h]
+- [ ] Uninstall UX refinement (app, 20h) [labels:type:feature, area:frontend] [status:TODO] [priority:MEDIUM] [estimate:20h]
+- [ ] Native-token UX (app, 18h, 25%) [labels:type:feature, area:frontend] [status:IN_PROGRESS] [priority:MEDIUM] [estimate:18h]
+- [ ] Metadata caching strategy (backend, 25h, 30%) [labels:type:feature, area:backend] [status:TODO] [priority:MEDIUM] [estimate:25h]
+
+**Phase 4 (2026-02-22 → 2026-02-28) — Testing & Release:**
+
+- [ ] E2E testing (all repos, 26h) [labels:type:test, area:qa] [status:TODO] [priority:CRITICAL] [estimate:26h]
+- [ ] Production smoke tests (backend/ops, 15h) [labels:type:test, area:ops] [status:TODO] [priority:CRITICAL] [estimate:15h]
+- [ ] Release documentation (all, 8h) [labels:type:docs] [status:TODO] [priority:MEDIUM] [estimate:8h]
+- [ ] Production deployment (ops, 4h) [labels:type:ops] [status:TODO] [priority:CRITICAL] [estimate:4h]
+
+---
+
+## Acceptance Criteria
 
 **Indexing:**
 
@@ -48,6 +76,48 @@ Deliver production-ready HarmonyVoting plugin on Harmony mainnet with:
 
 - [ ] Fallback chain (on-chain → cache → placeholder) implemented
 - [ ] Invalid metadata rejected or safely degraded
+- [ ] IPFS gateway downtime doesn't break UI
+
+**Native-Token:**
+
+- [x] Execution supports native token value transfers
+- [ ] UI clearly shows fee/value semantics
+
+**E2E & Release:**
+
+- [ ] Full install → propose → vote → execute → uninstall flow
+- [ ] 99.9% uptime SLA validated (7-day burn-in)
+- [ ] Zero duplicate events in production
+
+---
+
+## Milestones
+
+- **Phase 1 Complete:** 2026-01-27 (Foundation & observability ready)
+- **Phase 2 Complete:** 2026-02-11 (Resilience + safety validated)
+- **Phase 3 Complete:** 2026-02-21 (All features implemented)
+- **Phase 4 Complete:** 2026-02-28 (Production go-live)
+- **Production Burn-in:** 2026-02-28 → 2026-03-07 (7-day SLA validation)
+
+---
+
+## Risks & Mitigations
+
+| Risk                                  | Severity | Mitigation                              | Contingency                                  |
+| ------------------------------------- | -------- | --------------------------------------- | -------------------------------------------- |
+| RPC instability delays indexing       | HIGH     | Fallback endpoints + circuit breaker    | Use fallback RPC for 24h, notify users       |
+| Reorg handling edge cases             | HIGH     | Exhaustive reorg simulation tests       | Rollback to safe state, hotfix in 4h         |
+| IPFS gateway downtime blocks metadata | HIGH     | Multi-gateway fallback + caching        | Serve placeholder metadata, update UI        |
+| Uninstall breaks active DAOs          | HIGH     | Permission cleanup verification + tests | Manual permission revoke + emergency pause   |
+| Native-token UX confusion             | MEDIUM   | Clear fee breakdown in UI               | Add in-app tutorial, defer to v1.1 if needed |
+| Production deployment issues          | MEDIUM   | Smoke tests + runbook + on-call team    | Rollback in 30min + hotfix in 2h             |
+
+---
+
+**Version:** 2.0  
+**Last Updated:** 2026-01-22  
+**Template:** [EPIC.md](https://gist.github.com/mzfshark/2ab8856d6c0efc0dfa9d1f98d2a23fdf)
+
 - [ ] UI works even if primary gateway down
 - [ ] No broken proposal displays
 

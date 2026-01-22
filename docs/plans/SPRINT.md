@@ -1,23 +1,246 @@
-# Sprint 1: HarmonyVoting E2E Production Rollout
+# #SPRINT-001 - HarmonyVoting E2E Implementation Roadmap
 
 **Repository:** AragonOSX (Axodus/AragonOSX)  
-**Branch:** develop  
-**Sprint Goal:** Deliver production-ready HarmonyVoting with safe plugin lifecycle, resilient indexing, metadata fallbacks, and native-token voting support.
-
-**Sprint Start:** 2026-01-21  
-**Sprint End:** 2026-02-28  
-**Current Date:** 2026-01-21  
-**Status:** Active (Week 1 of 6)
+**Sprint Duration:** 6 weeks (2026-01-21 → 2026-02-28)  
+**Priority Focus:** Event Indexing & Metadata Resilience  
+**Total Capacity:** 160h
 
 ---
 
-## Summary
+## Executive Summary
 
-| Status    | Count  | Hours          |
-| --------- | ------ | -------------- |
-| ✅ DONE   | 11     | ~69% complete  |
-| 🔄 TODO   | 5      | ~47h remaining |
-| **Total** | **16** | **~160h**      |
+6-week implementation roadmap for AragonOSX HarmonyVoting integration. Organized by execution priority: indexing foundation (CRITICAL) → resilience (HIGH) → metadata (MEDIUM) → E2E (HIGH).
+
+**Key Outcomes:**
+
+- Robust event handler framework deployed
+- Metadata redundancy + fallback paths operational
+- 99.5% uptime SLA validated
+- Plugin uninstall flows tested end-to-end
+
+---
+
+## WEEK 1 (2026-01-21 → 2026-01-27) — Event Indexing Foundation
+
+[labels:type:sprint] [status:IN_PROGRESS] [priority:CRITICAL] [estimate:48h]
+
+**Monday–Tuesday (2026-01-21 → 2026-01-22):**
+
+- [x] **CRITICAL (24h):** Create event handler framework + proposal/vote indexing (DONE)
+  - Define event handler interface + registry pattern
+  - Implement ProposalCreated event handler (8h)
+  - Implement VoteCast event handler (8h)
+  - Implement ExecutionSuccess event handler (8h)
+    [labels:type:feature, area:backend] [status:DONE] [priority:CRITICAL] [estimate:24h]
+
+**Wednesday–Friday (2026-01-23 → 2026-01-27):**
+
+- [x] **CRITICAL (12h):** Event deduplication & block tracking (DONE)
+
+  - Implement event deduplication logic (6h)
+  - Add block range tracking (4h)
+  - Test against sample block ranges (2h)
+    [labels:type:feature, area:backend] [status:DONE] [priority:CRITICAL] [estimate:12h]
+
+- [ ] **HIGH (12h):** Initial E2E test scaffolding (IN_PROGRESS)
+  - Set up Hardhat fork of Harmony
+  - Create mock event generator
+  - Begin E2E flow test outline
+    [labels:type:test, area:backend] [status:IN_PROGRESS] [priority:HIGH] [estimate:12h]
+
+---
+
+## WEEK 2 (2026-01-28 → 2026-02-03) — Resilience & Error Handling
+
+[labels:type:sprint] [status:TODO] [priority:CRITICAL] [estimate:52h]
+
+**Monday–Tuesday (2026-01-28 → 2026-01-29):**
+
+- [ ] **CRITICAL (16h):** Retry logic + dead-letter queue
+
+  - Implement exponential backoff (4h)
+  - Create dead-letter queue pattern (6h)
+  - Test retry scenarios (6h)
+    [labels:type:feature, area:backend] [status:TODO] [priority:CRITICAL] [estimate:16h]
+
+- [ ] **HIGH (8h):** Chain reorg handling
+  - Implement block rewind logic (4h)
+  - Test 1-10 block reorg scenarios (4h)
+    [labels:type:feature, area:backend] [status:TODO] [priority:HIGH] [estimate:8h]
+
+**Wednesday–Friday (2026-02-01 → 2026-02-03):**
+
+- [ ] **HIGH (14h):** Metadata fallback framework
+
+  - Design IPFS fallback chain (4h)
+  - Implement caching layer (6h)
+  - Test fallback scenarios (4h)
+    [labels:type:feature, area:backend] [status:TODO] [priority:HIGH] [estimate:14h]
+
+- [ ] **MEDIUM (8h):** Native-token execution tracking
+
+  - Add native-token event handler (4h)
+  - Update execution model (4h)
+    [labels:type:feature, area:backend] [status:TODO] [priority:MEDIUM] [estimate:8h]
+
+- [ ] **HIGH (6h):** Documentation
+  - Event handler architecture doc (3h)
+  - Resilience design doc (3h)
+    [labels:type:docs, area:backend] [status:TODO] [priority:HIGH] [estimate:6h]
+
+---
+
+## WEEK 3 (2026-02-04 → 2026-02-10) — Observability & Monitoring
+
+[labels:type:sprint] [status:TODO] [priority:HIGH] [estimate:40h]
+
+**Monday–Tuesday (2026-02-04 → 2026-02-05):**
+
+- [ ] **HIGH (14h):** Prometheus metrics + Grafana dashboards
+
+  - Define metrics (event lag, dedup count, error rate) (4h)
+  - Implement Prometheus client integration (6h)
+  - Create Grafana dashboards (4h)
+    [labels:type:feature, area:backend] [status:TODO] [priority:HIGH] [estimate:14h]
+
+- [ ] **HIGH (8h):** Structured logging (Winston)
+  - Implement JSON-structured logging (4h)
+  - Add contextual metadata (4h)
+    [labels:type:feature, area:backend] [status:TODO] [priority:HIGH] [estimate:8h]
+
+**Wednesday–Friday (2026-02-08 → 2026-02-10):**
+
+- [ ] **HIGH (10h):** Alert thresholds + incident response
+
+  - Define alert rules (missed blocks, slow indexing) (3h)
+  - Create incident runbook (4h)
+  - Test alerting scenarios (3h)
+    [labels:type:feature, area:backend] [status:TODO] [priority:HIGH] [estimate:10h]
+
+- [ ] **MEDIUM (8h):** Performance profiling
+  - Measure indexing throughput (4h)
+  - Optimize hot paths (4h)
+    [labels:type:feature, area:backend] [status:TODO] [priority:MEDIUM] [estimate:8h]
+
+---
+
+## WEEK 4 (2026-02-11 → 2026-02-17) — Metadata Redundancy & Advanced Features
+
+[labels:type:sprint] [status:TODO] [priority:MEDIUM] [estimate:36h]
+
+**Monday–Tuesday (2026-02-11 → 2026-02-12):**
+
+- [ ] **MEDIUM (12h):** Metadata indexing + Redis caching
+
+  - Implement metadata parser (4h)
+  - Set up Redis layer (4h)
+  - Test cache invalidation (4h)
+    [labels:type:feature, area:backend] [status:TODO] [priority:MEDIUM] [estimate:12h]
+
+- [ ] **MEDIUM (8h):** IPFS gateway rotation
+  - Implement gateway pool (4h)
+  - Add fallback logic (4h)
+    [labels:type:feature, area:backend] [status:TODO] [priority:MEDIUM] [estimate:8h]
+
+**Wednesday–Friday (2026-02-15 → 2026-02-17):**
+
+- [ ] **MEDIUM (8h):** Fallback API endpoint
+
+  - Design graceful degradation strategy (3h)
+  - Implement fallback responses (3h)
+  - Test unavailability scenarios (2h)
+    [labels:type:feature, area:backend] [status:TODO] [priority:MEDIUM] [estimate:8h]
+
+- [ ] **HIGH (8h):** Plugin uninstall support
+  - Add uninstall event handler (4h)
+  - Update state cleanup (4h)
+    [labels:type:feature, area:backend] [status:TODO] [priority:HIGH] [estimate:8h]
+
+---
+
+## WEEK 5 (2026-02-18 → 2026-02-24) — Testing & Validation
+
+[labels:type:sprint] [status:TODO] [priority:CRITICAL] [estimate:26h]
+
+**Monday–Tuesday (2026-02-18 → 2026-02-19):**
+
+- [ ] **CRITICAL (10h):** Integration tests (mock Harmony chain)
+
+  - Write comprehensive test suite (6h)
+  - Test all event types (4h)
+    [labels:type:test, area:backend] [status:TODO] [priority:CRITICAL] [estimate:10h]
+
+- [ ] **HIGH (6h):** Fork tests on Harmony mainnet
+  - Set up fork environment (2h)
+  - Run fork tests (4h)
+    [labels:type:test, area:backend] [status:TODO] [priority:HIGH] [estimate:6h]
+
+**Wednesday–Friday (2026-02-22 → 2026-02-24):**
+
+- [ ] **CRITICAL (6h):** E2E flow tests (proposal → vote → execute → uninstall)
+
+  - Complete E2E test suite (6h)
+    [labels:type:test, area:backend] [status:TODO] [priority:CRITICAL] [estimate:6h]
+
+- [ ] **MEDIUM (4h):** Load testing
+  - Design load test scenario (2h)
+  - Run and analyze results (2h)
+    [labels:type:test, area:backend] [status:TODO] [priority:MEDIUM] [estimate:4h]
+
+---
+
+## WEEK 6 (2026-02-25 → 2026-02-28) — Release & Hardening
+
+[labels:type:sprint] [status:TODO] [priority:CRITICAL] [estimate:8h]
+
+**Monday–Wednesday (2026-02-25 → 2026-02-26):**
+
+- [ ] **CRITICAL (4h):** Bug fixes + final testing
+  - Address test failures (2h)
+  - Final validation (2h)
+    [labels:type:qa, area:backend] [status:TODO] [priority:CRITICAL] [estimate:4h]
+
+**Wednesday–Friday (2026-02-27 → 2026-02-28):**
+
+- [ ] **HIGH (2h):** Release notes + handoff documentation
+
+  - Document changes (1h)
+  - Handoff to operations (1h)
+    [labels:type:docs, area:backend] [status:TODO] [priority:HIGH] [estimate:2h]
+
+- [ ] **MEDIUM (2h):** Operational support readiness
+  - Team training (1h)
+  - Support rotation setup (1h)
+    [labels:type:docs, area:backend] [status:TODO] [priority:MEDIUM] [estimate:2h]
+
+---
+
+## Capacity Planning
+
+| Week      | Planned (h) | Buffer (h) | Total (h) |
+| --------- | ----------- | ---------- | --------- |
+| W1        | 48          | 2          | 50        |
+| W2        | 52          | 2          | 54        |
+| W3        | 40          | 2          | 42        |
+| W4        | 36          | 2          | 38        |
+| W5        | 26          | 2          | 28        |
+| W6        | 8           | 2          | 10        |
+| **Total** | **210h**    | **12h**    | **222h**  |
+
+---
+
+## Critical Path Dependencies
+
+1. **AragonOSX contracts** → Backend indexing (blocks start of W1)
+2. **Event handlers** → Resilience (W2 dependent on W1 completion)
+3. **Metadata framework** → E2E tests (W4 → W5)
+4. **Test validation** → Release (W5 → W6)
+
+---
+
+**Version:** 1.0  
+**Last Updated:** 2026-01-22  
+**Template:** [SPRINT.md](https://gist.github.com/mzfshark/2ab8856d6c0efc0dfa9d1f98d2a23fdf)
 
 ---
 
