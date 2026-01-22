@@ -49,3 +49,4 @@ schema-introspection-partial.json
 
 #Ignore vscode AI rules
 .github\instructions\codacy.instructions.md
+.gitissuer/state.json
