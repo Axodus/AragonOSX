@@ -1,0 +1,1493 @@
+# ISSUE UPDATES
+
+Generated: 2026-01-23T12:27:42Z
+
+- 2026-01-22 20:44:34 -0300 ffd90a64 feat: Atualiza a data da última execução no estado do GitIssuer
+- 2026-01-22 20:39:54 -0300 b9c9ee6f feat: Adiciona arquivo de estado para controle de execução do GitIssuer
+- 2026-01-22 09:31:43 -0300 ec8393e8 Refactor project plans for HarmonyVoting E2E rollout
+- 2026-01-21 18:05:45 -0300 204967a2 feat: Add Sprint and Task planning documents for AragonOSX
+- 2026-01-21 14:48:06 -0300 920f6301 Refactor documentation across multiple files for improved clarity and consistency
+- 2026-01-21 14:47:41 -0300 4824bd0d feat: Add EPIC, FEATURE, HOTFIX, and TASK documentation for AragonOSX
+- 2026-01-20 18:11:58 -0300 8eb3576e feat: adiciona plano de fechamento da tarefa de concessão de admin e script de verificação
+- 2026-01-20 17:32:26 -0300 788c3fe1 docs: close admin-grant investigation and add verification script
+- 2026-01-20 00:20:27 -0300 5d3640ea refactor: remove Codacy CLI script and configuration file
+- 2026-01-19 23:08:13 -0300 e7c00fe0 feat: adiciona novo marco e tarefas para o esquema do projeto V2
+- 2026-01-19 22:47:09 -0300 90c04750 feat: adiciona plano de trabalho e captura de itens do projeto 15
+- 2026-01-19 14:35:18 -0300 2f7b4377 refactor: reorganiza o plano de trabalho para melhor clareza e rastreamento
+- 2026-01-19 14:08:59 -0300 b9e05d4b Refactor code structure for improved readability and maintainability
+- 2026-01-18 21:54:32 -0300 7bcbf6b2 refactor: altera verificação da versão do gh no workflow de sincronização
+- 2026-01-18 21:44:01 -0300 9882282b Refactor issue body link updater script and enhance GitHub Actions workflow
+- 2026-01-18 21:23:10 -0300 2cb52a86 feat: atualiza cron para execução do workflow de sincronização a cada 8 horas
+- 2026-01-18 21:07:21 -0300 3df5e58d feat: implement issue synchronization and update logic in scripts
+- 2026-01-18 19:30:17 -0300 a26803b9 feat: adiciona scripts para sincronização de PLAN.md com issues do GitHub
+- 2026-01-17 14:49:52 -0300 2fab9946 feat: atualiza instruções de criação de issues e remove script QUICK_START.sh
+- 2026-01-17 11:51:06 -0300 688507ee feat: adiciona instruções para criação de issues no GitHub e plano de execução de sprint
+- 2026-01-17 11:13:57 -0300 ef5bbc73 refact: remove link to deleted Contribution Guide from ROADMAP.md
+- 2026-01-16 03:27:32 -0300 0e1b2f60 feat: adiciona diretrizes de padrões de linguagem para conteúdo público em inglês
+- 2026-01-16 03:20:34 -0300 8d88556f feat: adiciona espaços em branco para melhor legibilidade no ROADMAP.md
+- 2026-01-16 03:15:44 -0300 98021390 add files
+- 2026-01-16 03:13:23 -0300 a98f1713 docs: add comprehensive roadmap with issues and timeline
+- 2026-01-16 02:52:19 -0300 6e4e34c6 feat: adiciona diretrizes para planejamento e rastreamento de issues no fluxo de trabalho
+- 2026-01-16 02:18:11 -0300 f0fcf53c feat: atualiza templates de issue com instruções claras e exemplos para .env.install, integração de backend, adaptação de frontend, configuração de CI e documentação
+- 2026-01-16 02:15:50 -0300 9267a83e feat: adiciona templates de issue para atualização de contratos, integração de backend, adaptação de frontend, configuração de CI, testes de QA e documentação
+- 2026-01-16 00:07:42 -0300 eec05f23 feat: adiciona script para execução de chamadas DAO com suporte a configuração de ambiente
+- 2026-01-15 21:26:24 -0300 c3f52695 Merge branch 'develop' of https://github.com/mzfshark/AragonOSX into develop
+- 2026-01-15 21:24:00 -0300 cc7dd248 feat: adiciona script para instalação do administrador no DAO
+- 2026-01-15 21:20:43 -0300 2b422412 Delete packages/contracts/.env.install
+- 2026-01-15 13:30:45 -0300 5762ae46 feat: atualiza checklist de integração com status e notas sobre redeploy e permissões
+- 2026-01-15 11:17:54 -0300 21a96c10 feat: adiciona script para corrigir plugins travados no DAO
+- 2026-01-15 00:28:52 -0300 fb659f90 refactor: atualiza a conexão com o DAO para usar o nome totalmente qualificado e remove verificação de limpeza de plugin
+- 2026-01-15 00:23:51 -0300 32830ced feat: adiciona script para desinstalar plugins travados diretamente
+- 2026-01-13 21:35:38 -0300 e3881311 feat: adiciona verificação para evitar registro duplicado do plugin NativeTokenVoting
+- 2026-01-13 21:21:53 -0300 ea02eb2e feat: adiciona suporte para registro de plugin no PluginRepoRegistry com verificação de rede Harmony
+- 2026-01-13 20:45:01 -0300 6d348d0a refactor: simplifica a decodificação e o armazenamento de propostas no plugin de votação nativo
+- 2026-01-13 20:13:43 -0300 25aa6de5 feat: adiciona otimizações de compilação e refatora funções no plugin de votação nativo
+- 2026-01-13 18:33:12 -0300 2dd48c5d refactor: remove unused Ratio utility and update imports in NativeTokenVotingPlugin
+- 2026-01-13 18:01:36 -0300 9d76cb82 fix: atualiza importações para o plugin de votação nativo e corrige caminhos de dependências
+- 2026-01-13 16:12:53 -0300 3d3f83cd fix: atualiza a versão do Solidity para 0.8.8 e adiciona a função de aplicação de razão
+- 2026-01-13 12:50:43 -0300 fafd97fd refactor: melhora a formatação do código e simplifica a função de desinstalação no plugin de votação
+- 2026-01-13 12:48:12 -0300 d4505e5b feat: adiciona plugin de votação com token nativo e configuração para instalação
+- 2026-01-13 10:36:50 -0300 43f3c871 feat: adiciona seções de pós-deploy e correções de governança para Harmony
+- 2026-01-12 15:22:37 -0300 2a661e90 feat: atualiza endereço do DAO e adiciona script para desinstalar plugins no Harmony
+- 2026-01-12 10:04:59 -0300 f28ccf71 feat: adiciona script para preparar desinstalação de plugins com verificação de permissões
+- 2026-01-11 19:42:58 -0300 cf8008f3 feat: adiciona funções para normalizar permissões multi-alvo e validação de bytes32
+- 2026-01-11 15:03:55 -0300 78ae0b29 feat: adiciona suporte para revogar permissões temporárias no DAO durante a instalação do administrador
+- 2026-01-11 14:16:50 -0300 b16e12bd feat: adiciona verificação de permissões para aplicar instalação via DAO e PSP
+- 2026-01-11 14:14:22 -0300 d9114c01 feat: adiciona script para registrar repositórios de plugins no Harmony
+- 2026-01-11 10:43:31 -0300 5d0268bb feat: adiciona script para instalação de administrador no DAO e arquivo de configuração .env.install
+- 2026-01-10 17:25:26 -0300 18a0469b feat: atualiza checklist de integração com novos endereços e validações pós-deploy
+- 2026-01-10 13:46:59 -0300 d8bb4943 feat: adiciona lógica para mesclar contratos existentes e preservar endereços durante a verificação
+- 2026-01-10 13:36:00 -0300 cd255a94 feat: adiciona filtragem de endereços inválidos e melhora a verificação de contratos implantados
+- 2026-01-10 12:54:10 -0300 b7c00be4 feat: atualiza URL do Developer Portal e adiciona persistência de contratos implantados no registro por rede
+- 2026-01-10 10:43:43 -0300 a2de0147 feat: adiciona lógica de timeout e retries para verificação de contratos, melhora tratamento de erros
+- 2026-01-10 07:51:01 -0300 fd526322 feat: adiciona tratamento de erros RPC e lógica de retry, ajusta configuração de gasPrice e gasLimit para Harmony
+- 2026-01-10 06:09:27 -0300 f2035813 feat: adiciona tratamento para RPCs que não implementam eth_chainId e ajusta configuração de gasLimit e gasPrice para Harmony
+- 2026-01-10 05:50:02 -0300 81603282 feat: ajusta valor mínimo de gasPrice para Harmony para 700 gwei
+- 2026-01-10 05:13:17 -0300 8526dbd4 feat: adiciona função para parse de gasPrice e ajusta configuração de gasPrice para Harmony
+- 2026-01-09 23:33:27 -0300 a05f142b feat: atualiza checklist de integração e variáveis de ambiente para suporte a deploys no Harmony
+- 2026-01-08 17:45:00 -0300 9b325ccf feat: corrige deploy local e build do aragon-admin-api, adiciona validações e endpoints
+- 2026-01-07 21:11:25 -0300 3c16302f feat: atualiza checklist de integração com novas etapas para suporte a .country e melhorias na UI
+- 2026-01-07 20:54:22 -0300 f8bbc3f2 feat: atualiza checklist de integração para expor endpoints de DAO e documentar fluxo de ações
+- 2026-01-07 17:14:43 -0300 cd76e116 feat: atualiza checklist de integração com novas etapas e validações para suporte a nomes preferidos e endpoints
+- 2026-01-07 17:02:34 -0300 737a59a7 feat: atualiza checklist de integração com novas etapas e configurações para suporte a .country
+- 2026-01-06 22:34:53 -0300 9daf47fe feat: adiciona checklist de integração para 1.country com Aragon na Harmony mainnet
+- 2026-01-04 19:59:00 -0300 f128dabb feat: adiciona opção de forçar redeploy no DAOFactory
+- 2026-01-04 19:22:55 -0300 050bd0e4 refactor: substitui tipos específicos por 'any' em DAOFactory para maior flexibilidade
+- 2026-01-04 19:06:47 -0300 beb09615 feat: adiciona endereço de resgate para evitar deadlocks de permissão em DAOs criados
+- 2026-01-04 16:49:21 -0300 332f1902 feat: garante permissão EXECUTE ao criador do DAO após sua criação
+- 2026-01-03 13:43:12 -0300 b7fa0dc4 feat: garante ROOT_PERMISSION ao criador do DAO após sua criação
+- 2025-12-19 11:28:31 -0300 2010d46c feat: adiciona versões de runtime para Node.js e ESLint no arquivo de configuração do Codacy
+- 2025-12-18 13:54:20 -0300 ab9a8dad feat: adiciona verificação de proxies e ajusta lógica de verificação de contratos no processo de verificação
+- 2025-12-18 13:06:56 -0300 19df82d0 feat: aprimora lógica de txOverrides para configuração de gás, incluindo verificação do limite de gás do bloco e permissões do deployer
+- 2025-12-18 12:11:44 -0300 77fa17e0 feat: aprimora lógica de verificação de permissões ENS, desabilitando-a em redes Harmony e ajustando a formatação do código
+- 2025-12-18 12:02:09 -0300 46fe9c65 feat: refatora lógica de txOverrides para configuração de gás, utilizando constantes para valores zero e ajustando a verificação do limite de gás do bloco
+- 2025-12-18 11:57:54 -0300 589f8a62 feat: aprimora lógica de txOverrides para configuração de gás, incluindo verificação do preço de gás do RPC e ajuste de flutuações
+- 2025-12-18 11:42:13 -0300 dea09919 feat: aprimora lógica de txOverrides para configuração de gás em redes Harmony, incluindo verificação do limite de gás do bloco
+- 2025-12-18 11:38:28 -0300 2d1d1eac feat: adiciona suporte a txOverrides para configuração de gás em redes Harmony
+- 2025-12-18 11:14:21 -0300 9585566e feat: aprimora lógica de registro do Management DAO para suportar redes sem ENS e validações adicionais
+- 2025-12-18 11:05:56 -0300 a396934b feat: aprimora verificação de endereços e ajusta tags de execução para o registro DAO
+- 2025-12-18 10:54:07 -0300 ecedbaa0 feat: padroniza tags para minúsculas nos arquivos de registro e ajusta verificações de endereços de contratos
+- 2025-12-18 10:24:19 -0300 cf4aab78 feat: remove mensagem de erro ao reutilizar deployments parciais e permite continuidade no deploy
+- 2025-12-18 10:18:11 -0300 4b2a13fe feat: ajusta lógica de verificação de deployments para permitir continuidade em caso de deploys parciais
+- 2025-12-18 10:13:00 -0300 fa5593d3 feat: adiciona suporte para redes Harmony no registro de plugins e ajusta a lógica de endereço do ENSSubdomainRegistrar
+- 2025-12-18 09:56:01 -0300 c61e29b8 feat: aprimora o gerenciamento de registros ENS para redes Harmony e adiciona verificações de Country Registry
+- 2025-12-18 09:37:27 -0300 9744b82c feat: ajusta gerenciamento de permissões no PermissionManager e corrige tags de função
+- 2025-12-18 09:17:32 -0300 93655003 feat: melhora a verificação de permissões no script de aderência e ajusta mensagens de erro
+- 2025-12-18 09:11:52 -0300 1e5b71c1 feat: atualiza scripts de deploy para gerenciamento de permissões e verificação de aderência
+- 2025-12-18 08:50:07 -0300 a1f06a1e feat: ajusta gerenciamento de permissões e remove verificação de conformidade
+- 2025-12-18 08:37:49 -0300 3145fdbe feat: adiciona verificação de conformidade para contratos e gerenciamento de redeploy
+- 2025-12-18 08:12:30 -0300 a2759bfb feat: adiciona suporte a configuração de preço de gás e verificação de permissões para multisig e aprovadores no script de inspeção de permissões do DAO
+- 2025-12-18 07:49:22 -0300 b99b81e0 feat: adiciona scripts para gerar e inspecionar permissões de DAO no registro
+- 2025-12-18 02:10:24 -0300 ea3981b1 feat: atualiza script de concessão de permissões no DAORegistry para suportar novos métodos de verificação e uso de signatário
+- 2025-12-18 01:13:27 -0300 a1464b86 feat: implementa script para conceder permissões de registro ao DAOFactory no DAORegistry
+- 2025-12-18 00:58:10 -0300 27031e3e feat: adiciona suporte a overrides de legado para gerenciamento de gás na implantação do DAO
+- 2025-12-18 00:39:08 -0300 3d185289 feat: adiciona scripts para implantação e gerenciamento de DAO com suporte a permissões de registro
+- 2025-12-17 15:30:00 -0300 1125a17d feat: adiciona script para atualizar metadados de versão no repositório de plugins
+- 2025-12-17 15:12:53 -0300 b3942eb9 feat: atualiza AdminPlugin e AdminPluginSetup para suportar tipos de plugin construtáveis
+- 2025-12-17 14:27:18 -0300 eea72d4f feat: implementação do AdminPlugin e AdminPluginSetup com suporte a instalação mínima fix: aprimora a recuperação do preço do gás em transações legacy
+- 2025-12-17 14:02:07 -0300 b60338c7 feat: adiciona scripts para configuração e publicação de versões do repositório de plugins
+- 2025-12-17 10:46:34 -0300 605046e2 feat: adiciona script para verificar e conceder permissões de registro de repositórios no PluginRepoRegistry
+- 2025-12-17 10:32:07 -0300 08f64203 fix: ajusta o preço do gás para garantir um mínimo de 200 gwei em transações legacy
+- 2025-12-17 10:23:37 -0300 c62cb486 fix: adiciona suporte a transações legacy e melhora o tratamento de gas no script de criação de repositório admin
+- 2025-12-17 10:09:07 -0300 388bfed5 feat: adiciona script para criar um repositório de plugin admin em uma rede alvo
+- 2025-12-16 16:10:27 -0300 d354a597 fix: altera a validação de permissões para usar chamadas estáticas em vez de chamadas diretas
+- 2025-12-16 16:06:25 -0300 47e27280 fix: melhora o tratamento de erros ao inicializar o fork do Sepolia para evitar falhas em casos de limitações de armazenamento
+- 2025-12-16 15:48:47 -0300 310b312a fix: melhora a verificação e clonagem de permissões no create-params
+- 2025-12-16 15:33:34 -0300 e258debc fix: melhora a verificação de valores nulos nas expectativas de teste no DAOFactory
+- 2025-12-16 15:06:36 -0300 2f090781 test: adiciona retornos em funções de validação no PluginSetupProcessor
+- 2025-12-16 14:46:03 -0300 334a7e73 fix: corrige o caminho de importação para IDAO e IExecutor no arquivo iface.ts
+- 2025-12-16 14:40:28 -0300 e766a46c feat: adiciona suporte para parsing de eventos 'Executed' usando ABIs canônicas de IDAO e IExecutor
+- 2025-12-16 14:28:12 -0300 34291d4f feat: atualiza a estimativa de gás para a função 'execute' e melhora a busca de logs de eventos
+- 2025-12-16 14:23:31 -0300 62b9a7d6 feat: aprimora a lógica de busca de logs de eventos 'Executed' para suportar variantes com e sem failureMap
+- 2025-12-16 13:38:27 -0300 3637606d feat: atualiza validações em DAO e PluginSetupProcessor para melhorar a lógica de execução
+- 2025-12-16 13:23:11 -0300 de4b1598 feat: atualiza testes e validações para melhorar compatibilidade e lógica de execução
+- 2025-12-16 13:03:30 -0300 aa3f472f feat: aprimora validações em eventos de atualização no PluginSetupProcessor
+- 2025-12-16 12:48:34 -0300 6000287d feat: refatora testes de DAO e Plugin para melhorar a lógica de validação e compatibilidade
+- 2025-12-16 12:19:33 -0300 6b5a8399 feat: refatora funções de criação de parâmetros para clonar helpers e permissões
+- 2025-12-16 12:03:41 -0300 b036a7b1 feat: adiciona compatibilidade com a versão do protocolo e refatora chamadas para getProtocolVersionCompat
+- 2025-12-16 11:50:41 -0300 f76b0722 feat: refatora função getInterfaceId para melhorar a lógica de exclusão de fragmenos
+- 2025-12-16 11:31:46 -0300 ee9a1a44 feat: atualiza referências de endereço zero para ethers.ZeroAddress no PluginSetupProcessor
+- 2025-12-16 11:29:05 -0300 120f394c feat: refatora testes de DAO para usar flipBitBigInt e atualiza chamadas de ethers para v6
+- 2025-12-16 11:03:28 -0300 74304dbd feat: atualiza chamadas de eventos e manipulação de logs para usar findEventLog, ajusta compatibilidade com ethers v6
+- 2025-12-16 10:22:32 -0300 8b48f2cb feat: atualiza testes e utilitários para compatibilidade com ethers v6, incluindo ajustes em chamadas e manipulação de logs de eventos
+- 2025-12-16 10:09:35 -0300 1b522590 feat: implement v6-compatible interfaceId calculator and update ENS domain hash handling
+- 2025-12-16 09:57:42 -0300 6ba232b5 feat: altera chamadas de isGranted para usar '0x' em vez de arrays vazios
+- 2025-12-16 09:46:57 -0300 5c3f8555 feat: normaliza instância de contrato do ethers v6 para garantir `target` e `.address`
+- 2025-12-16 09:38:24 -0300 36621f93 feat: adiciona compatibilidade com ethers v6 e ajusta lógica de implantação nos testes
+- 2025-12-16 08:53:52 -0300 54ebf0c8 feat: melhora a consistência no uso de getAddress em mock-helpers
+- 2025-12-16 08:49:04 -0300 7721b9db feat: atualiza .gitignore para incluir .yarn e remove linhas em branco desnecessárias
+- 2025-12-16 08:35:03 -0300 b2e1c9cc feat: atualiza dependência hardhat-chai-matchers para a versão 2.0.0 e ajusta tipos em testes
+- 2025-12-16 08:18:17 -0300 77b4c490 feat: substitui utils e constantes do ethers para melhorar a consistência e legibilidade no código
+- 2025-12-16 08:07:03 -0300 bd5d8680 feat: substitui imports de ethers para melhorar a consistência e legibilidade no código
+- 2025-12-16 07:57:58 -0300 9c391abc feat: substitui chamadas de métodos para usar staticCall e melhora a consistência no código
+- 2025-12-16 07:29:56 -0300 53849b38 feat: substitui ethers.utils por imports diretos para melhorar a legibilidade e consistência no código
+- 2025-12-16 07:21:32 -0300 4edcd47a feat: importa ZeroAddress do ethers para melhorar a consistência no código
+- 2025-12-16 07:14:27 -0300 57df976f feat: substitui ethers.constants.AddressZero por ZeroAddress para melhorar a consistência nos testes
+- 2025-12-16 07:13:22 -0300 46bffa78 feat: substitui createInterface por new Interface para melhorar a consistência e legibilidade nos testes
+- 2025-12-16 07:11:40 -0300 5fd22026 feat: substitui ethers.utils.id por id e atualiza a criação de interfaces para melhorar a legibilidade e consistência
+- 2025-12-16 07:02:09 -0300 3883aa65 feat: substitui ethers.constants.AddressZero por ZeroAddress e atualiza a criação de interfaces para melhorar a legibilidade
+- 2025-12-16 07:00:05 -0300 b6d97be8 feat: substitui defaultAbiCoder por AbiCoder e ajusta chamadas para melhorar a consistência e legibilidade
+- 2025-12-15 10:20:09 -0300 4390374e feat: substitui ethers.BigNumber por toNumber em teste de reentrância para simplificar a verificação
+- 2025-12-15 10:16:44 -0300 0b56fe92 feat: atualiza uso do AbiCoder nas funções de suporte a interface e hashHelpers para melhorar a consistência e legibilidade
+- 2025-12-15 10:03:22 -0300 ba233b2d feat: atualiza importações do ethers para usar AbiCoder e Interface, melhorando a legibilidade e consistência
+- 2025-12-15 08:33:03 -0300 0b55ae99 feat: substitui ethers.BigNumber por toNumber para simplificar a conversão de valores em testes
+- 2025-12-15 08:30:26 -0300 3bc7aefe feat: atualiza importações do ethers e ajusta chamadas de funções para melhorar a consistência e legibilidade
+- 2025-12-15 07:33:38 -0300 20c24cfa feat: melhora a configuração do chai para uso dinâmico do smock, evitando dependências rígidas
+- 2025-12-15 07:12:38 -0300 b1574f97 feat: adiciona instruções para evitar o uso do codacy_get_pattern e atualiza dependências no package.json e yarn.lock
+- 2025-12-12 18:35:37 -0300 51ba265f feat: ajusta a verificação de contratos para tratar argumentos de construtor corretamente
+- 2025-12-12 18:13:46 -0300 4873208d feat: ajusta a verificação de contratos para tratar argumentos de construtor em implementações
+- 2025-12-12 17:14:34 -0300 03712d3a feat: aprimora o adaptador de serviço de nome com suporte a limites de gás e tratamento de erros na implantação
+- 2025-12-12 17:05:26 -0300 077e9b2e feat: adiciona script de verificação de serviços de nome com suporte a UUPS
+- 2025-12-12 16:53:01 -0300 cd7b905c feat: adiciona função verifyUUPS para verificação de implementação e proxy ERC1967
+- 2025-12-12 16:49:55 -0300 750cb90a fix: ajusta versão do Solidity para 0.8.17 em vários contratos e adiciona inicialização do registrador
+- 2025-12-12 15:23:47 -0300 898bfcae feat: adiciona função de registro por hash e novo contrato de registrador de subdomínios
+- 2025-12-12 15:21:35 -0300 c560423c feat: adiciona adaptadores de serviço de nome para integração ENS-like
+- 2025-12-12 15:02:08 -0300 a9ce4985 fix: ajusta verificação de contratos para pular registrars ENS em redes sem suporte
+- 2025-12-12 14:49:57 -0300 a3e98395 fix: evita conexões via deployer em fluxo Multisig-first durante o registro no DAORegistry
+- 2025-12-12 14:44:22 -0300 d4b022fd fix: ajusta registro do DAO no DAORegistry para suportar ambientes com Multisig e melhora tratamento de erros
+- 2025-12-12 14:20:14 -0300 27751fb1 fix: adiciona validações para endereços do ManagementDAO e DAORegistry antes da conexão
+- 2025-12-12 14:15:18 -0300 9cb66bcb fix: ajusta registro do ManagementDAO para suportar ambientes com Multisig
+- 2025-12-12 14:10:16 -0300 1567543c fix: corrige referência para ZeroAddress no registro do DAO e ajusta tags de função
+- 2025-12-12 14:06:58 -0300 f6f55a0d refactor: remove scripts de deploy e verificação obsoletos
+- 2025-12-12 14:03:20 -0300 24a1e512 fix: adiciona verificações para suportar fluxo de multisig nas permissões do ManagementDAO
+- 2025-12-12 13:54:42 -0300 90b58113 fix: adiciona verificação para pular concessões se o multisig estiver configurado
+- 2025-12-12 13:48:49 -0300 3e651706 fix: adiciona verificação para pular concessões pós-multisig se o deployer não possui permissão EXECUTE no ManagementDAO
+- 2025-12-12 13:41:56 -0300 a5373224 feat: adiciona função para aplicar permissões em registries pós-multisig
+- 2025-12-12 13:38:49 -0300 e58289f7 fix: adiciona verificação para pular concessão de REGISTER_PLUGIN_REPO_PERMISSION se um multisig estiver configurado
+- 2025-12-12 13:33:44 -0300 4392fcef fix: adiciona verificação para pular concessão de REGISTER_DAO_PERMISSION se um multisig estiver configurado
+- 2025-12-12 13:26:48 -0300 9c4d2873 fix: adiciona verificação para pular concessões iniciais de permissões no DAORegistry se um multisig estiver configurado
+- 2025-12-12 13:24:02 -0300 b3e3c42e fix: ajusta verificação de permissão EXECUTE para o deployer com base na configuração do multisig
+- 2025-12-12 13:13:29 -0300 fe8a1452 fix: adiciona verificação para pular concessão temporária de permissão EXECUTE se multisig estiver configurado
+- 2025-12-12 13:02:16 -0300 ba4b8d4a fix: ajusta a inicialização do ManagementDAO para usar o endereço do multisig como proprietário inicial
+- 2025-12-12 13:01:45 -0300 4a667b1d fix: simplifica o processo de concessão de permissões EXECUTE no ManagementDAO
+- 2025-12-12 12:44:52 -0300 c615df1c fix: remove managePermissions function and streamline EXECUTE permission granting process
+- 2025-12-12 12:33:30 -0300 c7faabbc fix: ajusta dependências e tags para garantir a ordem correta na revogação de permissões do deployer
+- 2025-12-12 12:20:21 -0300 04214b1c fix: corrige chamada de execução de permissões para usar hash correto
+- 2025-12-12 12:14:13 -0300 4ff16aef fix: ajusta chamadas de namehash para compatibilidade com diferentes versões do ethers
+- 2025-12-12 12:03:23 -0300 e7a48f97 refactor: atualiza permissões de execução e revogação no Multisig e ajusta verificações de ENS para redes sem suporte
+- 2025-12-12 10:24:20 -0300 ffa752bc fix: remove owner assignment from ManagementDAOProxy deployment
+- 2025-12-12 10:20:13 -0300 cf3211b8 feat: adiciona suporte a registro de países e validação de domínios para redes Harmony
+- 2025-12-12 09:45:55 -0300 3abb604c refactor: padroniza tags de funções para minúsculas e adiciona novos scripts de concessão e revogação de permissões ao Multisig
+- 2025-12-12 09:31:32 -0300 3eb4f95b refactor: atualiza funções de hash ENS para usar keccak256 e melhora a verificação de domínios vazios
+- 2025-12-12 09:21:03 -0300 5cdd8cef fix: adiciona limite de gás explícito para evitar falhas em alguns RPCs
+- 2025-12-12 09:15:09 -0300 fcc68f01 refactor: atualiza a forma de gerar IDs de permissão para usar keccak256 em vez de id
+- 2025-12-12 09:06:52 -0300 f155c4d7 refactor: atualiza scripts de deploy e verificação, ajusta tags e adiciona novos arquivos de ambiente
+- 2025-12-11 19:25:37 -0300 b6cf8b6f corrige a falta de nova linha no final do arquivo package.json
+- 2025-12-11 19:25:26 -0300 d3bf375f Atualiza dependências do projeto para versões mais recentes, incluindo ethers, typechain e hardhat-upgrades, e ajusta scripts para compatibilidade com ethers-v6.
+- 2025-12-11 19:07:54 -0300 0d66330f chore: add .yarnrc.yml to configure node linker to node-modules
+- 2025-12-11 19:05:42 -0300 832d4e88 chore: aquele tapa de qualidade nos codigo indispensavel pra quem tem TOC
+- 2025-12-11 11:37:46 -0300 7a493164 Atualiza o nome do DAO para "Harmony DAO" e corrige o URL do site para "https://governance.country"
+- 2025-12-11 08:41:48 -0300 7781a0e7 Adiciona instruções detalhadas para o uso do Copilot no Aragon OSx, incluindo estrutura do monorepo, comandos comuns e exemplos de tarefas.
+- 2025-12-09 18:29:23 -0300 bfa9c4f7 Atualiza o upload de metadados para IPFS com tratamento de erros e corrige endereços e blocos iniciais no arquivo harmony.json
+- 2025-12-09 13:31:34 -0300 db05d036 Remove conditional deployment logic in Hardhat config and update package dependencies
+- 2025-12-09 10:25:36 -0300 51a836d5 Adiciona suporte para Harmony e Harmony Testnet, incluindo variáveis de ambiente, configurações de rede e documentação de implantação
+- 2025-10-23 10:00:04 +0200 e707057a Merge pull request #674 from aragon/f/updated-doc-links
+- 2025-10-23 10:45:35 +0400 e398315e Disabling (unused) subgraph outdated tests
+- 2025-10-23 09:56:14 +0400 22c2382e Update package.json
+- 2025-10-23 09:49:04 +0400 d9ba7c18 Update package.json
+- 2025-10-23 09:43:21 +0400 95b0e575 Update subgraph-tests.yml
+- 2025-10-22 17:40:52 +0200 e20ba694 Move from target to source
+- 2025-10-22 17:36:35 +0200 bb524a87 Merge pull request #673 from aragon/ci-labeler-target
+- 2025-10-22 17:33:50 +0200 1988d5f2 updated labeler config
+- 2025-10-22 17:28:23 +0200 3e143ef3 Merge pull request #672 from aragon/fix/ci-labeler
+- 2025-10-22 17:26:45 +0200 6ec9f7d5 fix labeler
+- 2025-10-22 16:47:05 +0200 2066aee2 Merge pull request #671 from aragon/fix/labeler
+- 2025-10-22 16:45:25 +0200 3cc4a27f update labeler version
+- 2025-10-22 16:27:32 +0200 005b9f19 Merge pull request #670 from aragon/fix/labeler
+- 2025-10-22 16:26:16 +0200 068eafd2 fix labeler
+- 2025-10-21 12:52:37 +0400 0387e9a6 Updating the plugin publishing URL's
+- 2025-02-04 13:37:53 +0400 fe2eb521 Bump versions (#635)
+- 2025-02-03 15:11:31 +0100 931cb72d Amended Readme image link (#633)
+- 2025-02-03 15:10:49 +0100 e77f489e Feat/add changelog (#631)
+- 2025-02-03 15:46:58 +0400 cc9f0d44 remove compilation outputs from git
+- 2025-02-03 15:44:28 +0400 f113aeb6 Feature/docs (#634)
+- 2025-01-21 13:34:08 +0400 8968d25d Zksync (#629)
+- 2025-01-20 14:27:46 +0400 d8222dbc add update to 1.4.0 (#627)
+- 2024-11-18 16:42:52 +0700 e0ba7b60 feat: update changelog (#623)
+- 2024-11-15 14:13:59 +0100 16c4d4c4 OS-1462 feature/update dao facotry to return plugin and support no plugin daos (#619)
+- 2024-11-08 14:45:22 +0100 b0d8e3b2 fix: update import on etherscan utils file for hte deploy script (#605)
+- 2024-11-05 17:15:33 +0400 5c765762 add holesky (#621)
+- 2024-11-05 16:45:35 +0400 5e34b7b0 deploying executor and always true condition (#616)
+- 2024-05-29 18:10:45 +0300 b0ca2fb9 Merge pull request #599 from aragon/opretro-project_id_file
+- 2024-05-29 16:05:56 +0200 59289f01 Add opRetro project id file
+- 2024-05-17 15:34:19 +0200 42704e2f chore: Remove Docs from OSx Repo (#595)
+- 2024-05-15 11:02:41 +0200 f607746e fix: typos in contract and comments  (#594)
+- 2024-05-10 09:40:14 +0200 1743e852 refactor: added reinitializer and storage gap to `PluginRepo` and moved events to `IPluginRepo` (#584)
+- 2024-05-06 13:54:38 +0200 c92d1293 ci: fixed workflow for generating introspection query for docs  (#578)
+- 2024-05-03 17:28:45 +0400 e79b8575 Merge pull request #588 from aragon/f/split
+- 2024-05-03 15:27:26 +0400 0cf22eed Update packages/contracts/hardhat.config.ts
+- 2024-05-03 15:26:51 +0400 39b5abd5 Merge pull request #591 from aragon/feature/bump-deps
+- 2024-05-03 13:05:16 +0200 24d45421 chore: bump contract dependencies
+- 2024-05-03 14:28:50 +0400 014a7d42 Merge branch 'develop' into f/split
+- 2024-05-02 13:09:04 +0200 d4a87c15 Merge pull request #590 from aragon/feat/subgraph/1181/add-tx-hash-to-dao-entity
+- 2024-05-02 13:07:17 +0200 45f75513 chore(contracts): update changelog (#587)
+- 2024-05-01 19:22:56 +0400 ffbfb44f merge: 'develop' into f/split
+- 2024-05-01 14:00:25 +0200 6a032a83 feat: update changelog
+- 2024-05-01 11:28:50 +0200 81d0f1df feat: add tx hash to tests
+- 2024-05-01 11:18:21 +0200 c9c594f0 feat: add the tx hash field in the schema and the handler
+- 2024-04-30 09:54:27 +0200 6f27f301 fix: multisig removeAddresses revert param order (#580)
+- 2024-04-29 08:47:54 +0200 9f18598e fix(subgraph): multisig approvers not appearing in past proposals (#575)
+- 2024-04-24 14:09:42 +0200 ce9dd2eb docs: improve code comment in the `PluginSetupProcessor` (#577)
+- 2024-04-23 16:28:19 +0200 0326057b chore: bump osx-commons and OpenZepplin dependencies (#576)
+- 2024-04-17 13:59:26 +0200 c27df037 OS-1061: Add scripts to generate introspection schema (#566)
+- 2024-04-12 17:52:05 +0400 e12e9b8d feature: modify deploy script for more flexibility (#573)
+- 2024-04-12 14:28:28 +0200 75ef618f feat: remove plugin-related contracts (#551)
+- 2024-04-12 16:04:56 +0400 dc680832 Merge pull request #570 from aragon/f/split-subgraph
+- 2024-04-12 15:58:59 +0400 0800423e Merge branch 'f/split' of https://github.com/aragon/osx into f/split
+- 2024-04-12 13:26:34 +0200 faa120cc feat: bump osx commons contracts (#549)
+- 2024-04-12 14:28:18 +0400 40a12bb6 Merge pull request #571 from aragon/f/split-subgraph-remove-plugins
+- 2024-04-12 14:24:01 +0400 a19ddc1f Apply suggestions from code review
+- 2024-04-12 10:36:49 +0200 736187be Merge pull request #572 from aragon/OS-1230/unify-security-email-in-docs
+- 2024-04-11 19:08:26 +0200 040b60a3 fix: update the security mail
+- 2024-04-11 19:58:32 +0400 0025821f Merge branch 'f/split-subgraph-remove-plugins' of https://github.com/aragon/osx into f/split-subgraph-remove-plugins
+- 2024-04-11 19:58:20 +0400 c04f65a3 f: small changes to documentation and removed some constants
+- 2024-04-11 19:51:40 +0400 ef716d6c Update CHANGELOG.md
+- 2024-04-11 19:05:23 +0400 23560fb2 mv: rename transactionActions to actionBatch
+- 2024-04-11 15:18:54 +0400 55fbd738 tests: tests pass for the subgraph
+- 2024-04-11 15:02:42 +0400 b7b99b83 f: split schema now builds
+- 2024-04-11 11:14:32 +0200 08a8ff89 Merge pull request #567 from aragon/OS-1134/update-test-work-flow-to-run-over-PR
+- 2024-04-10 16:29:03 +0400 f1049ffe Merge pull request #562 from aragon/f/split-transaction-actions
+- 2024-04-10 16:23:35 +0400 1aa9cb42 fix: typo
+- 2024-04-10 16:18:16 +0400 9bb498da Update packages/subgraph/src/dao/utils.ts
+- 2024-04-10 16:15:03 +0400 146903c4 Merge pull request #569 from aragon/f/split-immutable-transactionAction
+- 2024-04-10 13:56:29 +0400 f9e54978 Merge pull request #568 from aragon/f/split-linting
+- 2024-04-09 17:21:14 +0400 1a9427d5 revert: tsconfig changes
+- 2024-04-09 17:20:13 +0400 1826f060 lint: replaced throw with warn to not introduce breaking change
+- 2024-04-09 17:16:57 +0400 9991e2cd lint: fix prettier warnings on root with node 16
+- 2024-04-09 16:56:35 +0400 f3a8f2d5 lint: fixed prettier on root
+- 2024-04-09 14:55:35 +0200 a29f4c0d ci: typo
+- 2024-04-09 16:54:30 +0400 e000d2f6 lint: fixed eslint subgraph warnings
+- 2024-04-09 14:52:11 +0200 fa2813e5 feat: add workflow dispatch to be able to run the workflow manually
+- 2024-04-09 14:51:32 +0200 64ec08b2 feat: run the workflow on pr over all the relevant pr changes
+- 2024-04-09 14:50:28 +0200 9dab9498 feat: run the workflow on push only to the main branch to have always the action green on main
+- 2024-04-09 16:48:12 +0400 cbe67a1b f: removed start and end date from tx actions and made entities immutable
+- 2024-04-09 16:38:19 +0400 2edf6efc Update CHANGELOG.md
+- 2024-04-09 16:36:46 +0400 af9a23f0 fix: minor suggestions from codereview
+- 2024-04-09 15:50:10 +0400 ee65068e Merge branch 'f/split-transaction-actions' of https://github.com/aragon/osx into f/split-transaction-actions
+- 2024-04-09 15:49:52 +0400 54f6835b fix: removed dead code and change comment
+- 2024-04-09 15:20:40 +0400 689f621f Update packages/subgraph/src/dao/dao_v1_0_0.ts
+- 2024-04-09 13:04:44 +0200 caf077be Fix for Workflow update Subgraph Docs (#565)
+- 2024-04-09 12:08:28 +0400 6fac89b8 test: added tests for deterministic ids
+- 2024-04-09 11:27:30 +0400 d1ea0383 fix: re-ordered ids to use caller first, then daoAddress
+- 2024-04-08 16:45:31 +0400 6b3f5f81 feat: add explanation for testing subgraph extended classes (#564)
+- 2024-04-05 18:08:51 +0400 3637ebcb chore: updated changelog
+- 2024-04-05 18:03:06 +0400 bdd37471 lint: silenced warnings in files changed
+- 2024-04-05 17:57:27 +0400 989eaafe f: added dao_v1_0_0 tests
+- 2024-04-05 17:55:00 +0400 dc156ef9 f: updated transfer events to use transactionActions and updated 1.3.0 tests
+- 2024-04-05 13:27:45 +0400 1af09f3e tests: added support for dao_v1_0_0 handler
+- 2024-04-05 12:34:05 +0400 75a77cdb feat: tests pass for the TransactionAction and Action but fail on Transfers
+- 2024-04-04 15:37:45 +0400 10be7d45 f: updated the schema to use transaction actions and update the ids
+- 2024-04-02 15:27:12 +0200 cd65ae17 Create flow to update subgraph docs on Dev-Portal (#557)
+- 2024-03-27 17:35:54 +0100 7faed0d9 Merge pull request #558 from aragon/fix/workflow-for-update-documentation
+- 2024-03-26 21:28:41 +0100 2cf316a2 fix: undo
+- 2024-03-26 21:26:38 +0100 11485f91 tmp: temporal commit to check the work flow is not broken when it runs
+- 2024-03-26 21:09:52 +0100 63693406 fix: update documentation update workflow to define the alchemy key in the env
+- 2024-03-25 17:53:22 +0100 6201d0fe ci: inline docs for Token and TokenBalance entities (#550)
+- 2024-03-25 16:33:12 +0000 2db7c7c3 Merge pull request #556 from aragon/f/pr-template
+- 2024-03-25 16:30:42 +0000 da250d38 chore: updated CONTRIBUTION GUIDE
+- 2024-03-15 17:39:27 +0400 42435bd9 docs: add a checklist item to PR template && fix broken link
+- 2024-03-15 13:57:15 +0100 377ad76b Merge pull request #555 from aragon/OS-1109/update-osx-contracts-to-use-commons-networks-config
+- 2024-03-15 08:52:51 +0000 0c3ea441 Update changelog in subgraph
+- 2024-03-15 12:52:30 +0400 942f85d3 Merge pull request #553 from aragon/f/subgraph-1.4.1
+- 2024-03-15 09:17:52 +0100 dd64813d ci: Add the scalars that doesn't exist in GraphQL, add type Query as expected in introspection query (#554)
+- 2024-03-14 16:22:26 +0100 59b3a95c ci: formatting
+- 2024-03-14 16:21:07 +0100 eccf4862 fix: remove duplication
+- 2024-03-14 16:19:37 +0100 7d6fda84 ci: update the Readme
+- 2024-03-14 16:15:34 +0100 1225bdfe feat: add the alchemy api key to the env example
+- 2024-03-14 16:03:57 +0100 1e2bbac5 fix: properly define the env variable to be used on hardhat actions
+- 2024-03-14 15:59:10 +0100 0cd066c8 feat: define alchemy api key in the workflows env
+- 2024-03-14 15:45:27 +0100 879a0032 feat: refactor configuration to use network configuration from common-configs
+- 2024-03-14 15:44:11 +0100 7a60825d feat: bump commons config version
+- 2024-03-12 13:06:36 +0400 3525794e chore: bump package.json in readiness for gh workflow
+- 2024-03-08 14:45:38 +0400 19f4c42b Merge pull request #544 from aragon/fix/negative-subgraph-balances
+- 2024-03-07 10:54:06 +0400 736f455e lint: prettier on package jsons
+- 2024-03-07 10:49:01 +0400 2e0cbaf6 Merge branch 'fix/negative-subgraph-balances' of https://github.com/aragon/osx into fix/negative-subgraph-balances
+- 2024-02-29 12:04:15 +0100 7b06ead5 fix: resolved dependency issues by importing working package json and lockfiles from develop.
+- 2024-02-27 11:45:39 +0100 a200ca89 Revert "fix: updated all links for consistence with docusaurus v3 (#543)" (#545)
+- 2024-02-22 13:00:40 +0100 273fda18 fix: updated all links for consistence with docusaurus v3 (#543)
+- 2024-03-06 13:46:42 +0100 9d9e764c fix: replace old links for updated ones (#552)
+- 2024-03-06 14:14:09 +0400 df1304c5 Revert "fix: bump osx-commons"
+- 2024-03-06 14:07:06 +0400 97c89fec fix: bump osx-commons
+- 2024-03-06 13:56:54 +0400 4d2a4a2b Merge branch 'develop' into fix/negative-subgraph-balances
+- 2024-03-06 13:56:37 +0400 9143b6d9 fix: froze packages to fix node dependency issues
+- 2024-03-06 13:43:15 +0400 4ea625ae tests: add the ability to set the event.address when creating transfer event and adapt tests
+- 2024-03-06 13:35:55 +0400 cd9a14b7 fix: removed the context variable for contract in favour of the event address (untested)
+- 2024-03-06 13:27:38 +0400 a4bd1445 feat: created utils folder inside gov-erc20
+- 2024-02-29 12:04:15 +0100 82f16c3e ci: Manual fixes in documentation, fixing links. Add some closing ) (#547)
+- 2024-02-27 15:25:49 +0400 b72e3ee5 fix: metaprogramming order of ids
+- 2024-02-27 11:45:39 +0100 a75d9541 Revert "fix: updated all links for consistence with docusaurus v3 (#543)" (#545)
+- 2024-02-27 13:12:36 +0400 4d2140ef fix: extendedTokenVotingMember default ids
+- 2024-02-27 11:33:27 +0400 ad96b5ac docs: changelog
+- 2024-02-26 21:13:10 +0400 a6d1be17 docs: better commenting for the result container
+- 2024-02-26 21:09:24 +0400 30a9f00d rm: log alert file
+- 2024-02-26 20:57:43 +0400 1f7e1372 fix: tests with conditional balance fetching
+- 2024-02-26 18:14:42 +0400 ff1a4147 fix: added additional tests for delegation
+- 2024-02-26 13:45:26 +0400 4120c8ba fix: call balanceOf during tokenVoting member init. Set context is used to store the token address
+- 2024-02-22 13:00:40 +0100 119fdb03 fix: updated all links for consistence with docusaurus v3 (#543)
+- 2024-02-20 14:14:24 +0400 22c6e603 Merge pull request #542 from aragon/fix/plugin-typo
+- 2024-02-20 12:08:06 +0400 90a24566 fix typo in fallback value
+- 2024-02-19 14:37:33 +0400 959e1c11 feat: localhost and hardhat deploy can be run with zero config (#539)
+- 2024-02-16 15:18:50 +0100 1f4aa060 feat: use common mocks and token calls generators (#527)
+- 2024-02-15 13:31:05 +0400 1130dfce feat: add --parallel flag yarn test cmd (#538)
+- 2024-02-14 17:50:08 +0400 8834c37e add chai-setup script to consistently import additional matchers if needed (#537)
+- 2024-02-14 17:49:41 +0400 3cf41607 fix: updated typings in HRE declaration and type errors in helpers (#536)
+- 2024-02-14 17:47:59 +0400 54b8f37c fix: specify range of node versions in readme and advise cd into package (#535)
+- 2024-02-09 12:30:59 +0100 1b4d80a5 ci: update doc generation workflow (#534)
+- 2024-02-08 13:44:20 +0100 5d44dddd fix: update discord urls (#533)
+- 2024-02-07 12:17:09 +0100 f913d800 docs: quick fix for the links broken because contracts were move to osx-commons (#532)
+- 2024-02-06 14:22:54 +0000 b3966a61 ci: updates to latest gh actions except action/labeler and peter-evans/create-pull-request (#531)
+- 2024-02-06 12:14:45 +0100 c559bfe3 fix: wrong import, missing await, incorrect comment (#526)
+- 2024-02-06 11:02:56 +0100 35c066eb feat(ethers): reexports structs and event from typechain (#528)
+- 2024-02-06 08:34:17 +0000 929ab7a4 [DOPS-660] updates ci with right teams and updates to latest github actions (#530)
+- 2024-02-05 17:48:13 +0100 25a05b22 fix: wrong environment variable and contract naming in contracts test (#529)
+- 2024-01-30 15:26:07 +0100 c4c0bcbf feat(contracts): replaces active_contracts.json with @aragon/osx-comons-configs (#523)
+- 2024-01-26 14:58:59 +0100 78e422f4 Add: use osx-commons-subgraph (#520)
+- 2024-01-23 10:40:54 +0100 54ae5922 docs(contracts): added version numbers to plugin implementations and setups (#524)
+- 2024-01-15 10:58:38 +0100 d7e9ad03 refactor: use osx-commons (#501)
+- 2024-01-11 15:52:55 +0100 e0716fa1 deploy(contracts): fixes missing artifacts in osx-artifacts package (#521)
+- 2024-01-10 17:12:25 +0100 1dd89638 deploy(contracts): corrects managing DAO proposal formatting (#519)
+- 2024-01-09 15:26:27 +0100 27c12eca deploy(contracts): uses @aragon/osx-commons-config for network information (#518)
+- 2024-01-04 11:52:53 +0100 f86bd395 feat: deploys on base and arbitrum sepolia (merge back) (#517)
+- 2024-01-03 10:47:19 +0100 f48c1cb4 deploy(contracts): improves management DAO proposal readability (#516)
+- 2023-12-20 10:17:08 +0100 1e6d56dc fix: metadata mixup fix for `develop` (#512)
+- 2023-12-20 10:08:26 +0100 852d8023 docs: add audit reports for v1.3.0 for `develop` (#513)
+- 2023-12-19 10:43:54 +0100 215fd751 build: bumped osx and OZ dependency, removed gsn dependency (#500)
+- 2023-12-12 15:47:00 +0100 20c34341 release: v1.3.0 merge back to develop (#510)
+- 2023-11-30 16:26:53 +0100 6bc68ec6 ci(subgraph): fix condition for workflow dispatch (#506)
+- 2023-11-30 16:15:57 +0100 a7c93157 chore: deploy 1.3.0-rc0 to arbitrum and arbitrumGoerli  (#499)
+- 2023-11-23 16:59:04 +0100 7ce76e6d Update changelog in subgraph
+- 2023-11-23 16:58:46 +0100 c990310a refactor: signalling proposal subgraph change (#503)
+- 2023-11-22 18:49:18 +0100 0c6d89b3 docs: fix broken dev-portal link and exclude framework lifecylce docs (#505)
+- 2023-11-22 18:33:12 +0100 0c6bd063 docs: fix broken dev portal build (#504)
+- 2023-10-25 17:18:45 +0200 c2be413a ci(OS-798): fix changelog update to comply with prettier (#494)
+- 2023-10-25 17:10:14 +0200 6d9a6739 Update changelog in subgraph
+- 2023-10-25 17:09:54 +0200 9a4a1cb6 fix(OS-798): uses arabot PAT to commit changelog (#493)
+- 2023-10-25 17:00:28 +0200 e01381b9 ci(OS-798): use base_ref as default instead of head_ref (#492)
+- 2023-10-25 16:53:34 +0200 4f9efb4f ci(OS-798): fixes 2 bugs in subgraph and npm releated workflows (#491)
+- 2023-10-25 16:24:38 +0200 835b3982 bump subgraph version (#490)
+- 2023-10-25 15:50:00 +0200 465e3a3c OS-784 Bug: fix delegatee wrong deletion (#488)
+- 2023-10-25 11:16:44 +0200 6ea7c02e style: trailing commas (#489)
+- 2023-10-24 15:55:16 +0200 c1c055da refactor: removed deprecated SignatureValidatorSet event from subgraph (#473)
+- 2023-10-23 13:44:11 +0400 e7ba4602 Merge pull request #471 from aragon/feature/framework-lifecycle
+- 2023-10-23 09:54:20 +0200 fd039451 docs: fix links
+- 2023-10-20 11:51:45 +0200 fcf3fca1 refactor: remove unused contracts (`TokenFactory`, `Counter`, `MerkleDistributor`, `MerkleMinter`) (#486)
+- 2023-10-19 10:17:31 +0200 93c43e4d style: add prettier plugin to sort imports (#487)
+- 2023-10-18 11:47:00 +0200 5faeea6f fix: ipfs returned an empty string (#485)
+- 2023-10-17 11:36:20 +0200 69b07432 bug / OS-771 : fix bug erc20 type collision (#484)
+- 2023-10-12 13:21:45 +0200 c726cb7f docs: fix header
+- 2023-10-12 13:21:04 +0200 c04f4bef docs: rearrange systems page
+- 2023-10-12 12:30:22 +0200 a1ddb1ea docs: whitespace
+- 2023-10-12 12:29:38 +0200 9339739b docs: remove outdated todo
+- 2023-10-12 12:26:39 +0200 078cc475 Merge branch 'develop' into feature/framework-lifecycle
+- 2023-10-12 12:26:30 +0200 875fdaf3 docs: fix wrong comparator
+- 2023-10-12 12:25:37 +0200 ad9f58d1 docs: remove duplication
+- 2023-10-12 12:14:21 +0200 094cdd89 docs: remove redundant text
+- 2023-10-12 11:28:20 +0200 33b3c52c docs: added contract overview
+- 2023-10-12 11:28:10 +0200 55aa9ba0 docs: removed todo and fixed formatting
+- 2023-10-12 11:21:08 +0200 9b9ca6ef docs: added information on generic changes from notion
+- 2023-10-12 10:14:46 +0200 dba7f1dd docs: improved process descriptions
+- 2023-10-12 09:51:54 +0200 24580f7c docs: apply suggestions from code review
+- 2023-10-12 09:46:35 +0200 16aab7be docs: corrected typo (#483)
+- 2023-10-11 10:53:06 +0200 d404a2bf feat: added semver comparision lib (#479)
+- 2023-10-10 15:54:29 +0200 ed1810fb refactor: generic clone factory (#482)
+- 2023-10-10 15:51:58 +0200 20ffbeaf chore: maintained changelog (#478)
+- 2023-10-06 18:02:09 +0200 91522b36 Amending incorrect build metadata hierarchy (#481)
+- 2023-10-06 15:46:26 +0200 a201088b Merge sepolia deployment and main changes into develop (#477)
+- 2023-10-06 14:44:58 +0200 4accb523 feat: less restrictive solidity compiler pragmas (#480)
+- 2023-10-06 11:56:11 +0200 40a02061 Bug/ OS-725 Subgraph token detection (#472)
+- 2023-10-06 10:26:01 +0200 f6d6df9f docs: corrected diagrams
+- 2023-10-06 09:55:20 +0200 df400bdf docs: apply suggestions from code review
+- 2023-10-05 09:24:31 +0200 aab6b9be test: add interface tests and subgraph renaming (#474)
+- 2023-10-04 10:18:19 +0200 e35f6f87 refactor: type safety improvements (#383)
+- 2023-09-28 15:15:14 +0200 9cedaef9 F/ OS-716 Refactor permission indexing (#467)
+- 2023-09-28 10:10:12 +0200 a78390cf docs: improvements
+- 2023-09-28 09:36:53 +0200 1c7b8ecb chore: Bump OZ dependencies to 4.9.3 and add protocolVersion (#454)
+- 2023-09-27 11:05:02 +0200 56170f72 chore/ OS-704 Add security contact to the readme(s) (#470)
+- 2023-09-27 11:01:02 +0200 b5f94a8e fix: forgotten reinitializer bump (#469)
+- 2023-09-26 16:11:29 +0200 f53fa079 docs: improve process descriptions
+- 2023-09-26 14:24:55 +0200 9d13b807 docs: fix links and improved diagrams
+- 2023-09-25 19:38:47 +0200 96ed5c4c docs: moved notion pages and restructured them as processes
+- 2023-09-25 13:42:18 +0200 a52bbae6 docs(OS-661): moves docs for the developer portal from `docs/osx` to `docs/developer-portal` (#464)
+- 2023-09-21 16:04:41 +0200 c359ed0f feature: stricter permission fallback mechanism for `isGranted` (#461)
+- 2023-09-21 15:12:30 +0200 2a10844b fix: revoke SET_SIGNATURE_VALIDATOR_PERMISSION granted to previous DAO versions (#468)
+- 2023-09-21 11:15:49 +0200 904efbaf feature: enable DAO signature validation (#448)
+- 2023-09-13 13:59:09 +0200 a642c1b6 docs(OS-692): adds github release info to checklists (#457)
+- 2023-09-13 13:57:53 +0200 8c20c5f2 docs: added security contract email address (#458)
+- 2023-09-13 09:33:13 +0200 defaea08 fix: plugin tests (#462)
+- 2023-09-04 10:28:01 +0200 5a1ef39b cicd(subgraph): deploy subgraph even when it wasn't a pull_request triggering it (#459)
+- 2023-08-31 11:40:51 +0200 b27c084d chore: allows subgraph deployment to be triggered manually (#451)
+- 2023-08-30 11:51:12 +0200 e880f893 chore: main to develop (#456)
+- 2023-08-28 10:23:22 -0500 f86d857e docs: change titles (#445)
+- 2023-08-28 08:57:13 +0200 6aedf05f chore: updates graph-cli to 0.52.0 (#450)
+- 2023-08-25 14:42:08 +0200 600fb7e2 Merge pull request #449 from aragon/main
+- 2023-08-25 10:14:24 +0200 272cd92e feat: test refactoring (#446)
+- 2023-08-24 12:19:48 +0200 08ca74c9 Merge branch 'develop'
+- 2023-08-24 12:16:03 +0200 39dcba1d chore: deploy 1.3.0-rc0 to base goerli and mainnet (#442)
+- 2023-08-17 15:53:18 +0200 01a1af52 f/OS-659: Update Subgraph change log & version (#447)
+- 2023-08-11 17:36:29 +0200 1fcfc2d1 Feature: Add subgraph support for erc1155 tokens (#443)
+- 2023-08-08 11:58:53 +0200 88547591 refactor: moved function (#438)
+- 2023-08-07 17:53:17 +0200 6a3b8942 fix: changelog entry (#432)
+- 2023-08-07 17:13:30 +0200 1688a67e Fix: typos and formatting issues on documentation (#434)
+- 2023-07-28 12:00:57 +0200 d429e77c chore: deploy 1.3.0-rc0 to base goerli (#439)
+- 2023-07-26 11:05:32 +0200 9a093284 Refactor upgradability tests (#437)
+- 2023-07-21 10:53:21 +0200 873cf252 Feature: Replace `getMergedAbi` by `findEventTopicLog` (#420)
+- 2023-07-18 13:44:36 +0200 38c84220 Metadata Format Specification in the Docs (#436)
+- 2023-07-17 12:53:51 +0300 b1f0056c add missing abis (#433)
+- 2023-07-11 14:31:53 +0200 bd9ff721 merge main back (#430)
+- 2023-07-11 13:59:21 +0200 6b5ebc32 Merge branch 'develop' into main
+- 2023-07-11 13:56:07 +0200 b0922aa5 Merge branch 'develop'
+- 2023-07-11 13:29:49 +0200 48bfb16c chore: remove old managingDAO address of goerli and mumbai chore: update Changelog to reflect v1.3.0-rc0 release
+- 2023-07-11 13:01:18 +0200 cd7c2868 R/1.3.0 rc0 (#429)
+- 2023-07-10 19:18:08 +0200 d0fc53d9 Dev Portal docs consistency (#422)
+- 2023-07-10 16:24:05 +0530 1f7e77d5 Merge pull request #415 from aragon/f/2059
+- 2023-07-10 13:05:22 +0300 b01a5e4f OS-545 : fix indexing ERC20Wrapped (#426)
+- 2023-07-05 13:38:44 +0200 b6a744fd Improve index naming (#423)
+- 2023-07-04 16:26:12 +0300 21e064d8 OS-436 : use OSX npm for versioning (#418)
+- 2023-06-30 20:36:24 +0200 a087e269 Merge pull request #427 from aragon/update-header
+- 2023-06-30 11:22:01 +0200 34aacfb4 feat(DOPS-541): renames builders-portal to develoer-portal (#428)
+- 2023-06-29 14:17:25 -0400 c3e7b665 Update README Header
+- 2023-06-26 13:42:01 +0530 ab3cbe02 review changes
+- 2023-06-22 13:49:35 +0200 67c5218a dev2main (#397)
+- 2023-06-16 14:55:32 +0200 0ad8cad2 Fix CI/CD by supporting tags (#417)
+- 2023-06-16 13:32:30 +0300 86208a19 OS-516 : add missing artifacts (#408)
+- 2023-06-15 10:13:27 -0400 3d9da1b2 Documentation update: How To Guides overview (#367)
+- 2023-06-15 15:51:32 +0200 89beca33 Fix: Add decimals to ERC20WrapperContract (#416)
+- 2023-06-15 15:34:47 +0200 b1913e35 Update protocol upgrade deploy scripts (#409)
+- 2023-06-15 12:52:29 +0200 7e30ea5c ERC-165 support for PermissionConditions (#402)
+- 2023-06-15 12:19:17 +0300 6b0671ba add an extra check (#410)
+- 2023-06-15 13:59:44 +0530 90c0e8ee yarn dev script changed
+- 2023-06-15 13:57:57 +0530 d96b6515 yarn dev script changed
+- 2023-06-15 13:51:40 +0530 9f967657 all services added back to docker-compose
+- 2023-06-15 13:48:38 +0530 ee1f3c57 all services added back to docker-compose
+- 2023-06-15 13:40:40 +0530 2e3f5d14 yarn dev script changed
+- 2023-06-15 13:32:43 +0530 7837f4bc yarn build on dockerfile
+- 2023-06-15 13:27:46 +0530 a0f038b0 node version changed on hardhat image
+- 2023-06-14 16:08:47 +0530 e1f19310 docker compose context changed, git is working now
+- 2023-06-13 17:14:12 +0530 8a7f5d9d docker file nearly done for hardhat
+- 2023-06-13 11:47:09 +0530 96708fc1 updateManifest script wip
+- 2023-06-06 14:25:52 +0530 cde380cf docker compose changes
+- 2023-04-04 17:19:01 +0530 c6d219da docker-compose subgraph local node
+- 2023-06-15 10:18:58 +0200 5ae9b0d8 Added ProtocolVersion to PluginRepoFactory and PluginRepo (#412)
+- 2023-06-14 17:18:21 +0300 54590f34 fix polygon manifest (#414)
+- 2023-06-14 12:23:38 +0300 f58f93bc bump package version (#413)
+- 2023-06-14 10:25:37 +0200 03083932 fix: corrected build metadata (#411)
+- 2023-06-14 09:51:33 +0200 f58b9536 Added revert case to grantWithCondition (#401)
+- 2023-06-14 09:39:45 +0200 3b5342db Dops 531 update check user perm gh actions osx (#407)
+- 2023-06-13 10:11:38 +0200 3b77d4c0 feat: added revert case to applySingleTargetPermissions (#400)
+- 2023-06-12 13:13:38 +0200 af239225 feat: improved NatSpec comment (#405)
+- 2023-06-12 13:12:58 +0200 789e50ef Clarifying NatSpec comment in the `DAORegistry.register` function (#403)
+- 2023-06-02 14:17:48 +0200 7fdf6ff5 Feat/update scrips (#394)
+- 2023-06-02 12:36:08 +0200 ccf324ff feat: improved update checklist (#396)
+- 2023-06-02 11:12:38 +0200 787d9dfb OS-459 : Subgraph update to v1.3.0 (#393)
+- 2023-05-31 14:14:34 +0200 d298ad93 Feature/cleaning (#392)
+- 2023-05-30 14:41:42 +0200 d49a55a7 OS-440 : Check & update Subgraph deploy flow (#391)
+- 2023-05-30 14:25:08 +0200 516b6fd7 F/ OS-441 test protocol upgrade (#388)
+- 2023-05-26 16:14:15 +0200 b1141b67 feat: provide contract artifact in deploy method (#385)
+- 2023-05-26 16:11:51 +0200 040cb9aa DAO ERC-165 tests (#387)
+- 2023-05-24 16:56:05 +0200 43a5f396 Deploy script for the protocol and plugin upgrades (#384)
+- 2023-05-24 14:46:09 +0200 14d5fe6f DAOFactory protocol version (#386)
+- 2023-05-23 15:58:55 +0200 4bd57892 F/  OS-387 add protocol version (#380)
+- 2023-05-22 17:14:25 +0200 724306ef Refactored `buildMetadata` of the plugins (#375)
+- 2023-05-19 12:17:55 +0200 0ddff1b1 Fix ProposalCreated event dates (#369)
+- 2023-05-18 15:29:13 +0200 4c10d1fa swap IPlugin for PluginInstallation on DAO entity (#381)
+- 2023-05-18 11:22:58 +0200 2dc178a0 Feature: Update subgraph membership definition (#373)
+- 2023-05-17 17:58:37 +0200 7b4e1835 Non-reentrant DAO executor (#355)
+- 2023-05-17 17:39:25 +0200 ceafa0eb fix: fixed documentation workflow and added clean command (#379)
+- 2023-05-16 20:18:02 +0200 7ac886ef feat: updates infura keys used (#376)
+- 2023-05-16 16:24:38 +0200 8e21b34e OS-203 : index DAO URI (#378)
+- 2023-05-16 11:09:09 +0200 f1c95ef2 Fix typechain and contracts tests (#374)
+- 2023-05-15 14:08:29 +0200 a4ae6623 Feature/os 389 Membership definition update (#371)
+- 2023-05-11 10:55:02 +0200 1d956d61 F/ OS-419 export contract source (#370)
+- 2023-05-08 11:05:40 +0200 beabb311 chore: add missing changelog entry for 527474 (#368)
+- 2023-05-02 15:26:42 +0200 5e7a19ec F/ OS-380 npm package versions (#361)
+- 2023-04-28 18:50:22 +0300 ba250d15 OS-253 : rename proposalId to pluginProposalId (#357)
+- 2023-04-28 13:15:03 +0200 47f1ee86 Feature: Add indexation of ERC20 wrapper contracts (#356)
+- 2023-04-27 17:05:25 +0200 b11e4f45 Feature/os 399 hardhat upgrades (#364)
+- 2023-04-27 16:50:38 +0200 2eb7e273 Added clarifying NatSpec comment (#362)
+- 2023-04-26 16:47:58 +0200 14610d91 Changed solc compiler pragma (#348)
+- 2023-04-24 14:20:28 +0200 527474bb C4 Audit Suggestions (#360)
+- 2023-04-24 14:04:44 +0300 1b40a60d OS-365 : map and test delegation (#359)
+- 2023-04-21 01:22:57 +0300 05eabefd OS-206: test dao with extended schema (part-1) (#354)
+- 2023-04-17 17:02:21 +0200 1bf17984 Feat/update mumbai (#353)
+- 2023-04-12 11:16:21 +0300 67795b2d OS-265 : builder testing (#327)
+- 2023-04-06 15:04:32 +0300 457057e5 OS-331 : Rename executable to potentiallyExecutable (#352)
+- 2023-04-04 16:45:22 +0200 39ffa73f fix: adds missing allowFailureMap parameter to IDAO.Executed event (#351)
+- 2023-04-03 11:18:59 +0200 cc146438 App 2085 core deploy upgrade mainnet polygon (#349)
+- 2023-03-30 11:14:38 +0200 d5d589e2 fix: hardhat typescript typing (#347)
+- 2023-03-28 15:57:59 +0200 a432f258 Feat/polygon deployment (#346)
+- 2023-03-27 16:49:56 +0200 7d961beb Fix storage corruption (#345)
+- 2023-03-27 15:24:14 +0200 22e9cdbc Feat/fix ens deployment (#344)
+- 2023-03-27 10:40:14 +0200 0c92bd5f Fix titles (#343)
+- 2023-03-24 17:27:25 +0100 cead67a4 Fix wrong permission id (#341)
+- 2023-03-24 17:26:50 +0100 9485d973 Feat/release mumbai (#342)
+- 2023-03-24 16:30:03 +0100 054f8990 Placeholder setups and Multisig Build 2 deployment (#336)
+- 2023-03-24 15:54:01 +0100 92650914 fix: changelog merge fail (#340)
+- 2023-03-24 15:53:00 +0100 099e5acb Feature/multisig setup build2 (#339)
+- 2023-03-24 15:52:45 +0100 fa58f728 Fix 1/64 problem in DAO executor (#333)
+- 2023-03-23 12:40:16 +0100 220fe627 fix: makes Permissions in Subgraph mutable. (#335)
+- 2023-03-23 12:39:41 +0100 1b1a321f fix: fixes vuln in Multisig Plugin (#338)
+- 2023-03-23 10:52:55 +0100 841985ef Feature/docs improvement (#332)
+- 2023-03-23 10:17:35 +0100 4cdf9780 Fix/deployment script (#330)
+- 2023-03-15 12:33:51 +0300 aeb68e2f APP-1920 , APP-1854 : refactor relations (#317)
+- 2023-03-13 17:30:52 +0100 e4c1f936 Documentation fixes (#329)
+- 2023-03-09 14:34:34 +0400 4fcb8bc0 coverage tests added (#324)
+- 2023-03-07 14:25:49 +0400 a362749d fix (#318)
+- 2023-03-06 15:43:33 +0100 a2b56065 Addressed code4arena findings in the docs (#323)
+- 2023-03-06 15:41:07 +0100 38977a28 APP-1928: create release entity + metadata (#319)
+- 2023-03-06 17:48:32 +0400 adfbc5c9 move to dev dependency (#322)
+- 2023-03-06 14:33:24 +0100 04c5277a APP-1935 : Use int for minApprovals (#312)
+- 2023-03-06 17:29:40 +0400 7c363eb0 exec results (#316)
+- 2023-03-06 12:29:16 +0100 abf2e262 Docs: Improvements (#320)
+- 2023-03-02 17:10:46 +0000 a2461ae6 Improve the .env mentions (#313)
+- 2023-03-02 10:26:40 +0100 ea81c383 Docs: Improved doc generation (#315)
+- 2023-03-01 11:22:37 +0100 38bd7ad2 feat: adds blocklist to remove subdomains from indexing (#310)
+- 2023-03-01 10:56:02 +0100 874d2cec App 1797 subgraph write tests for token membership (#276)
+- 2023-03-01 08:44:05 +0100 50ca0daf feat: ignore tests in @aragon/osx package (#308)
+- 2023-02-28 10:23:44 -0700 3fbfe7ce Fixing npm package name (#300)
+- 2023-02-28 16:58:19 +0100 6de66c60 APP-1896 : Remove duplicated code (#307)
+- 2023-02-28 12:58:08 +0100 d696d0c2 fix: rename osx-contracts to osx (#305)
+- 2023-02-28 15:38:07 +0400 f4df7344 fix metadata (#303)
+- 2023-02-28 12:09:11 +0100 780619f9 Various improvements (#304)
+- 2023-02-28 10:53:14 +0100 c2b9d23a feat: deploys framework to goerli and mainnet (#301)
+- 2023-02-28 09:18:23 +0100 8180a761 Adapted names (#302)
+- 2023-02-27 19:45:40 +0000 096ce3a4 Adding the audit report (#299)
+- 2023-02-27 16:34:09 +0100 328aaee1 APP-1876 : convert proposalId from bigInt to bytes32 (#292)
+- 2023-02-26 23:41:15 +0400 cb0621dc from 0x00000000 to 0xffffffff for interface check (#298)
+- 2023-02-26 23:21:32 +0400 93c041df add metadata (#297)
+- 2023-02-26 22:54:17 +0400 19dc4f41 move check (#295)
+- 2023-02-26 19:50:23 +0100 7330c27a Removed unused function `_applyRatioFloored` (#296)
+- 2023-02-26 11:05:49 -0700 a29c1be0 Update README (#293)
+- 2023-02-26 15:19:07 +0100 e1892973 Feat/improve deployment scripts (#294)
+- 2023-02-25 21:11:11 +0100 fbff6b01 Added exhaustive tests for the governance tokens (#286)
+- 2023-02-25 17:00:06 +0100 a1be7029 Documented the behavior of revoking with `who` or `where` equal to `ANY_ADDR` (#290)
+- 2023-02-24 19:32:53 +0100 0296bf0d Docs: Added practical sections (#279)
+- 2023-02-24 18:22:02 +0100 167dfaf1 Rebrand Core/Zaragoza to Aragon OSx (#281)
+- 2023-02-24 16:43:03 +0100 6af2f91d Fix/deployment goerli (#289)
+- 2023-02-24 19:01:22 +0400 ec839084 Feature/app 1698 test e2e plugin upgradeability (#283)
+- 2023-02-24 16:29:05 +0400 7b3ae590 Subgraph fix (#288)
+- 2023-02-24 13:02:47 +0400 f8aee0a0 fix (#285)
+- 2023-02-24 09:55:03 +0100 9d0451fa feat: verify all deployed contracts (#284)
+- 2023-02-23 19:18:00 +0100 24ded72c APP-1793 test framework deployment (#282)
+- 2023-02-23 16:23:04 +0100 9770cf86 NatSpec: Fix duplicated display of the data type in NatSpec `/// @return` comments (#278)
+- 2023-02-23 16:45:29 +0400 749354f4 Feature/psp + daofactory tests (#267)
+- 2023-02-23 16:40:40 +0400 4e9ee52a Fix/governance token delegate (#274)
+- 2023-02-22 17:57:38 +0100 6e73e744 APP-1832 : implement executable into MultisigProposal (#270)
+- 2023-02-22 16:19:48 +0100 39694a71 Renamed `getImplementationAddress` to `implementation` in `IPluginSetup` (#277)
+- 2023-02-22 18:51:44 +0400 d12a500d Feature/plugin repo tests+fix (#271)
+- 2023-02-22 10:48:17 +0100 cac51792 Added missing documentation and constant to PermissionLib (#273)
+- 2023-02-22 10:19:44 +0100 57e85585 Fix natspec (#275)
+- 2023-02-22 10:08:32 +0100 3df9e3f0 Use the `calldata` instead of `memory` keyword in `PluginSetup.prepareInstallation` (#272)
+- 2023-02-22 10:05:51 +0100 99dcddd0 APP-1794 : Register managingDao, install multisig, verify (#264)
+- 2023-02-21 17:56:46 +0100 c5c7c23f Moves `_disableInitializers` inside `PluginCloneable` and `PluginUUPSUpgradeable` (#257)
+- 2023-02-21 12:45:18 +0100 0e8c3e9e Change license and fix inconsistencies (#268)
+- 2023-02-21 11:08:04 +0100 ca9b0a6c Fix the `supportThresholdReachedEarly` check on the subgraph (#269)
+- 2023-02-20 15:54:47 +0400 3e411fcc make pm virtual/abstract (#262)
+- 2023-02-17 10:09:38 +0100 5a0e5bfe fix: subgraph deployment (#263)
+- 2023-02-16 18:15:39 +0100 36609e57 Removed redundant DaoAuthorizable dependency from PluginSetupProcessor (#261)
+- 2023-02-16 20:46:13 +0400 b8f1853c remove execresult (#259)
+- 2023-02-16 16:23:30 +0000 ee734358 Updates package.json version and changelog in subgraph
+- 2023-02-16 20:23:11 +0400 c8095571 Feature/token membership (#258)
+- 2023-02-16 13:31:15 +0100 c467fca5 Fix inconsistent ERC165 and refactor `IMembership` and `ProposalBase` (#256)
+- 2023-02-16 09:34:25 +0100 d78b48ed Remove `PermissionManager` feature (#254)
+- 2023-02-16 09:25:28 +0100 648fc608 Global .md reformatting (#255)
+- 2023-02-15 13:59:41 +0100 7a8c4ee1 fix: bumps subgraph version
+- 2023-02-14 15:16:00 +0400 bf5a418f Feature/nft subgraph (#251)
+- 2023-02-09 18:52:30 +0100 398a3f4f Fix: typos (#253)
+- 2023-02-09 17:52:49 +0100 0879db15 Docs: Fixes for the ENS section (#252)
+- 2023-02-09 14:37:52 +0100 cd05e9e3 APP-1717 Intermediary update for the `how-it-works/framework` docs section (#250)
+- 2023-02-07 10:48:50 +0100 85f8b31e Fix formatting (#249)
+- 2023-02-06 18:10:08 +0100 30886145 APP-1711: Update the how-it-works/core docs section (#247)
+- 2023-02-06 19:03:41 +0400 3009ca5c Feature/psp tests smock (#242)
+- 2023-02-06 17:47:47 +0400 398b2404 Feature/plugin repo tests (#248)
+- 2023-02-06 16:01:42 +0400 ba897988 remove redundant code (#245)
+- 2023-02-06 15:58:35 +0400 a005da92 fix await for staticcall revert (#246)
+- 2023-02-03 17:35:41 +0100 be32f980 App 1385 subgraph update to use the new plugin parameters (#244)
+- 2023-02-02 18:07:58 +0100 244a6f6e Removed the forgotten `WITHDRAW_PERMISSION` and other permission-related fixes (#243)
+- 2023-02-02 13:32:53 +0100 967e8148 Use OZ's upgradeable contracts for `PluginCloneable`, remove `DaoAuthorizableCloneable` and `DaoAuthorizableBase`, and make `dao` private (#241)
+- 2023-02-02 11:55:26 +0100 7fee36ae APP-1521: Tests for `GovernanceERC20` and `GovernanceWrappedERC20` (#240)
+- 2023-02-02 11:19:10 +0100 71e8a735 fix: pumps subgraph version to 0.7.0-alpha
+- 2023-02-02 11:18:09 +0100 4c65f2f4 App 1661 update subgraph to plugin version psp2 (#239)
+- 2023-02-01 11:39:17 +0100 9b912728 feat: contract deployment to 0.7.0-alpha (#238)
+- 2023-01-31 17:13:11 +0100 da1278af APP-1689: Fixed `build-metadata.json` and added tests for `MultisigSetup` (#237)
+- 2023-01-31 19:20:52 +0400 62dba053 Initialize Visibility & Storage Gaps (#236)
+- 2023-01-31 14:42:20 +0100 ccb204cb APP-967: Refactor folder structure (#231)
+- 2023-01-30 18:47:42 +0400 9c829b26 token-voting (#233)
+- 2023-01-30 15:32:48 +0100 2e94fd34 APP-1663, APP-1701:  NatSpec documentation for the PSP and related files (#230)
+- 2023-01-30 17:55:35 +0400 f51a0b43 remove todo (#235)
+- 2023-01-30 15:45:55 +0400 fca8b5b0 Feature/psp rename (#232)
+- 2023-01-30 13:46:19 +0400 0c9aa0f7 commit (#229)
+- 2023-01-27 17:50:50 +0100 923e5765 APP-1578 Removed redundant totalVotingPower storage (#194)
+- 2023-01-27 13:56:02 +0100 dd96fdfd App 1646 core mainnet deployment check list (#226)
+- 2023-01-27 16:52:09 +0400 2bf7b98a Feature/upgrade (#202)
+- 2023-01-27 16:40:50 +0400 950650e6 withdraw-deposit tests finish (#219)
+- 2023-01-27 16:18:15 +0400 ae0b3218 update solc and oz (#228)
+- 2023-01-27 11:26:12 +0100 957f0c70 APP-1676 : Adding metadata support for release (#220)
+- 2023-01-26 19:05:08 +0100 db522822 feat: makes PSP state public for future versions to use (#227)
+- 2023-01-26 20:20:37 +0400 0a35e30a plugin repo types changes (#222)
+- 2023-01-26 20:06:13 +0400 f5c28a0e remove merkleminter/distributor from tokenvotingsetup (#224)
+- 2023-01-26 20:01:54 +0400 ff6eef15 state vars public (#221)
+- 2023-01-26 13:31:59 +0100 a9904038 APP-1655: Provide data for the DAOstar.one membersURI (#212)
+- 2023-01-25 18:19:51 +0100 f6fd9ff1 add execution tx hash to proposal entity (#223)
+- 2023-01-25 16:57:28 +0100 f0ff0951 feat: adds check that plugin or dao name only contains a limited charset (#213)
+- 2023-01-25 10:48:46 +0100 4646f2a2 add voteReplaced (#218)
+- 2023-01-24 16:50:47 +0100 151dc2ca APP-1583 / Remove setup ABIs (#208)
+- 2023-01-24 08:39:14 -0500 329975b1 Contribution Guide (#166)
+- 2023-01-24 16:51:15 +0400 f2281934 Feature/fallback return (#214)
+- 2023-01-24 15:22:54 +0400 0a99857e failureMap for plugins (#207)
+- 2023-01-24 12:14:26 +0400 6bb1bf92 fix inheritance chain (#209)
+- 2023-01-23 19:10:18 +0100 a7512127 APP-1650: Test `applyRationCeiled` and `applyRatioFloored` (#211)
+- 2023-01-23 22:05:23 +0400 e2cddf6b Feature/mapping way (#164)
+- 2023-01-23 12:45:35 +0100 2d1ee8fc APP-1264 Represent ratios / percentages as integers on the interval [0, 10^6] (#198)
+- 2023-01-20 16:17:35 +0100 1750fe37 feat: renames ItemSingleTarget to SingleTargetPermission (#210)
+- 2023-01-20 15:13:33 +0100 ed720ef9 feat: removes EIP-165 implementation from ProposalBase (#206)
+- 2023-01-20 12:17:42 +0100 45128413 fix: fixes repo workspace settings (#205)
+- 2023-01-20 10:24:37 +0100 dde63e42 feat: renames oracle to condition (#200)
+- 2023-01-19 15:01:55 +0400 8017105b remove shadowing (#199)
+- 2023-01-18 16:08:25 +0100 d47f093d App 1586 core update dao execute to use bytes 32 (#197)
+- 2023-01-17 21:10:39 +0400 27b3a4db Feature/failure map app 993 (#184)
+- 2023-01-17 18:07:31 +0400 ca04a957 reduce types for minApprovals (#195)
+- 2023-01-17 15:32:34 +0400 6af9e0d0 remove freeze (#196)
+- 2023-01-13 12:48:14 +0400 7505b612 Feature/app 1390 not revert on grant/revoke (#185)
+- 2023-01-12 19:02:52 +0400 dfa6801c remove duplication (#181)
+- 2023-01-12 14:43:19 +0100 767d935d APP-1447 Common proposal interface (#182)
+- 2023-01-12 11:42:50 +0100 31e35979 fix: updates interfaces used by subgraph for plugin detection (#190)
+- 2023-01-12 09:15:49 +0400 f6a24df6 Feature/audit changes (#177)
+- 2023-01-11 21:05:23 +0100 21f63589 Fixes for pull #187 (#189)
+- 2023-01-11 20:43:18 +0100 f5ed7a3a APP-1479 Prevent voting with `VoteOption.None` (#180)
+- 2023-01-11 20:21:48 +0100 191eb271 feat: adds start and enddate to multisig proposals (#187)
+- 2023-01-11 17:06:52 +0000 2ad2ee2c Updates package.json version and changelog in subgraph
+- 2023-01-11 18:06:34 +0100 ef9dd890 fix: updates MULTISIG_INTERFACE in subgraph plugin detection (#188)
+- 2023-01-11 15:02:02 +0100 697efbf9 fix: wrong version bump (#186)
+- 2023-01-11 09:51:48 +0100 f7cf8fe7 chore: bump subgraph version to 0.6.0
+- 2023-01-10 21:54:07 +0000 80b198a6 Updates files with deployed contract addresses
+- 2023-01-10 16:41:50 +0000 c06fbfbe Updates package.json versions and changelogs
+- 2023-01-10 17:36:23 +0100 b72fe768 Merge pull request #178 from aragon/feature/APP-1517-change-assertion-library
+- 2023-01-10 17:20:57 +0100 fa9bc625 Use constant for OZ error
+- 2023-01-10 14:32:30 +0100 cbbff6e3 Remove redundant import
+- 2023-01-10 14:32:22 +0100 1db1130b Fix voteWithSigners function
+- 2023-01-10 14:20:40 +0100 e78f9088 Clarified test
+- 2023-01-10 14:09:29 +0100 26e42329 Use slice
+- 2023-01-10 14:01:23 +0100 53df3eb7 Fixed
+- 2023-01-10 12:34:45 +0100 0d329872 Removed addresses helper
+- 2023-01-10 12:33:04 +0100 b50781c2 Fixed failing test
+- 2023-01-10 12:14:03 +0100 bbc468de Added helpers and improved tests
+- 2023-01-09 19:19:06 +0100 08aa9e5c Improved the setBalances helper function
+- 2023-01-09 11:56:29 +0100 44dfbb47 Use hardhat-chai-matchers for merged test
+- 2023-01-09 11:52:20 +0100 88df2001 Merge remote-tracking branch 'origin/develop' into feature/APP-1517-change-assertion-library
+- 2023-01-09 11:51:54 +0100 af1b3f4f Merge pull request #176 from aragon/feature/APP-1416-write-tests
+- 2023-01-09 11:36:00 +0100 f6ef2ab2 Check that execution is not possible before the minimal approval is reached
+- 2023-01-09 11:12:02 +0100 49e9ee59 Clarified comments
+- 2023-01-09 09:50:17 +0100 5d5cb108 Removed customError test function
+- 2023-01-06 20:43:18 +0100 655b4e31 Removed ethereum-waffle and replace hardhat-waffle by hardhat-chai-matchers
+- 2023-01-05 18:57:12 +0100 6d945120 Formatting of test descriptions
+- 2023-01-05 18:53:31 +0100 31773140 Removed redundant await keywords
+- 2023-01-05 18:51:51 +0100 0f663c45 Removed redundant expect statement
+- 2023-01-05 15:46:28 +0100 560908ca Fixed wrong test description
+- 2023-01-05 15:44:34 +0100 0dbbd2b6 Reworked test descriptions
+- 2023-01-05 15:40:44 +0100 57174b98 Fixed typo
+- 2023-01-05 15:38:50 +0100 f16d3e7b Fixed test descriptions
+- 2023-01-05 13:14:45 +0100 72980673 Fixed event tests in MajorityVoting
+- 2023-01-05 13:14:33 +0100 915cf4bd Fixed event tests in DAORegistry
+- 2023-01-05 13:14:19 +0100 1813ad1e Fixed event tests in MerkleMinter
+- 2023-01-05 13:11:35 +0100 63c4f7c9 Fixed event tests in DAO
+- 2023-01-05 12:58:40 +0100 3beb39bd Moved type definition
+- 2023-01-05 12:42:05 +0100 101d5dfb Reduce code duplication in tests
+- 2023-01-05 12:34:17 +0100 2fd2c145 Removed redundant import
+- 2023-01-05 12:28:51 +0100 217ed1db Fixed and adapted the tests of other governance plugins
+- 2023-01-05 12:28:11 +0100 983a1021 Fixed and added event tests for Multisig
+- 2023-01-05 10:24:02 +0100 58ae4940 Improved test
+- 2023-01-05 10:15:18 +0100 c8e1a6ca Removed redundant import
+- 2023-01-05 10:15:04 +0100 6f74beed Added tests for the proposal counter and proposal ID generation
+- 2023-01-05 09:49:45 +0100 4bb08f4e Added tests for canExecute
+- 2023-01-04 17:06:59 +0100 5acdb5b3 fix: don't store None votes in subgraph (#175)
+- 2023-01-04 16:59:55 +0100 338483ab Typo and addition of a test case to canApprove
+- 2023-01-04 16:56:31 +0100 a1fe0a78 Added test to make transparent that unlisted accounts can execute proposals
+- 2023-01-04 16:53:32 +0100 5b56028f Added tests for canApprove
+- 2023-01-04 16:29:33 +0100 688cca67 Improved test
+- 2023-01-04 16:21:38 +0100 9f949635 Merge remote-tracking branch 'origin/develop' into feature/APP-1416-write-tests
+- 2023-01-04 15:40:54 +0100 eacd5f32 App 1431 core allow multisig to restrict proposal creation to signers or anyone (#173)
+- 2023-01-04 15:32:53 +0100 33cf05eb Added tests for initialize
+- 2023-01-04 15:28:41 +0100 1a9f211e Simplified tests
+- 2023-01-04 15:18:50 +0100 71af1af8 Formatting changes
+- 2023-01-04 15:15:52 +0100 c555078d Added test for proposalCount
+- 2023-01-04 15:13:40 +0100 b6569e06 Restructured the multisig tests
+- 2023-01-04 15:08:45 +0400 13c05be0 Feature/use oz uint64 (#171)
+- 2023-01-04 15:08:16 +0400 7f42685c make it virtual (#174)
+- 2023-01-04 12:06:00 +0100 3a96c69f Fix NatSpec tag formatting
+- 2023-01-04 09:49:38 +0100 78442d03 Test the Addresslist events
+- 2022-12-20 14:47:05 +0100 dfafd212 Test that approvals happen with the correct sender address
+- 2023-01-02 16:38:10 +0100 06453a3f Test edge cases related to 0 vote participation
+- 2023-01-04 10:06:28 +0100 f1249764 Merge pull request #167 from aragon/feature/APP-1415-multisig-implementation
+- 2023-01-03 18:20:42 +0100 f9d701f2 Fix typos
+- 2023-01-03 18:15:46 +0100 c2307229 Apply suggestions from code review
+- 2023-01-03 15:02:09 +0100 032ce26f Fixed a bug that wasted gas for proposal creation with VoteOption.None and that caused a vote replacement transactions with None to not revert outside VoteReplacement mode
+- 2023-01-03 14:30:15 +0100 0edf8db1 Use separate ifs also for TokenVoting
+- 2023-01-03 10:08:01 +0100 b79d603f Fixed NatSpec comment
+- 2023-01-03 09:56:26 +0100 8e684d8b Added the REPORT_GAS and COINMARKETCAP_API_KEY environment variable to the .env example (#169)
+- 2023-01-03 09:23:32 +0100 14addab3 Added unchecked to approvals tally
+- 2023-01-03 09:18:00 +0100 bb6756f5 Gas optimization
+- 2023-01-02 19:09:19 +0100 ef2edbcf Use separate if statements instead of else if
+- 2023-01-02 20:39:34 +0400 d70ed76c add extra check for upgradeability test (#172)
+- 2023-01-02 16:50:54 +0100 d81bf903 Apply suggestions from code review
+- 2023-01-02 16:49:59 +0100 72cd7015 Apply suggestions from code review
+- 2023-01-02 13:57:58 +0400 339a2909 code styling applied
+- 2022-12-23 00:10:34 +0400 df5ee6ff remove redundant error
+- 2022-12-23 00:02:59 +0400 44f8dae7 remove timehelpers from addresslist
+- 2022-12-22 23:55:38 +0400 75c0ddb3 remove redundant event
+- 2022-12-22 18:13:23 +0100 910549ac Maintained changelog
+- 2022-12-22 16:42:32 +0100 1e1145fd Emit addresslist related events in Addresslist
+- 2022-12-22 13:29:30 +0100 06be9101 Removed _approve method
+- 2022-12-22 13:15:12 +0100 f04c3868 Fixed failing test that was not adapted to 9c7990
+- 2022-12-22 13:05:30 +0100 af356f1f Fix inheritance and imports of Multisig
+- 2022-12-22 13:03:08 +0100 1ab7f6e5 Fixed compiler error because of redundant virtual
+- 2022-12-22 12:55:22 +0100 9c799051 Added proposal count to interfaceId calculation
+- 2022-12-22 12:44:30 +0100 565c6a37 Renamed variable to remove trailing underscore
+- 2022-12-22 12:41:48 +0100 3f574968 Made _canApprove virtual
+- 2022-12-22 12:40:31 +0100 7066dad9 Made _execute virtual
+- 2022-12-22 12:39:53 +0100 e01ac5ee Made _approve virtual
+- 2022-12-22 12:32:38 +0100 e3b2bd8a Added hasApproved method and clarifications
+- 2022-12-22 12:12:44 +0100 b0e5f692 Renamed isVoteOpen to isProposalOpen
+- 2022-12-22 11:58:45 +0100 085b1efd Renamed voteCount to castedVotingPower
+- 2022-12-22 11:22:47 +0100 d3cdb240 Renamed MODIFY_ADDRESSLIST_PERMISSION_ID to UPDATE_ADDRESSES_PERMISSION_ID
+- 2022-12-22 11:10:42 +0100 40f20999 fix subgraph typo
+- 2022-12-22 11:02:27 +0100 e61fbc00 improve subgraph naming
+- 2022-12-22 09:56:32 +0100 7d09f180 Fixed typo
+- 2022-12-21 23:17:55 +0100 1c9b8d1b Added tests in response to reviewer comment
+- 2022-12-21 23:11:11 +0100 bdc0141b More gas optimization
+- 2022-12-21 23:06:38 +0100 b9b977e9 Gas optimization for loops
+- 2022-12-21 22:57:55 +0100 87dc96d3 Removed GovernancePlugin
+- 2022-12-21 22:57:23 +0100 99793d38 Updated TODO notes
+- 2022-12-21 22:23:40 +0100 dfc9bd8e Fixed order
+- 2022-12-21 22:08:06 +0100 9aa58e4d Removed redundant import
+- 2022-12-21 20:27:39 +0100 ee83dd7f Fixed bug that would allow the addresslistLength to be incremented by repeatedly adding the same address
+- 2022-12-21 18:03:35 +0100 366a2f74 Clarified addresslistLength getters
+- 2022-12-21 16:50:18 +0100 811eb9bf Moved events to base class
+- 2022-12-21 16:17:01 +0100 5a08399f correctly add DaoPlugin entity
+- 2022-12-21 16:13:50 +0100 f9c75ede Merge branch 'feature/APP-1415-multisig-implementation' of https://github.com/aragon/core into feature/APP-1415-multisig-implementation
+- 2022-12-21 15:39:51 +0100 a4d787c8 Added NatSpec headers to the governance plugin contracts
+- 2022-12-21 15:32:48 +0100 a91867f3 Switched inheritance order
+- 2022-12-21 15:26:28 +0100 7a4669fc Adapted and cleaned imports
+- 2022-12-21 15:17:47 +0100 05e5dd9e Moved files
+- 2022-12-21 14:08:18 +0100 00b0d10f Improved NatSpec
+- 2022-12-21 13:03:55 +0100 6d65fb6f Made getProposal public
+- 2022-12-21 13:00:58 +0100 23792bb2 Gas optimization
+- 2022-12-21 12:52:11 +0100 635b44d2 Made proposalCount() public
+- 2022-12-21 11:16:37 +0100 d556fe0f add multisig interface id to constrants
+- 2022-12-21 10:51:42 +0100 21e052d7 Merge remote-tracking branch 'origin/develop' into feature/APP-1415-multisig-implementation
+- 2022-12-21 10:48:45 +0100 d009ad9c Fixed comment
+- 2022-12-21 10:47:31 +0100 b9ae3347 Deploy multisig
+- 2022-12-21 10:29:21 +0100 fc12a9c7 Fixed wrong array length in setup contract
+- 2022-12-21 10:25:23 +0100 d1af8c2b Fixed declaration order and NatSpec
+- 2022-12-21 09:48:26 +0100 6f81b9ed Improved the Governance plugin abstraction
+- 2022-12-21 01:58:24 +0100 108a9b2a implement subgraph for muiti sig
+- 2022-12-20 18:52:07 +0100 5ad1c216 Maintained changelogs
+- 2022-12-20 18:45:29 +0100 c5f419e1 Emit the MinApprovalUpdated event from the external method
+- 2022-12-20 18:45:54 +0100 1cb4a011 Added tests
+- 2022-12-20 18:41:25 +0100 71db59eb deployed contracts
+- 2022-12-20 18:32:39 +0100 1ee093d2 Added check to prevent the addresslist becoming shorter than the current minApproval value
+- 2022-12-20 18:13:48 +0100 e1a3051d Made setters independent
+- 2022-12-20 12:54:25 +0100 377ab706 Restructuring
+- 2022-12-20 11:48:59 +0100 51c99e80 Restructured IMajorityVoting
+- 2022-12-20 11:21:50 +0100 3c35fece Bug/Fix vote: assign correct voter id (#168)
+- 2022-12-20 10:04:14 +0100 6ba1ee19 Fixed typo in NatSpec and removed constant
+- 2022-12-20 09:26:31 +0100 44fbeb49 Unified ordering
+- 2022-12-20 09:25:15 +0100 f575395c Added gap to GovernancePluginUUPSUpgradeable
+- 2022-12-19 22:06:44 +0100 8a7cbe79 Renamed proposalId in governance contracts to proposalCounter and added getter
+- 2022-12-19 21:45:23 +0100 31558736 Added byes execResults to the subgraph ProposalExecuted event
+- 2022-12-19 20:56:24 +0100 f8431cbd Initial version of the multisig plugin
+- 2022-12-19 16:35:27 +0100 be05c356 APP_1404 create unique id for members (#165)
+- 2022-12-19 13:53:47 +0100 53bea1ef Work on multisig plugin
+- 2022-12-19 14:24:29 +0100 335a9c2c Removed events from Addresslist abstraction
+- 2022-12-19 13:14:18 +0100 0f8aceba Continued work on plugin classes
+- 2022-12-19 11:26:52 +0100 53cd637e Reintroduced execResults in the events
+- 2022-12-19 10:53:16 +0100 0d24180a WIP contracts refactoring
+- 2022-12-19 09:50:38 +0100 c5652d7d WIP adapt subgraph
+- 2022-12-19 10:43:44 +0100 75d4709c Created proposal interface
+- 2022-12-18 21:48:23 +0100 f2633313  Created GovernancePlugin contracts
+- 2022-12-18 19:45:01 +0100 8d1dfd46 Initial version of the multisig plugin
+- 2022-12-16 09:13:36 +0100 ff4c1385 Abstracted Addresslist from AddresslistVoting
+- 2022-12-19 11:00:11 +0100 420c6346 Early execution, vote replacement and structuring of parameters (#161)
+- 2022-12-15 16:15:26 +0100 aa0c2f21 feat: switch subgraph to satsuma (#162)
+- 2022-12-14 15:25:06 +0100 35844d1c fix: marks subgraph action entity as mutable (#163)
+- 2022-12-13 10:31:40 +0100 6538476d Merge pull request #160 from aragon/feature/APP-1384-majority-voting-halborn
+- 2022-12-12 17:42:29 +0100 29b2ff97 Made _validateVoteDates virtual
+- 2022-12-08 11:25:05 +0100 eab425c4 Removed latest start date check and rely on the revert through the integer overflow
+- 2022-12-12 17:13:20 +0100 04f8c78f Added the HAL-03 and HAL-04 related changes
+- 2022-12-12 16:26:28 +0100 24036a22 Merge pull request #159 from aragon/feature/APP-1251-spam-protection
+- 2022-12-12 16:25:33 +0100 4c60c36a AdminAddressGovernance (#152)
+- 2022-12-12 16:14:58 +0100 f4caccf8 Simplified condition
+- 2022-12-12 16:13:39 +0100 bada99ec Removed redundant event
+- 2022-12-09 15:16:24 +0000 3717af29 Updates package.json version and changelog in subgraph
+- 2022-12-09 16:16:06 +0100 8b56be88 feat: adds new data to proposals (#158)
+- 2022-12-09 10:01:54 +0100 51817e2d Added, simplified, and fixed tests
+- 2022-12-08 16:01:19 +0100 95d87d01 Renamed parameter to minProposerVotingPower
+- 2022-12-08 15:34:57 +0100 388ea7df Added event parameter and adapted subgraph
+- 2022-12-03 17:13:08 +0000 29ee7195 Added minProposalCreationVotingPower parameter
+- 2022-12-03 15:34:11 +0000 265d1a9a Require at least one token to create a proposal
+- 2022-12-03 14:09:52 +0000 68c6ac49 Maintained NatSpec
+- 2022-12-08 15:24:54 +0100 843222f7 Merge pull request #156 from aragon/feature/APP-1252-parametrization-with-participation
+- 2022-12-08 14:51:00 +0100 df46c721 Fix code order to match the argument order
+- 2022-12-08 13:58:57 +0100 f3f78ba8 Replaced minimal with minimum in the comments
+- 2022-12-08 11:59:41 +0100 2d65fe98 Renamed getters
+- 2022-12-07 16:35:16 +0100 d581b8ce Maintained changelogs
+- 2022-12-07 16:30:21 +0100 04a339cd Added info about Threshold vs. Minimum NatSpec
+- 2022-12-07 16:07:59 +0100 db2833ed Changed execution logic
+- 2022-12-07 16:02:55 +0100 d506e695 Clarified that the minDuration is specified in seconds
+- 2022-12-07 15:48:00 +0100 4abad46b Fixed comparator in comments
+- 2022-12-07 15:47:43 +0100 9828813c Removed commented code
+- 2022-12-07 15:42:12 +0100 bb53132a Fixed order
+- 2022-12-07 15:42:02 +0100 1de35cb4 Renamed leftover constants PARTICIPATION_THRESHOLD to MIN_PARTICIPATION
+- 2022-12-07 15:33:09 +0100 bbf94202 Changed forgotten > operator to >= in test description
+- 2022-12-07 12:27:17 +0100 b8119320 Adapted NatSpec explanations
+- 2022-12-07 12:14:28 +0100 aa72391b Turned participationThreshold into minParticipation
+- 2022-12-07 10:44:53 +0100 594260c9 Unified the parameter order and put support always first
+- 2022-12-07 10:26:43 +0100 5d1b4183 Addressed review comment about forgotten rename
+- 2022-12-06 10:25:00 +0100 db90ddf6 Import BigNumber explicitly
+- 2022-12-06 10:24:23 +0100 817a3075 Make the parameter functions virtual
+- 2022-12-06 10:06:11 +0100 fbf36c72 Applied review suggestion
+- 2022-12-05 15:53:18 +0100 91208b43 More NatSpec fixes
+- 2022-12-05 15:43:16 +0100 949b1907 Used internal functions and corrected NatSpec
+- 2022-11-25 16:47:06 +0100 90556e04 Renamed forgotten weight to votingPower in subgraph
+- 2022-12-05 15:18:19 +0100 3387454a Maintained changelogs
+- 2022-12-05 15:18:13 +0100 0ced908a Correct rounding
+- 2022-12-05 14:54:42 +0100 04a1b094 Adapted voting setups and tests
+- 2022-12-05 13:16:50 +0100 0c21bd27 Fixed subgraph test
+- 2022-12-05 09:47:54 +0100 d57c0ba5 Renamed subgraph parameters
+- 2022-12-03 16:38:44 +0000 a104e526 Fix subgraph
+- 2022-12-03 15:27:17 +0000 13a48b5e Improved tests
+- 2022-12-03 13:48:20 +0000 53bc2288 Adapted subgraph
+- 2022-11-28 15:39:32 +0100 0f003c41 Added explict checks in the AddresslistVoting tests
+- 2022-11-28 15:14:21 +0100 388b32df Use test helpers
+- 2022-11-28 14:35:11 +0100 e6658298 Cleaned time calculations
+- 2022-11-28 14:24:16 +0100 d98b672f Remove initializeVoting function
+- 2022-11-28 14:10:41 +0100 374c4e87 Simplified the tests
+- 2022-11-28 13:46:56 +0100 9c970edb Renamed variable
+- 2022-11-28 13:46:19 +0100 516aeb70 Removed user1 and owner
+- 2022-11-28 13:41:26 +0100 554d6707 Fix tests
+- 2022-11-28 12:27:44 +0100 322d4c66 Simplify tests
+- 2022-11-25 10:07:02 +0100 e989638e Removed Pct in names and unified subgraph method names
+- 2022-11-24 10:56:54 +0100 a2eaa478 Use curly brackets for conditionals
+- 2022-11-28 13:43:11 +0100 2dec02a0 Improve tests
+- 2022-11-24 13:08:23 +0100 37ffd387 Renamed relative support to support
+- 2022-11-23 14:26:25 +0100 e8ac6455 Simplified the execution logic
+- 2022-11-23 14:11:15 +0100 3202471b Explained the parameters in the NatSpec comments
+- 2022-11-23 12:34:13 +0100 51f25b87 Implement functionality
+- 2022-11-23 15:12:40 +0100 a2e1b2e6 Example of unexpected behaviour with participation as a quantiy
+- 2022-11-22 19:20:33 +0100 837fbe45 Renamed total support by participation and renamed relative support by support
+- 2022-11-24 12:42:41 +0100 a0b6af09 Maintained NatSpec
+- 2022-11-25 16:50:58 +0100 b7b9d99f Merge pull request #153 from aragon/feature/APP-1321-token-voting-nft-support
+- 2022-11-25 16:29:25 +0100 4df6a1ce Maintained changelog
+- 2022-11-25 16:26:02 +0100 8c7e59ff Added ERC721Token Subgraph Entity and Token interface
+- 2022-11-25 15:25:19 +0100 e253462f Fixed wrong renaming
+- 2022-11-25 14:48:03 +0100 63bacf2e Addressed review comment
+- 2022-11-25 14:23:13 +0100 001e6398 Fix naming
+- 2022-11-25 12:44:06 +0100 16996719 Simplified naming
+- 2022-11-25 12:27:14 +0100 1b5e3b63 Maintained changelogs
+- 2022-11-25 12:37:04 +0100 92b92271 Changed contract, variable, and function names accordingly
+- 2022-11-25 10:52:45 +0100 be393b8d Renamed files from ERC20 to Token
+- 2022-11-25 10:50:24 +0100 35a9aac7 Renamed folders
+- 2022-11-25 10:18:36 +0100 22203460 Merge pull request #146 from aragon/feature/APP-1250-name-refactoring
+- 2022-11-24 16:20:24 +0100 797c22ad Fixed wrong NatSpec title
+- 2022-11-24 16:19:03 +0100 1892a17b Revert renaming the active contracts as this is updated automatically
+- 2022-11-24 14:28:36 +0100 74345fcf Fix wrong NatSpec comment
+- 2022-11-24 14:18:21 +0100 039db289 Fix NatSpec
+- 2022-11-24 13:15:31 +0100 a58ea193 Renamed getVote to getProposal
+- 2022-11-24 12:36:27 +0100 3997121d Revert logic change
+- 2022-11-24 12:23:51 +0100 d0716116 Renamed error
+- 2022-11-24 12:31:21 +0100 b65ce124 Renamed VoteExecutionForbidden to ProposalExecutionForbidden
+- 2022-11-24 12:35:18 +0100 b811f74d Renamed votesLength to proposalCount
+- 2022-11-24 12:17:26 +0100 35a922bb Renamed Vote to Proposal
+- 2022-11-24 12:07:43 +0100 2a53af7a Renamed voteWeight to votingPower
+- 2022-11-23 15:53:29 +0100 a73f27a8 Adapted event names in constants
+- 2022-11-23 11:24:16 +0100 2f74f60a Renamed remaining user variables in subgraph tests
+- 2022-11-23 11:18:17 +0100 153f1eaf Maintained changelogs
+- 2022-11-23 11:14:45 +0100 8f73ff2a Renamed voter to member in AddresslistVoting where applicable
+- 2022-11-23 10:56:25 +0100 94884074 Removed comments
+- 2022-11-23 10:14:05 +0100 4a99295d Renamed voteId to proposalId
+- 2022-11-23 10:10:33 +0100 23337cd9 Renamed PROPOSAL_ID to PROPOSAL_ENTITY_ID
+- 2022-11-23 10:02:30 +0100 8461e21a Renamed VoteExecuted to ProposalExecuted
+- 2022-11-23 09:59:23 +0100 dba1b9b7 Renaming of local variables and NatSpec maintenance
+- 2022-11-22 20:20:17 +0100 8f01727e Renamed members of Addresslist voting to match with the class naming
+- 2022-11-23 11:49:59 +0100 6c1f9c1e Merge branch 'develop' into feature/APP-1250-name-refactoring
+- 2022-11-22 19:13:13 +0100 9a5d9c22 Renamed files from allowlist to addresslist
+- 2022-11-23 11:47:23 +0100 dbbe4699 Renamed and moved files
+- 2022-11-22 19:35:14 +0100 fc090605 Fixes an inheritance incompatibility between OZ and the different Plugin types (#150)
+- 2022-11-11 17:34:31 +0100 38be1b34 Maintained changelog
+- 2022-11-22 18:03:30 +0100 e9d5aba9 Renamed census to totalVotingPower
+- 2022-11-22 18:00:46 +0100 d19703ab More renaming
+- 2022-11-22 16:30:12 +0100 8c825a14 Renamed function createVote to createProposal
+- 2022-11-22 16:28:55 +0100 80c85dc2 Renamed event VoteCreated to ProposalCreated
+- 2022-11-22 16:25:25 +0100 c401afc1 Renamed configuration to vote settings
+- 2022-11-22 15:59:48 +0100 1df76830 fix: sugraph erc20 voting support calc crash (#151)
+- 2022-11-22 15:58:28 +0100 b5fb46a3 APP-1173 F/Unify package and plugin (#148)
+- 2022-11-17 11:53:27 +0100 2e6d5de6 Reflect the `PermissionManager` changes in the docs (#143)
+- 2022-11-14 15:57:52 +0100 4b0ec48f APP-1163 increase dao test coverage (#144)
+- 2022-11-14 15:50:02 +0100 715b2b2c Fix wrong relative support calculation differing from the comments (#147)
+- 2022-11-14 18:28:06 +0400 c498623e F/not always call upgradeon plugin app 1257 (#145)
+- 2022-11-14 14:16:49 +0400 c4e3fdce Permission Manager: Restrict ANY_ADDR to oracles (#131)
+- 2022-11-11 14:59:29 +0100 c82cfef8 Fix and clarify the MajorityVoting execution logic (#141)
+- 2022-11-10 16:20:42 +0100 b7b0e239 APP-1208 Update & fix ens registrar (#138)
+- 2022-11-09 15:35:50 +0100 199d50aa fix: github output handling in js files (#142)
+- 2022-11-08 10:56:35 +0100 4028e321 fix: remove actions fail
+- 2022-11-08 09:54:53 +0000 369e288b Updates package.json versions and changelogs
+- 2022-11-08 10:47:29 +0100 a689d7d4 App 1232 core npm ethers doesnt export the updated active contracts list (#139)
+- 2022-11-07 21:03:20 +0100 d4f2cda5 Test different plugin setup scenarios (#130)
+- 2022-11-03 17:12:39 +0400 22798cd5 add mint for tokens in the initialize. (#132)
+- 2022-11-02 18:05:18 +0100 797118be feat: update changelogs because the action failed (#137)
+- 2022-11-02 16:59:35 +0000 24c23ff4 Updates files with deployed contract addresses
+- 2022-11-02 16:48:40 +0100 88d3bff1 fix: missing " in contracts-deploy workflow (#136)
+- 2022-11-02 16:34:55 +0100 d25fddd2 fix: random ens registration script (#135)
+- 2022-11-02 16:21:09 +0100 0de63881 fix: contract deploy workflow (#134)
+- 2022-11-02 16:16:59 +0100 914b7db7 APP-1164 update deploy script (#129)
+- 2022-11-02 15:23:00 +0100 5087cfed App 1174 subgraph adapt add contract events registries (#133)
+- 2022-11-02 14:12:04 +0100 0541ff97 App 1134 subgraph adapt events to work with the new core (#128)
+- 2022-10-24 18:04:55 +0200 cfcaad47 Added missing index file (#126)
+- 2022-10-24 17:39:03 +0200 b956631b Transfers the core docs from `aragon/builders-portal` to `aragon/core` (#125)
+- 2022-10-24 14:26:51 +0300 2a3eb96b fix/voting-setup-tests (#124)
+- 2022-10-24 10:37:26 +0200 ea5f3071 APP-903  test AllowlistVotingSetup and ERC20VotingSetup (#122)
+- 2022-10-24 10:11:33 +0200 f21a4163 Fix inconsistencies (#123)
+- 2022-10-24 10:11:12 +0300 e505ac8c internal audit changes (#120)
+- 2022-10-21 18:34:10 +0300 019433e4 Feature/remove component (#121)
+- 2022-10-21 17:09:32 +0200 993f11c3 APP-630 - Create plugin Setup for Allowlist and Erc20 voting (#117)
+- 2022-10-21 10:37:59 +0200 a229df20 App 1104 remove our erc 1271 sol and import from oz (#115)
+- 2022-10-20 12:43:04 +0300 5762f4ea erc165-fixes-with-additional-fixes-APP-1129 (#111)
+- 2022-10-19 13:07:16 +0200 77d9c636 Applied quick fix preventing double initialization (#119)
+- 2022-10-19 12:24:39 +0300 0e8fb34c add ens to plugin-repo-registry (#118)
+- 2022-10-18 16:24:07 +0200 4794d19c App-971 : refactoring DAO factory (#113)
+- 2022-10-17 11:06:39 +0300 a3b74fe8 Fix/reduce gas setup processor (#107)
+- 2022-10-17 11:06:02 +0300 f16deaaf Fix bug in `bulkOnMultiTarget` that allowed `msg.sender` to use it without having the `ROOT_PERMISSION_ID` permission (#90)
+- 2022-10-14 14:01:15 +0200 cba51106 Refactoring of the NatSpec comments and naming in `PluginSetup` and related contracts (#114)
+- 2022-10-13 16:52:13 +0200 75516513 OpenZepplin initialization and `AppStorage` removal (#105)
+- 2022-10-12 10:51:25 +0300 d6868810 Refactoring of the introspection functionalities (#91)
+- 2022-10-07 15:20:04 +0000 38db0d2c Updates package.json version and changelog in subgraph
+- 2022-10-07 17:19:43 +0200 d21d0d70 Feature: Add executable property to proposals (#101)
+- 2022-10-05 17:08:01 +0200 97b21d0b Feature /  two-step plugin install APP-631 , APP-787 , APP-788 , APP-888 (#97)
+- 2022-10-03 10:38:39 +0000 c443a50c Updates package.json version and changelog in subgraph
+- 2022-10-03 11:38:18 +0100 b8120ae0 Fix: Subgraph deploy (#104)
+- 2022-10-03 12:11:49 +0200 77f64204 DOPS-351 Added signature to commit (#102)
+- 2022-09-26 17:28:25 +0200 338d6fb9 Fixes Contract deployment and permission granting (#98)
+- 2022-09-20 15:52:47 +0200 afe6fe0c fix: combines transfers into one type (#96)
+- 2022-09-20 15:52:20 +0200 47579f6c adds some stuff to deploy subgraph to goerli (#95)
+- 2022-09-08 15:48:50 +0200 a981f11b feat: adds devrel team to review doc pull request (#94)
+- 2022-09-08 10:31:01 +0200 64d6d286 adds missing step to install dependencies (#93)
+- 2022-09-08 10:29:18 +0200 4ffe2737 feat: adds workflow to automatically update docs in aragon/builders-portal (#92)
+- 2022-08-26 10:04:33 +0200 35097751 fix: adjust workflow jobs permissions (#88)
+- 2022-08-25 10:17:42 +0200 4e9d3b71 fix: improves security in workflows (#87)
+- 2022-08-24 10:28:27 +0200 03798461 fix: command injection in github workflow
+- 2022-08-18 08:09:34 +0200 81399e77 Added ENS sudomain registrar to the DAO registry. (#83)
+- 2022-08-16 20:45:59 +0400 8f6a3d2f Abstract Plugin Manager (#76)
+- 2022-08-16 09:59:28 +0200 12145277 fix: final final mythx comment fix
+- 2022-08-16 09:57:15 +0200 bb888516 fix: final mythx comment fix
+- 2022-08-16 09:47:36 +0200 17848248 Fix/more mythx (#82)
+- 2022-08-15 14:33:18 +0200 91855d76 fix: give id to changed files step
+- 2022-08-15 14:29:38 +0200 6b93c353 fix: last small changes to comment trigger
+- 2022-08-15 14:09:17 +0200 44363f31 fix: typo in mythx comment trigger
+- 2022-08-15 12:17:13 +0200 68b38162 fix: trigger check for comment commands (#81)
+- 2022-08-15 12:07:39 +0200 9b18a597 fix: comment trigger fail
+- 2022-08-15 12:05:55 +0200 7cd1baeb fix: uses the body of the comment (#80)
+- 2022-08-15 11:58:19 +0200 03b1f121 fix: correct file names for mythx workflows (#79)
+- 2022-08-15 11:56:38 +0200 5aa526bd fix: comment-trigger workflow (#78)
+- 2022-08-15 11:48:51 +0200 ca4623d0 Fix/mythx ci mode (#77)
+- 2022-08-12 16:23:00 +0200 d822d245 APP-786 Update repo to be compatible with Aragon plugin (#73)
+- 2022-08-12 16:26:29 +0400 d74097ae Feature/permission manager bulk (#74)
+- 2022-08-12 15:51:47 +0400 4c74950f feature/APP-785_aragon-abstract-plugin (#67)
+- 2022-08-12 13:35:07 +0200 b96fdce5 APP-829 fix deploy issue (#71)
+- 2022-08-10 15:59:24 +0200 75f9821b APP-779 add vote count to proposals (#68)
+- 2022-08-10 10:49:40 +0200 0aad1b59 fix: workflow name of mythx full
+- 2022-08-10 10:49:00 +0200 bd6ec9bb feat: adds workflows to run mythx against the contracts (#72)
+- 2022-08-08 09:31:43 +0200 0f438c9e fix: build and deploy job for subgraph deployment (#70)
+- 2022-07-28 11:27:28 +0200 73f84b63 Refine file, class, variable, and method names (#62)
+- 2022-07-18 22:32:12 +0200 4056ef20 Automatic Reference Documentation Generation for the Core Contracts (#63)
+- 2022-07-11 13:58:47 +0200 050c102d Feature / APP-407 update DAO registry (#57)
+- 2022-07-07 09:05:07 +0000 e60804bc Updates files with deployed contract addresses
+- 2022-07-06 08:24:21 +0200 9702dc3d Bumped OZ version and fixed missing decimal override (#59)
+- 2022-07-05 13:17:38 +0200 c51b2b6f Refactor import statements (#58)
+- 2022-07-01 12:49:12 +0200 78c66235 f/dops 301 (#60)
+- 2022-06-30 13:02:51 +0200 c04ce4cb ENS Subdomain Registrar (#51)
+- 2022-06-29 15:00:35 +0200 cee2de09 Remove overwrite of equal property in Chai Assertion (#54)
+- 2022-06-28 15:57:19 +0200 42494ab9 Feature/ APP-405 apm registry (#53)
+- 2022-06-28 14:20:12 +0200 fb2d6cf2 Integration tests for ACLOracle (#45)
+- 2022-06-28 11:07:13 +0200 9057e323 F/cicd rebuild (#56)
+- 2022-06-28 10:09:43 +0200 edbd0653 Refactoring of event names and NatSpec comments (#55)
+- 2022-06-23 10:06:56 +0000 915b46b6 Updates files with dummy DAOs info
+- 2022-06-22 15:41:09 +0000 9c911e32 Updates files with deployed contract addresses
+- 2022-06-22 17:23:07 +0200 132e9fd9 An ERC165- and address-based registry for contracts (#50)
+- 2022-05-23 09:59:33 +0100 6ba6af58 Fix exported classes
+- 2022-05-18 16:56:47 +0200 a3cb0603 update proposal schema (#42)
+- 2022-05-18 14:55:24 +0000 a17ac8c7 Updates files with dummy DAOs info
+- 2022-05-18 14:16:49 +0000 f2ef3a83 Updates package.json versions
+- 2022-05-18 16:11:29 +0200 30a46be6 feat: adds back publishing of npm package (#49)
+- 2022-05-18 16:05:05 +0200 11806bf1 fix: alpha detection (#48)
+- 2022-05-18 15:43:02 +0200 91db3d3d fix: version publishing in workflow (#47)
+- 2022-05-18 12:54:07 +0000 f1ba89e7 Updates files with deployed contract addresses
+- 2022-05-18 14:47:37 +0200 90309209 Code formatting (#44)
+- 2022-05-18 12:29:46 +0000 b5164284 Updates files with deployed contract addresses
+- 2022-05-18 14:23:27 +0200 b1d7fee6 Featur/ APP-343 allow mint token to treasury (#43)
+- 2022-05-17 14:55:46 +0200 f2cb7677 Fix npm release and writeback deployed npm versions (#40)
+- 2022-05-17 08:04:23 +0200 f6055b98 Componentize and generalize MerkleMinter (#41)
+- 2022-05-16 21:41:59 +0000 60749e55 Updates files with dummy DAOs info
+- 2022-05-16 21:35:50 +0000 cc380cd5 Updates files with deployed contract addresses
+- 2022-05-16 17:56:44 +0200 deae304e Refine the license identifier formatting and author names (#39)
+- 2022-05-16 10:45:27 +0000 deb46d50 Updates files with dummy DAOs info
+- 2022-05-16 07:47:46 +0000 1aa85ad6 Updates files with deployed contract addresses
+- 2022-05-16 09:23:27 +0200 66bfe6fc Componentize and generalize MerkleDistributor (#37)
+- 2022-05-11 09:41:54 +0000 d7e597f9 Updates files with dummy DAOs info
+- 2022-05-10 12:19:31 +0000 c3d1364f Updates files with deployed contract addresses
+- 2022-05-10 14:08:09 +0200 0d91a20e Complete the IDAO interface (#24)
+- 2022-04-29 09:25:07 +0000 ea12ec76 Updates files with dummy DAOs info
+- 2022-04-29 11:04:46 +0200 b89aaa5e Fix/dummy dao pat (#36)
+- 2022-04-29 10:55:43 +0200 99c6e5b8 fix: adds missing npm registry (#35)
+- 2022-04-29 10:50:20 +0200 7d2b592b fix: npm filter check to deploy if no contracts have changed (#34)
+- 2022-04-29 10:45:31 +0200 2efabcc7 fix: working directory for npm publishing (#33)
+- 2022-04-27 15:38:34 +0000 fb195b58 Updates files with deployed contract addresses
+- 2022-04-27 17:32:07 +0200 dfb15306 fix: contracts deploy workflow needs section (#32)
+- 2022-04-27 17:29:59 +0200 ee0e54f6 fix: final touches for contracts workflows (#31)
+- 2022-04-27 17:25:44 +0200 5d37cd86 fix: secrets handling in contract workflows (#30)
+- 2022-04-27 15:14:25 +0000 8300108f Updates files with deployed contract addresses
+- 2022-04-27 17:08:54 +0200 a0d726d8 Fix/contracts deploy (#29)
+- 2022-04-27 17:05:49 +0200 cd7e8686 APP-273 implement script to create initial daos (#25)
+- 2022-04-26 12:31:08 +0000 a30c03a6 Updates files with deployed contract addresses
+- 2022-04-26 12:53:41 +0200 662cb58b fix: npm release flow if contracts are also changed (#28)
+- 2022-04-26 12:37:13 +0200 56c5d775 Fix/npm release (#27)
+- 2022-04-26 10:55:43 +0200 abab7722 feat: adds workflow for npm releases (#26)
+- 2022-04-19 12:08:04 +0000 f1bd7c83 Updates files with deployed contract addresses
+- 2022-04-19 13:39:58 +0200 e6f6463d Decoupling of Permissions and Meta Transactions (APP-54, APP-57, APP-63) (#17)
+- 2022-04-14 08:34:57 +0000 212a3a85 Updates files with deployed contract addresses
+- 2022-04-14 10:02:30 +0200 ce24d725 APP-53 register interfaceIds (#22)
+- 2022-04-13 11:30:34 +0000 3dc7a80f Updates files with deployed contract addresses
+- 2022-04-13 14:59:56 +0400 57587091 vote config with struct (#20)
+- 2022-04-06 11:51:57 +0200 a587563d Feature/ DAO-808 (#16)
+- 2022-03-31 12:57:40 +0000 8662eda1 Updates files with deployed contract addresses
+- 2022-03-31 13:28:55 +0100 9726ccfb Public NPM packages (#13)
+- 2022-03-31 12:20:50 +0000 940529f4 Updates files with deployed contract addresses
+- 2022-03-31 13:14:12 +0100 0525bc80 Update the JSON artifact paths (#12)
+- 2022-03-31 12:50:16 +0100 1d197d9a Add NPM support for the contracts module (#8)
+- 2022-03-29 17:38:28 +0000 4aa8aa74 Updates files with deployed contract addresses
+- 2022-03-29 19:09:21 +0200 5d984cd2 Feature/small improvements (#2)
+- 2022-03-25 14:29:03 +0100 43c69add Updates folder structure for voting types (#10)
+- 2022-03-24 20:13:23 +0100 4fed6574 crowdin config removed (#9)
+- 2022-03-24 18:16:51 +0100 9534c4c3 Add majority voting base class (#1)
+- 2022-03-22 14:25:55 +0100 26c62fea bug report issue template added (#7)
+- 2022-03-22 13:28:01 +0100 192d8eaf lerna removed (#5)
+- 2022-03-22 12:56:49 +0100 61fc6319 Updates Subgraph GitHub Workflow (#4)
+- 2022-03-22 12:12:22 +0100 efc04118 Finishes the movement of the repositories (#3)
+- 2022-03-21 14:00:51 +0100 f33b9ad6 Ensuring ts-node is accessible
+- 2022-03-21 13:30:49 +0100 3aed29f4 Merge remote-tracking branch 'zaragoza/develop' into develop
+- 2022-03-21 11:19:56 +0100 980a49ef Removing the non-core packages
+- 2022-03-21 10:54:17 +0100 38b7595f resolve #225: use solidity custom errors (#269)
+- 2022-03-15 17:52:54 +0000 38265d27 Updates files with deployed contract addresses
+- 2022-03-15 21:27:16 +0400 d2294187 Fix/deposit withdraw (#282)
+- 2022-03-15 18:24:17 +0100 27ae3425 feature/ DAO-631 (#285)
+- 2022-03-14 10:45:44 +0000 d10ea884 Updates files with deployed contract addresses
+- 2022-03-14 14:00:35 +0400 722b7d87 Feature/initializers modify (#280)
+- 2022-03-10 11:29:50 +0100 7a525640 Feature/ DAO-600 (#265)
+- 2022-03-10 00:29:23 +0330 cfa287b3 Chore/ DAO-706 (#266)
+- 2022-03-09 12:18:01 +0100 b6f51680 Fix: Dao 692 arbitrum login (#276)
+- 2022-03-09 06:01:08 -0500 abcdbb49 Feature/Page headers - DAO-739 (#268)
+- 2022-03-08 14:37:00 +0000 7a658755 Updates files with deployed contract addresses
+- 2022-03-08 15:11:07 +0100 41389491 Small CI/CD Fixes (#278)
+- 2022-03-08 08:17:01 -0500 e230fcef Fix/Navbar Fixes DAO-737 (#264)
+- 2022-03-08 17:58:31 +0530 6e24fb27 Feature/DAO-661 (#270)
+- 2022-03-08 12:18:46 +0000 2eb6c62d Updates files with deployed contract addresses
+- 2022-03-08 07:00:22 -0500 ba8d4ce3 Feature/Update action context - DAO-738 (#262)
+- 2022-03-08 12:51:51 +0100 254a3405 update env.example (#277)
+- 2022-03-07 10:27:48 -0500 11262d30 Fix/Deposit flow - DAO-707 (#260)
+- 2022-03-04 17:11:20 +0100 93e9d725 fix: uses arabot-1 PAT to push back file updates in contracts workflow (#272)
+- 2022-03-04 15:35:46 +0100 234c4ddd Multichain deployments (#271)
+- 2022-03-02 15:59:42 +0100 58710cc3 Feat: Subgraph Deployment (#246)
+- 2022-03-02 15:59:28 +0100 dbdc328e fix: yarn call to run tests on contract deployment (#263)
+- 2022-03-02 14:20:44 +0100 984f60c5 Feature/ DAO-691 (#257)
+- 2022-03-01 14:43:31 +0100 a76a16ce fix: contracts deploy workflow (#261)
+- 2022-03-01 14:04:38 +0100 610b19e2 feat: contract deployment (#247)
+- 2022-03-01 14:15:49 +0330 4f518c8a Chore/ DAO-706  (#259)
+- 2022-03-01 13:52:00 +0330 cba2f707 Feature/ DAO-696  (#256)
+- 2022-03-01 05:10:49 -0500 86a8343f Chore/Dao Selector - DAO-704 (#258)
+- 2022-02-27 17:34:31 +0330 0354cd3a Assemble page/ DAO-658  (#240)
+- 2022-02-25 15:33:55 +0530 e007ea0c Chore/Disabled options in ButtonGroup, Link url fixes DAO-701 DAO-592 (#253)
+- 2022-02-23 12:42:43 -0500 029286b4 Chore/Breadcrumb icon - DAO-705 (#255)
+- 2022-02-23 12:01:18 -0500 cb37588f Chore/Merge Navs - DAO-700 (#251)
+- 2022-02-23 08:06:36 -0500 be1a32df Feature/ListItemDao & CardDao refactor - DAO-702  (#248)
+- 2022-02-23 13:07:29 +0100 684a498f Add Dropdown from Radix-UI (#249)
+- 2022-02-22 22:42:05 +0400 40bdb0bd Feature/refused to vote (#252)
+- 2022-02-22 14:34:05 +0100 ae3cc400 fix: replaces zsh file discovery with bash compatible version for apm upload (#254)
+- 2022-02-22 16:23:57 +0530 34eff964 Feature/New Proposal Page DAO-415 (#245)
+- 2022-02-22 11:28:46 +0100 07d5311d fix: upload sourcemaps to apm (#250)
+- 2022-02-21 09:11:00 -0500 512e5766 Feature/ListItemAction - DAO-698 (#244)
+- 2022-02-21 17:26:37 +0530 431390b8 Feature/Assemble Withdraw Review Page DAO-592 (#241)
+- 2022-02-21 11:27:25 +0530 5e7875c6 Feature/Governance page empty state DAO-408 (#242)
+- 2022-02-21 11:27:02 +0530 4d30fbd5 Chore/Apollo client DAO-682 (#235)
+- 2022-02-18 11:39:45 -0500 a9ef04a6 Feature/Breadcrumb & AlertBanner  - DAO-699 (#243)
+- 2022-02-17 13:54:56 +0100 d41d3168 Feature/ DAO-694 (#236)
+- 2022-02-16 16:55:53 +0400 b9d83280 Feature/vote time (#238)
+- 2022-02-16 16:07:08 +0400 15825546 Fix/oz delegate (#237)
+- 2022-02-16 10:38:37 +0100 ae1dafc1 Feature: Assemble voting setup page - Dao 621 (#226)
+- 2022-02-16 12:37:28 +0400 7db15c76 Feature/gsn (#234)
+- 2022-02-15 10:08:11 -0500 6e2945d5 Fix/Links adding module - DAO-638 (#231)
+- 2022-02-15 11:54:15 +0100 56e5da84 Feature / DAO-629 (#233)
+- 2022-02-14 16:08:35 +0100 2f98453f fix: storybook deployment on main branch (#232)
+- 2022-02-14 11:01:47 +0100 e02ed481 Feature/ DAO-675 (#221)
+- 2022-02-14 10:55:15 +0100 92231d1f fix: runs webapp-push workflow on all branches (#229)
+- 2022-02-14 10:46:53 +0100 f7b76ace fix: sonarcloud config (#228)
+- 2022-02-14 09:53:21 +0100 6c6a8c85 feat: webapp prod deployment (#227)
+- 2022-02-14 09:46:57 +0100 d1d49c0c fix: adds pull request preview for ui-components and webapp (#224)
+- 2022-02-11 11:27:04 -0500 68b63a14 Feature/Form validation (DAO metadata) - DAO-641 (#218)
+- 2022-02-11 18:12:33 +0330 beee08f5 Assemble/ DAO-652  (#219)
+- 2022-02-11 17:44:45 +0530 deaf3d11 Feature/Form validation Define Proposal DAO-686 (#222)
+- 2022-02-11 06:02:38 -0500 f9cefd95 Fix/Chain selection DAO-688 (#223)
+- 2022-02-10 13:34:21 +0100 c3aafc59 feat: adds requested review template (#217)
+- 2022-02-10 09:56:53 +0100 6735882b feat: adds pull request labeler (#220)
+- 2022-02-09 18:06:48 +0400 c1a53830 Feature/token checks (#216)
+- 2022-02-09 14:21:56 +0100 467516c6 feature / DAO-677 (#212)
+- 2022-02-09 18:17:19 +0530 345f77f3 Feature/Transfer Modal DAO-660 (#196)
+- 2022-02-09 13:33:13 +0100 787ba0bf adds workflow to run subgraph tests (#213)
+- 2022-02-09 07:00:32 -0500 e0d87d1e Feature/Fetch existing token info & validation - DAO-654 (#207)
+- 2022-02-09 06:03:14 -0500 33b380a3 Fix/Staging bug - DAO-689 (#215)
+- 2022-02-09 11:44:05 +0100 2c275b60 feat: adds sonarcloud to webapp-push workflow (#214)
+- 2022-02-09 04:34:07 -0500 3561da16 Fix/Assemble page (Select blockchain) - DAO-634 (#208)
+- 2022-02-09 15:02:51 +0530 df25c68e Feature/Voting terminal DAO-588 (#168)
+- 2022-02-09 12:50:49 +0530 74a1759c Feature/Assemble Define Proposal page DAO-645 (#206)
+- 2022-02-09 10:26:44 +0330 96162b6c chore/ DAO-655 & fix single image input default limitations (#198)
+- 2022-02-08 18:56:41 +0100 d3199798 Feature / DAO-632 (#195) - Subgraph refactoring
+- 2022-02-08 18:43:09 +0100 0de67f6d TokenFactory tests (#204)
+- 2022-02-08 18:16:31 +0330 f0dea33d Assemble/ DAO-656  (#202)
+- 2022-02-07 22:59:54 +0530 0c4622c3 close proposal button added (#205)
+- 2022-02-07 08:52:38 -0500 cee58ede Feature/Assemble page (Select blockchain) - DAO-634 (#187)
+- 2022-02-07 05:36:05 -0500 7a74c329 Feature/Links adding module - DAO-638 (#200)
+- 2022-02-07 04:32:51 -0500 9a007d70 Feature/Setup community with existing token - DAO-653 (#193)
+- 2022-02-07 13:59:17 +0530 a59d9606 Feature/ Description list and Checkbox->Simple components DAO-657 (#201)
+- 2022-02-03 20:13:15 +0400 e61cc49e Feature/whitelist voting (#199)
+- 2022-02-03 15:02:46 +0330 f1a3d38a chore/ DAO-674  (#197)
+- 2022-02-03 11:46:29 +0530 432d0c9c Feature/Single Proposal assemble page DAO-598 (#190)
+- 2022-02-02 09:00:54 -0500 57d3d062 Chore/Update CheckboxListItem & TextInput - DAO-673  (#194)
+- 2022-02-02 04:28:03 -0500 38efdb57 Feature/Add logo component DAO-650 (#188)
+- 2022-02-01 18:25:33 +0100 b5411d00 Cleaned up of the permissions contract (#192)
+- 2022-02-01 18:34:10 +0400 c2cb844a Feature/factory tests (#164)
+- 2022-02-01 13:39:32 +0100 5a0d21c0 Removes processes (#176)
+- 2022-02-01 06:25:58 -0500 1ec0c927 set regex matching to optional (#189)
+- 2022-01-31 12:27:16 -0500 b53511b9 Feature/Assemble page (DAO metadata) DAO-639 (#178)
+- 2022-01-31 21:46:50 +0530 d81c1513 Feature/DAO creation overview page DAO-648 (#185)
+- 2022-01-31 21:37:05 +0530 bba82f14 Added expand button functionality for the editor (#184)
+- 2022-01-31 19:14:04 +0330 69c11247 Feature/drag and drop DAO-637 DAO-649  (#180)
+- 2022-01-31 16:38:31 +0100 54306144 Chore - transfer refactor (#186)
+- 2022-01-28 15:51:46 +0530 19cd7118 Feature/Card with Image+Label DAO-647  (#174)
+- 2022-01-27 11:53:06 -0500 2f6b5fc7 Chore/default link size (#182)
+- 2022-01-27 17:44:26 +0100 a15a0ef0 Chore: Fix DAO-613 (status progress) (#181)
+- 2022-01-27 11:40:39 -0500 1bc4d155 Feature/Withdraw custom token - DAO-666 (#175)
+- 2022-01-27 19:36:13 +0330 54ec7ade Chore/wallet tokens DAO-619  (#166)
+- 2022-01-27 09:59:36 -0500 38982fb1 Fix/ListItem link - DAO-609 (#177)
+- 2022-01-27 16:31:31 +0330 71da73ea scroll to top added & add address link to card proposal DAO-595 DAO-644  (#179)
+- 2022-01-26 14:38:37 +0100 cd633eb1 Feature: DAO 599 - Proposal skeleton page (#160)
+- 2022-01-25 09:43:39 -0500 a13301a4 Fix/custom token button - DAO-665 (#173)
+- 2022-01-25 19:29:29 +0530 117fdf3b Feature/Step component DAO-633 (#170)
+- 2022-01-25 14:42:59 +0330 f7417b7a Integration/all proposals DAO-596  (#165)
+- 2022-01-24 12:18:34 +0100 71ace37c adds gh actions workflow for storybook deployments (#167)
+- 2022-01-24 05:08:49 -0500 48b4e508 Feature/ListItemBlockchain - DAO-636  (#163)
+- 2022-01-24 14:01:14 +0530 7b118c12 Feature/Checkbox ListItem DAO-615 (#153)
+- 2022-01-21 14:34:02 +0100 50bc986a Adds the deployment scripts with his configs and the verification on the related block explorers
+- 2022-01-21 07:48:09 -0500 b5671e77 Feature/Add balance - DAO-643  (#158)
+- 2022-01-21 16:16:38 +0330 3251195c Feature/pagination (#159)
+- 2022-01-20 16:30:00 +0100 8ff56da5 Feature/subgraph-init (#146)
+- 2022-01-20 14:40:17 +0100 8e6659e5 Feature: DAO 597 - widget status (#155)
+- 2022-01-19 09:49:45 -0500 36b21f04 Feature/Resource overview - DAO-590  (#154)
+- 2022-01-19 08:09:29 -0500 65243c0e Feature/Input validation (configure withdraw) - DAO-585  (#150)
+- 2022-01-19 12:14:55 +0100 2d472b33 Visibility of DAO.sol methods updated (#157)
+- 2022-01-19 11:48:39 +0100 5ef91966 slither + echidna removed from CI/CD. I will set up the MythX suite as soon as we have the developer or pro plan active (#156)
+- 2022-01-19 13:39:28 +0400 64802e46 Feature/simplevoting tests (#152)
+- 2022-01-18 11:40:48 -0500 ed3c94fc added placeholder for token menu (#151)
+- 2022-01-18 06:12:55 -0500 cfa58972 removed left prop (#149)
+- 2022-01-18 14:46:59 +0530 6a46fa80 feature/Table->Voters component DAO-610 (#130)
+- 2022-01-18 00:29:59 +0530 e973813d chore/refactor button group (#124)
+- 2022-01-17 20:42:20 +0330 29e0fe3b Feature/card proposal DAO-595  (#139)
+- 2022-01-17 11:20:09 -0500 ae230b09 show add custom token button only when token is not found (#145)
+- 2022-01-17 18:34:13 +0330 8a34a2a2 Chore/search input DAO-544  (#131)
+- 2022-01-17 10:01:41 -0500 0f2b2ff7 Feature/Input validation (deposit) - DAO-614  (#136)
+- 2022-01-17 15:38:39 +0100 84dfdf31 Chore: Default font-weight (#147)
+- 2022-01-17 14:23:29 +0100 db5d185d Feature: DAO 613 - Progress status (#128)
+- 2022-01-17 06:33:14 -0500 87c2e636 Feature/ListItemLink - DAO-609  (#144)
+- 2022-01-14 12:05:43 +0100 7750ab5c Fallback added to DAO and Component + natspec added to AdaptiveERC165 (#142)
+- 2022-01-14 11:07:41 +0100 019b76c4 Fixed the forward state check in DisputableProcess + the loops in Process (#141)
+- 2022-01-14 10:51:18 +0100 15fb42d7 Updates the process events (#140)
+- 2022-01-13 18:20:27 +0100 74039d5f Feature/Emit-DAO-token (#138)
+- 2022-01-13 14:51:32 +0100 fb7be001 Missing role added in DAOFactory.sol (#137)
+- 2022-01-13 17:10:11 +0330 021e9f76 Feature/execution terminal DAO-589  (#123)
+- 2022-01-13 14:37:58 +0100 ba202ff5 ERC1271 added to DAO.sol (#135)
+- 2022-01-13 16:38:09 +0400 4156b306 Test/registry test (#134)
+- 2022-01-13 13:31:10 +0100 6e828e82 One merge conflict was not resolved. Yes, shame on me. :-)
+- 2022-01-13 13:27:51 +0100 eb3c7289 Adds more code documentation and improves the code style in general  (#132)
+- 2022-01-13 13:22:15 +0100 66c5415f Adds the adaptive ERC165 to the contracts (#127)
+- 2022-01-13 14:59:06 +0400 2bb4ec52 changed file structure (#129)
+- 2022-01-13 05:54:37 -0500 0d54f986 Feature/Link - DAO-608  (#125)
+- 2022-01-12 15:47:54 +0100 94f527f9 Simplification of the contracts  (#126)
+- 2022-01-12 16:04:37 +0530 81d734c1 feature/textarea->WYSIWYG DAO-581 (#121)
+- 2022-01-11 21:10:46 +0100 858f8130 Feature: Dao-558 - time zone drop down menu (#122)
+- 2022-01-11 10:30:28 -0500 1a3a4336 Feature/Review page DAO-542  (#114)
+- 2022-01-10 17:45:43 +0330 dca7e068 Feature/time input DAO-601  (#120)
+- 2022-01-10 07:13:07 -0500 1016f6f1 Feature/Alert inline - DAO-602  (#117)
+- 2022-01-10 12:15:14 +0100 fb1a38d4 Feature: DAO 555 - list item text (#119)
+- 2022-01-07 16:44:24 +0100 24439f6a Feature/date input dao 557 (#118)
+- 2022-01-07 13:32:19 +0530 c45ff991 Chore/Refactor modal DAO-604 (#116)
+- 2022-01-07 00:41:08 +0330 14a9a884 Feature/numeric input DAO-556  (#115)
+- 2022-01-06 17:28:46 +0530 2416c916 feature/Configure Withdraw page DAO-587 (#113)
+- 2022-01-04 19:54:15 +0530 26b485ea chore/eslint for ui-components package (#111)
+- 2022-01-03 11:13:09 -0500 1f9829fb Feature/Edit tokenCard - DAO-540 (#107)
+- 2022-01-03 14:11:47 +0330 050cdc29 Feature/dropdown input feature/ DAO-545  (#108)
+- 2022-01-03 15:18:26 +0530 e598a7aa Feature/CardText component DAO-541 (#106)
+- 2022-01-03 14:41:20 +0530 d25ceb6f Feature/Input Value component DAO-546 (#104)
+- 2021-12-23 18:16:05 +0330 9af4a443 feature/tokenListItem DAO-538  (#105)
+- 2021-12-23 17:52:17 +0330 cb365b20 Feature/token selection modal DAO-536  (#97)
+- 2021-12-23 06:05:26 -0500 6c074d04 Feature/Deposit state flow - DAO-543  (#100)
+- 2021-12-23 14:13:42 +0530 1400def0 Feature/Textarea Simple component DAO-547 (#102)
+- 2021-12-22 17:47:32 +0100 e88d9ea8 Feature: 5 largest tokens - DAO-468 (#103)
+- 2021-12-22 09:14:53 -0500 555639c8 Feature/TransferCard - DAO-539  (#101)
+- 2021-12-22 14:31:42 +0530 f84c878f New deposit page setup DAO-515 (#84)
+- 2021-12-21 12:28:40 -0500 d3e93a29 Feature/Historical data  DAO-472  (#99)
+- 2021-12-20 15:05:22 +0530 8db6c1b9 Feature/New components - wizard & linear progress DAO-531 (#96)
+- 2021-12-17 17:07:54 +0100 7a2c51d2 Feature: Transfer filter - DAO 481 (#98)
+- 2021-12-17 17:22:47 +0530 f1fe89cc Feature/Label component DAO-530 (#93)
+- 2021-12-16 10:02:27 -0500 93f035b3 Fix/button wallet DAO-501 (#95)
+- 2021-12-15 13:51:20 +0330 b78748f1 Feature/transfers section DAO-480  (#89)
+- 2021-12-14 11:41:53 -0500 7727eb3a temporarily removed css purging (#94)
+- 2021-12-14 17:39:31 +0530 8eaaaff9 Feature/Transfers page DAO-478 (#79)
+- 2021-12-14 14:06:16 +0330 9477819d Feature/transfer modal DAO-445  (#82)
+- 2021-12-14 10:55:42 +0100 857fe4d0 Feature: typeahead search DAO-475 (#86)
+- 2021-12-13 09:16:50 -0500 317388c2 removed values for tokens with unknow usd value (#90)
+- 2021-12-13 09:08:06 -0500 f6ccf221 Squashed commit of the following: (#91)
+- 2021-12-10 18:27:03 +0400 35582a5f Feature/fixes (#76)
+- 2021-12-10 14:18:46 +0100 fd53cf3c Fix: Token card size DAO-529 (#81)
+- 2021-12-09 11:28:02 +0100 3f5672ab corrects fleek file path again (#80)
+- 2021-12-07 12:18:57 -0500 a1016d02 Feature/transferListItem - DAO-470  (#66)
+- 2021-12-07 18:07:57 +0100 015e6d7a updated readme with setup instructions (#78)
+- 2021-12-07 16:24:19 +0100 bb500601 fixes path for fleek files (#77)
+- 2021-12-07 09:33:51 -0500 63bd7d31 Chore/update packages - DAO-511  (#75)
+- 2021-12-07 17:44:27 +0530 a46639bf Feature/All Tokens page DAO-476 (#69)
+- 2021-12-07 16:25:21 +0530 3c74a6c0 Feature/Radio group component DAO-463 (#74)
+- 2021-12-06 18:19:03 +0330 e617f759 title bar addedchnage wallet card button to small (#70)
+- 2021-12-03 14:19:31 -0500 e766ea08 Feature/fetch today token data - DAO-506  (#67)
+- 2021-12-03 22:47:11 +0330 33296054 IconTextInput & searchInput added DAO-475  (#68)
+- 2021-12-01 19:51:44 +0530 e213e057 badge component naming convention changes (#65)
+- 2021-11-30 15:57:35 +0330 84083309 Feature/EnsName DAO-483 (#57)
+- 2021-11-30 15:46:12 +0530 e6582115 feature/Token Card Component DAO-465 (#59)
+- 2021-11-29 17:05:30 +0000 3d5ccb53 v0.0.1 of contracts added (#49)
+- 2021-11-29 19:17:04 +0330 f51b9542 feature/simpleInputs DAO-474  (#62)
+- 2021-11-29 12:52:07 +0100 e09c8a73 Feature: overview section wrapper dao 467 (#61)
+- 2021-11-29 11:40:11 +0100 0818f37e Feature: Typography dao 486 (#60)
+- 2021-11-25 15:38:33 -0500 54e30b02 Feature/end of navbar - DAO-431  (#58)
+- 2021-11-24 19:41:37 +0530 1794d0fe Feature/Badge component DAO-466 (#51)
+- 2021-11-24 08:11:03 -0500 2d12401e Feature/walletModal DAO-436  (#55)
+- 2021-11-23 10:41:08 +0100 e0a50b78 Feature: Dao Card (#47)
+- 2021-11-22 09:23:23 +0100 a4d046ac Squashed commit of the following: (#46)
+- 2021-11-19 07:53:30 -0500 289e7b60 Chore/ActionListItem and web-app errors (#43)
+- 2021-11-18 09:22:40 +0100 9b612e6d Merge pull request #41 from aragon/chore/icons-typography
+- 2021-11-17 14:57:37 +0100 ad2a3e91 use parent text color on menu svg
+- 2021-11-17 14:17:10 +0100 d952e18d removed code introduced through merging
+- 2021-11-17 16:40:15 +0330 de890453 Merge pull request #40 from aragon/feature/walletbuttons
+- 2021-11-17 16:31:08 +0330 c336d14d add color props to spinner
+- 2021-11-15 17:39:11 +0100 32324da6 adapted menu button to icons
+- 2021-11-15 17:29:07 +0100 a26a06e6 added missing icons to buttons
+- 2021-11-15 16:37:24 +0100 f524fff0 added manrope as import
+- 2021-11-17 14:13:13 +0330 36c397f9 fix types definition & add addresses functions to utils
+- 2021-11-17 00:43:12 +0330 e6f43aa9 lowercase comments and change spinner type
+- 2021-11-17 00:38:39 +0330 9318659e tests added
+- 2021-11-17 00:28:17 +0330 a96946e8 add address detector function & css responsive classes
+- 2021-11-16 17:48:31 +0330 0dc4ab73 active wallet button added
+- 2021-11-16 17:01:41 +0330 33eb94e5 add spinner to progress wallet button
+- 2021-11-16 08:11:21 -0500 a9815384 Merge pull request #38 from aragon/feature/action-items
+- 2021-11-16 08:01:54 -0500 031a6e00 merged develop to fix conflicts
+- 2021-11-16 16:31:29 +0330 cb4fa027 spinner added
+- 2021-11-16 07:45:00 -0500 b40b90aa renamed isActive prop to isSelected
+- 2021-11-16 13:44:51 +0100 42dc2b3a Merge pull request #37 from aragon/feature/menu-buttons-DAO-442
+- 2021-11-16 13:40:13 +0100 ff5fed9e added comments on menu button
+- 2021-11-16 13:35:15 +0100 0599c5db renamed SimpleButton to Button
+- 2021-11-16 07:33:32 -0500 20056628 removed semibold font
+- 2021-11-16 11:11:38 +0100 cae62386 removed unnecessary export
+- 2021-11-16 13:41:04 +0330 2d11409d avatar added & wallet button added
+- 2021-11-16 11:03:00 +0100 e6e3c41a added additional stories for menu button
+- 2021-11-16 04:47:36 -0500 065861de added focus ring and active state for action item
+- 2021-11-16 03:16:16 -0500 e2a14172 added wide for action items
+- 2021-11-16 02:46:51 -0500 6e8d8bed Merge branch 'develop' into feature/action-items
+- 2021-11-16 02:44:47 -0500 01b2bd72 fixed svg fill and clip rules
+- 2021-11-15 12:22:31 -0500 22667129 added menu item test
+- 2021-11-15 10:51:03 -0500 0fc98eca Added menu item
+- 2021-11-15 16:07:21 +0100 7e4ecbad Merge branch 'develop' into feature/menu-buttons-DAO-442
+- 2021-11-15 07:41:18 -0500 15ebe2d5 removed toggleable icon on action item
+- 2021-11-15 15:36:18 +0330 3a4bdbaa Merge pull request #39 from aragon/feature/Icon
+- 2021-11-14 14:33:31 +0330 5008d36f re-export icons
+- 2021-11-12 15:05:02 -0500 ce8c2ba8 Merge branch 'feature/action-items' of https://github.com/aragon/Zaragoza into feature/action-items
+- 2021-11-12 15:00:42 -0500 c0a20650 Finalized action components minus icons
+- 2021-11-12 16:30:02 +0100 cd21fdd3 fixed popover and button test
+- 2021-11-12 16:25:34 +0100 1d722e7d added close icon
+- 2021-11-12 16:00:43 +0100 9e06a462 updated icons interface to allow for color
+- 2021-11-12 15:53:24 +0100 b4764b74 added proper menu icon
+- 2021-11-12 15:53:14 +0100 b8815c46 adapted sized button to new spacing
+- 2021-11-12 14:26:22 +0100 2f2c2173 updated menu button story
+- 2021-11-12 07:56:19 -0500 067e8bef basic actionlistitem
+- 2021-11-12 06:09:01 -0500 07e56f89 added minimal jest setup and test for actionItem
+- 2021-11-12 05:35:10 -0500 86b55fff added icon toggle state
+- 2021-11-11 04:26:54 -0500 9a9f4bdf basic action item
+- 2021-11-12 12:55:15 +0100 e3bba855 added proper focus rings
+- 2021-11-12 12:35:13 +0100 4bf02798 added menu button
+- 2021-11-12 17:19:13 +0330 370f8abd Merge pull request #36 from aragon/feature/Icon
+- 2021-11-12 07:56:19 -0500 67931e6f basic actionlistitem
+- 2021-11-12 16:05:22 +0330 a8356dba icons type added & change folder structure
+- 2021-11-12 15:00:17 +0330 60ba7553 fix folder structure
+- 2021-11-12 06:09:01 -0500 51b484f4 added minimal jest setup and test for actionItem
+- 2021-11-12 05:35:10 -0500 a9e4a86f added icon toggle state
+- 2021-11-11 14:43:12 +0330 f51e2a28 add border to icon containers
+- 2021-11-11 14:35:04 +0330 20bb0ead module Icons added and Icons story organized
+- 2021-11-11 04:26:54 -0500 1082029c basic action item
+- 2021-11-11 12:31:32 +0330 e6e8ef52 Icons added
+- 2021-11-11 08:37:37 +0100 72bf4b69 [DAO-380] [cicd] adds pipelines for push checks and deployment (#35)
+- 2021-11-10 18:12:22 +0100 72c7c086 Merge pull request #32 from aragon/feature/basic-buttons-DAO-439
+- 2021-11-10 17:51:56 +0100 96af49cf addede todo comment
+- 2021-11-10 20:11:23 +0330 d33c842f Merge pull request #28 from aragon/feature/BottomSheet
+- 2021-11-10 17:40:52 +0100 63d74175 extracted icon buton into separate file
+- 2021-11-10 17:26:51 +0100 5dc0553f renamed icon button story
+- 2021-11-10 17:24:57 +0100 65248137 prettified button stories
+- 2021-11-10 17:17:14 +0100 ee8a1b7b fixed type issues
+- 2021-11-10 14:03:21 +0100 a33b744a added comments
+- 2021-11-10 13:57:59 +0100 62a9d909 modified stories to alert onClick
+- 2021-11-10 13:52:50 +0100 35bda9c1 added open button
+- 2021-11-10 13:47:28 +0100 197ee983 added "add button"
+- 2021-11-10 13:32:04 +0100 9a071696 add distinction between simple and iconed button
+- 2021-11-10 11:07:02 +0100 f00d4ca9 fixed errors
+- 2021-11-10 14:08:59 +0330 6e4bcf17 Merge branch 'develop' into feature/BottomSheet
+- 2021-11-10 13:59:53 +0330 ea57b531 add space for import section
+- 2021-11-10 13:54:22 +0330 a0e30949 remove onToggle
+- 2021-11-10 11:02:53 +0100 d46a34ff added comments
+- 2021-11-10 05:00:45 -0500 e4d1c493 Merge pull request #29 from aragon/feature/setup-testing
+- 2021-11-10 04:59:29 -0500 4cc9dda2 merged develop to fix conflicts
+- 2021-11-10 13:24:06 +0330 3a73d30e change event props
+- 2021-11-10 13:23:38 +0330 9d67cde1 change usePrevious input value to T type
+- 2021-11-10 13:18:37 +0330 77495cbe Merge pull request #27 from aragon/feature/popover
+- 2021-11-10 12:12:02 +0330 7256cc43 add usePrevious as global hook and remove onClose method
+- 2021-11-10 11:54:31 +0330 0505755f add custom style props
+- 2021-11-09 16:03:06 +0100 9dbca95f addede missing props
+- 2021-11-09 15:47:23 +0100 147bf54d moved comment
+- 2021-11-09 09:38:21 -0500 f3636f1c updated moduleDirectories comment
+- 2021-11-09 15:29:31 +0100 0447a2e4 fix test errors
+- 2021-11-09 15:23:31 +0100 402a772e Modified Story
+- 2021-11-09 15:21:01 +0100 5a49ce50 Restructured Buttons and added content
+- 2021-11-09 17:25:29 +0330 4747d479 change primary comment and remove nested position
+- 2021-11-09 12:36:34 +0100 c5345599 adapted button sizes to new spacing config
+- 2021-11-08 15:27:09 +0100 3b65e6ee buttons with mode and size
+- 2021-11-08 10:49:59 -0500 bbe70770 Merge pull request #26 from aragon/feature/nav-first-layer
+- 2021-11-08 10:02:54 -0500 c5fb7554 minor fix to testindicator
+- 2021-11-08 09:57:02 -0500 1901c73f added test setup
+- 2021-11-08 16:44:50 +0330 0d747443 Add BottomSheet Top Bar
+- 2021-11-08 07:41:36 -0500 3246d1fc updated to match custom spacing
+- 2021-11-08 15:23:31 +0330 87190b9b add children props to bottom sheet
+- 2021-11-08 06:21:54 -0500 7c85768a Workaround for translation str interpolation issue
+- 2021-11-08 14:03:29 +0330 b3edf9fc change Category to components
+- 2021-11-08 13:44:48 +0330 d87b62b8 remove escapeOutside
+- 2021-11-08 12:04:29 +0330 670a4838 add unit tests
+- 2021-11-08 01:21:49 +0330 802dee10 EscapeOutside added
+- 2021-11-07 22:21:49 +0330 a5f57df7 backdrop added
+- 2021-11-07 22:07:12 +0330 4773f7b4 remove import useState
+- 2021-11-07 21:40:58 +0330 2dd8fdf4 bottomSheet added
+- 2021-11-07 21:07:50 +0330 c66a4a90 Bottom sheet added
+- 2021-11-07 17:45:14 +0330 f82d380c add popover
+- 2021-11-05 07:07:52 -0400 6b1c923e Modified gitignore to include coverage
+- 2021-11-05 06:57:57 -0400 2d263957 Merge branch 'develop' into feature/nav-first-layer
+- 2021-11-05 06:57:05 -0400 70361f2a navbar rendering test
+- 2021-11-05 11:10:43 +0100 d3babb03 Merge pull request #24 from aragon/chore/proper-package-linking
+- 2021-11-05 06:04:43 -0400 15a0383b extracted navlinks and testnetwork indicator(temporarily)
+- 2021-11-05 04:52:02 -0400 251490eb added base desktop navbar
+- 2021-11-04 19:00:26 +0100 9e23ddc8 added readme in ui-components
+- 2021-11-04 17:51:00 +0100 6ec1b5d4 cleaned up prettier files
+- 2021-11-04 17:37:46 +0100 fe4c0729 cleaned up gitignores
+- 2021-11-04 17:34:20 +0100 6771b63a changed linking between packages
+- 2021-11-03 19:40:26 +0330 a2b162d0 Merge pull request #23 from aragon/feature/import-components
+- 2021-11-03 09:19:07 -0400 68faaa11 fixed build warning preventAssignment
+- 2021-11-03 09:10:55 -0400 f3bc7dc9 changed components structure
+- 2021-11-03 09:04:43 -0400 a2668a05 imported button component from ui-components package
+- 2021-11-03 07:35:45 -0400 71667727 Merge pull request #22 from aragon/feature/components
+- 2021-11-03 06:15:33 -0400 b44123b9 fixed regex for actions and removed example application
+- 2021-11-03 04:50:38 -0400 5d1cb8d9 removed auto generated license
+- 2021-11-03 04:36:19 -0400 7c5f809a yarn lock
+- 2021-11-03 04:35:40 -0400 77b9bde0 added tailwind to example template
+- 2021-11-02 23:23:08 -0400 23906ee9 remove tailwind from bundle and add as peer dependency
+- 2021-11-02 16:52:07 -0400 24930a6b onclick handler
+- 2021-11-02 07:05:57 -0400 6e9923bb modified gitignore
+- 2021-11-02 06:55:41 -0400 97d598a2 postcss to v8 and added styled components as peer dependency
+- 2021-11-02 04:58:51 -0400 75cd8815 initial commit
+- 2021-10-29 08:53:23 -0400 fe670f1d clean package
+- 2021-10-29 08:22:36 -0400 3d9dad62 removed to us ts template
+- 2021-10-29 14:00:21 +0330 1bef4f3d Merge pull request #20 from aragon/codeStyling
+- 2021-10-29 13:44:32 +0330 7aeed25b change prettier and fix files based on new rules
+- 2021-10-29 00:00:54 +0330 eb86a307 move parser and parser options to outside overrides block
+- 2021-10-28 23:28:48 +0330 9dd64f97 change ecmaVersion to 11
+- 2021-10-28 23:24:26 +0330 4514287d remove overrides eslint extends
+- 2021-10-28 22:04:36 +0330 086ecca3 edit eslint and prettierrc based on gts
+- 2021-10-28 16:52:50 +0200 0cbe72c1 Merge pull request #19 from aragon/feature/ui-library-package-DAO-420
+- 2021-10-28 15:06:27 +0200 0e1ea658 updated readme
+- 2021-10-28 15:00:43 +0200 274094d7 removed bootstrap app
+- 2021-10-28 14:59:02 +0200 44c8763e added storybook
+- 2021-10-28 12:44:43 +0200 d23c6f9f create react app
+- 2021-10-27 18:47:45 +0100 d2f88547 Merge pull request #16 from aragon/feature/apm_config_DAO-417
+- 2021-10-27 18:41:28 +0100 cfc92e67 fixing check for analytics key
+- 2021-10-27 18:35:14 +0100 fa4ea3bb APM config + analytics identify and augmented wallet + routes
+- 2021-10-27 18:22:50 +0100 ef0a7cf3 Merge branch 'develop' into feature/apm_config_DAO-417
+- 2021-10-27 18:21:08 +0100 577baeff Merge pull request #15 from aragon/cleanup
+- 2021-10-27 13:17:16 -0400 f757487e workaround to use env in html
+- 2021-10-27 18:02:12 +0100 30ed87b5 Configuring APM properly
+- 2021-10-27 12:34:43 -0400 224bf734 yarn lock
+- 2021-10-27 12:34:26 -0400 29551d47 page load analytics setup
+- 2021-10-27 10:50:35 -0400 311d8b29 added rollup typescript plugin package to get warnings back and changed import mapping
+- 2021-10-27 08:52:39 -0400 a082e0d9 Merge pull request #7 from aragon/feature/error-tracking
+- 2021-10-27 13:43:50 +0100 0d9743ac Update Crowdin configuration file
+- 2021-10-27 08:29:49 -0400 687c2cc6 moved custom types to typings folder
+- 2021-10-27 13:03:13 +0100 e30c4d93 Update Crowdin configuration file
+- 2021-10-27 13:02:06 +0100 902c68ed Update Crowdin configuration file
+- 2021-10-27 12:59:38 +0100 14f59de6 Merge pull request #8 from aragon/translations
+- 2021-10-27 12:40:20 +0100 5e2a7dee refactor for translations file
+- 2021-10-27 06:05:24 -0400 663c6d35 added elastic apm packages and custom typings
+- 2021-10-26 17:13:15 -0400 ff3bc5b8 Merge pull request #6 from aragon/Release20211027
+- 2021-10-26 16:53:43 -0400 5c56dc8f Merge pull request #5 from aragon/package-structure
+- 2021-10-26 12:05:44 -0400 a66d47be Merge branch 'develop' into package-structure
+- 2021-10-26 11:51:18 -0400 6c21f96c added basic routing
+- 2021-10-26 16:45:43 +0100 fd1aeb45 Merge pull request #4 from aragon/translations
+- 2021-10-26 11:23:23 -0400 88756cea added placeholder components
+- 2021-10-26 16:17:03 +0100 3ed97c39 adding es as supported language
+- 2021-10-26 16:12:36 +0100 ffae25ae changing crowdin config
+- 2021-10-26 16:08:50 +0100 0cb81bc2 Update Crowdin configuration file
+- 2021-10-26 16:02:52 +0100 3c3d2659 Merge branch 'translations' of github.com:aragon/Zaragoza into translations
+- 2021-10-26 16:02:37 +0100 5319fb69 changing folder structure
+- 2021-10-26 15:46:57 +0100 9b791e40 Update Crowdin configuration file
+- 2021-10-26 06:44:01 -0400 7577c85e added base folder structure
+- 2021-10-26 06:32:46 -0400 44754214 package update
+- 2021-10-25 15:08:36 +0200 22743859 Merge pull request #1 from aragon/feature/i18n
+- 2021-10-25 14:57:03 +0330 81bf0b9a Merge branch 'develop' into feature/i18n
+- 2021-10-25 14:54:32 +0330 fb6596b0 reinstall i18n
+- 2021-10-25 12:28:49 +0330 f0ed3214 Merge pull request #2 from aragon/feature/useWallet
+- 2021-10-22 17:20:35 +0330 75217116 reinstall use-wallet
+- 2021-10-22 16:01:11 +0330 8d8b69c5 styled-components types
+- 2021-10-22 15:40:29 +0330 ee7da843 add i18n packages as devdependencies
+- 2021-10-22 15:16:48 +0330 dd979b6e add use-wallet as devdependencies
+- 2021-10-22 15:05:35 +0330 eb3a94ad reinstall i18
+- 2021-10-22 14:43:56 +0330 5677c4f2 remove use-wallet from devdependencies
+- 2021-10-22 14:10:51 +0330 712acb64 add fallback to i18 config file
+- 2021-10-22 13:35:10 +0330 e5c0af55 add use Wallet package
+- 2021-10-22 13:01:44 +0330 b8b34b14 add react-i18next as dev dependencies
+- 2021-10-22 11:43:45 +0330 cfc5dae5 add useWallet package
+- 2021-10-22 11:24:32 +0330 d2393649 add react-i18next & configuration
+- 2021-10-19 13:09:20 +0200 4308a294 Let's go!
