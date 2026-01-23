@@ -1,7 +1,11 @@
 # ISSUE UPDATES
 
-Generated: 2026-01-23T12:27:42Z
+Generated: 2026-01-23T16:51:50Z
 
+- 2026-01-23 11:10:00 -0300 5aeb28c3 Delete .gitissue directory
+- 2026-01-23 11:09:06 -0300 a1c5ff54 Delete .gitissuer directory
+- 2026-01-23 10:44:59 -0300 041e504f feat: Atualiza o .gitignore para ignorar o diretório .gitissuer
+- 2026-01-23 10:04:35 -0300 d082f227 Refactor code structure for improved readability and maintainability
 - 2026-01-22 20:44:34 -0300 ffd90a64 feat: Atualiza a data da última execução no estado do GitIssuer
 - 2026-01-22 20:39:54 -0300 b9c9ee6f feat: Adiciona arquivo de estado para controle de execução do GitIssuer
 - 2026-01-22 09:31:43 -0300 ec8393e8 Refactor project plans for HarmonyVoting E2E rollout
