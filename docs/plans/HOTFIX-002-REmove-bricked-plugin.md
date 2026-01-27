@@ -1,4 +1,4 @@
-# HOTFIX-002 - Remove bricked plugin from DAO
+# HOTFIX-002 - Remove bricked plugin from DAO [key:01MZB0Y8C5Q1R2S3T4U5V6W7X]
 
 **Repository:** AragonOSX (Axodus/AragonOSX)  
 **End Date Goal:** 2026-01-27 (URGENT)  
