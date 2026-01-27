@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-01-27T14:15:21.937Z",
+  "fetchedAt": "2026-01-27T16:11:07.015Z",
   "repo": "Axodus/AragonOSX",
   "labelFilter": "sync-md",
   "issues": [
@@ -8,7 +8,7 @@
       "nodeId": "I_kwDOLIGtvc7mH0aA",
       "title": "[TASK] - File follow-up issue for UI uninstall fallback",
       "state": "open",
-      "updatedAt": "2026-01-27T14:15:02Z",
+      "updatedAt": "2026-01-27T14:15:38Z",
       "createdAt": "2026-01-27T14:15:02Z",
       "labels": [
         "harmony",
@@ -28,7 +28,7 @@
       "nodeId": "I_kwDOLIGtvc7mH0ZF",
       "title": "[TASK] - Document root cause in incident notes",
       "state": "open",
-      "updatedAt": "2026-01-27T14:15:01Z",
+      "updatedAt": "2026-01-27T14:15:37Z",
       "createdAt": "2026-01-27T14:15:01Z",
       "labels": [
         "harmony",
@@ -48,7 +48,7 @@
       "nodeId": "I_kwDOLIGtvc7mH0X_",
       "title": "[TASK] - Verify plugin has no permissions post-revoke",
       "state": "open",
-      "updatedAt": "2026-01-27T14:15:00Z",
+      "updatedAt": "2026-01-27T14:15:36Z",
       "createdAt": "2026-01-27T14:15:00Z",
       "labels": [
         "harmony",
@@ -68,7 +68,7 @@
       "nodeId": "I_kwDOLIGtvc7mH0XH",
       "title": "[TASK] - Execute revoke actions via DAO admin",
       "state": "open",
-      "updatedAt": "2026-01-27T14:14:59Z",
+      "updatedAt": "2026-01-27T14:15:35Z",
       "createdAt": "2026-01-27T14:14:59Z",
       "labels": [
         "harmony",
@@ -88,7 +88,7 @@
       "nodeId": "I_kwDOLIGtvc7mH0WO",
       "title": "[TASK] - Validate calldata on fork or simulation",
       "state": "open",
-      "updatedAt": "2026-01-27T14:14:58Z",
+      "updatedAt": "2026-01-27T14:15:34Z",
       "createdAt": "2026-01-27T14:14:58Z",
       "labels": [
         "harmony",
@@ -108,7 +108,7 @@
       "nodeId": "I_kwDOLIGtvc7mH0Vj",
       "title": "[TASK] - Generate calldata to revoke upgrade/admin permissions",
       "state": "open",
-      "updatedAt": "2026-01-27T14:14:58Z",
+      "updatedAt": "2026-01-27T14:15:33Z",
       "createdAt": "2026-01-27T14:14:58Z",
       "labels": [
         "harmony",
@@ -128,7 +128,7 @@
       "nodeId": "I_kwDOLIGtvc7mH0U5",
       "title": "[TASK] - Generate calldata to revoke EXECUTE permission",
       "state": "open",
-      "updatedAt": "2026-01-27T14:14:57Z",
+      "updatedAt": "2026-01-27T14:15:32Z",
       "createdAt": "2026-01-27T14:14:57Z",
       "labels": [
         "harmony",
@@ -148,7 +148,7 @@
       "nodeId": "I_kwDOLIGtvc7mH0UY",
       "title": "[TASK] - Verify plugin code and proxy status",
       "state": "open",
-      "updatedAt": "2026-01-27T14:14:56Z",
+      "updatedAt": "2026-01-27T14:15:30Z",
       "createdAt": "2026-01-27T14:14:56Z",
       "labels": [
         "harmony",
@@ -168,7 +168,7 @@
       "nodeId": "I_kwDOLIGtvc7mH0St",
       "title": "[TASK] - Enumerate current permissions for plugin on DAO",
       "state": "open",
-      "updatedAt": "2026-01-27T14:14:55Z",
+      "updatedAt": "2026-01-27T14:15:29Z",
       "createdAt": "2026-01-27T14:14:55Z",
       "labels": [
         "harmony",
@@ -188,7 +188,7 @@
       "nodeId": "I_kwDOLIGtvc7mH0R9",
       "title": "[TASK] - Confirm PSP state for plugin installation",
       "state": "open",
-      "updatedAt": "2026-01-27T14:14:54Z",
+      "updatedAt": "2026-01-27T14:15:28Z",
       "createdAt": "2026-01-27T14:14:54Z",
       "labels": [
         "harmony",
@@ -208,7 +208,7 @@
       "nodeId": "I_kwDOLIGtvc7mH0RR",
       "title": "[HOTFIX] - | TASK-004: Post-fix cleanup",
       "state": "open",
-      "updatedAt": "2026-01-27T14:14:53Z",
+      "updatedAt": "2026-01-27T14:15:27Z",
       "createdAt": "2026-01-27T14:14:53Z",
       "labels": [
         "harmony",
@@ -227,7 +227,7 @@
       "nodeId": "I_kwDOLIGtvc7mH0Qd",
       "title": "[HOTFIX] - | TASK-003: Execute removal",
       "state": "open",
-      "updatedAt": "2026-01-27T14:14:53Z",
+      "updatedAt": "2026-01-27T14:15:26Z",
       "createdAt": "2026-01-27T14:14:53Z",
       "labels": [
         "harmony",
@@ -246,7 +246,7 @@
       "nodeId": "I_kwDOLIGtvc7mH0Pm",
       "title": "[HOTFIX] - | TASK-002: Prepare revoke transactions",
       "state": "open",
-      "updatedAt": "2026-01-27T14:14:52Z",
+      "updatedAt": "2026-01-27T14:15:25Z",
       "createdAt": "2026-01-27T14:14:52Z",
       "labels": [
         "harmony",
@@ -265,7 +265,7 @@
       "nodeId": "I_kwDOLIGtvc7mH0O-",
       "title": "[HOTFIX] - | TASK-001: Investigation baseline",
       "state": "open",
-      "updatedAt": "2026-01-27T14:14:51Z",
+      "updatedAt": "2026-01-27T14:15:24Z",
       "createdAt": "2026-01-27T14:14:51Z",
       "labels": [
         "harmony",
@@ -283,8 +283,8 @@
       "number": 721,
       "nodeId": "I_kwDOLIGtvc7mH0OK",
       "title": "[HOTFIX] - Remove bricked plugin from DAO",
-      "state": "open",
-      "updatedAt": "2026-01-27T14:14:51Z",
+      "state": "closed",
+      "updatedAt": "2026-01-27T14:21:07Z",
       "createdAt": "2026-01-27T14:14:51Z",
       "labels": [
         "harmony",
