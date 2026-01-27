@@ -1,0 +1,3152 @@
+{
+  "fetchedAt": "2026-01-27T14:15:21.937Z",
+  "repo": "Axodus/AragonOSX",
+  "labelFilter": "sync-md",
+  "issues": [
+    {
+      "number": 735,
+      "nodeId": "I_kwDOLIGtvc7mH0aA",
+      "title": "[TASK] - File follow-up issue for UI uninstall fallback",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:15:02Z",
+      "createdAt": "2026-01-27T14:15:02Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:task",
+        "area:frontend",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "ba0053b5c2f8d185b7eb5fc106377825e7bd4a84",
+      "body": null
+    },
+    {
+      "number": 734,
+      "nodeId": "I_kwDOLIGtvc7mH0ZF",
+      "title": "[TASK] - Document root cause in incident notes",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:15:01Z",
+      "createdAt": "2026-01-27T14:15:01Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:task",
+        "governance",
+        "area:docs"
+      ],
+      "assignees": [],
+      "stableId": "76f7dfdfe9e74e8ee42df3436daeff96d4ca1054",
+      "body": null
+    },
+    {
+      "number": 733,
+      "nodeId": "I_kwDOLIGtvc7mH0X_",
+      "title": "[TASK] - Verify plugin has no permissions post-revoke",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:15:00Z",
+      "createdAt": "2026-01-27T14:15:00Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:task",
+        "governance",
+        "area:qa"
+      ],
+      "assignees": [],
+      "stableId": "63cbf8d488cf59c758639695132d360ce7f66e5e",
+      "body": null
+    },
+    {
+      "number": 732,
+      "nodeId": "I_kwDOLIGtvc7mH0XH",
+      "title": "[TASK] - Execute revoke actions via DAO admin",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:14:59Z",
+      "createdAt": "2026-01-27T14:14:59Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:task",
+        "area:ops",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "40de05f7fa4f04050b2bf8a49719178b3c69e207",
+      "body": null
+    },
+    {
+      "number": 731,
+      "nodeId": "I_kwDOLIGtvc7mH0WO",
+      "title": "[TASK] - Validate calldata on fork or simulation",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:14:58Z",
+      "createdAt": "2026-01-27T14:14:58Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:task",
+        "governance",
+        "area:qa"
+      ],
+      "assignees": [],
+      "stableId": "b64cc0e5ce4d8401bf41974e464c48efa7a24c8b",
+      "body": null
+    },
+    {
+      "number": 730,
+      "nodeId": "I_kwDOLIGtvc7mH0Vj",
+      "title": "[TASK] - Generate calldata to revoke upgrade/admin permissions",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:14:58Z",
+      "createdAt": "2026-01-27T14:14:58Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:task",
+        "governance",
+        "area:permissions"
+      ],
+      "assignees": [],
+      "stableId": "53d7e45a473c35306fb7be9bf0f456d44ab15c10",
+      "body": null
+    },
+    {
+      "number": 729,
+      "nodeId": "I_kwDOLIGtvc7mH0U5",
+      "title": "[TASK] - Generate calldata to revoke EXECUTE permission",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:14:57Z",
+      "createdAt": "2026-01-27T14:14:57Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:task",
+        "governance",
+        "area:permissions"
+      ],
+      "assignees": [],
+      "stableId": "d5bf785e7f6b779d575d29eb107d741aa0f409cf",
+      "body": null
+    },
+    {
+      "number": 728,
+      "nodeId": "I_kwDOLIGtvc7mH0UY",
+      "title": "[TASK] - Verify plugin code and proxy status",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:14:56Z",
+      "createdAt": "2026-01-27T14:14:56Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:task",
+        "area:contracts",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "fb91a08e63bcb75385edae3346373e0d17dbdbf4",
+      "body": null
+    },
+    {
+      "number": 727,
+      "nodeId": "I_kwDOLIGtvc7mH0St",
+      "title": "[TASK] - Enumerate current permissions for plugin on DAO",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:14:55Z",
+      "createdAt": "2026-01-27T14:14:55Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:task",
+        "governance",
+        "area:permissions"
+      ],
+      "assignees": [],
+      "stableId": "d4c5f6611cef582f639dfbf3d054ec3989bc4dbe",
+      "body": null
+    },
+    {
+      "number": 726,
+      "nodeId": "I_kwDOLIGtvc7mH0R9",
+      "title": "[TASK] - Confirm PSP state for plugin installation",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:14:54Z",
+      "createdAt": "2026-01-27T14:14:54Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:task",
+        "area:contracts",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "860c25b913b50fdce545031d0eb1dbd19b99a1e4",
+      "body": null
+    },
+    {
+      "number": 725,
+      "nodeId": "I_kwDOLIGtvc7mH0RR",
+      "title": "[HOTFIX] - | TASK-004: Post-fix cleanup",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:14:53Z",
+      "createdAt": "2026-01-27T14:14:53Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:task",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "4115afa2d58854d6d5011ddf84e8b1b0ad62f226",
+      "body": null
+    },
+    {
+      "number": 724,
+      "nodeId": "I_kwDOLIGtvc7mH0Qd",
+      "title": "[HOTFIX] - | TASK-003: Execute removal",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:14:53Z",
+      "createdAt": "2026-01-27T14:14:53Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:task",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "1bc0711322ef6d32a8609b376d7c09a36bb1a01c",
+      "body": null
+    },
+    {
+      "number": 723,
+      "nodeId": "I_kwDOLIGtvc7mH0Pm",
+      "title": "[HOTFIX] - | TASK-002: Prepare revoke transactions",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:14:52Z",
+      "createdAt": "2026-01-27T14:14:52Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:task",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "261c8a97ab43458ffc53c3d4a026127ceba0332f",
+      "body": null
+    },
+    {
+      "number": 722,
+      "nodeId": "I_kwDOLIGtvc7mH0O-",
+      "title": "[HOTFIX] - | TASK-001: Investigation baseline",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:14:51Z",
+      "createdAt": "2026-01-27T14:14:51Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:task",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "147802f0ece4fbd05d2469138963de7525187586",
+      "body": null
+    },
+    {
+      "number": 721,
+      "nodeId": "I_kwDOLIGtvc7mH0OK",
+      "title": "[HOTFIX] - Remove bricked plugin from DAO",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:14:51Z",
+      "createdAt": "2026-01-27T14:14:51Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:task",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "d2a627b5ac3c0698a3e16698ae975725b4ecff2f",
+      "body": null
+    },
+    {
+      "number": 720,
+      "nodeId": "I_kwDOLIGtvc7mHCWi",
+      "title": "[HOTFIX] - Remove Bricked Plugin from DAO",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:07:38Z",
+      "createdAt": "2026-01-27T13:26:58Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:task",
+        "governance"
+      ],
+      "assignees": [
+        "mzfshark"
+      ],
+      "stableId": "92613c2ffe15ac0fa872d3706aadd4e3893340f2",
+      "body": null
+    },
+    {
+      "number": 719,
+      "nodeId": "I_kwDOLIGtvc7lq4Ce",
+      "title": "[PLAN / TASK] - Document PARENT_ISSUE limitation workaround (manual UI linking or UI automation)",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:14:17Z",
+      "createdAt": "2026-01-25T13:04:02Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:docs",
+        "governance",
+        "area:planning"
+      ],
+      "assignees": [],
+      "stableId": "f88d6636927168d3e64cbef32f5e76f908a7029c",
+      "body": null
+    },
+    {
+      "number": 718,
+      "nodeId": "I_kwDOLIGtvc7lq4CT",
+      "title": "[PLAN / TASK] - Prepare gh issue create/edit commands for project sync",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:14:17Z",
+      "createdAt": "2026-01-25T13:04:01Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:docs",
+        "governance",
+        "area:planning"
+      ],
+      "assignees": [],
+      "stableId": "cb3e32733ae7035f689ef7de600ad0522cceab52",
+      "body": null
+    },
+    {
+      "number": 717,
+      "nodeId": "I_kwDOLIGtvc7lq4CH",
+      "title": "[PLAN / TASK] - Generate .gitissue/metadata.generated.json from PLAN.md",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:14:15Z",
+      "createdAt": "2026-01-25T13:04:01Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:task",
+        "governance",
+        "area:planning"
+      ],
+      "assignees": [],
+      "stableId": "46daf8a02ae123c782f4320ae3d9d99a14cf7c58",
+      "body": null
+    },
+    {
+      "number": 716,
+      "nodeId": "I_kwDOLIGtvc7lq4Bv",
+      "title": "[PLAN / TASK] - Reconcile checklist items with project items captured at tmp/mzfshark-project-15-items.json",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:14:14Z",
+      "createdAt": "2026-01-25T13:04:00Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:task",
+        "governance",
+        "area:planning"
+      ],
+      "assignees": [],
+      "stableId": "7016bbadfaff6062b559e2f46fe41feb02448d97",
+      "body": null
+    },
+    {
+      "number": 715,
+      "nodeId": "I_kwDOLIGtvc7lq4Bb",
+      "title": "[PLAN / TASK] - Capture org project schema to tmp/<org>-project-schema.json",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:14:13Z",
+      "createdAt": "2026-01-25T13:03:59Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:task",
+        "governance",
+        "area:planning"
+      ],
+      "assignees": [],
+      "stableId": "ed0e83d3eff7aba722748d9092cccef6445290f3",
+      "body": null
+    },
+    {
+      "number": 714,
+      "nodeId": "I_kwDOLIGtvc7lq4BQ",
+      "title": "[PLAN / TASK] - Verify .gitissue/metadata.config.json at repo root",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:14:12Z",
+      "createdAt": "2026-01-25T13:03:58Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "governance",
+        "type:chore",
+        "area:planning"
+      ],
+      "assignees": [],
+      "stableId": "4b9032c6d032493e97bb6899d8cebff2e11d56fe",
+      "body": null
+    },
+    {
+      "number": 713,
+      "nodeId": "I_kwDOLIGtvc7lq4A8",
+      "title": "[PLAN / TASK] - Produce operator runbook: sync start block, reindex, rollback",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:14:11Z",
+      "createdAt": "2026-01-25T13:03:57Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:docs",
+        "area:ops",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "7415f665ab5cbed485b0e75f983726bb78deb199",
+      "body": null
+    },
+    {
+      "number": 712,
+      "nodeId": "I_kwDOLIGtvc7lq4Aq",
+      "title": "[PLAN / TASK] - E2E checklist — Uninstall and confirm cleanup + UI state",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:14:10Z",
+      "createdAt": "2026-01-25T13:03:57Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:qa",
+        "area:frontend",
+        "area:contracts",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "cc3fad09fa2e618385e8ce625545932b65f7646f",
+      "body": null
+    },
+    {
+      "number": 711,
+      "nodeId": "I_kwDOLIGtvc7lq4Af",
+      "title": "[PLAN / TASK] - E2E checklist — Verify UI reflects indexed state",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:14:10Z",
+      "createdAt": "2026-01-25T13:03:56Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "area:indexing",
+        "type:qa",
+        "area:frontend",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "2d98c97bd3c38a244a7a4259a79f9ee35d2e7fe5",
+      "body": null
+    },
+    {
+      "number": 710,
+      "nodeId": "I_kwDOLIGtvc7lq4AY",
+      "title": "[PLAN / TASK] - E2E checklist — Execute (native-token path if applicable)",
+      "state": "closed",
+      "updatedAt": "2026-01-27T14:14:09Z",
+      "createdAt": "2026-01-25T13:03:55Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:qa",
+        "area:contracts",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "d96ec8f488a80fbebd076557ca4a3cc0964d055c",
+      "body": null
+    },
+    {
+      "number": 709,
+      "nodeId": "I_kwDOLIGtvc7lq4AP",
+      "title": "[PLAN / TASK] - E2E checklist — Vote + reach outcome",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:14:08Z",
+      "createdAt": "2026-01-25T13:03:54Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:qa",
+        "area:frontend",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "545521f217c0ec74b46df3487ef297bf4c119b14",
+      "body": null
+    },
+    {
+      "number": 708,
+      "nodeId": "I_kwDOLIGtvc7lq4AC",
+      "title": "[PLAN / TASK] - E2E checklist — Create proposal",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:14:07Z",
+      "createdAt": "2026-01-25T13:03:53Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:qa",
+        "area:frontend",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "5e63a812a3950a882d2d147719c226ead7c9565b",
+      "body": null
+    },
+    {
+      "number": 707,
+      "nodeId": "I_kwDOLIGtvc7lq3_7",
+      "title": "[PLAN / TASK] - E2E checklist — Deploy/install plugin",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:14:06Z",
+      "createdAt": "2026-01-25T13:03:53Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:qa",
+        "area:contracts",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "8cdef0045b27df3e464f518d6c3d673fe2702dbd",
+      "body": null
+    },
+    {
+      "number": 706,
+      "nodeId": "I_kwDOLIGtvc7lq3_v",
+      "title": "[PLAN / TASK] - Backend: handler unit tests for critical events",
+      "state": "closed",
+      "updatedAt": "2026-01-27T14:14:06Z",
+      "createdAt": "2026-01-25T13:03:52Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "area:backend",
+        "type:test",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "081364f376039485ae1fca12308d56a081d8b842",
+      "body": null
+    },
+    {
+      "number": 705,
+      "nodeId": "I_kwDOLIGtvc7lq3_i",
+      "title": "[PLAN / TASK] - Contracts: install/uninstall + value transfer test cases",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:14:05Z",
+      "createdAt": "2026-01-25T13:03:51Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "area:contracts",
+        "type:test",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "04b483abf4e31f5fb5221b5adaa387f8af23eddd",
+      "body": null
+    },
+    {
+      "number": 704,
+      "nodeId": "I_kwDOLIGtvc7lq3_a",
+      "title": "[PLAN / FEATURE] - App shows correct fee/value semantics in review/execution",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:14:04Z",
+      "createdAt": "2026-01-25T13:03:51Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "area:frontend",
+        "type:feature",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "f09dd7ca6b5d4daf7fc1b19b267f75846e6536a6",
+      "body": null
+    },
+    {
+      "number": 703,
+      "nodeId": "I_kwDOLIGtvc7lq3_S",
+      "title": "[PLAN / TASK] - Ensure indexing distinguishes native-token execution events",
+      "state": "closed",
+      "updatedAt": "2026-01-27T14:14:03Z",
+      "createdAt": "2026-01-25T13:03:50Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "area:indexing",
+        "type:task",
+        "area:backend",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "632f835ad725a3994633c34ff4e670d5e8704341",
+      "body": null
+    },
+    {
+      "number": 702,
+      "nodeId": "I_kwDOLIGtvc7lq3_E",
+      "title": "[PLAN / TASK] - Validate permission model for execution (who/when/conditions)",
+      "state": "closed",
+      "updatedAt": "2026-01-27T14:14:02Z",
+      "createdAt": "2026-01-25T13:03:49Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:qa",
+        "area:contracts",
+        "area:security",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "82597883fe0b45907fa2e946c03638598929cf46",
+      "body": null
+    },
+    {
+      "number": 701,
+      "nodeId": "I_kwDOLIGtvc7lq3-4",
+      "title": "[PLAN / TASK] - Validate contracts execution path for native token value transfers",
+      "state": "closed",
+      "updatedAt": "2026-01-27T14:14:01Z",
+      "createdAt": "2026-01-25T13:03:48Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:qa",
+        "area:contracts",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "cc57fead9bbd00cf2dc973bb899547c80664f9c7",
+      "body": null
+    },
+    {
+      "number": 700,
+      "nodeId": "I_kwDOLIGtvc7lq3-k",
+      "title": "[PLAN / FEATURE] - Implement RPC-based power provider in backend finalizer",
+      "state": "closed",
+      "updatedAt": "2026-01-27T14:14:00Z",
+      "createdAt": "2026-01-25T13:03:47Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "area:indexing",
+        "area:backend",
+        "type:feature",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "39b9a7fa14a03e1cdeaaafe1edfcd3442088438e",
+      "body": null
+    },
+    {
+      "number": 699,
+      "nodeId": "I_kwDOLIGtvc7lq3-Q",
+      "title": "[PLAN / TASK] - Define requirements: wallet + staked balance via RPC",
+      "state": "closed",
+      "updatedAt": "2026-01-27T14:13:59Z",
+      "createdAt": "2026-01-25T13:03:46Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:docs",
+        "area:backend",
+        "area:infra",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "dd37b9a86628db8d1c7dccf69413fe3122ba1dda",
+      "body": null
+    },
+    {
+      "number": 698,
+      "nodeId": "I_kwDOLIGtvc7lq3-F",
+      "title": "[PLAN / FEATURE] - \"Metadata unavailable\" state that still allows core governance",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:13:59Z",
+      "createdAt": "2026-01-25T13:03:46Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "area:frontend",
+        "type:feature",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "5cfb2fb054fa57ebfb24f92c8e822479799571be",
+      "body": null
+    },
+    {
+      "number": 697,
+      "nodeId": "I_kwDOLIGtvc7lq394",
+      "title": "[PLAN / TASK] - Add integrity checks (format validation, size limits)",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:13:58Z",
+      "createdAt": "2026-01-25T13:03:45Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:task",
+        "area:backend",
+        "area:security",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "4543db35223fb6eee79fc032347d92a0cb4b0621",
+      "body": null
+    },
+    {
+      "number": 696,
+      "nodeId": "I_kwDOLIGtvc7lq39Q",
+      "title": "[PLAN / FEATURE] - App fallback fetching + graceful degradation",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:13:57Z",
+      "createdAt": "2026-01-25T13:03:44Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "area:frontend",
+        "type:feature",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "1258d9060e95a672011f8688c10058fded427037",
+      "body": null
+    },
+    {
+      "number": 695,
+      "nodeId": "I_kwDOLIGtvc7lq39F",
+      "title": "[PLAN / TASK] - Backend validation + TTL strategy (avoid malformed data)",
+      "state": "closed",
+      "updatedAt": "2026-01-27T14:13:56Z",
+      "createdAt": "2026-01-25T13:03:43Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:task",
+        "area:backend",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "cb5ff35ff786dda390dedf231cac0f24d2c4c1e6",
+      "body": null
+    },
+    {
+      "number": 694,
+      "nodeId": "I_kwDOLIGtvc7lq38v",
+      "title": "[PLAN / TASK] - Define deterministic fallback order (on-chain → cached → placeholder)",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:13:55Z",
+      "createdAt": "2026-01-25T13:03:43Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:task",
+        "area:backend",
+        "area:frontend",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "8e1017f3de455ab3291bda42a30a355f440395e0",
+      "body": null
+    },
+    {
+      "number": 693,
+      "nodeId": "I_kwDOLIGtvc7lq38n",
+      "title": "[PLAN / TASK] - Identify metadata sources (on-chain hash, backend placeholder)",
+      "state": "closed",
+      "updatedAt": "2026-01-27T14:13:54Z",
+      "createdAt": "2026-01-25T13:03:42Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:docs",
+        "area:backend",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "cd29a1ad5225de568e2388187778b2577ffe7fb7",
+      "body": null
+    },
+    {
+      "number": 692,
+      "nodeId": "I_kwDOLIGtvc7lq38Z",
+      "title": "[PLAN / TASK] - Test uninstall with governance permissions (not just admin)",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:13:53Z",
+      "createdAt": "2026-01-25T13:03:41Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:qa",
+        "area:frontend",
+        "area:contracts",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "028853546ce49ac6fbcff47c6178695013319597",
+      "body": null
+    },
+    {
+      "number": 691,
+      "nodeId": "I_kwDOLIGtvc7lq38H",
+      "title": "[PLAN / TASK] - Handle \"plugin removed\" state in backend/subgraph (no stale UI)",
+      "state": "closed",
+      "updatedAt": "2026-01-27T14:13:52Z",
+      "createdAt": "2026-01-25T13:03:41Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "area:indexing",
+        "type:task",
+        "area:backend",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "97014ac3d69e25f48dcffcaba5b7a51d77d9de6b",
+      "body": null
+    },
+    {
+      "number": 690,
+      "nodeId": "I_kwDOLIGtvc7lq379",
+      "title": "[PLAN / FEATURE] - Implement uninstall UX with warnings + post-uninstall state",
+      "state": "closed",
+      "updatedAt": "2026-01-27T14:13:52Z",
+      "createdAt": "2026-01-25T13:03:40Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "area:frontend",
+        "type:feature",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "0b7fe80e6aee2bdd1c4baf1eb94f34e3f445275c",
+      "body": null
+    },
+    {
+      "number": 689,
+      "nodeId": "I_kwDOLIGtvc7lq37s",
+      "title": "[PLAN / TASK] - Ensure uninstall emits events for indexers/UI reconciliation",
+      "state": "closed",
+      "updatedAt": "2026-01-27T14:13:51Z",
+      "createdAt": "2026-01-25T13:03:39Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "area:indexing",
+        "type:task",
+        "area:frontend",
+        "area:contracts",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "bd8596e2d2664145f57f2809a050448b6e60f879",
+      "body": null
+    },
+    {
+      "number": 688,
+      "nodeId": "I_kwDOLIGtvc7lq37f",
+      "title": "[PLAN / TASK] - Verify contracts uninstall revokes permissions and clears references",
+      "state": "closed",
+      "updatedAt": "2026-01-27T14:13:49Z",
+      "createdAt": "2026-01-25T13:03:38Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:qa",
+        "area:contracts",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "941efe4b6e5876ed33dc9382e919fabe14493843",
+      "body": null
+    },
+    {
+      "number": 687,
+      "nodeId": "I_kwDOLIGtvc7lq37W",
+      "title": "[PLAN / TASK] - Define uninstall invariants (no orphan permissions, no stuck executors)",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:13:48Z",
+      "createdAt": "2026-01-25T13:03:38Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:task",
+        "area:contracts",
+        "area:security",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "52ceaa3e4674d213e895307d841c80b16821b02c",
+      "body": null
+    },
+    {
+      "number": 686,
+      "nodeId": "I_kwDOLIGtvc7lq361",
+      "title": "[PLAN / TASK] - Monitor and verify proposals appear in UI after creation",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:13:48Z",
+      "createdAt": "2026-01-25T13:03:36Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "area:indexing",
+        "type:qa",
+        "area:frontend",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "94e2ec4165ce74de2f5a4549b9a23b2f8f9b9301",
+      "body": null
+    },
+    {
+      "number": 685,
+      "nodeId": "I_kwDOLIGtvc7lq36c",
+      "title": "[PLAN / TASK] - Validate indexing scenarios — reorg simulation (where feasible)",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:13:46Z",
+      "createdAt": "2026-01-25T13:03:35Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "area:indexing",
+        "type:qa",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "b7bcc9f9edac9b87c661f967a2911507a2ddb82a",
+      "body": null
+    },
+    {
+      "number": 684,
+      "nodeId": "I_kwDOLIGtvc7lq36G",
+      "title": "[PLAN / TASK] - Validate indexing scenarios — mid-history backfill",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:13:45Z",
+      "createdAt": "2026-01-25T13:03:35Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "area:indexing",
+        "type:qa",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "61a1f0026704bc3c9ae1c75add68c593a66efd68",
+      "body": null
+    },
+    {
+      "number": 683,
+      "nodeId": "I_kwDOLIGtvc7lq351",
+      "title": "[PLAN / TASK] - Validate indexing scenarios — fresh sync from deployment block",
+      "state": "closed",
+      "updatedAt": "2026-01-27T14:13:44Z",
+      "createdAt": "2026-01-25T13:03:34Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "area:indexing",
+        "type:qa",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "030582ade23c6a2106812b538330f0fcfec6fdce",
+      "body": null
+    },
+    {
+      "number": 682,
+      "nodeId": "I_kwDOLIGtvc7lq35x",
+      "title": "[PLAN / TASK] - Implement catch-up strategy (backfill from deployment block; checkpointing)",
+      "state": "closed",
+      "updatedAt": "2026-01-27T14:13:44Z",
+      "createdAt": "2026-01-25T13:03:33Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "area:indexing",
+        "type:task",
+        "area:infra",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "4c4cf5dda02cb8cd56fe6dccd53fdafaddc7f08c",
+      "body": null
+    },
+    {
+      "number": 681,
+      "nodeId": "I_kwDOLIGtvc7lq35j",
+      "title": "[PLAN / TASK] - Add reorg-safe handling (confirmations, idempotency keys, retries)",
+      "state": "closed",
+      "updatedAt": "2026-01-27T14:13:43Z",
+      "createdAt": "2026-01-25T13:03:32Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "area:indexing",
+        "type:task",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "d218020043661ddf6650ff23f5b47ff544d5cfff",
+      "body": null
+    },
+    {
+      "number": 680,
+      "nodeId": "I_kwDOLIGtvc7lq35U",
+      "title": "[PLAN / TASK] - Enable historical indexing for HarmonyVoting events",
+      "state": "closed",
+      "updatedAt": "2026-01-27T14:13:42Z",
+      "createdAt": "2026-01-25T13:03:32Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "area:indexing",
+        "type:task",
+        "area:backend",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "3196fa4b24e473ebc3e191412801ad995684232a",
+      "body": null
+    },
+    {
+      "number": 679,
+      "nodeId": "I_kwDOLIGtvc7lq35K",
+      "title": "[PLAN / TASK] - Ensure backend handlers cover HarmonyVoting events (ProposalCreated, VoteCast)",
+      "state": "closed",
+      "updatedAt": "2026-01-27T14:13:40Z",
+      "createdAt": "2026-01-25T13:03:31Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "area:indexing",
+        "type:task",
+        "area:backend",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "2a5dc7a26d362b3d32a218cc04378cc86df5a721",
+      "body": null
+    },
+    {
+      "number": 678,
+      "nodeId": "I_kwDOLIGtvc7lq34_",
+      "title": "[PLAN / TASK] - ProjectV2 Schema & Sync",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:13:39Z",
+      "createdAt": "2026-01-25T13:03:30Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:task",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "8f82b84bb2f2847678fbca4a2e0f78ddd7a7d622",
+      "body": null
+    },
+    {
+      "number": 677,
+      "nodeId": "I_kwDOLIGtvc7lq32Y",
+      "title": "[PLAN / FEATURE] - End-to-End Testing & Release Readiness",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:13:38Z",
+      "createdAt": "2026-01-25T13:03:29Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:feature",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "673de3cab4a0453d7f3bca9f9c440c5d1b4e1787",
+      "body": null
+    },
+    {
+      "number": 676,
+      "nodeId": "I_kwDOLIGtvc7lq32K",
+      "title": "[PLAN / FEATURE] - Native-Token Voting Support",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:13:37Z",
+      "createdAt": "2026-01-25T13:03:28Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:feature",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "fec277fc44b20f83627cf698161d71552cf9b598",
+      "body": null
+    },
+    {
+      "number": 675,
+      "nodeId": "I_kwDOLIGtvc7lq319",
+      "title": "[PLAN / FEATURE] - Metadata Redundancy (Resilient Proposal Metadata)",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:13:37Z",
+      "createdAt": "2026-01-25T13:03:28Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:feature",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "e07d7e313f16889e174f127c391d074f91483fa4",
+      "body": null
+    },
+    {
+      "number": 674,
+      "nodeId": "I_kwDOLIGtvc7lq310",
+      "title": "[PLAN / FEATURE] - Plugin Uninstall (Safety & Cleanup)",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:13:36Z",
+      "createdAt": "2026-01-25T13:03:27Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:feature",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "b9b5571e599ecff495fc1f730ab72e8b3a7f61f7",
+      "body": null
+    },
+    {
+      "number": 673,
+      "nodeId": "I_kwDOLIGtvc7lq31l",
+      "title": "[PLAN / FEATURE] - Indexing Resilience",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:13:35Z",
+      "createdAt": "2026-01-25T13:03:26Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "subtask",
+        "sync-md",
+        "type:feature",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "2ddc52eec495b08a590cb11f725bee6d3e6766d9",
+      "body": null
+    },
+    {
+      "number": 672,
+      "nodeId": "I_kwDOLIGtvc7lq31X",
+      "title": "[PLAN] - #PLAN-001 - HarmonyVoting E2E Production Rollout",
+      "state": "open",
+      "updatedAt": "2026-01-27T14:13:34Z",
+      "createdAt": "2026-01-25T13:03:26Z",
+      "labels": [
+        "harmony",
+        "contracts",
+        "sync-md",
+        "type:task",
+        "high",
+        "governance",
+        "plan-parent"
+      ],
+      "assignees": [],
+      "stableId": "9b4e254a92c40b0413a8d13d9fde134fc4a9a252",
+      "body": null
+    },
+    {
+      "number": 177,
+      "nodeId": "I_kwDOLIGtvc7kVIbi",
+      "title": "Confirm chain IDs, RPCs, explorers for Harmony mainnet",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:24Z",
+      "createdAt": "2026-01-19T18:11:33Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "type:docs",
+        "area:infra",
+        "low",
+        "develop",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "1a55c8df5b6c5fa01cfe4f38d46394cce7840877",
+      "body": null
+    },
+    {
+      "number": 176,
+      "nodeId": "I_kwDOLIGtvc7kVIaS",
+      "title": "Add structured logs/metrics for indexing gaps per event type",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:23Z",
+      "createdAt": "2026-01-19T18:11:31Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "medium",
+        "area:indexing",
+        "type:task",
+        "area:backend",
+        "develop",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "e070f1c817988068162be8dfa986e69370ee3a52",
+      "body": null
+    },
+    {
+      "number": 175,
+      "nodeId": "I_kwDOLIGtvc7kVIZD",
+      "title": "Capture current event set for HarmonyVoting (ProposalCreated, VoteCast)",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:23Z",
+      "createdAt": "2026-01-19T18:11:30Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "type:docs",
+        "medium",
+        "area:indexing",
+        "develop",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "820397c43e890f2200500adc8e3d317d686bb1ae",
+      "body": null
+    },
+    {
+      "number": 174,
+      "nodeId": "I_kwDOLIGtvc7kVIXf",
+      "title": "Define golden path E2E scenarios (install/vote/execute/uninstall)",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:22Z",
+      "createdAt": "2026-01-19T18:11:28Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "type:docs",
+        "area:testing",
+        "medium",
+        "develop",
+        "governance"
+      ],
+      "assignees": [],
+      "stableId": "26d6688302751cc5ae94cb66f2ee5213f758cbcd",
+      "body": null
+    },
+    {
+      "number": 173,
+      "nodeId": "I_kwDOLIGtvc7kU9SS",
+      "title": "Vote + reach outcome",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:22Z",
+      "createdAt": "2026-01-19T17:54:23Z",
+      "labels": [
+        "subtask",
+        "plan",
+        "sync-md",
+        "medium",
+        "type:qa",
+        "area:frontend"
+      ],
+      "assignees": [],
+      "stableId": "f23a6b49cd285290dbc2ee0ac22868c9bd68ee08",
+      "body": null
+    },
+    {
+      "number": 172,
+      "nodeId": "I_kwDOLIGtvc7kU9Ra",
+      "title": "Create proposal",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:22Z",
+      "createdAt": "2026-01-19T17:54:22Z",
+      "labels": [
+        "subtask",
+        "plan",
+        "sync-md",
+        "medium",
+        "type:qa",
+        "area:frontend"
+      ],
+      "assignees": [],
+      "stableId": "d2572520e71bea649cdecc89da8c51b0a7109bb8",
+      "body": null
+    },
+    {
+      "number": 171,
+      "nodeId": "I_kwDOLIGtvc7kU9Qg",
+      "title": "Deploy/install plugin",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:21Z",
+      "createdAt": "2026-01-19T17:54:20Z",
+      "labels": [
+        "subtask",
+        "plan",
+        "sync-md",
+        "medium",
+        "type:qa",
+        "area:contracts"
+      ],
+      "assignees": [],
+      "stableId": "0df815953e63419e58eb9d37cfb8c4bfda0e36ba",
+      "body": null
+    },
+    {
+      "number": 170,
+      "nodeId": "I_kwDOLIGtvc7kU9Pz",
+      "title": "Backend: handler unit tests for critical events",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:21Z",
+      "createdAt": "2026-01-19T17:54:19Z",
+      "labels": [
+        "subtask",
+        "plan",
+        "sync-md",
+        "medium",
+        "area:backend",
+        "type:test"
+      ],
+      "assignees": [],
+      "stableId": "5d649e13d04f90a01f57ee1fb42515974281cd02",
+      "body": null
+    },
+    {
+      "number": 169,
+      "nodeId": "I_kwDOLIGtvc7kU9O_",
+      "title": "Contracts: install/uninstall + value transfer cases",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:20Z",
+      "createdAt": "2026-01-19T17:54:18Z",
+      "labels": [
+        "subtask",
+        "plan",
+        "sync-md",
+        "medium",
+        "area:contracts",
+        "type:test"
+      ],
+      "assignees": [],
+      "stableId": "96679aec560429f0b625ab64afeb75bfb8ce6b85",
+      "body": null
+    },
+    {
+      "number": 168,
+      "nodeId": "I_kwDOLIGtvc7kU9OF",
+      "title": "Reorg simulation (where feasible)",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:20Z",
+      "createdAt": "2026-01-19T17:54:16Z",
+      "labels": [
+        "subtask",
+        "plan",
+        "sync-md",
+        "medium",
+        "area:indexing",
+        "type:qa"
+      ],
+      "assignees": [],
+      "stableId": "a3a2788d050d4be16131d975ef57accbdf9d0f3d",
+      "body": null
+    },
+    {
+      "number": 167,
+      "nodeId": "I_kwDOLIGtvc7kU9NP",
+      "title": "Mid-history backfill",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:20Z",
+      "createdAt": "2026-01-19T17:54:15Z",
+      "labels": [
+        "subtask",
+        "plan",
+        "sync-md",
+        "area:indexing",
+        "high",
+        "type:qa"
+      ],
+      "assignees": [],
+      "stableId": "ff422f46c1068c7a6b61066f0b60e71cb381dfb6",
+      "body": null
+    },
+    {
+      "number": 166,
+      "nodeId": "I_kwDOLIGtvc7kU9MK",
+      "title": "Fresh sync from deployment block",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:59Z",
+      "createdAt": "2026-01-19T17:54:13Z",
+      "labels": [
+        "subtask",
+        "plan",
+        "sync-md",
+        "area:indexing",
+        "high",
+        "type:qa"
+      ],
+      "assignees": [],
+      "stableId": "4228b94581f6deeb2bd6ec77fe4ae1236638864c",
+      "body": null
+    },
+    {
+      "number": 165,
+      "nodeId": "I_kwDOLIGtvc7kU9LF",
+      "title": "Produce operator runbook: sync start block, reindex, rollback",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:58Z",
+      "createdAt": "2026-01-19T17:54:11Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "type:docs",
+        "low",
+        "area:ops"
+      ],
+      "assignees": [],
+      "stableId": "4b8403f4348a660ff627caca1d986abbd0e65364",
+      "body": null
+    },
+    {
+      "number": 164,
+      "nodeId": "I_kwDOLIGtvc7kU9KM",
+      "title": "Run manual Harmony E2E checklist",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:58Z",
+      "createdAt": "2026-01-19T17:54:10Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "area:testing",
+        "high",
+        "type:qa"
+      ],
+      "assignees": [],
+      "stableId": "9634b7fc53cc908a389a09625fd8037cf19fad28",
+      "body": null
+    },
+    {
+      "number": 163,
+      "nodeId": "I_kwDOLIGtvc7kU9Iu",
+      "title": "Add automated tests where repo patterns allow",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:58Z",
+      "createdAt": "2026-01-19T17:54:08Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "medium",
+        "area:backend",
+        "area:contracts",
+        "type:test"
+      ],
+      "assignees": [],
+      "stableId": "1c40c0fe718afff60fa6e1b28794ca7309bc8eb8",
+      "body": null
+    },
+    {
+      "number": 162,
+      "nodeId": "I_kwDOLIGtvc7kU9Hy",
+      "title": "App shows correct fee/value semantics in review/execution",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:57Z",
+      "createdAt": "2026-01-19T17:54:06Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "medium",
+        "area:frontend",
+        "type:feature"
+      ],
+      "assignees": [],
+      "stableId": "3c12c63d77995d81b74ec00b152b4fa01943c9c5",
+      "body": null
+    },
+    {
+      "number": 161,
+      "nodeId": "I_kwDOLIGtvc7kU9Gi",
+      "title": "Ensure indexing distinguishes native-token execution events",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:57Z",
+      "createdAt": "2026-01-19T17:54:05Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "medium",
+        "area:indexing",
+        "type:task",
+        "area:backend"
+      ],
+      "assignees": [],
+      "stableId": "ec9c95ced142d5356da5a1de4d35703894685216",
+      "body": null
+    },
+    {
+      "number": 160,
+      "nodeId": "I_kwDOLIGtvc7kU9FS",
+      "title": "Validate permission model for execution (who/when/conditions)",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:57Z",
+      "createdAt": "2026-01-19T17:54:03Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "high",
+        "type:qa",
+        "area:contracts",
+        "area:security"
+      ],
+      "assignees": [],
+      "stableId": "bdc8fd1ec486a1742693cfdb80f433844a1baf1e",
+      "body": null
+    },
+    {
+      "number": 159,
+      "nodeId": "I_kwDOLIGtvc7kU9ED",
+      "title": "Validate contracts execution path for native token value transfers",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:56Z",
+      "createdAt": "2026-01-19T17:54:01Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "high",
+        "type:qa",
+        "area:contracts"
+      ],
+      "assignees": [],
+      "stableId": "b975b600ed1468934fd72344f9a8eb6707c19250",
+      "body": null
+    },
+    {
+      "number": 158,
+      "nodeId": "I_kwDOLIGtvc7kU9C4",
+      "title": "Implement RPC-based power provider in backend finalizer",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:56Z",
+      "createdAt": "2026-01-19T17:54:00Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "area:indexing",
+        "area:backend",
+        "high",
+        "type:feature"
+      ],
+      "assignees": [],
+      "stableId": "877c837894a46d0abdcb3fdc0cd0eba521c03300",
+      "body": null
+    },
+    {
+      "number": 157,
+      "nodeId": "I_kwDOLIGtvc7kU9BB",
+      "title": "Define requirements: wallet + staked balance via RPC",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:56Z",
+      "createdAt": "2026-01-19T17:53:57Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "type:docs",
+        "area:backend",
+        "area:infra",
+        "high"
+      ],
+      "assignees": [],
+      "stableId": "bd3bfa194a0e0d93338c184fcfc5deed5b9ec399",
+      "body": null
+    },
+    {
+      "number": 156,
+      "nodeId": "I_kwDOLIGtvc7kU9AY",
+      "title": "\"Metadata unavailable\" state that still allows core governance",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:55Z",
+      "createdAt": "2026-01-19T17:53:55Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "low",
+        "area:frontend",
+        "type:feature"
+      ],
+      "assignees": [],
+      "stableId": "244f5161741d8481494a6a3d45bcadb16b387c39",
+      "body": null
+    },
+    {
+      "number": 155,
+      "nodeId": "I_kwDOLIGtvc7kU8_L",
+      "title": "Add integrity checks (format validation, size limits)",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:55Z",
+      "createdAt": "2026-01-19T17:53:54Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "medium",
+        "type:task",
+        "area:backend",
+        "area:security"
+      ],
+      "assignees": [],
+      "stableId": "e21c7553e6a13f4da40b03a99ad682a1d68e6bb0",
+      "body": null
+    },
+    {
+      "number": 154,
+      "nodeId": "I_kwDOLIGtvc7kU8-H",
+      "title": "App fallback fetching + graceful degradation",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:55Z",
+      "createdAt": "2026-01-19T17:53:52Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "medium",
+        "area:frontend",
+        "type:feature"
+      ],
+      "assignees": [],
+      "stableId": "151fa8abaab7dfef55267ea9a76ae94f1d2c0704",
+      "body": null
+    },
+    {
+      "number": 153,
+      "nodeId": "I_kwDOLIGtvc7kU89U",
+      "title": "Backend validation + TTL strategy (avoid malformed data)",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:54Z",
+      "createdAt": "2026-01-19T17:53:51Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "medium",
+        "type:task",
+        "area:backend"
+      ],
+      "assignees": [],
+      "stableId": "84d5935a51e45c3d78e5c22201712de2c67b80be",
+      "body": null
+    },
+    {
+      "number": 152,
+      "nodeId": "I_kwDOLIGtvc7kU88P",
+      "title": "Define deterministic fallback order (on-chain → cached → placeholder)",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:54Z",
+      "createdAt": "2026-01-19T17:53:49Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "medium",
+        "type:task",
+        "area:backend",
+        "area:frontend"
+      ],
+      "assignees": [],
+      "stableId": "f48ffd6a3cb268f6cd35f1d4c1c2e14779a3e02f",
+      "body": null
+    },
+    {
+      "number": 151,
+      "nodeId": "I_kwDOLIGtvc7kU86w",
+      "title": "Identify metadata sources (on-chain hash, backend placeholder)",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:53Z",
+      "createdAt": "2026-01-19T17:53:46Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "type:docs",
+        "medium",
+        "area:backend"
+      ],
+      "assignees": [],
+      "stableId": "3e15874b9aced2f956e1684800ed911e7e7674f2",
+      "body": null
+    },
+    {
+      "number": 150,
+      "nodeId": "I_kwDOLIGtvc7kU85c",
+      "title": "Test uninstall with governance permissions (not just admin)",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:53Z",
+      "createdAt": "2026-01-19T17:53:44Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "high",
+        "type:qa",
+        "area:frontend",
+        "area:contracts"
+      ],
+      "assignees": [],
+      "stableId": "a139b5c0060d7742c161fe3187a06a951cc60d3c",
+      "body": null
+    },
+    {
+      "number": 149,
+      "nodeId": "I_kwDOLIGtvc7kU84X",
+      "title": "Handle \"plugin removed\" state in backend/subgraph (no stale UI)",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:53Z",
+      "createdAt": "2026-01-19T17:53:43Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "area:indexing",
+        "type:task",
+        "area:backend",
+        "high"
+      ],
+      "assignees": [],
+      "stableId": "93334c3590c1ffb540f19000dc54481a3972c4bd",
+      "body": null
+    },
+    {
+      "number": 148,
+      "nodeId": "I_kwDOLIGtvc7kU83s",
+      "title": "Implement uninstall UX with warnings + post-uninstall state",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:52Z",
+      "createdAt": "2026-01-19T17:53:42Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "medium",
+        "area:frontend",
+        "type:feature"
+      ],
+      "assignees": [],
+      "stableId": "434cc56d893c7b341b7ea6d3f575f8877e634a18",
+      "body": null
+    },
+    {
+      "number": 147,
+      "nodeId": "I_kwDOLIGtvc7kU82G",
+      "title": "Ensure uninstall emits events for indexers/UI reconciliation",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:52Z",
+      "createdAt": "2026-01-19T17:53:39Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "area:indexing",
+        "type:task",
+        "high",
+        "area:frontend",
+        "area:contracts"
+      ],
+      "assignees": [],
+      "stableId": "51c598563f48f7fd4e556382b39b4142e8ee2b4f",
+      "body": null
+    },
+    {
+      "number": 146,
+      "nodeId": "I_kwDOLIGtvc7kU81a",
+      "title": "Verify contracts uninstall revokes permissions and clears references",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:52Z",
+      "createdAt": "2026-01-19T17:53:38Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "high",
+        "type:qa",
+        "area:contracts"
+      ],
+      "assignees": [],
+      "stableId": "c91fe21b0149c8dc3417a68422ed8f56ef9378e2",
+      "body": null
+    },
+    {
+      "number": 145,
+      "nodeId": "I_kwDOLIGtvc7kU80K",
+      "title": "Define uninstall invariants (no orphan permissions, no stuck executors)",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:51Z",
+      "createdAt": "2026-01-19T17:53:36Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "type:task",
+        "high",
+        "area:contracts",
+        "area:security"
+      ],
+      "assignees": [],
+      "stableId": "43b86a334715acb4fd10cbc36e303f4d1b800bb9",
+      "body": null
+    },
+    {
+      "number": 144,
+      "nodeId": "I_kwDOLIGtvc7kU8zS",
+      "title": "Monitor and verify proposals appear in UI after creation",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:51Z",
+      "createdAt": "2026-01-19T17:53:35Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "area:indexing",
+        "high",
+        "type:qa",
+        "area:frontend"
+      ],
+      "assignees": [],
+      "stableId": "24349f79e7896cd35e56c465fb042fa782a99c1d",
+      "body": null
+    },
+    {
+      "number": 143,
+      "nodeId": "I_kwDOLIGtvc7kU8xw",
+      "title": "Validate indexing scenarios",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:51Z",
+      "createdAt": "2026-01-19T17:53:32Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "area:indexing",
+        "high",
+        "type:qa"
+      ],
+      "assignees": [],
+      "stableId": "4bc3fc684c38bb4ece0180864cecede7acc68934",
+      "body": null
+    },
+    {
+      "number": 142,
+      "nodeId": "I_kwDOLIGtvc7kU8w1",
+      "title": "Implement catch-up strategy (backfill from deployment block; checkpointing)",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:06:50Z",
+      "createdAt": "2026-01-19T17:53:30Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "area:indexing",
+        "type:task",
+        "area:infra",
+        "high"
+      ],
+      "assignees": [],
+      "stableId": "2bb477b08fc4411ff4134c9a6642cf35efb3e85f",
+      "body": null
+    },
+    {
+      "number": 141,
+      "nodeId": "I_kwDOLIGtvc7kU8v_",
+      "title": "Add reorg-safe handling (confirmations, idempotency keys, retries)",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:34Z",
+      "createdAt": "2026-01-19T17:53:29Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "area:indexing",
+        "type:task",
+        "high"
+      ],
+      "assignees": [],
+      "stableId": "260846bb716a0a716692af120bc31bfcc5fb7d55",
+      "body": null
+    },
+    {
+      "number": 140,
+      "nodeId": "I_kwDOLIGtvc7kU8vH",
+      "title": "Enable historical indexing for HarmonyVoting events",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:34Z",
+      "createdAt": "2026-01-19T17:53:28Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "area:indexing",
+        "type:task",
+        "area:backend",
+        "high"
+      ],
+      "assignees": [],
+      "stableId": "42291b59d7a84ae66f2213f49bb3acb36ac9926a",
+      "body": null
+    },
+    {
+      "number": 139,
+      "nodeId": "I_kwDOLIGtvc7kU8uD",
+      "title": "Ensure backend handlers cover HarmonyVoting events (ProposalCreated, VoteCast)",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:33Z",
+      "createdAt": "2026-01-19T17:53:26Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "area:indexing",
+        "type:task",
+        "area:backend",
+        "high"
+      ],
+      "assignees": [],
+      "stableId": "d9775f40f96ea9a4b3d1b4c0d251cf794107e344",
+      "body": null
+    },
+    {
+      "number": 138,
+      "nodeId": "I_kwDOLIGtvc7kU8tS",
+      "title": "Confirm chain IDs, RPCs, explorers for Harmony mainnet",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:33Z",
+      "createdAt": "2026-01-19T17:53:25Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "type:docs",
+        "area:infra",
+        "low"
+      ],
+      "assignees": [],
+      "stableId": "1a55c8df5b6c5fa01cfe4f38d46394cce7840877",
+      "body": null
+    },
+    {
+      "number": 137,
+      "nodeId": "I_kwDOLIGtvc7kU8sj",
+      "title": "Add structured logs/metrics for indexing gaps per event type",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:33Z",
+      "createdAt": "2026-01-19T17:53:24Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "medium",
+        "area:indexing",
+        "type:task",
+        "area:backend"
+      ],
+      "assignees": [],
+      "stableId": "e070f1c817988068162be8dfa986e69370ee3a52",
+      "body": null
+    },
+    {
+      "number": 136,
+      "nodeId": "I_kwDOLIGtvc7kU8rt",
+      "title": "Capture current event set for HarmonyVoting (ProposalCreated, VoteCast)",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:32Z",
+      "createdAt": "2026-01-19T17:53:22Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "type:docs",
+        "medium",
+        "area:indexing"
+      ],
+      "assignees": [],
+      "stableId": "820397c43e890f2200500adc8e3d317d686bb1ae",
+      "body": null
+    },
+    {
+      "number": 135,
+      "nodeId": "I_kwDOLIGtvc7kU8q-",
+      "title": "Define golden path E2E scenarios (install/vote/execute/uninstall)",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:32Z",
+      "createdAt": "2026-01-19T17:53:21Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "type:docs",
+        "area:testing",
+        "medium"
+      ],
+      "assignees": [],
+      "stableId": "26d6688302751cc5ae94cb66f2ee5213f758cbcd",
+      "body": null
+    },
+    {
+      "number": 134,
+      "nodeId": "I_kwDOLIGtvc7kU3sS",
+      "title": "Verify UI reflects indexed state",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:32Z",
+      "createdAt": "2026-01-19T17:45:23Z",
+      "labels": [
+        "subtask",
+        "plan",
+        "sync-md",
+        "medium",
+        "area:indexing",
+        "type:qa",
+        "area:frontend"
+      ],
+      "assignees": [],
+      "stableId": "e61e0cc351637433af8b70a320d9d39298768b45",
+      "body": null
+    },
+    {
+      "number": 133,
+      "nodeId": "I_kwDOLIGtvc7kU3ra",
+      "title": "Execute (native-token path if applicable)",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:31Z",
+      "createdAt": "2026-01-19T17:45:22Z",
+      "labels": [
+        "subtask",
+        "plan",
+        "sync-md",
+        "medium",
+        "type:qa",
+        "area:contracts"
+      ],
+      "assignees": [],
+      "stableId": "46bf13ff41d5972b660c92025233ef3b031cb000",
+      "body": null
+    },
+    {
+      "number": 132,
+      "nodeId": "I_kwDOLIGtvc7kU3qj",
+      "title": "Vote + reach outcome",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:31Z",
+      "createdAt": "2026-01-19T17:45:20Z",
+      "labels": [
+        "subtask",
+        "plan",
+        "sync-md",
+        "medium",
+        "type:qa",
+        "area:frontend"
+      ],
+      "assignees": [],
+      "stableId": "f23a6b49cd285290dbc2ee0ac22868c9bd68ee08",
+      "body": null
+    },
+    {
+      "number": 131,
+      "nodeId": "I_kwDOLIGtvc7kU3pu",
+      "title": "Create proposal",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:31Z",
+      "createdAt": "2026-01-19T17:45:19Z",
+      "labels": [
+        "subtask",
+        "plan",
+        "sync-md",
+        "medium",
+        "type:qa",
+        "area:frontend"
+      ],
+      "assignees": [],
+      "stableId": "d2572520e71bea649cdecc89da8c51b0a7109bb8",
+      "body": null
+    },
+    {
+      "number": 130,
+      "nodeId": "I_kwDOLIGtvc7kU3oy",
+      "title": "Deploy/install plugin",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:31Z",
+      "createdAt": "2026-01-19T17:45:18Z",
+      "labels": [
+        "subtask",
+        "plan",
+        "sync-md",
+        "medium",
+        "type:qa",
+        "area:contracts"
+      ],
+      "assignees": [],
+      "stableId": "0df815953e63419e58eb9d37cfb8c4bfda0e36ba",
+      "body": null
+    },
+    {
+      "number": 129,
+      "nodeId": "I_kwDOLIGtvc7kU3n-",
+      "title": "Backend: handler unit tests for critical events",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:30Z",
+      "createdAt": "2026-01-19T17:45:17Z",
+      "labels": [
+        "subtask",
+        "plan",
+        "sync-md",
+        "medium",
+        "area:backend",
+        "type:test"
+      ],
+      "assignees": [],
+      "stableId": "5d649e13d04f90a01f57ee1fb42515974281cd02",
+      "body": null
+    },
+    {
+      "number": 128,
+      "nodeId": "I_kwDOLIGtvc7kU3m4",
+      "title": "Contracts: install/uninstall + value transfer cases",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:30Z",
+      "createdAt": "2026-01-19T17:45:15Z",
+      "labels": [
+        "subtask",
+        "plan",
+        "sync-md",
+        "medium",
+        "area:contracts",
+        "type:test"
+      ],
+      "assignees": [],
+      "stableId": "96679aec560429f0b625ab64afeb75bfb8ce6b85",
+      "body": null
+    },
+    {
+      "number": 127,
+      "nodeId": "I_kwDOLIGtvc7kU3l7",
+      "title": "Reorg simulation (where feasible)",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:30Z",
+      "createdAt": "2026-01-19T17:45:14Z",
+      "labels": [
+        "subtask",
+        "plan",
+        "sync-md",
+        "medium",
+        "area:indexing",
+        "type:qa"
+      ],
+      "assignees": [],
+      "stableId": "a3a2788d050d4be16131d975ef57accbdf9d0f3d",
+      "body": null
+    },
+    {
+      "number": 126,
+      "nodeId": "I_kwDOLIGtvc7kU3kN",
+      "title": "Mid-history backfill",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:29Z",
+      "createdAt": "2026-01-19T17:45:11Z",
+      "labels": [
+        "subtask",
+        "plan",
+        "sync-md",
+        "area:indexing",
+        "high",
+        "type:qa"
+      ],
+      "assignees": [],
+      "stableId": "ff422f46c1068c7a6b61066f0b60e71cb381dfb6",
+      "body": null
+    },
+    {
+      "number": 125,
+      "nodeId": "I_kwDOLIGtvc7kU3jb",
+      "title": "Fresh sync from deployment block",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:29Z",
+      "createdAt": "2026-01-19T17:45:10Z",
+      "labels": [
+        "subtask",
+        "plan",
+        "sync-md",
+        "area:indexing",
+        "high",
+        "type:qa"
+      ],
+      "assignees": [],
+      "stableId": "4228b94581f6deeb2bd6ec77fe4ae1236638864c",
+      "body": null
+    },
+    {
+      "number": 124,
+      "nodeId": "I_kwDOLIGtvc7kU3ib",
+      "title": "Produce operator runbook: sync start block, reindex, rollback",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:29Z",
+      "createdAt": "2026-01-19T17:45:09Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "type:docs",
+        "low",
+        "area:ops"
+      ],
+      "assignees": [],
+      "stableId": "4b8403f4348a660ff627caca1d986abbd0e65364",
+      "body": null
+    },
+    {
+      "number": 123,
+      "nodeId": "I_kwDOLIGtvc7kU3hy",
+      "title": "Run manual Harmony E2E checklist",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:28Z",
+      "createdAt": "2026-01-19T17:45:08Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "area:testing",
+        "high",
+        "type:qa"
+      ],
+      "assignees": [],
+      "stableId": "9634b7fc53cc908a389a09625fd8037cf19fad28",
+      "body": null
+    },
+    {
+      "number": 122,
+      "nodeId": "I_kwDOLIGtvc7kU3gT",
+      "title": "Add automated tests where repo patterns allow",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:28Z",
+      "createdAt": "2026-01-19T17:45:06Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "medium",
+        "area:backend",
+        "area:contracts",
+        "type:test"
+      ],
+      "assignees": [],
+      "stableId": "1c40c0fe718afff60fa6e1b28794ca7309bc8eb8",
+      "body": null
+    },
+    {
+      "number": 121,
+      "nodeId": "I_kwDOLIGtvc7kU3fj",
+      "title": "App shows correct fee/value semantics in review/execution",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:28Z",
+      "createdAt": "2026-01-19T17:45:05Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "medium",
+        "area:frontend",
+        "type:feature"
+      ],
+      "assignees": [],
+      "stableId": "3c12c63d77995d81b74ec00b152b4fa01943c9c5",
+      "body": null
+    },
+    {
+      "number": 120,
+      "nodeId": "I_kwDOLIGtvc7kU3e2",
+      "title": "Ensure indexing distinguishes native-token execution events",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:27Z",
+      "createdAt": "2026-01-19T17:45:04Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "medium",
+        "area:indexing",
+        "type:task",
+        "area:backend"
+      ],
+      "assignees": [],
+      "stableId": "ec9c95ced142d5356da5a1de4d35703894685216",
+      "body": null
+    },
+    {
+      "number": 119,
+      "nodeId": "I_kwDOLIGtvc7kU3d5",
+      "title": "Validate permission model for execution (who/when/conditions)",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:27Z",
+      "createdAt": "2026-01-19T17:45:03Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "high",
+        "type:qa",
+        "area:contracts",
+        "area:security"
+      ],
+      "assignees": [],
+      "stableId": "bdc8fd1ec486a1742693cfdb80f433844a1baf1e",
+      "body": null
+    },
+    {
+      "number": 118,
+      "nodeId": "I_kwDOLIGtvc7kU3dA",
+      "title": "Validate contracts execution path for native token value transfers",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:27Z",
+      "createdAt": "2026-01-19T17:45:01Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "high",
+        "type:qa",
+        "area:contracts"
+      ],
+      "assignees": [],
+      "stableId": "b975b600ed1468934fd72344f9a8eb6707c19250",
+      "body": null
+    },
+    {
+      "number": 117,
+      "nodeId": "I_kwDOLIGtvc7kU3cF",
+      "title": "Implement RPC-based power provider in backend finalizer",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:26Z",
+      "createdAt": "2026-01-19T17:45:00Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "area:indexing",
+        "area:backend",
+        "high",
+        "type:feature"
+      ],
+      "assignees": [],
+      "stableId": "877c837894a46d0abdcb3fdc0cd0eba521c03300",
+      "body": null
+    },
+    {
+      "number": 116,
+      "nodeId": "I_kwDOLIGtvc7kU3bb",
+      "title": "Define requirements: wallet + staked balance via RPC",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:08:03Z",
+      "createdAt": "2026-01-19T17:44:59Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "type:docs",
+        "area:backend",
+        "area:infra",
+        "high"
+      ],
+      "assignees": [],
+      "stableId": "bd3bfa194a0e0d93338c184fcfc5deed5b9ec399",
+      "body": null
+    },
+    {
+      "number": 115,
+      "nodeId": "I_kwDOLIGtvc7kU3aU",
+      "title": "\"Metadata unavailable\" state that still allows core governance",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:08:03Z",
+      "createdAt": "2026-01-19T17:44:58Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "low",
+        "area:frontend",
+        "type:feature"
+      ],
+      "assignees": [],
+      "stableId": "244f5161741d8481494a6a3d45bcadb16b387c39",
+      "body": null
+    },
+    {
+      "number": 114,
+      "nodeId": "I_kwDOLIGtvc7kU3Zm",
+      "title": "Add integrity checks (format validation, size limits)",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:08:03Z",
+      "createdAt": "2026-01-19T17:44:57Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "medium",
+        "type:task",
+        "area:backend",
+        "area:security"
+      ],
+      "assignees": [],
+      "stableId": "e21c7553e6a13f4da40b03a99ad682a1d68e6bb0",
+      "body": null
+    },
+    {
+      "number": 113,
+      "nodeId": "I_kwDOLIGtvc7kU3ZC",
+      "title": "App fallback fetching + graceful degradation",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:08:02Z",
+      "createdAt": "2026-01-19T17:44:56Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "medium",
+        "area:frontend",
+        "type:feature"
+      ],
+      "assignees": [],
+      "stableId": "151fa8abaab7dfef55267ea9a76ae94f1d2c0704",
+      "body": null
+    },
+    {
+      "number": 112,
+      "nodeId": "I_kwDOLIGtvc7kU3Xl",
+      "title": "Backend validation + TTL strategy (avoid malformed data)",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:08:02Z",
+      "createdAt": "2026-01-19T17:44:53Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "medium",
+        "type:task",
+        "area:backend"
+      ],
+      "assignees": [],
+      "stableId": "84d5935a51e45c3d78e5c22201712de2c67b80be",
+      "body": null
+    },
+    {
+      "number": 111,
+      "nodeId": "I_kwDOLIGtvc7kU3Wl",
+      "title": "Define deterministic fallback order (on-chain → cached → placeholder)",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:08:01Z",
+      "createdAt": "2026-01-19T17:44:52Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "medium",
+        "type:task",
+        "area:backend",
+        "area:frontend"
+      ],
+      "assignees": [],
+      "stableId": "f48ffd6a3cb268f6cd35f1d4c1c2e14779a3e02f",
+      "body": null
+    },
+    {
+      "number": 110,
+      "nodeId": "I_kwDOLIGtvc7kU3V0",
+      "title": "Identify metadata sources (on-chain hash, backend placeholder)",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:08:01Z",
+      "createdAt": "2026-01-19T17:44:51Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "type:docs",
+        "medium",
+        "area:backend"
+      ],
+      "assignees": [],
+      "stableId": "3e15874b9aced2f956e1684800ed911e7e7674f2",
+      "body": null
+    },
+    {
+      "number": 109,
+      "nodeId": "I_kwDOLIGtvc7kU3VD",
+      "title": "Test uninstall with governance permissions (not just admin)",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:08:01Z",
+      "createdAt": "2026-01-19T17:44:50Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "high",
+        "type:qa",
+        "area:frontend",
+        "area:contracts"
+      ],
+      "assignees": [],
+      "stableId": "a139b5c0060d7742c161fe3187a06a951cc60d3c",
+      "body": null
+    },
+    {
+      "number": 108,
+      "nodeId": "I_kwDOLIGtvc7kU3UO",
+      "title": "Handle \"plugin removed\" state in backend/subgraph (no stale UI)",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:08:00Z",
+      "createdAt": "2026-01-19T17:44:49Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "area:indexing",
+        "type:task",
+        "area:backend",
+        "high"
+      ],
+      "assignees": [],
+      "stableId": "93334c3590c1ffb540f19000dc54481a3972c4bd",
+      "body": null
+    },
+    {
+      "number": 107,
+      "nodeId": "I_kwDOLIGtvc7kU3Tp",
+      "title": "Implement uninstall UX with warnings + post-uninstall state",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:08:00Z",
+      "createdAt": "2026-01-19T17:44:48Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "medium",
+        "area:frontend",
+        "type:feature"
+      ],
+      "assignees": [],
+      "stableId": "434cc56d893c7b341b7ea6d3f575f8877e634a18",
+      "body": null
+    },
+    {
+      "number": 106,
+      "nodeId": "I_kwDOLIGtvc7kU3S4",
+      "title": "Ensure uninstall emits events for indexers/UI reconciliation",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:08:00Z",
+      "createdAt": "2026-01-19T17:44:47Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "area:indexing",
+        "type:task",
+        "high",
+        "area:frontend",
+        "area:contracts"
+      ],
+      "assignees": [],
+      "stableId": "51c598563f48f7fd4e556382b39b4142e8ee2b4f",
+      "body": null
+    },
+    {
+      "number": 105,
+      "nodeId": "I_kwDOLIGtvc7kU3R5",
+      "title": "Verify contracts uninstall revokes permissions and clears references",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:59Z",
+      "createdAt": "2026-01-19T17:44:45Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "high",
+        "type:qa",
+        "area:contracts"
+      ],
+      "assignees": [],
+      "stableId": "c91fe21b0149c8dc3417a68422ed8f56ef9378e2",
+      "body": null
+    },
+    {
+      "number": 104,
+      "nodeId": "I_kwDOLIGtvc7kU3RJ",
+      "title": "Define uninstall invariants (no orphan permissions, no stuck executors)",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:59Z",
+      "createdAt": "2026-01-19T17:44:44Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "type:task",
+        "high",
+        "area:contracts",
+        "area:security"
+      ],
+      "assignees": [],
+      "stableId": "43b86a334715acb4fd10cbc36e303f4d1b800bb9",
+      "body": null
+    },
+    {
+      "number": 103,
+      "nodeId": "I_kwDOLIGtvc7kU3QX",
+      "title": "Monitor and verify proposals appear in UI after creation",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:59Z",
+      "createdAt": "2026-01-19T17:44:42Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "area:indexing",
+        "high",
+        "type:qa",
+        "area:frontend"
+      ],
+      "assignees": [],
+      "stableId": "24349f79e7896cd35e56c465fb042fa782a99c1d",
+      "body": null
+    },
+    {
+      "number": 102,
+      "nodeId": "I_kwDOLIGtvc7kU3Pi",
+      "title": "Validate indexing scenarios",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:58Z",
+      "createdAt": "2026-01-19T17:44:41Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "area:indexing",
+        "high",
+        "type:qa"
+      ],
+      "assignees": [],
+      "stableId": "4bc3fc684c38bb4ece0180864cecede7acc68934",
+      "body": null
+    },
+    {
+      "number": 101,
+      "nodeId": "I_kwDOLIGtvc7kU3O3",
+      "title": "Implement catch-up strategy (backfill from deployment block; checkpointing)",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:58Z",
+      "createdAt": "2026-01-19T17:44:40Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "area:indexing",
+        "type:task",
+        "area:infra",
+        "high"
+      ],
+      "assignees": [],
+      "stableId": "2bb477b08fc4411ff4134c9a6642cf35efb3e85f",
+      "body": null
+    },
+    {
+      "number": 100,
+      "nodeId": "I_kwDOLIGtvc7kU3N_",
+      "title": "Add reorg-safe handling (confirmations, idempotency keys, retries)",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:58Z",
+      "createdAt": "2026-01-19T17:44:39Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "area:indexing",
+        "type:task",
+        "high"
+      ],
+      "assignees": [],
+      "stableId": "260846bb716a0a716692af120bc31bfcc5fb7d55",
+      "body": null
+    },
+    {
+      "number": 99,
+      "nodeId": "I_kwDOLIGtvc7kU3NF",
+      "title": "Enable historical indexing for HarmonyVoting events",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:57Z",
+      "createdAt": "2026-01-19T17:44:37Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "area:indexing",
+        "type:task",
+        "area:backend",
+        "high"
+      ],
+      "assignees": [],
+      "stableId": "42291b59d7a84ae66f2213f49bb3acb36ac9926a",
+      "body": null
+    },
+    {
+      "number": 98,
+      "nodeId": "I_kwDOLIGtvc7kU3MT",
+      "title": "Ensure backend handlers cover HarmonyVoting events (ProposalCreated, VoteCast)",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:57Z",
+      "createdAt": "2026-01-19T17:44:36Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "area:indexing",
+        "type:task",
+        "area:backend",
+        "high"
+      ],
+      "assignees": [],
+      "stableId": "d9775f40f96ea9a4b3d1b4c0d251cf794107e344",
+      "body": null
+    },
+    {
+      "number": 97,
+      "nodeId": "I_kwDOLIGtvc7kU3LY",
+      "title": "Confirm chain IDs, RPCs, explorers for Harmony mainnet",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:56Z",
+      "createdAt": "2026-01-19T17:44:35Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "type:docs",
+        "area:infra",
+        "low"
+      ],
+      "assignees": [],
+      "stableId": "1a55c8df5b6c5fa01cfe4f38d46394cce7840877",
+      "body": null
+    },
+    {
+      "number": 96,
+      "nodeId": "I_kwDOLIGtvc7kU3Kk",
+      "title": "Add structured logs/metrics for indexing gaps per event type",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:56Z",
+      "createdAt": "2026-01-19T17:44:34Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "medium",
+        "area:indexing",
+        "type:task",
+        "area:backend"
+      ],
+      "assignees": [],
+      "stableId": "e070f1c817988068162be8dfa986e69370ee3a52",
+      "body": null
+    },
+    {
+      "number": 95,
+      "nodeId": "I_kwDOLIGtvc7kU3Ia",
+      "title": "Capture current event set for HarmonyVoting (ProposalCreated, VoteCast)",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:56Z",
+      "createdAt": "2026-01-19T17:44:31Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "type:docs",
+        "medium",
+        "area:indexing"
+      ],
+      "assignees": [],
+      "stableId": "820397c43e890f2200500adc8e3d317d686bb1ae",
+      "body": null
+    },
+    {
+      "number": 94,
+      "nodeId": "I_kwDOLIGtvc7kU3Hv",
+      "title": "Define golden path E2E scenarios (install/vote/execute/uninstall)",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:55Z",
+      "createdAt": "2026-01-19T17:44:30Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "type:docs",
+        "area:testing",
+        "medium"
+      ],
+      "assignees": [],
+      "stableId": "26d6688302751cc5ae94cb66f2ee5213f758cbcd",
+      "body": null
+    },
+    {
+      "number": 92,
+      "nodeId": "I_kwDOLIGtvc7kU1fo",
+      "title": "Uninstall and confirm cleanup + UI state",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:55Z",
+      "createdAt": "2026-01-19T17:41:51Z",
+      "labels": [
+        "subtask",
+        "plan",
+        "sync-md",
+        "medium",
+        "type:qa",
+        "area:frontend",
+        "area:contracts"
+      ],
+      "assignees": [],
+      "stableId": "195f6c51546e5e404157d788511e42e0e58b976c",
+      "body": null
+    },
+    {
+      "number": 91,
+      "nodeId": "I_kwDOLIGtvc7kU1e7",
+      "title": "Verify UI reflects indexed state",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:07:55Z",
+      "createdAt": "2026-01-19T17:41:50Z",
+      "labels": [
+        "subtask",
+        "plan",
+        "sync-md",
+        "medium",
+        "area:indexing",
+        "type:qa",
+        "area:frontend"
+      ],
+      "assignees": [],
+      "stableId": "e61e0cc351637433af8b70a320d9d39298768b45",
+      "body": null
+    },
+    {
+      "number": 90,
+      "nodeId": "I_kwDOLIGtvc7kU1dx",
+      "title": "Execute (native-token path if applicable)",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:10:34Z",
+      "createdAt": "2026-01-19T17:41:49Z",
+      "labels": [
+        "subtask",
+        "plan",
+        "sync-md",
+        "medium",
+        "type:qa",
+        "area:contracts"
+      ],
+      "assignees": [],
+      "stableId": "46bf13ff41d5972b660c92025233ef3b031cb000",
+      "body": null
+    },
+    {
+      "number": 89,
+      "nodeId": "I_kwDOLIGtvc7kU1c6",
+      "title": "Vote + reach outcome",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:10:34Z",
+      "createdAt": "2026-01-19T17:41:47Z",
+      "labels": [
+        "subtask",
+        "plan",
+        "sync-md",
+        "medium",
+        "type:qa",
+        "area:frontend"
+      ],
+      "assignees": [],
+      "stableId": "f23a6b49cd285290dbc2ee0ac22868c9bd68ee08",
+      "body": null
+    },
+    {
+      "number": 88,
+      "nodeId": "I_kwDOLIGtvc7kU1b8",
+      "title": "Create proposal",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:10:33Z",
+      "createdAt": "2026-01-19T17:41:45Z",
+      "labels": [
+        "subtask",
+        "plan",
+        "sync-md",
+        "medium",
+        "type:qa",
+        "area:frontend"
+      ],
+      "assignees": [],
+      "stableId": "d2572520e71bea649cdecc89da8c51b0a7109bb8",
+      "body": null
+    },
+    {
+      "number": 87,
+      "nodeId": "I_kwDOLIGtvc7kU1bK",
+      "title": "Deploy/install plugin",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:10:33Z",
+      "createdAt": "2026-01-19T17:41:44Z",
+      "labels": [
+        "subtask",
+        "plan",
+        "sync-md",
+        "medium",
+        "type:qa",
+        "area:contracts"
+      ],
+      "assignees": [],
+      "stableId": "0df815953e63419e58eb9d37cfb8c4bfda0e36ba",
+      "body": null
+    },
+    {
+      "number": 86,
+      "nodeId": "I_kwDOLIGtvc7kU1aN",
+      "title": "Backend: handler unit tests for critical events",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:10:32Z",
+      "createdAt": "2026-01-19T17:41:43Z",
+      "labels": [
+        "subtask",
+        "plan",
+        "sync-md",
+        "medium",
+        "area:backend",
+        "type:test"
+      ],
+      "assignees": [],
+      "stableId": "5d649e13d04f90a01f57ee1fb42515974281cd02",
+      "body": null
+    },
+    {
+      "number": 85,
+      "nodeId": "I_kwDOLIGtvc7kU1Zd",
+      "title": "Contracts: install/uninstall + value transfer cases",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:10:32Z",
+      "createdAt": "2026-01-19T17:41:42Z",
+      "labels": [
+        "subtask",
+        "plan",
+        "sync-md",
+        "medium",
+        "area:contracts",
+        "type:test"
+      ],
+      "assignees": [],
+      "stableId": "96679aec560429f0b625ab64afeb75bfb8ce6b85",
+      "body": null
+    },
+    {
+      "number": 84,
+      "nodeId": "I_kwDOLIGtvc7kU1Yr",
+      "title": "Reorg simulation (where feasible)",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:10:32Z",
+      "createdAt": "2026-01-19T17:41:41Z",
+      "labels": [
+        "subtask",
+        "plan",
+        "sync-md",
+        "medium",
+        "area:indexing",
+        "type:qa"
+      ],
+      "assignees": [],
+      "stableId": "a3a2788d050d4be16131d975ef57accbdf9d0f3d",
+      "body": null
+    },
+    {
+      "number": 83,
+      "nodeId": "I_kwDOLIGtvc7kU1Xz",
+      "title": "Mid-history backfill",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:10:31Z",
+      "createdAt": "2026-01-19T17:41:40Z",
+      "labels": [
+        "subtask",
+        "plan",
+        "sync-md",
+        "area:indexing",
+        "high",
+        "type:qa"
+      ],
+      "assignees": [],
+      "stableId": "ff422f46c1068c7a6b61066f0b60e71cb381dfb6",
+      "body": null
+    },
+    {
+      "number": 82,
+      "nodeId": "I_kwDOLIGtvc7kU1W6",
+      "title": "Fresh sync from deployment block",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:10:31Z",
+      "createdAt": "2026-01-19T17:41:39Z",
+      "labels": [
+        "subtask",
+        "plan",
+        "sync-md",
+        "area:indexing",
+        "high",
+        "type:qa"
+      ],
+      "assignees": [],
+      "stableId": "4228b94581f6deeb2bd6ec77fe4ae1236638864c",
+      "body": null
+    },
+    {
+      "number": 81,
+      "nodeId": "I_kwDOLIGtvc7kU1WC",
+      "title": "Produce operator runbook: sync start block, reindex, rollback",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:10:30Z",
+      "createdAt": "2026-01-19T17:41:37Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "type:docs",
+        "low",
+        "area:ops"
+      ],
+      "assignees": [],
+      "stableId": "4b8403f4348a660ff627caca1d986abbd0e65364",
+      "body": null
+    },
+    {
+      "number": 80,
+      "nodeId": "I_kwDOLIGtvc7kU1VH",
+      "title": "Run manual Harmony E2E checklist",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:10:30Z",
+      "createdAt": "2026-01-19T17:41:36Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "area:testing",
+        "high",
+        "type:qa"
+      ],
+      "assignees": [],
+      "stableId": "9634b7fc53cc908a389a09625fd8037cf19fad28",
+      "body": null
+    },
+    {
+      "number": 79,
+      "nodeId": "I_kwDOLIGtvc7kU1UW",
+      "title": "Add automated tests where repo patterns allow",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:10:30Z",
+      "createdAt": "2026-01-19T17:41:35Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "medium",
+        "area:backend",
+        "area:contracts",
+        "type:test"
+      ],
+      "assignees": [],
+      "stableId": "1c40c0fe718afff60fa6e1b28794ca7309bc8eb8",
+      "body": null
+    },
+    {
+      "number": 78,
+      "nodeId": "I_kwDOLIGtvc7kU1TO",
+      "title": "App shows correct fee/value semantics in review/execution",
+      "state": "closed",
+      "updatedAt": "2026-01-19T23:10:29Z",
+      "createdAt": "2026-01-19T17:41:34Z",
+      "labels": [
+        "plan",
+        "sync-md",
+        "medium",
+        "area:frontend",
+        "type:feature"
+      ],
+      "assignees": [],
+      "stableId": "3c12c63d77995d81b74ec00b152b4fa01943c9c5",
+      "body": null
+    }
+  ]
+}
