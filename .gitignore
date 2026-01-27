@@ -51,3 +51,4 @@ schema-introspection-partial.json
 .github\instructions\codacy.instructions.md
 .gitissuer
 .gitissuer/state.json
+tmp/

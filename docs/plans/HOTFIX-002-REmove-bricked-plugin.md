@@ -42,7 +42,7 @@ The plugin installed on DAO `0x1b0f7e8fA531F56D5e8cAF76F1FCC2dB0FE6058a` is bric
 # 1. Verify plugin is installed (PSP state)
 cast call 0x6300477942944d2501db08cD5b7e37DC6423E77C \
   "states(bytes32)(uint256,bytes32)" \
-  $(cast keccak "$(cast abi-encode "(address,address)" 0x1b0f7e8fA531F56D5e8cAF76F1FCC2dB0FE6058a 0x42385C52e929d0229889cbC5A46647D87334C925)") \
+  $(cast keccak "$(cast abi-encode "tuple(address,address)" 0x1b0f7e8fA531F56D5e8cAF76F1FCC2dB0FE6058a 0x42385C52e929d0229889cbC5A46647D87334C925)") \
   --rpc-url https://api.harmony.one
 
 # 2. Check EXECUTE permission on DAO
@@ -57,6 +57,14 @@ cast call 0x1b0f7e8fA531F56D5e8cAF76F1FCC2dB0FE6058a \
 # 3. Check code at plugin address (proxy or not)
 cast code 0x42385C52e929d0229889cbC5A46647D87334C925 --rpc-url https://api.harmony.one | head -c 100
 ```
+
+### Observed (2026-01-27)
+
+- `pluginInstallationId`: `0x73dbcd5cf9e38cf5224f10165f4ef1308adfec982ddbca0e6e80f302c2467220`
+- PSP `states(pluginInstallationId)` returned:
+  - `blockNumber`: `84238558`
+  - `currentAppliedSetupId`: `0xab27927a060ee294c77e38f9ab5c49ac5afeac82e8420bfa89977bc5e9c67704`
+- DAO `hasPermission(dao, plugin, EXECUTE_PERMISSION, 0x)` returned: `true`
 
 ---
 
