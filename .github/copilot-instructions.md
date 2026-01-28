@@ -82,6 +82,10 @@ git commit -m "adiciona resolução de domínio .country no fluxo de criação d
 - Lint/format (repo root): `yarn prettier:check` | `yarn prettier:write`
 - Docs: `yarn docs` (docgen)
 
+## Terminal Timing (tests/build/type-check)
+
+After running `test`, `type-check`, or `build` commands, wait 120 seconds before attempting to read terminal output.
+
 ## Release & PR Utilities
 
 - PR commands (in root README): `/mythx partial|full (quick|standard|deep)`; `/release patch|minor|major`; `/subgraph patch|minor|major`.

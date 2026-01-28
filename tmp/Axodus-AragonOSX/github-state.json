@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-01-28T16:44:56.628Z",
+  "fetchedAt": "2026-01-28T16:57:54.075Z",
   "repo": "Axodus/AragonOSX",
   "labelFilter": "sync-md",
   "issues": [
@@ -4668,7 +4668,7 @@
       "nodeId": "I_kwDOLIGtvc7lq4Ce",
       "title": "[PLAN / TASK] - Document PARENT_ISSUE limitation workaround (manual UI linking or UI automation)",
       "state": "open",
-      "updatedAt": "2026-01-28T16:42:01Z",
+      "updatedAt": "2026-01-28T16:46:32Z",
       "createdAt": "2026-01-25T13:04:02Z",
       "labels": [
         "harmony",
@@ -4688,7 +4688,7 @@
       "nodeId": "I_kwDOLIGtvc7lq4CT",
       "title": "[PLAN / TASK] - Prepare gh issue create/edit commands for project sync",
       "state": "open",
-      "updatedAt": "2026-01-28T16:42:00Z",
+      "updatedAt": "2026-01-28T16:46:31Z",
       "createdAt": "2026-01-25T13:04:01Z",
       "labels": [
         "harmony",
@@ -4708,7 +4708,7 @@
       "nodeId": "I_kwDOLIGtvc7lq4CH",
       "title": "[PLAN / TASK] - Generate .gitissue/metadata.generated.json from PLAN.md",
       "state": "open",
-      "updatedAt": "2026-01-28T16:41:58Z",
+      "updatedAt": "2026-01-28T16:46:29Z",
       "createdAt": "2026-01-25T13:04:01Z",
       "labels": [
         "harmony",
@@ -4728,7 +4728,7 @@
       "nodeId": "I_kwDOLIGtvc7lq4Bv",
       "title": "[PLAN / TASK] - Reconcile checklist items with project items captured at tmp/mzfshark-project-15-items.json",
       "state": "open",
-      "updatedAt": "2026-01-28T16:41:57Z",
+      "updatedAt": "2026-01-28T16:46:26Z",
       "createdAt": "2026-01-25T13:04:00Z",
       "labels": [
         "harmony",
@@ -4748,7 +4748,7 @@
       "nodeId": "I_kwDOLIGtvc7lq4Bb",
       "title": "[PLAN / TASK] - Capture org project schema to tmp/<org>-project-schema.json",
       "state": "open",
-      "updatedAt": "2026-01-28T16:41:55Z",
+      "updatedAt": "2026-01-28T16:46:24Z",
       "createdAt": "2026-01-25T13:03:59Z",
       "labels": [
         "harmony",
@@ -4768,7 +4768,7 @@
       "nodeId": "I_kwDOLIGtvc7lq4BQ",
       "title": "[PLAN / TASK] - Verify .gitissue/metadata.config.json at repo root",
       "state": "open",
-      "updatedAt": "2026-01-28T16:41:54Z",
+      "updatedAt": "2026-01-28T16:46:23Z",
       "createdAt": "2026-01-25T13:03:58Z",
       "labels": [
         "harmony",
@@ -4788,7 +4788,7 @@
       "nodeId": "I_kwDOLIGtvc7lq4A8",
       "title": "[PLAN / TASK] - Produce operator runbook: sync start block, reindex, rollback",
       "state": "open",
-      "updatedAt": "2026-01-28T16:41:52Z",
+      "updatedAt": "2026-01-28T16:46:21Z",
       "createdAt": "2026-01-25T13:03:57Z",
       "labels": [
         "harmony",
@@ -4808,7 +4808,7 @@
       "nodeId": "I_kwDOLIGtvc7lq4Aq",
       "title": "[PLAN / TASK] - E2E checklist — Uninstall and confirm cleanup + UI state",
       "state": "open",
-      "updatedAt": "2026-01-28T16:41:51Z",
+      "updatedAt": "2026-01-28T16:46:20Z",
       "createdAt": "2026-01-25T13:03:57Z",
       "labels": [
         "harmony",
@@ -4829,7 +4829,7 @@
       "nodeId": "I_kwDOLIGtvc7lq4Af",
       "title": "[PLAN / TASK] - E2E checklist — Verify UI reflects indexed state",
       "state": "open",
-      "updatedAt": "2026-01-28T16:41:50Z",
+      "updatedAt": "2026-01-28T16:46:18Z",
       "createdAt": "2026-01-25T13:03:56Z",
       "labels": [
         "harmony",
@@ -4850,7 +4850,7 @@
       "nodeId": "I_kwDOLIGtvc7lq4AY",
       "title": "[PLAN / TASK] - E2E checklist — Execute (native-token path if applicable)",
       "state": "closed",
-      "updatedAt": "2026-01-28T16:41:48Z",
+      "updatedAt": "2026-01-28T16:46:17Z",
       "createdAt": "2026-01-25T13:03:55Z",
       "labels": [
         "harmony",
@@ -4870,7 +4870,7 @@
       "nodeId": "I_kwDOLIGtvc7lq4AP",
       "title": "[PLAN / TASK] - E2E checklist — Vote + reach outcome",
       "state": "open",
-      "updatedAt": "2026-01-28T16:41:47Z",
+      "updatedAt": "2026-01-28T16:46:16Z",
       "createdAt": "2026-01-25T13:03:54Z",
       "labels": [
         "harmony",
@@ -4890,7 +4890,7 @@
       "nodeId": "I_kwDOLIGtvc7lq4AC",
       "title": "[PLAN / TASK] - E2E checklist — Create proposal",
       "state": "open",
-      "updatedAt": "2026-01-28T16:41:46Z",
+      "updatedAt": "2026-01-28T16:46:14Z",
       "createdAt": "2026-01-25T13:03:53Z",
       "labels": [
         "harmony",
@@ -4910,7 +4910,7 @@
       "nodeId": "I_kwDOLIGtvc7lq3_7",
       "title": "[PLAN / TASK] - E2E checklist — Deploy/install plugin",
       "state": "open",
-      "updatedAt": "2026-01-28T16:41:44Z",
+      "updatedAt": "2026-01-28T16:46:13Z",
       "createdAt": "2026-01-25T13:03:53Z",
       "labels": [
         "harmony",
@@ -4930,7 +4930,7 @@
       "nodeId": "I_kwDOLIGtvc7lq3_v",
       "title": "[PLAN / TASK] - Backend: handler unit tests for critical events",
       "state": "closed",
-      "updatedAt": "2026-01-28T16:41:43Z",
+      "updatedAt": "2026-01-28T16:46:11Z",
       "createdAt": "2026-01-25T13:03:52Z",
       "labels": [
         "harmony",
@@ -4950,7 +4950,7 @@
       "nodeId": "I_kwDOLIGtvc7lq3_i",
       "title": "[PLAN / TASK] - Contracts: install/uninstall + value transfer test cases",
       "state": "open",
-      "updatedAt": "2026-01-28T16:41:42Z",
+      "updatedAt": "2026-01-28T16:46:09Z",
       "createdAt": "2026-01-25T13:03:51Z",
       "labels": [
         "harmony",
@@ -4970,7 +4970,7 @@
       "nodeId": "I_kwDOLIGtvc7lq3_a",
       "title": "[PLAN / FEATURE] - App shows correct fee/value semantics in review/execution",
       "state": "open",
-      "updatedAt": "2026-01-28T16:41:41Z",
+      "updatedAt": "2026-01-28T16:46:08Z",
       "createdAt": "2026-01-25T13:03:51Z",
       "labels": [
         "harmony",
@@ -4990,7 +4990,7 @@
       "nodeId": "I_kwDOLIGtvc7lq3_S",
       "title": "[PLAN / TASK] - Ensure indexing distinguishes native-token execution events",
       "state": "closed",
-      "updatedAt": "2026-01-28T16:41:39Z",
+      "updatedAt": "2026-01-28T16:46:07Z",
       "createdAt": "2026-01-25T13:03:50Z",
       "labels": [
         "harmony",
@@ -5011,7 +5011,7 @@
       "nodeId": "I_kwDOLIGtvc7lq3_E",
       "title": "[PLAN / TASK] - Validate permission model for execution (who/when/conditions)",
       "state": "closed",
-      "updatedAt": "2026-01-28T16:41:38Z",
+      "updatedAt": "2026-01-28T16:46:05Z",
       "createdAt": "2026-01-25T13:03:49Z",
       "labels": [
         "harmony",
@@ -5032,7 +5032,7 @@
       "nodeId": "I_kwDOLIGtvc7lq3-4",
       "title": "[PLAN / TASK] - Validate contracts execution path for native token value transfers",
       "state": "closed",
-      "updatedAt": "2026-01-28T16:41:37Z",
+      "updatedAt": "2026-01-28T16:46:03Z",
       "createdAt": "2026-01-25T13:03:48Z",
       "labels": [
         "harmony",
@@ -5052,7 +5052,7 @@
       "nodeId": "I_kwDOLIGtvc7lq3-k",
       "title": "[PLAN / FEATURE] - Implement RPC-based power provider in backend finalizer",
       "state": "closed",
-      "updatedAt": "2026-01-28T16:41:35Z",
+      "updatedAt": "2026-01-28T16:46:01Z",
       "createdAt": "2026-01-25T13:03:47Z",
       "labels": [
         "harmony",
@@ -5073,7 +5073,7 @@
       "nodeId": "I_kwDOLIGtvc7lq3-Q",
       "title": "[PLAN / TASK] - Define requirements: wallet + staked balance via RPC",
       "state": "closed",
-      "updatedAt": "2026-01-28T16:41:33Z",
+      "updatedAt": "2026-01-28T16:46:00Z",
       "createdAt": "2026-01-25T13:03:46Z",
       "labels": [
         "harmony",
@@ -5094,7 +5094,7 @@
       "nodeId": "I_kwDOLIGtvc7lq3-F",
       "title": "[PLAN / FEATURE] - \"Metadata unavailable\" state that still allows core governance",
       "state": "open",
-      "updatedAt": "2026-01-28T16:41:32Z",
+      "updatedAt": "2026-01-28T16:45:59Z",
       "createdAt": "2026-01-25T13:03:46Z",
       "labels": [
         "harmony",
@@ -5114,7 +5114,7 @@
       "nodeId": "I_kwDOLIGtvc7lq394",
       "title": "[PLAN / TASK] - Add integrity checks (format validation, size limits)",
       "state": "open",
-      "updatedAt": "2026-01-28T16:41:30Z",
+      "updatedAt": "2026-01-28T16:45:57Z",
       "createdAt": "2026-01-25T13:03:45Z",
       "labels": [
         "harmony",
@@ -5135,7 +5135,7 @@
       "nodeId": "I_kwDOLIGtvc7lq39Q",
       "title": "[PLAN / FEATURE] - App fallback fetching + graceful degradation",
       "state": "open",
-      "updatedAt": "2026-01-28T16:41:29Z",
+      "updatedAt": "2026-01-28T16:45:56Z",
       "createdAt": "2026-01-25T13:03:44Z",
       "labels": [
         "harmony",
@@ -5155,7 +5155,7 @@
       "nodeId": "I_kwDOLIGtvc7lq39F",
       "title": "[PLAN / TASK] - Backend validation + TTL strategy (avoid malformed data)",
       "state": "closed",
-      "updatedAt": "2026-01-28T16:41:27Z",
+      "updatedAt": "2026-01-28T16:45:54Z",
       "createdAt": "2026-01-25T13:03:43Z",
       "labels": [
         "harmony",
@@ -5175,7 +5175,7 @@
       "nodeId": "I_kwDOLIGtvc7lq38v",
       "title": "[PLAN / TASK] - Define deterministic fallback order (on-chain → cached → placeholder)",
       "state": "open",
-      "updatedAt": "2026-01-28T16:41:26Z",
+      "updatedAt": "2026-01-28T16:45:52Z",
       "createdAt": "2026-01-25T13:03:43Z",
       "labels": [
         "harmony",
@@ -5196,7 +5196,7 @@
       "nodeId": "I_kwDOLIGtvc7lq38n",
       "title": "[PLAN / TASK] - Identify metadata sources (on-chain hash, backend placeholder)",
       "state": "closed",
-      "updatedAt": "2026-01-28T16:41:24Z",
+      "updatedAt": "2026-01-28T16:45:51Z",
       "createdAt": "2026-01-25T13:03:42Z",
       "labels": [
         "harmony",
@@ -5216,7 +5216,7 @@
       "nodeId": "I_kwDOLIGtvc7lq38Z",
       "title": "[PLAN / TASK] - Test uninstall with governance permissions (not just admin)",
       "state": "open",
-      "updatedAt": "2026-01-28T16:41:23Z",
+      "updatedAt": "2026-01-28T16:45:50Z",
       "createdAt": "2026-01-25T13:03:41Z",
       "labels": [
         "harmony",
@@ -5237,7 +5237,7 @@
       "nodeId": "I_kwDOLIGtvc7lq38H",
       "title": "[PLAN / TASK] - Handle \"plugin removed\" state in backend/subgraph (no stale UI)",
       "state": "closed",
-      "updatedAt": "2026-01-28T16:41:21Z",
+      "updatedAt": "2026-01-28T16:45:49Z",
       "createdAt": "2026-01-25T13:03:41Z",
       "labels": [
         "harmony",
@@ -5258,7 +5258,7 @@
       "nodeId": "I_kwDOLIGtvc7lq379",
       "title": "[PLAN / FEATURE] - Implement uninstall UX with warnings + post-uninstall state",
       "state": "closed",
-      "updatedAt": "2026-01-28T16:41:19Z",
+      "updatedAt": "2026-01-28T16:45:47Z",
       "createdAt": "2026-01-25T13:03:40Z",
       "labels": [
         "harmony",
@@ -5278,7 +5278,7 @@
       "nodeId": "I_kwDOLIGtvc7lq37s",
       "title": "[PLAN / TASK] - Ensure uninstall emits events for indexers/UI reconciliation",
       "state": "closed",
-      "updatedAt": "2026-01-28T16:41:18Z",
+      "updatedAt": "2026-01-28T16:45:46Z",
       "createdAt": "2026-01-25T13:03:39Z",
       "labels": [
         "harmony",
@@ -5300,7 +5300,7 @@
       "nodeId": "I_kwDOLIGtvc7lq37f",
       "title": "[PLAN / TASK] - Verify contracts uninstall revokes permissions and clears references",
       "state": "closed",
-      "updatedAt": "2026-01-28T16:41:16Z",
+      "updatedAt": "2026-01-28T16:45:45Z",
       "createdAt": "2026-01-25T13:03:38Z",
       "labels": [
         "harmony",
@@ -5320,7 +5320,7 @@
       "nodeId": "I_kwDOLIGtvc7lq37W",
       "title": "[PLAN / TASK] - Define uninstall invariants (no orphan permissions, no stuck executors)",
       "state": "open",
-      "updatedAt": "2026-01-28T16:41:14Z",
+      "updatedAt": "2026-01-28T16:45:44Z",
       "createdAt": "2026-01-25T13:03:38Z",
       "labels": [
         "harmony",
@@ -5341,7 +5341,7 @@
       "nodeId": "I_kwDOLIGtvc7lq361",
       "title": "[PLAN / TASK] - Monitor and verify proposals appear in UI after creation",
       "state": "open",
-      "updatedAt": "2026-01-28T16:41:13Z",
+      "updatedAt": "2026-01-28T16:45:43Z",
       "createdAt": "2026-01-25T13:03:36Z",
       "labels": [
         "harmony",
@@ -5362,7 +5362,7 @@
       "nodeId": "I_kwDOLIGtvc7lq36c",
       "title": "[PLAN / TASK] - Validate indexing scenarios — reorg simulation (where feasible)",
       "state": "open",
-      "updatedAt": "2026-01-28T16:41:11Z",
+      "updatedAt": "2026-01-28T16:45:41Z",
       "createdAt": "2026-01-25T13:03:35Z",
       "labels": [
         "harmony",
@@ -5382,7 +5382,7 @@
       "nodeId": "I_kwDOLIGtvc7lq36G",
       "title": "[PLAN / TASK] - Validate indexing scenarios — mid-history backfill",
       "state": "open",
-      "updatedAt": "2026-01-28T16:41:09Z",
+      "updatedAt": "2026-01-28T16:45:40Z",
       "createdAt": "2026-01-25T13:03:35Z",
       "labels": [
         "harmony",
@@ -5402,7 +5402,7 @@
       "nodeId": "I_kwDOLIGtvc7lq351",
       "title": "[PLAN / TASK] - Validate indexing scenarios — fresh sync from deployment block",
       "state": "closed",
-      "updatedAt": "2026-01-28T16:41:08Z",
+      "updatedAt": "2026-01-28T16:45:39Z",
       "createdAt": "2026-01-25T13:03:34Z",
       "labels": [
         "harmony",
@@ -5422,7 +5422,7 @@
       "nodeId": "I_kwDOLIGtvc7lq35x",
       "title": "[PLAN / TASK] - Implement catch-up strategy (backfill from deployment block; checkpointing)",
       "state": "closed",
-      "updatedAt": "2026-01-28T16:41:05Z",
+      "updatedAt": "2026-01-28T16:45:38Z",
       "createdAt": "2026-01-25T13:03:33Z",
       "labels": [
         "harmony",
@@ -5443,7 +5443,7 @@
       "nodeId": "I_kwDOLIGtvc7lq35j",
       "title": "[PLAN / TASK] - Add reorg-safe handling (confirmations, idempotency keys, retries)",
       "state": "closed",
-      "updatedAt": "2026-01-28T16:41:03Z",
+      "updatedAt": "2026-01-28T16:45:36Z",
       "createdAt": "2026-01-25T13:03:32Z",
       "labels": [
         "harmony",
@@ -5463,7 +5463,7 @@
       "nodeId": "I_kwDOLIGtvc7lq35U",
       "title": "[PLAN / TASK] - Enable historical indexing for HarmonyVoting events",
       "state": "closed",
-      "updatedAt": "2026-01-28T16:41:02Z",
+      "updatedAt": "2026-01-28T16:45:35Z",
       "createdAt": "2026-01-25T13:03:32Z",
       "labels": [
         "harmony",
@@ -5484,7 +5484,7 @@
       "nodeId": "I_kwDOLIGtvc7lq35K",
       "title": "[PLAN / TASK] - Ensure backend handlers cover HarmonyVoting events (ProposalCreated, VoteCast)",
       "state": "closed",
-      "updatedAt": "2026-01-28T16:41:00Z",
+      "updatedAt": "2026-01-28T16:45:34Z",
       "createdAt": "2026-01-25T13:03:31Z",
       "labels": [
         "harmony",
@@ -5505,7 +5505,7 @@
       "nodeId": "I_kwDOLIGtvc7lq34_",
       "title": "[PLAN / TASK] - ProjectV2 Schema & Sync",
       "state": "open",
-      "updatedAt": "2026-01-28T16:40:59Z",
+      "updatedAt": "2026-01-28T16:45:33Z",
       "createdAt": "2026-01-25T13:03:30Z",
       "labels": [
         "harmony",
@@ -5526,7 +5526,7 @@
       "nodeId": "I_kwDOLIGtvc7lq32Y",
       "title": "[PLAN / FEATURE] - End-to-End Testing & Release Readiness",
       "state": "open",
-      "updatedAt": "2026-01-28T16:40:57Z",
+      "updatedAt": "2026-01-28T16:45:31Z",
       "createdAt": "2026-01-25T13:03:29Z",
       "labels": [
         "harmony",
@@ -5547,7 +5547,7 @@
       "nodeId": "I_kwDOLIGtvc7lq32K",
       "title": "[PLAN / FEATURE] - Native-Token Voting Support",
       "state": "open",
-      "updatedAt": "2026-01-28T16:40:54Z",
+      "updatedAt": "2026-01-28T16:45:30Z",
       "createdAt": "2026-01-25T13:03:28Z",
       "labels": [
         "harmony",
@@ -5568,7 +5568,7 @@
       "nodeId": "I_kwDOLIGtvc7lq319",
       "title": "[PLAN / FEATURE] - Metadata Redundancy (Resilient Proposal Metadata)",
       "state": "open",
-      "updatedAt": "2026-01-28T16:40:53Z",
+      "updatedAt": "2026-01-28T16:45:29Z",
       "createdAt": "2026-01-25T13:03:28Z",
       "labels": [
         "harmony",
@@ -5589,7 +5589,7 @@
       "nodeId": "I_kwDOLIGtvc7lq310",
       "title": "[PLAN / FEATURE] - Plugin Uninstall (Safety & Cleanup)",
       "state": "open",
-      "updatedAt": "2026-01-28T16:40:51Z",
+      "updatedAt": "2026-01-28T16:45:28Z",
       "createdAt": "2026-01-25T13:03:27Z",
       "labels": [
         "harmony",
@@ -5610,7 +5610,7 @@
       "nodeId": "I_kwDOLIGtvc7lq31l",
       "title": "[PLAN / FEATURE] - Indexing Resilience",
       "state": "open",
-      "updatedAt": "2026-01-28T16:40:50Z",
+      "updatedAt": "2026-01-28T16:45:27Z",
       "createdAt": "2026-01-25T13:03:26Z",
       "labels": [
         "harmony",
@@ -5631,7 +5631,7 @@
       "nodeId": "I_kwDOLIGtvc7lq31X",
       "title": "[PLAN] - #PLAN-001 - HarmonyVoting E2E Production Rollout",
       "state": "open",
-      "updatedAt": "2026-01-28T16:40:48Z",
+      "updatedAt": "2026-01-28T16:45:25Z",
       "createdAt": "2026-01-25T13:03:26Z",
       "labels": [
         "harmony",

@@ -52,3 +52,4 @@ schema-introspection-partial.json
 .gitissuer
 .gitissuer/state.json
 tmp
+docs/plans/archive
