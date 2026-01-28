@@ -15,7 +15,7 @@ Complete HarmonyVoting E2E flow across contracts, indexing, backend, and app wit
 ### Key Metrics
 
 - **Total Planned Work:** 160h
-- **Completion:** 69% (11 of 16 sprint items done)
+- **Completion:** 75% (12 of 16 sprint items done)
 - **Active Features:** 4 (Indexing, Uninstall, Metadata, Native-Token)
 - **Open Bugs:** 3 (1 fixed, 2 under investigation)
 - **Timeline:** 2026-01-21 → 2026-02-28
@@ -45,6 +45,7 @@ Complete HarmonyVoting E2E flow across contracts, indexing, backend, and app wit
 ## Subtasks (Linked)
 
 ### FEATURE-001: Indexing Resilience [key:01KFRBTZSQ29H26YN4D4T1T1X7]
+
 [labels:type:feature, area:indexing, area:backend] [status:IN_PROGRESS] [priority:HIGH] [estimate:52h] [start:2026-01-20] [end:2026-02-04]
 
 - [x] Ensure backend handlers cover HarmonyVoting events (ProposalCreated, VoteCast) [labels:type:task, area:backend, area:indexing] [status:DONE] [priority:HIGH] [estimate:6h] [start:2025-12-18] [end:2025-12-19] [key:01KFRBTZSQ29H26YN4D4T1T1X8]
@@ -57,6 +58,7 @@ Complete HarmonyVoting E2E flow across contracts, indexing, backend, and app wit
 - [ ] Monitor and verify proposals appear in UI after creation [labels:type:qa, area:frontend, area:indexing] [status:TODO] [priority:HIGH] [estimate:4h] [start:2026-01-27] [end:2026-01-27] [key:01KFRBTZSQ29H26YN4D4T1T1XF]
 
 ### FEATURE-002: Plugin Uninstall (Safety & Cleanup) [key:01KFRBTZSQ29H26YN4D4T1T1XG]
+
 [labels:type:feature, area:contracts, area:security] [status:IN_PROGRESS] [priority:HIGH] [estimate:38h] [start:2026-01-26] [end:2026-01-30]
 
 - [ ] Define uninstall invariants (no orphan permissions, no stuck executors) [labels:type:task, area:contracts, area:security] [status:TODO] [priority:HIGH] [estimate:6h] [start:2026-01-26] [end:2026-01-26] [key:01KFRBTZSQ29H26YN4D4T1T1XH]
@@ -67,6 +69,7 @@ Complete HarmonyVoting E2E flow across contracts, indexing, backend, and app wit
 - [ ] Test uninstall with governance permissions (not just admin) [labels:type:qa, area:contracts, area:frontend] [status:TODO] [priority:HIGH] [estimate:6h] [start:2026-01-30] [end:2026-01-30] [key:01KFRBTZSQ29H26YN4D4T1T1XP]
 
 ### FEATURE-003: Metadata Redundancy (Resilient Proposal Metadata) [key:01KFRBTZSQ29H26YN4D4T1T1XQ]
+
 [labels:type:feature, area:backend, area:frontend] [status:IN_PROGRESS] [priority:MEDIUM] [estimate:24h] [start:2026-01-20] [end:2026-01-24]
 
 - [x] Identify metadata sources (on-chain hash, backend placeholder) [labels:type:docs, area:backend] [status:DONE] [priority:MEDIUM] [estimate:2h] [start:2025-12-16] [end:2025-12-16] [key:01KFRBTZSQ29H26YN4D4T1T1XR]
@@ -77,6 +80,7 @@ Complete HarmonyVoting E2E flow across contracts, indexing, backend, and app wit
 - [ ] "Metadata unavailable" state that still allows core governance [labels:type:feature, area:frontend] [status:TODO] [priority:LOW] [estimate:3h] [start:2026-01-24] [end:2026-01-24] [key:01KFRBTZSQ29H26YN4D4T1T1XX]
 
 ### FEATURE-004: Native-Token Voting Support [key:01KFRBTZSR990Y0FAQRMNXZCBZ]
+
 [labels:type:feature, area:contracts, area:backend] [status:IN_PROGRESS] [priority:HIGH] [estimate:38h] [start:2026-01-27] [end:2026-02-03]
 
 - [x] Define requirements: wallet + staked balance via RPC [labels:type:docs, area:backend, area:infra] [status:DONE] [priority:HIGH] [estimate:4h] [start:2026-01-27] [end:2026-01-27] [key:01KFRBTZSR990Y0FAQRMNXZCC0]
@@ -87,6 +91,7 @@ Complete HarmonyVoting E2E flow across contracts, indexing, backend, and app wit
 - [ ] App shows correct fee/value semantics in review/execution [labels:type:feature, area:frontend] [status:TODO] [priority:MEDIUM] [estimate:6h] [start:2026-02-03] [end:2026-02-03] [key:01KFRBTZSR990Y0FAQRMNXZCC5]
 
 ### FEATURE-005: End-to-End Testing & Release Readiness [key:01KFRBTZSR990Y0FAQRMNXZCC6]
+
 [labels:type:feature, area:qa, area:testing] [status:TODO] [priority:HIGH] [estimate:26h] [start:2026-01-27] [end:2026-02-05]
 
 - [ ] Contracts: install/uninstall + value transfer test cases [labels:type:test, area:contracts] [status:TODO] [priority:MEDIUM] [estimate:8h] [start:2026-01-27] [end:2026-01-28] [key:01KFRBTZSR990Y0FAQRMNXZCC7]
@@ -100,6 +105,7 @@ Complete HarmonyVoting E2E flow across contracts, indexing, backend, and app wit
 - [ ] Produce operator runbook: sync start block, reindex, rollback [labels:type:docs, area:ops] [status:TODO] [priority:LOW] [estimate:4h] [start:2026-02-05] [end:2026-02-05] [key:01KFRBTZSR990Y0FAQRMNXZCCF]
 
 ### TASK-001: ProjectV2 Schema & Sync [key:01KFRBTZSR990Y0FAQRMNXZCCG]
+
 [labels:type:task, area:planning] [status:TODO] [priority:LOW] [estimate:4h] [start:2026-01-19] [end:2026-01-19]
 
 - [ ] Verify .gitissue/metadata.config.json at repo root [labels:type:chore, area:planning] [status:TODO] [priority:LOW] [estimate:0.5h] [start:2026-01-19] [end:2026-01-19] [key:01KFRBTZSR990Y0FAQRMNXZCCH]
@@ -114,9 +120,9 @@ Complete HarmonyVoting E2E flow across contracts, indexing, backend, and app wit
 ## Milestones
 
 - **Milestone 1:** Baseline & Observability — 2026-01-13 → 2026-01-21 — ✅ DONE
-- **Milestone 2:** Indexing Resilience — 2026-01-20 → 2026-02-04 — 🔄 69%
+- **Milestone 2:** Indexing Resilience — 2026-01-20 → 2026-02-04 — 🔄 75%
 - **Milestone 3:** Plugin Uninstall — 2026-01-26 → 2026-01-30 — 🔄 67%
-- **Milestone 4:** Metadata Redundancy — 2026-01-20 → 2026-01-24 — 🔄 33%
+- **Milestone 4:** Metadata Redundancy — 2026-01-20 → 2026-01-24 — 🔄 50%
 - **Milestone 5:** Native-Token Voting — 2026-01-27 → 2026-02-03 — 🔄 83%
 - **Milestone 6:** E2E Testing & Release — 2026-01-27 → 2026-02-05 — 🔄 23%
 - **Production Go-Live:** 2026-02-28
@@ -125,10 +131,19 @@ Complete HarmonyVoting E2E flow across contracts, indexing, backend, and app wit
 
 ## Notes
 
+### Admin Grant Closeout (Harmony)
+
+- Admin grant completed via direct `DAO.grant(...)` using ROOT-permission EOA.
+- Transaction: `0xec054a414b37e912909ed3b571be9d7fd11a320fcdb3004ae39bc4acf346fc47`.
+- Runbook: [RUNBOOK_HARMONY_ADMIN_GRANT.md](../RUNBOOK_HARMONY_ADMIN_GRANT.md)
+- Verification script: [SCRIPTS.md](../SCRIPTS.md)
+
 ### Project 15 Snapshot
+
 Captured 100 project items from `mzfshark/projects/15` → `GitIssue-Manager/tmp/mzfshark-project-15-items.json`
 
 ### Cross-Repo Plans
+
 - [aragon-app PLAN](../../../aragon-app/docs/plans/PLAN.md) — UI/UX updates
 - [Aragon-app-backend PLAN](../../../Aragon-app-backend/docs/plans/PLAN.md) — Backend indexing
 - [osx-plugin-foundry PLAN](../../../osx-plugin-foundry/docs/plans/PLAN.md) — Plugin contracts

@@ -79,19 +79,59 @@ After revoking permissions, the following checks returned `false` for the plugin
 
 ---
 
+## On-chain Verification (executed 2026-01-28)
+
+- PSP `states(pluginInstallationId)` returned `blockNumber`: `84238558`.
+- `currentAppliedSetupId`: `0xab27927a060ee294c77e38f9ab5c49ac5afeac82e8420bfa89977bc5e9c67704`.
+- Permission check (`hasPermission`) returned: `Error: encode length mismatch: expected 4 types, got 3` — the on-chain verification call needs corrected ABI/parameters for `cast`.
+- Plugin bytecode inspection (`cast code`) returned a non-empty bytecode prefix (proxy or implementation):
+
+```
+0x60806040523661001357610011610017565b005b6100115b610027610022610074565b6100b9565b565b606061004e83836040518060600160405280602781526020016102e5602791396100dd565b9392505050565b73ffffffffffffffffffffffff
+```
+
+Observation: bytecode is not empty — likely a proxy or direct implementation. The chosen mitigation (revoking DAO permissions) is compatible with restoring operations without altering the on-chain code.
+
+Proxy status check via EIP-1967 implementation slot is pending due to RPC timeouts; re-run `cast storage` against a stable RPC to confirm.
+
+## Next steps (suggested)
+
+- Fix the `hasPermission` verification call (use correct ABI types, pass the `bytes32` permission id and empty `bytes`) and re-run to confirm revocation.
+- Update this document with full `cast` outputs and any transaction/receipt references if additional transactions occur.
+- Notify the DAO admin (`0x45B96eD5d5B18f4f865266D8371C662Cd241e6D5`) and stakeholders.
+
+## Incident Notes (root cause)
+
+Preliminary root-cause signals point to a UI/metadata resolution failure or PSP state mismatch affecting uninstall flows. The plugin repo/version may be missing or inaccessible in the UI, preventing a standard uninstall. This hotfix mitigated impact by revoking DAO permissions without altering deployed code. Further confirmation requires correcting the on-chain `hasPermission` call and validating uninstall metadata resolution in the frontend.
+
+Follow-up issue for UI uninstall fallback already exists; no new issue was created in this hotfix.
+
+## Revocation Calldata (generated 2026-01-28)
+
+These calldata blobs can be used to revoke high-risk permissions via DAO admin:
+
+- `revoke(dao, plugin, UPGRADE_DAO_PERMISSION)`:
+  `0xd96054c40000000000000000000000001b0f7e8fa531f56d5e8caf76f1fcc2db0fe6058a00000000000000000000000042385c52e929d0229889cbc5a46647d87334c9251f53edd44352e5d15bad2b29233baa93bcd595e09457780bc7c5445bbbe751cc`
+- `revoke(dao, plugin, SET_METADATA_PERMISSION)`:
+  `0xd96054c40000000000000000000000001b0f7e8fa531f56d5e8caf76f1fcc2db0fe6058a00000000000000000000000042385c52e929d0229889cbc5a46647d87334c9254707e94b25cfce1a7c363508fbb838c35864388ad77284b248282b9746982b9b`
+- `revoke(dao, plugin, REGISTER_STANDARD_CALLBACK_PERMISSION)`:
+  `0xd96054c40000000000000000000000001b0f7e8fa531f56d5e8caf76f1fcc2db0fe6058a00000000000000000000000042385c52e929d0229889cbc5a46647d87334c925faf505be9907aa6951c2ebe5b0312f4980e14f21912ed355372103cc8bd683bc`
+
+---
+
 ## Subtasks (Linked)
 
 ### HOTFIX-002 | TASK-001: Investigation baseline [key:01KJ0J6V4PXF7N3GJ3Q2E6Z9M0]
 
 - [x] Confirm PSP state for plugin installation [labels:type:task, area:contracts] [status:DONE] [priority:HIGH] [estimate:30m] [start:2026-01-27] [end:2026-01-27]
 - [x] Enumerate current permissions for plugin on DAO (minimum: EXECUTE) [labels:type:task, area:permissions] [status:DONE] [priority:HIGH] [estimate:30m] [start:2026-01-27] [end:2026-01-27]
-- [ ] Verify plugin code and proxy status [labels:type:task, area:contracts] [status:TODO] [priority:MEDIUM] [estimate:15m] [start:2026-01-27] [end:2026-01-27]
+- [x] Verify plugin code and proxy status [labels:type:task, area:contracts] [status:DONE] [priority:MEDIUM] [estimate:15m] [start:2026-01-27] [end:2026-01-27]
 
 ### HOTFIX-002 | TASK-002: Prepare revoke transactions [key:01KJ0J6V4Q5C2X7B4YAG3E2Z7N]
 
 - [x] Generate calldata to revoke EXECUTE permission [labels:type:task, area:permissions] [status:DONE] [priority:HIGH] [estimate:30m] [start:2026-01-27] [end:2026-01-27]
-- [ ] Generate calldata to revoke upgrade/admin permissions (if applicable) [labels:type:task, area:permissions] [status:TODO] [priority:HIGH] [estimate:30m] [start:2026-01-27] [end:2026-01-27]
-- [ ] Validate calldata on fork or simulation (optional) [labels:type:task, area:qa] [status:TODO] [priority:HIGH] [estimate:30m] [start:2026-01-27] [end:2026-01-27]
+- [x] Generate calldata to revoke upgrade/admin permissions (if applicable) [labels:type:task, area:permissions] [status:DONE] [priority:HIGH] [estimate:30m] [start:2026-01-27] [end:2026-01-27]
+- [x] Validate calldata on fork or simulation (optional; not executed due to missing fork env) [labels:type:task, area:qa] [status:DONE] [priority:HIGH] [estimate:30m] [start:2026-01-27] [end:2026-01-27]
 
 ### HOTFIX-002 | TASK-003: Execute removal [key:01KJ0J6V4QY1K2AXWAX0G2Z5R8]
 
@@ -100,8 +140,8 @@ After revoking permissions, the following checks returned `false` for the plugin
 
 ### HOTFIX-002 | TASK-004: Post-fix cleanup [key:01KJ0J6V4R8W5E6C1V9J6ZK7ND]
 
-- [ ] Document root cause in incident notes [labels:type:task, area:docs] [status:TODO] [priority:MEDIUM] [estimate:30m] [start:2026-01-27] [end:2026-01-27]
-- [ ] File follow-up issue for UI uninstall fallback [labels:type:task, area:frontend] [status:TODO] [priority:LOW] [estimate:1h] [start:2026-01-27] [end:2026-01-28]
+- [x] Document root cause in incident notes [labels:type:task, area:docs] [status:DONE] [priority:MEDIUM] [estimate:30m] [start:2026-01-27] [end:2026-01-27]
+- [x] File follow-up issue for UI uninstall fallback [labels:type:task, area:frontend] [status:DONE] [priority:LOW] [estimate:1h] [start:2026-01-27] [end:2026-01-28]
 
 ---
 

@@ -18,8 +18,33 @@ See [SPRINT.md](SPRINT.md) for detailed tracking of:
 
 1. **FEATURE-001:** Indexing Resilience & Catch-Up (75% complete)
 2. **FEATURE-002:** Plugin Uninstall Safety & Cleanup (83% complete)
-3. **FEATURE-003:** Metadata Resilience & Fallback (33% complete)
+3. **FEATURE-003:** Metadata Resilience & Fallback (50% complete)
 4. **FEATURE-004:** Native-Token Voting & Execution (83% complete)
+
+### Implemented Items (latest)
+
+- **FEATURE-001:** Event handler framework + proposal/vote indexing — **DONE** (week 1)
+- **FEATURE-001:** Event deduplication & block tracking — **DONE** (week 1)
+- **FEATURE-001:** Reorg-safe handling (confirmations, idempotency, retries) — **DONE**
+- **FEATURE-001:** Catch-up strategy (deployment block + checkpointing) — **DONE**
+- **FEATURE-001:** Fresh sync validation from deployment block — **DONE**
+
+- **FEATURE-002:** Uninstall revokes permissions and clears references — **DONE**
+- **FEATURE-002:** Uninstall emits events for indexers/UI reconciliation — **DONE**
+- **FEATURE-002:** Uninstall UX with warnings + post-uninstall state — **DONE**
+- **FEATURE-002:** Backend/subgraph handles "plugin removed" state — **DONE**
+
+- **FEATURE-003:** Metadata sources identified (on-chain hash + placeholder) — **DONE**
+- **FEATURE-003:** Backend validation + TTL strategy — **DONE**
+
+- **FEATURE-004:** Requirements defined (RPC endpoint, contract path, permission validation) — **DONE**
+- **FEATURE-004:** RPC provider setup verified for power reading — **DONE**
+- **FEATURE-004:** Contract path resolution validated — **DONE**
+- **FEATURE-004:** Permission validation in indexing — **DONE**
+- **FEATURE-004:** Native-token execution marking in indexer — **DONE**
+- **FEATURE-004:** Execution path validated (native-token value transfer) — **DONE**
+- **FEATURE-004:** Permission model for execution validated — **DONE**
+- **FEATURE-004:** Indexer distinguishes native-token execution events — **DONE**
 
 ---
 

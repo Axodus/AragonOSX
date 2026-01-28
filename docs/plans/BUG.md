@@ -62,7 +62,7 @@ dao.revoke(address(plugin), EXECUTE_ROLE)
 
 **Area:** backend, frontend  
 **Priority:** MEDIUM  
-**Status:** UNDER_REVIEW  
+**Status:** IN_PROGRESS (timeout validated; fallback in progress)  
 **Reported:** 2026-01-28  
 **Affected:** Metadata API, UI Rendering
 

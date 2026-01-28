@@ -70,18 +70,18 @@
 
 **Wednesday–Friday (2026-02-01 → 2026-02-03):**
 
-- [ ] **HIGH (14h):** Metadata fallback framework
+- [ ] **HIGH (14h):** Metadata fallback framework (IN_PROGRESS)
 
-  - Design IPFS fallback chain (4h)
-  - Implement caching layer (6h)
-  - Test fallback scenarios (4h)
-    [labels:type:feature, area:backend] [status:TODO] [priority:HIGH] [estimate:14h]
+- Design IPFS fallback chain (4h)
+- Implement caching layer (6h)
+- Test fallback scenarios (4h)
+  [labels:type:feature, area:backend] [status:TODO] [priority:HIGH] [estimate:14h]
 
 - [ ] **MEDIUM (8h):** Native-token execution tracking
 
-  - Add native-token event handler (4h)
-  - Update execution model (4h)
-    [labels:type:feature, area:backend] [status:TODO] [priority:MEDIUM] [estimate:8h]
+- Add native-token event handler (4h)
+- Update execution model (4h)
+  [labels:type:feature, area:backend] [status:TODO] [priority:MEDIUM] [estimate:8h]
 
 - [ ] **HIGH (6h):** Documentation
   - Event handler architecture doc (3h)
