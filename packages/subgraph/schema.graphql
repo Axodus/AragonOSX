@@ -85,7 +85,7 @@ interface TokenBalance {
 """
 The ERC20 Token balances for the DAO.
 """
-type ERC20Balance implements TokenBalance @entity {
+type ERC20Balance implements TokenBalance @entity(immutable: false) {
   " The concatenation of DAO Smart contract address and Token Smart contract address. Joined by '_'. "
   id: ID!
 
@@ -106,7 +106,7 @@ type ERC20Balance implements TokenBalance @entity {
 The Native token balances of the DAO, representing the amount of the blockchain's native currency
 (e.g., Ether on Ethereum, MATIC on Polygon) held by the DAO.
 """
-type NativeBalance implements TokenBalance @entity {
+type NativeBalance implements TokenBalance @entity(immutable: false) {
   " The concatenation of DAO Smart contract address and Token Smart contract address. Joined by '_'. "
   id: ID!
 
@@ -123,7 +123,7 @@ type NativeBalance implements TokenBalance @entity {
 """
 The NFT balances of the DAO. Including all Token IDs held by the DAO per [ERC721 Token Smart Contract](https://eips.ethereum.org/EIPS/eip-721).
 """
-type ERC721Balance implements TokenBalance @entity {
+type ERC721Balance implements TokenBalance @entity(immutable: false) {
   " The concatenation of DAO Smart Contract address and [ERC721 Token Smart Contract](https://eips.ethereum.org/EIPS/eip-721) address. Joined by '_'. "
   id: ID!
 
@@ -143,7 +143,7 @@ type ERC721Balance implements TokenBalance @entity {
 """
 The ERC1155 Token balances of the DAO. Including all Token IDs and it's amounts held by the DAO per [ERC1155 Token Smart Contract](https://eips.ethereum.org/EIPS/eip-1155).
 """
-type ERC1155Balance implements TokenBalance @entity {
+type ERC1155Balance implements TokenBalance @entity(immutable: false) {
   " The concatenation of DAO Smart Contract address and [ERC1155 Token Smart Contract](https://eips.ethereum.org/EIPS/eip-1155) address. Joined by '_'. "
   id: ID!
 
@@ -166,7 +166,7 @@ type ERC1155Balance implements TokenBalance @entity {
 """
 The DAO token balance for each token within an [ERC1155 Token Smart Contract](https://eips.ethereum.org/EIPS/eip-1155)
 """
-type ERC1155TokenIdBalance @entity {
+type ERC1155TokenIdBalance @entity(immutable: false) {
   " The concatenation of DAO Smart Contract address, [ERC1155 Token Smart Contract](https://eips.ethereum.org/EIPS/eip-1155) and token ID. Joined by '_'. "
   id: ID!
 
@@ -435,7 +435,7 @@ type Action @entity(immutable: true) {
 """
 The supported callback functions for ERC standards registered with [ERC-165](https://eips.ethereum.org/EIPS/eip-165) interface ID and callback function signature.
 """
-type StandardCallback @entity {
+type StandardCallback @entity(immutable: false) {
   " Concatenation of the DAO address and the interfaceID. Joined by '_'. "
   id: ID!
 
@@ -454,7 +454,7 @@ type StandardCallback @entity {
 
 # DAO
 
-type Dao @entity {
+type Dao @entity(immutable: false) {
   id: ID! # use address as id
   subdomain: String
   creator: Bytes!
@@ -480,7 +480,7 @@ type Dao @entity {
 # Cannot be immutable because a permission can be revoked and granted in the same TX.
 # This results in an error in the subgraph if the entity is immutable.
 # No need to store granted as we can delete permission when revoked
-type Permission @entity {
+type Permission @entity(immutable: false) {
   id: ID! # emitting contract Address (DAO or PluginRepo) + permissionId + where + who
   where: Bytes!
   permissionId: Bytes!
@@ -513,7 +513,7 @@ type PluginSetup @entity(immutable: true) {
   versions: [PluginVersion!]! @derivedFrom(field: "pluginSetup")
 }
 
-type PluginRelease @entity {
+type PluginRelease @entity(immutable: false) {
   id: ID! # pluginRepo + release
   pluginRepo: PluginRepo!
   release: Int!
@@ -568,7 +568,7 @@ type PluginPreparation @entity(immutable: true) {
 }
 
 # Don't implement IPlugin. Otherwise it would show up under plugins in the DAO entity
-type PluginInstallation @entity {
+type PluginInstallation @entity(immutable: false) {
   id: ID! # psp installationId
   dao: Dao!
   plugin: IPlugin # The plugin address as id provided by the applied preparation
@@ -577,6 +577,12 @@ type PluginInstallation @entity {
   appliedVersion: PluginVersion # Stored to track installations in the different plugin versions
   appliedPluginRepo: PluginRepo # Stored to track installation in the different plugin repos
   preparations: [PluginPreparation!]! @derivedFrom(field: "installation")
+
+  # HarmonyVoting: optional metadata for plugin instances.
+  # Stored from PSP installation data when the plugin repo is recognized.
+  validatorAddress: Bytes
+  processKey: Bytes
+
   state: PluginPreparationState!
 }
 

@@ -1,4 +1,4 @@
-import {CodeBlockWriter, Project} from 'ts-morph';
+const {Project} = require('ts-morph');
 
 function main() {
   const project = new Project();
@@ -21,7 +21,7 @@ function main() {
   // Get additional method classes
   const sourceMethodClasses = sourceMethodFile.getClasses();
 
-  // Add all imports from sourcemethod-classes
+  // Add all imports from sourceMethodFile
   const methodsImportDeclarations = sourceMethodFile.getImportDeclarations();
   methodsImportDeclarations.forEach(importDeclaration => {
     if (
@@ -34,24 +34,24 @@ function main() {
   // Import assert into generated file
   outputFile.addImportDeclaration({
     namedImports: ['assert', 'log'],
-    moduleSpecifier: `matchstick-as`,
+    moduleSpecifier: 'matchstick-as',
   });
 
   // Add import statements for the original classes
   const sourceFileNameWithoutExtension =
     sourceFile.getBaseNameWithoutExtension();
   outputFile.addImportDeclaration({
-    namedImports: sourceClasses.map(
-      classDeclaration => classDeclaration.getName() as string
+    namedImports: sourceClasses.map(classDeclaration =>
+      classDeclaration.getName()
     ),
     moduleSpecifier: `../../generated/${sourceFileNameWithoutExtension}`,
   });
 
   // Iterate through the classes in the source file
   sourceClasses.forEach(classDeclaration => {
-    // Create a new class based on the original one
-    const originalClassName = classDeclaration.getName() as string;
+    const originalClassName = classDeclaration.getName();
     const newClassName = `Extended${originalClassName}`;
+
     const newClass = outputFile.addClass({
       name: newClassName,
       isExported: true,
@@ -61,60 +61,64 @@ function main() {
     // Create a new constructor that calls super() with a default id.
     newClass.addConstructor({
       parameters: [],
-      statements: (writer: CodeBlockWriter) => {
+      statements: writer => {
         const defaultEntityId = '0x1';
         writer.writeLine(`super('${defaultEntityId}');`);
       },
     });
 
-    // add methods to generated classes
-    sourceMethodClasses.forEach(classDeclaration => {
-      if (classDeclaration.getName() === `${originalClassName}Methods`) {
-        const methods = classDeclaration.getMethods();
-
-        methods.forEach(method => {
-          let returnType = method.getReturnTypeNode()?.getText() || '';
-          if (returnType === `${originalClassName}Methods`) {
-            returnType = `Extended${originalClassName}`;
-          }
-
-          // Get the type parameters
-          const typeParameters = method
-            .getTypeParameters()
-            .map(param => param.getText());
-
-          const newMethod = newClass.addMethod({
-            name: method.getName(),
-            returnType: returnType,
-            typeParameters: typeParameters, // Add the type parameters to the new method
-          });
-
-          const parameters = method.getParameters().map(parameter => {
-            return {
-              name: parameter.getName(),
-              type: parameter.getTypeNode()?.getText() || '',
-              hasQuestionToken: parameter.hasQuestionToken(),
-              initializer: parameter.getInitializer()?.getText(),
-              decorators: parameter
-                .getDecorators()
-                .map(decorator => decorator.getStructure()),
-            };
-          });
-
-          newMethod.addParameters(parameters);
-
-          const statements = method
-            .getStatements()
-            .map(statement => statement.getText());
-          newMethod.addStatements(statements);
-        });
+    // Add methods to generated classes
+    sourceMethodClasses.forEach(methodClass => {
+      if (methodClass.getName() !== `${originalClassName}Methods`) {
+        return;
       }
+
+      const methods = methodClass.getMethods();
+      methods.forEach(method => {
+        let returnType =
+          (method.getReturnTypeNode() &&
+            method.getReturnTypeNode().getText()) ||
+          '';
+        if (returnType === `${originalClassName}Methods`) {
+          returnType = `Extended${originalClassName}`;
+        }
+
+        const typeParameters = method
+          .getTypeParameters()
+          .map(param => param.getText());
+
+        const newMethod = newClass.addMethod({
+          name: method.getName(),
+          returnType,
+          typeParameters,
+        });
+
+        const parameters = method.getParameters().map(parameter => ({
+          name: parameter.getName(),
+          type:
+            (parameter.getTypeNode() && parameter.getTypeNode().getText()) ||
+            '',
+          hasQuestionToken: parameter.hasQuestionToken(),
+          initializer:
+            parameter.getInitializer() && parameter.getInitializer().getText(),
+          decorators: parameter
+            .getDecorators()
+            .map(decorator => decorator.getStructure()),
+        }));
+
+        newMethod.addParameters(parameters);
+
+        const statements = method
+          .getStatements()
+          .map(statement => statement.getText());
+        newMethod.addStatements(statements);
+      });
     });
 
     newClass.addMethod({
       name: 'buildOrUpdate',
       returnType: 'void',
-      statements: (writer: CodeBlockWriter) => {
+      statements: writer => {
         writer.writeLine('this.save();');
       },
     });
@@ -129,25 +133,25 @@ function main() {
           initializer: 'false',
         },
       ],
-      statements: (writer: CodeBlockWriter) => {
+      statements: writer => {
         writer.writeLine(`let entity = ${originalClassName}.load(this.id);`);
-        writer.writeLine(`if (!entity) throw new Error("Entity not found");`);
-        writer.writeLine(`let entries = entity.entries;`);
+        writer.writeLine('if (!entity) throw new Error("Entity not found");');
+        writer.writeLine('let entries = entity.entries;');
         writer.write('for (let i = 0; i < entries.length; i++)').block(() => {
-          writer.writeLine(`let key = entries[i].key;`);
+          writer.writeLine('let key = entries[i].key;');
 
           writer.write('if (debug)').block(() => {
-            writer.writeLine(`log.debug('asserting for key: {}', [key]);`);
+            writer.writeLine("log.debug('asserting for key: {}', [key]);");
           });
 
-          writer.writeLine(`let value = this.get(key);`);
+          writer.writeLine('let value = this.get(key);');
 
           writer
             .write('if (!value)')
             .block(() => {
               writer.write('if (debug)').block(() => {
                 writer.writeLine(
-                  `log.debug('value is null for key: {}', [key]);`
+                  "log.debug('value is null for key: {}', [key]);"
                 );
               });
             })
@@ -155,7 +159,7 @@ function main() {
             .block(() => {
               writer.write('if (debug)').block(() => {
                 writer.writeLine(
-                  `log.debug('asserting with value: {}', [value.displayData()]);`
+                  "log.debug('asserting with value: {}', [value.displayData()]);"
                 );
               });
 
@@ -168,7 +172,6 @@ function main() {
     });
   });
 
-  // Save the changes
   outputFile.saveSync();
 }
 

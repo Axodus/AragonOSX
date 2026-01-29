@@ -21,7 +21,69 @@ import {
   generatePluginRepoEntityId,
   generatePluginVersionEntityId,
 } from '@aragon/osx-commons-subgraph';
-import {Bytes, log} from '@graphprotocol/graph-ts';
+import {Address, Bytes, ethereum, log} from '@graphprotocol/graph-ts';
+
+const HARMONY_DELEGATION_VOTING_PLUGIN_REPO =
+  '0x4ac3dafd88defd9a000076365e28b3de3a862700';
+
+const DEFAULT_DELEGATION_PROCESS_KEY = Bytes.fromHexString(
+  '0x64656c65676174696f6e00000000000000000000000000000000000000000000000000000000'
+);
+
+function isHarmonyDelegationVotingPluginRepo(pluginRepo: Address): boolean {
+  return (
+    pluginRepo.toHexString().toLowerCase() ===
+    HARMONY_DELEGATION_VOTING_PLUGIN_REPO
+  );
+}
+
+function tryDecodeDelegationInstallData(data: Bytes): DelegationInstallData | null {
+  // New format: abi.encode(address validatorAddress, bytes32 processKey)
+  let decoded = ethereum.decode('(address,bytes32)', data);
+  if (decoded) {
+    if (decoded.kind == ethereum.ValueKind.TUPLE) {
+      let tuple = decoded.toTuple();
+      if (tuple.length == 2) {
+        let validatorAddressValue = tuple[0].toAddress();
+        let processKeyValue = tuple[1].toBytes();
+        return {
+          validatorAddress: validatorAddressValue,
+          processKey: processKeyValue,
+        };
+      }
+    }
+  }
+
+  // Legacy format: abi.encode(address validatorAddress)
+  // Some encoders may produce a single, non-tuple value; accept both.
+  decoded = ethereum.decode('(address)', data);
+  if (decoded) {
+    if (decoded.kind == ethereum.ValueKind.TUPLE) {
+      let tuple = decoded.toTuple();
+      if (tuple.length == 1) {
+        let validatorAddressValue = tuple[0].toAddress();
+        return {
+          validatorAddress: validatorAddressValue,
+          processKey: DEFAULT_DELEGATION_PROCESS_KEY,
+        };
+      }
+    }
+
+    if (decoded.kind == ethereum.ValueKind.ADDRESS) {
+      return {
+        validatorAddress: decoded.toAddress(),
+        processKey: DEFAULT_DELEGATION_PROCESS_KEY,
+      };
+    }
+  }
+
+  return null;
+}
+
+class DelegationInstallData {
+  validatorAddress: Address;
+  processKey: Bytes;
+}
 
 export function handleInstallationPrepared(event: InstallationPrepared): void {
   let daoAddress = event.params.dao;
@@ -98,6 +160,21 @@ export function handleInstallationPrepared(event: InstallationPrepared): void {
   }
   pluginEntity.state = 'InstallationPrepared';
   pluginEntity.dao = daoEntityId;
+
+  // HarmonyVoting (Delegation): persist validatorAddress/processKey for UI/indexers.
+  if (isHarmonyDelegationVotingPluginRepo(pluginRepoAddress)) {
+    let decoded = tryDecodeDelegationInstallData(event.params.data);
+    if (decoded) {
+      pluginEntity.validatorAddress = decoded.validatorAddress;
+      pluginEntity.processKey = decoded.processKey;
+    } else {
+      log.warning('Failed to decode Harmony Delegation install data', [
+        pluginRepoAddress.toHexString(),
+        event.transaction.hash.toHexString(),
+      ]);
+    }
+  }
+
   pluginEntity.save();
 }
 

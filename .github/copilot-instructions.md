@@ -27,7 +27,7 @@ Monorepo for the Aragon OSx protocol: Solidity contracts, subgraph, and ethers w
 
    ```bash
    # Create issue from PLAN.md
-   gh issue create --title "[Plan] <descriptive-title>" --body-file PLAN.md --project "https://github.com/users/mzfshark/projects/5"
+   gh issue create --title "[Plan] <descriptive-title>" --body-file PLAN.md --project "https://github.com/users/mzfshark/projects/15"
    ```
 
 3. **Update Plan Progress**: As tasks complete, update checkboxes in `PLAN.md` and sync with issue:
@@ -108,3 +108,7 @@ After running `test`, `type-check`, or `build` commands, wait 120 seconds before
 - Add a plugin: implement logic + setup under `src/plugins/<name>`, wire permissions, extend tests, and document install/uninstall paths.
 - Add a network: configure Hardhat `networks.ts`, deploy with `yarn deploy`, persist addresses in `deployed_contracts*.json` and propagate to app/backend.
 - Update ABI consumers: run `yarn build` to refresh Typechain; update `contracts-ethers` if wrappers change.
+
+## wsl Notes
+- do not use wsl paths in any configuration or script.
+- never try to run commands wsl terminal that interact with codacy cli.

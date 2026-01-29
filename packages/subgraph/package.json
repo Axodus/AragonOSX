@@ -7,13 +7,13 @@
   "scripts": {
     "lint": "eslint . --ext .ts",
     "build:contracts": "cd ../contracts && yarn build",
-    "manifest": "scripts/build-manifest.sh",
+    "manifest": "bash scripts/build-manifest.sh",
     "updateLocalManifest": "yarn node scripts/updateLocalManifest.js",
-    "extend:schema": "yarn ts-node tests/schema-extender.ts",
-    "build": "scripts/build-subgraph.sh && yarn extend:schema",
-    "deploy": "scripts/deploy-subgraph.sh",
+    "extend:schema": "node tests/schema-extender.js",
+    "build": "bash scripts/build-subgraph.sh && yarn extend:schema",
+    "deploy": "bash scripts/deploy-subgraph.sh",
     "create:local": "graph create aragon/aragon-core-goerli --node http://localhost:8020",
-    "deploy:local": "LOCAL=true scripts/deploy-subgraph.sh",
+    "deploy:local": "LOCAL=true bash scripts/deploy-subgraph.sh",
     "generate:introspection": "scripts/tests/generate-introspection-json.sh",
     "generate:introspection:partial": "scripts/docs/generate-introspection-partial-json.sh",
     "docs:examples": "node ./scripts/docs/generate-markdown.js ./src/examples && rsync -avr --prune-empty-dirs --remove-source-files --include='*/' --include='*.md' --exclude='*' ./src/examples/ ./docs/developer-portal/ --delete;",
@@ -25,7 +25,7 @@
     "coverage": "graph test -c"
   },
   "devDependencies": {
-    "@graphprotocol/graph-cli": "^0.52.0",
+    "@graphprotocol/graph-cli": "^0.98.1",
     "@graphprotocol/graph-ts": "^0.27.0",
     "@graphql-codegen/cli": "^5.0.2",
     "@graphql-codegen/introspection": "^4.0.3",
