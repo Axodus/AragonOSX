@@ -15,10 +15,6 @@ Configuration for AI behavior when interacting with Codacy's MCP Server
 - If any issues are found in the new edits, propose and apply fixes for them.
 - > NOTE: Failure to follow this rule is considered a critical error.
 
-## CRITICAL: Dont use with some extension files 
-Codacy dont support *.md files. Skip it when files are markdown.
-dont support solidity *.sol files. Skip it when files are solidity.
-
 ## When you tried to run the `codacy_cli_analyze` tool and the Codacy CLI is not installed
 - Ask the user 'Codacy CLI is not installed. Would you like me to install it now?'
 - If the user responds with "yes", run the `codacy_cli_install` tool and then continue with the original task
