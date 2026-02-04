@@ -14,6 +14,17 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {deploy} = deployments;
   const {deployer} = await getNamedAccounts();
 
+  // Diagnostics: make it obvious which account pays gas and what the RPC thinks gas costs.
+  try {
+    const balance = await hre.ethers.provider.getBalance(deployer);
+    const gasPrice = await hre.ethers.provider.getGasPrice();
+    console.log(`Deployer: ${deployer}`);
+    console.log(`Deployer balance (wei): ${balance.toString()}`);
+    console.log(`Network gasPrice (wei): ${gasPrice.toString()}`);
+  } catch {
+    console.log(`Deployer: ${deployer}`);
+  }
+
   // Harmony deployments typically don't have an ENSSubdomainRegistrar configured.
   // Passing an empty subdomain skips ENS registration in PluginRepoRegistry.
   const isHarmony = ['harmony', 'harmonyTestnet'].includes(hre.network.name);

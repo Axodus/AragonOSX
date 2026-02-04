@@ -15,6 +15,9 @@ Configuration for AI behavior when interacting with Codacy's MCP Server
 - If any issues are found in the new edits, propose and apply fixes for them.
 - > NOTE: Failure to follow this rule is considered a critical error.
 
+## CRITICAL: WSL Environments
+- NEVER use WSL commands or paths when interacting with Codacy's MCP Server. Usual command line is .codacy/cli.sh ...
+
 ## When you tried to run the `codacy_cli_analyze` tool and the Codacy CLI is not installed
 - Ask the user 'Codacy CLI is not installed. Would you like me to install it now?'
 - If the user responds with "yes", run the `codacy_cli_install` tool and then continue with the original task
