@@ -8,12 +8,17 @@ import {PluginUUPSUpgradeable} from "@aragon/osx-commons-contracts/src/plugin/Pl
 import {IProposal} from "@aragon/osx-commons-contracts/src/plugin/extensions/proposal/IProposal.sol";
 import {ProposalUpgradeable} from "@aragon/osx-commons-contracts/src/plugin/extensions/proposal/ProposalUpgradeable.sol";
 import {RATIO_BASE, _applyRatioCeiled} from "@aragon/osx-commons-contracts/src/utils/math/Ratio.sol";
+import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
 /// @title NativeTokenVotingPlugin
 /// @notice A governance plugin that allows voting using native token (ONE, ETH, etc.) balances.
 /// @dev This plugin extends the standard voting pattern to use native token balances instead of ERC20.
 /// Voting power is determined by the voter's native token balance at a specific snapshot block.
 contract NativeTokenVotingPlugin is PluginUUPSUpgradeable, ProposalUpgradeable {
+    /// @notice Permission to set a proposal snapshot (Merkle root + total voting power).
+    bytes32 public constant SET_PROPOSAL_SNAPSHOT_PERMISSION_ID =
+        keccak256("SET_PROPOSAL_SNAPSHOT_PERMISSION");
+
     /// @notice The different voting options available.
     enum VoteOption {
         None,
@@ -30,6 +35,8 @@ contract NativeTokenVotingPlugin is PluginUUPSUpgradeable, ProposalUpgradeable {
         uint32 snapshotBlock;
         uint64 supportThreshold;
         uint64 minParticipation;
+        bytes32 merkleRoot;
+        uint256 totalVotingPower;
     }
 
     /// @notice Voting modes
@@ -47,6 +54,7 @@ contract NativeTokenVotingPlugin is PluginUUPSUpgradeable, ProposalUpgradeable {
         uint256 no;
         uint256 abstain;
         mapping(address => VoteOption) votes;
+        mapping(address => uint256) votingPowerUsed;
         Action[] actions;
         uint256 allowFailureMap;
     }
@@ -74,6 +82,13 @@ contract NativeTokenVotingPlugin is PluginUUPSUpgradeable, ProposalUpgradeable {
         uint256 votingPower
     );
 
+    /// @notice Emitted when a proposal snapshot is set.
+    event ProposalSnapshotSet(
+        uint256 indexed proposalId,
+        bytes32 indexed merkleRoot,
+        uint256 totalVotingPower
+    );
+
     /// @notice Emitted when voting settings are updated.
     event VotingSettingsUpdated(
         uint64 minParticipation,
@@ -84,6 +99,24 @@ contract NativeTokenVotingPlugin is PluginUUPSUpgradeable, ProposalUpgradeable {
 
     /// @notice Thrown when a voter has no voting power.
     error NoVotingPower();
+
+    /// @notice Thrown when the proposal does not exist.
+    error ProposalNotFound();
+
+    /// @notice Thrown when a proposal snapshot was not set.
+    error ProposalSnapshotNotSet();
+
+    /// @notice Thrown when a proposal snapshot was already set.
+    error ProposalSnapshotAlreadySet();
+
+    /// @notice Thrown when a Merkle proof is invalid.
+    error InvalidMerkleProof();
+
+    /// @notice Thrown when vote replacement is not allowed.
+    error VoteReplacementForbidden();
+
+    /// @notice Thrown when trying to vote with an invalid option.
+    error InvalidVoteOption();
 
     /// @notice Thrown when the proposal is not open for voting.
     error ProposalNotOpen();
@@ -181,6 +214,72 @@ contract NativeTokenVotingPlugin is PluginUUPSUpgradeable, ProposalUpgradeable {
         proposal.allowFailureMap = _allowFailureMap;
     }
 
+    /// @notice Sets the proposal snapshot Merkle root and total eligible voting power.
+    /// @dev The Merkle tree must be built with leaves: `keccak256(abi.encodePacked(voter, votingPower))`.
+    /// The votingPower should represent native token power (wallet + staked) at `snapshotBlock`.
+    function setProposalSnapshot(
+        uint256 _proposalId,
+        bytes32 _merkleRoot,
+        uint256 _totalVotingPower
+    ) external auth(SET_PROPOSAL_SNAPSHOT_PERMISSION_ID) {
+        Proposal storage proposal = proposals[_proposalId];
+
+        if (proposal.parameters.endDate == 0) {
+            revert ProposalNotFound();
+        }
+
+        if (proposal.parameters.merkleRoot != bytes32(0)) {
+            revert ProposalSnapshotAlreadySet();
+        }
+
+        if (_merkleRoot == bytes32(0) || _totalVotingPower == 0) {
+            revert ProposalSnapshotNotSet();
+        }
+
+        proposal.parameters.merkleRoot = _merkleRoot;
+        proposal.parameters.totalVotingPower = _totalVotingPower;
+
+        emit ProposalSnapshotSet(_proposalId, _merkleRoot, _totalVotingPower);
+    }
+
+    /// @notice Returns the proposal snapshot parameters.
+    function getProposalSnapshot(
+        uint256 _proposalId
+    ) external view returns (uint32 snapshotBlock, bytes32 merkleRoot, uint256 totalVotingPower) {
+        Proposal storage proposal = proposals[_proposalId];
+        if (proposal.parameters.endDate == 0) {
+            revert ProposalNotFound();
+        }
+        return (
+            proposal.parameters.snapshotBlock,
+            proposal.parameters.merkleRoot,
+            proposal.parameters.totalVotingPower
+        );
+    }
+
+    /// @notice Returns the proposal vote tally.
+    function getProposalTally(
+        uint256 _proposalId
+    ) external view returns (uint256 yes, uint256 no, uint256 abstain) {
+        Proposal storage proposal = proposals[_proposalId];
+        if (proposal.parameters.endDate == 0) {
+            revert ProposalNotFound();
+        }
+        return (proposal.yes, proposal.no, proposal.abstain);
+    }
+
+    /// @notice Returns the current vote option and voting power used for a voter.
+    function getVote(
+        uint256 _proposalId,
+        address _voter
+    ) external view returns (VoteOption voteOption, uint256 votingPower) {
+        Proposal storage proposal = proposals[_proposalId];
+        if (proposal.parameters.endDate == 0) {
+            revert ProposalNotFound();
+        }
+        return (proposal.votes[_voter], proposal.votingPowerUsed[_voter]);
+    }
+
     function _emitProposalCreated(
         uint256 _proposalId,
         address _creator,
@@ -201,47 +300,81 @@ contract NativeTokenVotingPlugin is PluginUUPSUpgradeable, ProposalUpgradeable {
         );
     }
 
-    /// @notice Casts a vote on a proposal.
+    /// @notice Backwards-compatible entrypoint kept for ABI stability.
+    /// @dev The native-token voting power (wallet + staked) requires an oracle snapshot and proof.
+    function vote(uint256 _proposalId, VoteOption _voteOption) external {
+        (_proposalId, _voteOption);
+        revert ProposalSnapshotNotSet();
+    }
+
+    /// @notice Casts a vote on a proposal using a snapshot proof.
     /// @param _proposalId The proposal ID.
     /// @param _voteOption The vote option.
-    function vote(uint256 _proposalId, VoteOption _voteOption) external {
+    /// @param _votingPower The voter's snapshot voting power.
+    /// @param _proof Merkle proof for leaf: `keccak256(abi.encodePacked(msg.sender, _votingPower))`.
+    function vote(
+        uint256 _proposalId,
+        VoteOption _voteOption,
+        uint256 _votingPower,
+        bytes32[] calldata _proof
+    ) external {
         Proposal storage proposal = proposals[_proposalId];
+
+        if (proposal.parameters.endDate == 0) {
+            revert ProposalNotFound();
+        }
 
         if (!_isProposalOpen(proposal)) {
             revert ProposalNotOpen();
         }
 
-        // Get voting power at snapshot block
-        // Note: In production, this should query historical balance via an indexer or oracle
-        // For now, we use current balance as a simplified implementation
-        uint256 votingPower = address(msg.sender).balance;
+        if (_voteOption == VoteOption.None) {
+            revert InvalidVoteOption();
+        }
 
-        if (votingPower == 0) {
+        bytes32 merkleRoot = proposal.parameters.merkleRoot;
+        if (merkleRoot == bytes32(0) || proposal.parameters.totalVotingPower == 0) {
+            revert ProposalSnapshotNotSet();
+        }
+
+        if (_votingPower == 0) {
             revert NoVotingPower();
         }
 
-        VoteOption previousVote = proposal.votes[msg.sender];
+        bytes32 leaf = keccak256(abi.encodePacked(msg.sender, _votingPower));
+        if (!MerkleProof.verify(_proof, merkleRoot, leaf)) {
+            revert InvalidMerkleProof();
+        }
 
-        // Update vote counts
-        if (previousVote == VoteOption.Yes) {
-            proposal.yes -= votingPower;
-        } else if (previousVote == VoteOption.No) {
-            proposal.no -= votingPower;
-        } else if (previousVote == VoteOption.Abstain) {
-            proposal.abstain -= votingPower;
+        VoteOption previousVote = proposal.votes[msg.sender];
+        uint256 previousVotingPower = proposal.votingPowerUsed[msg.sender];
+
+        if (previousVote != VoteOption.None) {
+            if (proposal.parameters.votingMode != VotingMode.VoteReplacement) {
+                revert VoteReplacementForbidden();
+            }
+
+            if (previousVote == VoteOption.Yes) {
+                proposal.yes -= previousVotingPower;
+            } else if (previousVote == VoteOption.No) {
+                proposal.no -= previousVotingPower;
+            } else if (previousVote == VoteOption.Abstain) {
+                proposal.abstain -= previousVotingPower;
+            }
         }
 
         if (_voteOption == VoteOption.Yes) {
-            proposal.yes += votingPower;
+            proposal.yes += _votingPower;
         } else if (_voteOption == VoteOption.No) {
-            proposal.no += votingPower;
+            proposal.no += _votingPower;
         } else if (_voteOption == VoteOption.Abstain) {
-            proposal.abstain += votingPower;
+            proposal.abstain += _votingPower;
         }
 
         proposal.votes[msg.sender] = _voteOption;
+        proposal.votingPowerUsed[msg.sender] = _votingPower;
 
-        emit VoteCast(_proposalId, msg.sender, _voteOption, votingPower);
+        emit VoteCast(_proposalId, msg.sender, _voteOption, _votingPower);
 
         // Early execution if applicable
         if (
@@ -321,9 +454,10 @@ contract NativeTokenVotingPlugin is PluginUUPSUpgradeable, ProposalUpgradeable {
     function _isMinParticipationReached(uint256 _proposalId) internal view returns (bool) {
         Proposal storage proposal = proposals[_proposalId];
 
-        // Note: totalVotingPower should be calculated from total native token supply at snapshot
-        // This is a simplified version
-        uint256 totalVotingPower = address(dao()).balance; // Placeholder
+        uint256 totalVotingPower = proposal.parameters.totalVotingPower;
+        if (totalVotingPower == 0) {
+            return false;
+        }
         uint256 participation = proposal.yes + proposal.no + proposal.abstain;
 
         return

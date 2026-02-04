@@ -1,11 +1,10 @@
 import {HardhatRuntimeEnvironment} from 'hardhat/types';
 import {DeployFunction} from 'hardhat-deploy/types';
-import {Interface} from 'ethers';
+import {Interface, isAddress} from 'ethers';
 import fs from 'fs';
 import path from 'path';
 import {
   DAO_PERMISSIONS,
-  getContractAddress,
   managePermissions,
   Operation,
 } from '../../helpers';
@@ -15,7 +14,38 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const {deploy} = deployments;
   const {deployer} = await getNamedAccounts();
 
+  // Harmony deployments typically don't have an ENSSubdomainRegistrar configured.
+  // Passing an empty subdomain skips ENS registration in PluginRepoRegistry.
+  const isHarmony = ['harmony', 'harmonyTestnet'].includes(hre.network.name);
+  const pluginRepoSubdomain = isHarmony ? '' : `native-token-voting-${Date.now()}`;
+
+  // Prevent creating multiple repos by accident when re-running the script.
+  // If an address is already recorded in deploy/deployed_contracts.json, reuse it.
+  // NOTE: This script can (a) deploy impl+setup and (b) optionally register a new PluginRepo.
+  // For upgrades, you typically deploy a new setup and then publish a new version to the
+  // existing repo using a dedicated "publish version" script.
+  let deployedContractsJson: any = undefined;
+  let existingRepoAddress: string | undefined;
+  const deployedContractsPath = path.resolve(
+    __dirname,
+    '..',
+    '..',
+    'deployed_contracts.json'
+  );
+  try {
+    const jsonRaw = fs.readFileSync(deployedContractsPath, 'utf8');
+    deployedContractsJson = JSON.parse(jsonRaw);
+    const existing = deployedContractsJson?.contracts?.NativeTokenVotingPluginRepo?.address;
+    if (typeof existing === 'string' && isAddress(existing)) {
+      existingRepoAddress = existing;
+    }
+  } catch {
+    // Ignore if file doesn't exist or is malformed.
+  }
+
   console.log(`\nDeploying NativeTokenVoting Plugin.`);
+
+  const forceRedeploy = process?.env?.FORCE_REDEPLOY === '1';
 
   // Deploy NativeTokenVotingPlugin implementation
   const nativeTokenVotingImplementation = await deploy(
@@ -24,6 +54,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
       from: deployer,
       args: [],
       log: true,
+      ...(forceRedeploy ? {skipIfAlreadyDeployed: false} : {}),
     }
   );
 
@@ -32,6 +63,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     from: deployer,
     args: [],
     log: true,
+    ...(forceRedeploy ? {skipIfAlreadyDeployed: false} : {}),
   });
 
   console.log(
@@ -41,46 +73,43 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     `NativeTokenVotingSetup deployed at: ${nativeTokenVotingSetup.address}`
   );
 
-  // Get PluginRepoFactory
-  const pluginRepoFactoryAddress = await getContractAddress(
-    'PluginRepoFactory',
-    hre
-  );
+  // Get PluginRepoFactory (Harmony may not have a "latest deployment" fallback)
+  let pluginRepoFactoryAddress = '';
+  try {
+    const deployment = await deployments.get('PluginRepoFactory');
+    pluginRepoFactoryAddress = deployment.address;
+  } catch {
+    pluginRepoFactoryAddress =
+      deployedContractsJson?.contracts?.PluginRepoFactory?.address ?? '';
+  }
+
+  if (!isAddress(pluginRepoFactoryAddress)) {
+    throw new Error(
+      `PluginRepoFactory address not found/invalid for network '${hre.network.name}'. ` +
+        `Expected a checksummed 0x-address, got '${pluginRepoFactoryAddress}'. ` +
+        `Make sure the Framework deploy ran, or that deploy/deployed_contracts.json contains contracts.PluginRepoFactory.address.`
+    );
+  }
+
+  const deployerSigner = await hre.ethers.getSigner(deployer);
   const pluginRepoFactory = await hre.ethers.getContractAt(
     'PluginRepoFactory',
-    pluginRepoFactoryAddress
+    pluginRepoFactoryAddress,
+    deployerSigner
   );
 
+  const forceRepoRegister = process?.env?.FORCE_REPO_REGISTER === '1';
+  if (existingRepoAddress && !forceRepoRegister) {
+    console.log(
+      `NativeTokenVoting PluginRepo already recorded at: ${existingRepoAddress}. Skipping repo registration.`
+    );
+    return;
+  }
+
   // Register plugin repo
-  // Harmony deployments typically don't have an ENSSubdomainRegistrar configured.
-  // Passing an empty subdomain skips ENS registration in PluginRepoRegistry.
-  const isHarmony = ['harmony', 'harmonyTestnet'].includes(hre.network.name);
-  const pluginRepoSubdomain = isHarmony ? '' : `native-token-voting-${Date.now()}`;
   console.log(
     `\nRegistering NativeTokenVoting plugin repo with subdomain: ${pluginRepoSubdomain}`
   );
-
-  // Prevent creating multiple repos by accident when re-running the script.
-  // If an address is already recorded in deploy/deployed_contracts.json, reuse it.
-  try {
-    const deployedContractsPath = path.resolve(
-      __dirname,
-      '..',
-      '..',
-      'deployed_contracts.json'
-    );
-    const jsonRaw = fs.readFileSync(deployedContractsPath, 'utf8');
-    const json = JSON.parse(jsonRaw);
-    const existing = json?.contracts?.NativeTokenVotingPluginRepo?.address;
-    if (typeof existing === 'string' && existing.length > 0) {
-      console.log(
-        `NativeTokenVoting PluginRepo already recorded at: ${existing}. Skipping registration.`
-      );
-      return;
-    }
-  } catch {
-    // Ignore if file doesn't exist or is malformed.
-  }
 
   const registerTx = await pluginRepoFactory.createPluginRepoWithFirstVersion(
     pluginRepoSubdomain,

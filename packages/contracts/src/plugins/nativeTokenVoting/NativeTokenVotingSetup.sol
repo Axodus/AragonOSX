@@ -11,6 +11,9 @@ import {NativeTokenVotingPlugin} from "./NativeTokenVotingPlugin.sol";
 /// @title NativeTokenVotingSetup
 /// @notice Setup contract for deploying and installing the NativeTokenVoting plugin.
 contract NativeTokenVotingSetup is PluginSetup {
+    bytes32 internal constant SET_PROPOSAL_SNAPSHOT_PERMISSION_ID =
+        keccak256("SET_PROPOSAL_SNAPSHOT_PERMISSION");
+
     /// @notice Installation parameters structure.
     struct InstallationParams {
         uint256 minProposerVotingPower;
@@ -45,7 +48,7 @@ contract NativeTokenVotingSetup is PluginSetup {
 
         // Setup permissions
         PermissionLib.MultiTargetPermission[]
-            memory permissions = new PermissionLib.MultiTargetPermission[](2);
+            memory permissions = new PermissionLib.MultiTargetPermission[](3);
 
         // Grant EXECUTE_PERMISSION on DAO to plugin
         permissions[0] = PermissionLib.MultiTargetPermission({
@@ -65,6 +68,15 @@ contract NativeTokenVotingSetup is PluginSetup {
             permissionId: keccak256("UPGRADE_PLUGIN_PERMISSION")
         });
 
+        // Grant SET_PROPOSAL_SNAPSHOT_PERMISSION on plugin to DAO (so DAO can delegate to an oracle)
+        permissions[2] = PermissionLib.MultiTargetPermission({
+            operation: PermissionLib.Operation.Grant,
+            where: plugin,
+            who: _dao,
+            condition: PermissionLib.NO_CONDITION,
+            permissionId: SET_PROPOSAL_SNAPSHOT_PERMISSION_ID
+        });
+
         preparedSetupData.permissions = permissions;
     }
 
@@ -73,7 +85,7 @@ contract NativeTokenVotingSetup is PluginSetup {
         address _dao,
         SetupPayload calldata _payload
     ) external view returns (PermissionLib.MultiTargetPermission[] memory permissions) {
-        permissions = new PermissionLib.MultiTargetPermission[](2);
+        permissions = new PermissionLib.MultiTargetPermission[](3);
 
         // Revoke EXECUTE_PERMISSION on DAO from plugin
         permissions[0] = PermissionLib.MultiTargetPermission({
@@ -91,6 +103,15 @@ contract NativeTokenVotingSetup is PluginSetup {
             who: _dao,
             condition: PermissionLib.NO_CONDITION,
             permissionId: keccak256("UPGRADE_PLUGIN_PERMISSION")
+        });
+
+        // Revoke SET_PROPOSAL_SNAPSHOT_PERMISSION on plugin from DAO
+        permissions[2] = PermissionLib.MultiTargetPermission({
+            operation: PermissionLib.Operation.Revoke,
+            where: _payload.plugin,
+            who: _dao,
+            condition: PermissionLib.NO_CONDITION,
+            permissionId: SET_PROPOSAL_SNAPSHOT_PERMISSION_ID
         });
     }
 
