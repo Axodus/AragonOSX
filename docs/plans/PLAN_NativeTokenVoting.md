@@ -7,10 +7,10 @@ For native tokens (e.g., ONE) there is no ERC20Votes interface and (in general) 
 
 ## Goals
 
-- [ ] Voting power equals **native wallet balance + native staked balance** at a **snapshot block**.
-- [ ] Voting power is **fixed** for a proposal (no balance-moving exploits during the vote).
-- [ ] Participation / quorum checks use a snapshot-based **total voting power**.
-- [ ] Vote replacement (if enabled) remains correct and cannot corrupt tallies.
+- [x] Voting power equals **native wallet balance + native staked balance** at a **snapshot block**.
+- [x] Voting power is **fixed** for a proposal (no balance-moving exploits during the vote).
+- [x] Participation / quorum checks use a snapshot-based **total voting power**.
+- [x] Vote replacement (if enabled) remains correct and cannot corrupt tallies.
 
 ## Non-goals
 
@@ -20,23 +20,24 @@ For native tokens (e.g., ONE) there is no ERC20Votes interface and (in general) 
 ## Proposed design
 
 - Introduce a Merkle-root based snapshot system:
-  - An authorized **oracle** sets for each proposal: `(snapshotBlock, merkleRoot, totalVotingPower)`.
+  - The proposal stores a `snapshotBlock` at creation time (currently `block.number - 1`).
+  - An authorized **oracle** sets for each proposal: `(merkleRoot, totalVotingPower)`.
   - A voter provides `(votingPower, merkleProof)` to vote.
   - The leaf is `keccak256(abi.encodePacked(voter, votingPower))` where `votingPower = walletNative + stakedNative` at `snapshotBlock` (computed off-chain).
-- Add a dedicated permission `ORACLE_PERMISSION_ID` for setting the root.
+- Add a dedicated permission `SET_PROPOSAL_SNAPSHOT_PERMISSION_ID` for setting the snapshot.
 
 ## Implementation steps
 
-- [ ] Add proposal fields: `snapshotBlock`, `merkleRoot`, `totalVotingPower`.
-- [ ] Add `setMerkleRoot(proposalId, merkleRoot, totalVotingPower)` guarded by `ORACLE_PERMISSION_ID`.
-- [ ] Update `vote()` to require `votingPower + merkleProof`, verify against `merkleRoot`, and store per-voter power to support vote replacement safely.
-- [ ] Update `minProposerVotingPower` check to use snapshot voting power (if root is available) or document expected behavior.
-- [ ] Fix `minParticipation` calculation to use `totalVotingPower` from oracle snapshot.
-- [ ] Add tests:
-  - [ ] Valid vote with correct proof counts.
-  - [ ] Invalid proof reverts.
-  - [ ] Vote replacement preserves tallies.
-  - [ ] Participation/support threshold use snapshot totals.
+- [x] Add proposal fields: `snapshotBlock`, `merkleRoot`, `totalVotingPower`.
+- [x] Add `setProposalSnapshot(proposalId, merkleRoot, totalVotingPower)` guarded by `SET_PROPOSAL_SNAPSHOT_PERMISSION_ID`.
+- [x] Update `vote()` to require `votingPower + merkleProof`, verify against `merkleRoot`, and store per-voter power to support vote replacement safely.
+- [x] Document proposer eligibility behavior: `minProposerVotingPower` check remains based on the proposer’s **current wallet native balance** at proposal creation.
+- [x] Fix `minParticipation` calculation to use `totalVotingPower` from oracle snapshot.
+- [x] Add tests:
+  - [x] Valid vote with correct proof counts.
+  - [x] Invalid proof reverts.
+  - [x] Vote replacement preserves tallies.
+  - [x] Participation/support threshold use snapshot totals.
 
 ## Dependencies / integration points
 
@@ -48,6 +49,6 @@ For native tokens (e.g., ONE) there is no ERC20Votes interface and (in general) 
 
 ## Acceptance criteria
 
-- [ ] On-chain contract verifies proofs and always uses snapshot-derived power.
-- [ ] A voter’s power is wallet+staked (as encoded by the oracle) and cannot be altered mid-vote.
-- [ ] Tests cover core flows.
+- [x] On-chain contract verifies proofs and always uses snapshot-derived power.
+- [x] A voter’s power is wallet+staked (as encoded by the oracle) and cannot be altered mid-vote.
+- [x] Tests cover core flows.

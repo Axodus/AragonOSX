@@ -5,19 +5,35 @@ import {SignerWithAddress} from '@nomiclabs/hardhat-ethers/signers';
 
 const EMPTY_ACTIONS: any[] = [];
 
-async function deployPluginFixture() {
+function hashPair(a: string, b: string): string {
+  const [x, y] = a.toLowerCase() < b.toLowerCase() ? [a, b] : [b, a];
+  return ethers.solidityPackedKeccak256(['bytes32', 'bytes32'], [x, y]);
+}
+
+function buildTwoLeafMerkleTree(leafA: string, leafB: string): {
+  root: string;
+  proofForA: string[];
+  proofForB: string[];
+} {
+  const root = hashPair(leafA, leafB);
+  return {root, proofForA: [leafB], proofForB: [leafA]};
+}
+
+async function deployPluginFixture(opts?: {minParticipation?: number; supportThreshold?: number}) {
   const signers = (await ethers.getSigners()) as unknown as SignerWithAddress[];
-  const [proposer, oracle, voter] = signers;
+  const [proposer, oracle, voter, voter2] = signers;
   const dao = await deployNewDAO(proposer);
 
   const minDuration = 60;
+  const minParticipation = opts?.minParticipation ?? 0;
+  const supportThreshold = opts?.supportThreshold ?? 500000;
 
   const plugin: any = await hre.wrapper.deploy(
     'src/plugins/nativeTokenVoting/NativeTokenVotingPlugin.sol:NativeTokenVotingPlugin',
     {
       withProxy: true,
       proxySettings: {initializer: 'initialize'},
-      initArgs: [dao.target, 0, 0, 500000, minDuration],
+      initArgs: [dao.target, 0, minParticipation, supportThreshold, minDuration],
     }
   );
 
@@ -26,9 +42,9 @@ async function deployPluginFixture() {
   await dao.grant(plugin.target, oracle.address, setSnapshotPermission);
 
   const now = Number((await ethers.provider.getBlock('latest'))!.timestamp);
-  const endDate = now + minDuration + 5;
+  const endDate = now + minDuration + 120;
 
-  return {proposer, oracle, voter, dao, plugin, minDuration, endDate};
+  return {proposer, oracle, voter, voter2, dao, plugin, minDuration, endDate};
 }
 
 async function createProposalAndGetId(
@@ -149,5 +165,82 @@ describe('NativeTokenVotingPlugin (Merkle snapshot)', function () {
     await expect(
       plugin.connect(voter).vote(proposalB, 3, power, [])
     ).to.be.revertedWithCustomError(plugin, 'VoteReplacementForbidden');
+  });
+
+  it('evaluates participation and support thresholds using snapshot totalVotingPower', async () => {
+    const minParticipation = 200000; // 20%
+    const supportThreshold = 600000; // 60%
+
+    const {proposer, oracle, voter, voter2, plugin, endDate} =
+      await deployPluginFixture({minParticipation, supportThreshold});
+
+    // Case 1: participation below threshold => hasSucceeded == false
+    const lowParticipationProposal = await createProposalAndGetId(
+      plugin,
+      proposer,
+      '0x04',
+      endDate,
+      0
+    );
+
+    const lowPower = 19; // ceil(100 * 20%) = 20
+    const lowLeaf = ethers.solidityPackedKeccak256(
+      ['address', 'uint256'],
+      [voter.address, lowPower]
+    );
+
+    await plugin
+      .connect(oracle)
+      .setProposalSnapshot(lowParticipationProposal, lowLeaf, 100);
+
+    await plugin.connect(voter).vote(lowParticipationProposal, 2, lowPower, []);
+    expect(await plugin.hasSucceeded(lowParticipationProposal)).to.equal(false);
+
+    // Case 2: participation ok but support below threshold => hasSucceeded == false
+    const lowSupportProposal = await createProposalAndGetId(
+      plugin,
+      proposer,
+      '0x05',
+      endDate,
+      0
+    );
+
+    const yesPower = 30;
+    const noPower = 30;
+    const leafA = ethers.solidityPackedKeccak256(
+      ['address', 'uint256'],
+      [voter.address, yesPower]
+    );
+    const leafB = ethers.solidityPackedKeccak256(
+      ['address', 'uint256'],
+      [voter2.address, noPower]
+    );
+
+    const {root, proofForA, proofForB} = buildTwoLeafMerkleTree(leafA, leafB);
+    await plugin.connect(oracle).setProposalSnapshot(lowSupportProposal, root, 100);
+
+    await plugin.connect(voter).vote(lowSupportProposal, 2, yesPower, proofForA); // Yes
+    await plugin.connect(voter2).vote(lowSupportProposal, 3, noPower, proofForB); // No
+
+    // participation=60 >= 20, but support yes=30 of totalVotes=60 => 50% < 60%
+    expect(await plugin.hasSucceeded(lowSupportProposal)).to.equal(false);
+
+    // Case 3: participation ok and support ok => hasSucceeded == true
+    const successProposal = await createProposalAndGetId(
+      plugin,
+      proposer,
+      '0x06',
+      endDate,
+      0
+    );
+
+    const passPower = 25;
+    const passLeaf = ethers.solidityPackedKeccak256(
+      ['address', 'uint256'],
+      [voter.address, passPower]
+    );
+    await plugin.connect(oracle).setProposalSnapshot(successProposal, passLeaf, 100);
+    await plugin.connect(voter).vote(successProposal, 2, passPower, []);
+    expect(await plugin.hasSucceeded(successProposal)).to.equal(true);
   });
 });
