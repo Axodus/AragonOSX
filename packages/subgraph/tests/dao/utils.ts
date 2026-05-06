@@ -171,10 +171,10 @@ export function createNewExecutedEvent<T extends Executed>(
   actor: string,
   callId: string,
   actions: ethereum.Tuple[],
-  failureMap: BigInt,
+  failureMap: bigint,
   execResults: Bytes[],
   contractAddress: string,
-  allowFailureMap: BigInt | null // used from DAO V1.2 and higher
+  allowFailureMap: bigint | null // used from DAO V1.2 and higher
 ): T {
   let newExecutedEvent = changetype<T>(newMockEvent());
 
@@ -306,7 +306,7 @@ export function getEXECUTE_PERMISSION_IDreverted(
 
 export function getSupportThreshold(
   contractAddress: string,
-  returns: BigInt
+  returns: bigint
 ): void {
   createMockedFunction(
     Address.fromString(contractAddress),
@@ -319,7 +319,7 @@ export function getSupportThreshold(
 
 export function getMinimalParticipation(
   contractAddress: string,
-  returns: BigInt
+  returns: bigint
 ): void {
   createMockedFunction(
     Address.fromString(contractAddress),
@@ -330,7 +330,7 @@ export function getMinimalParticipation(
     .returns([ethereum.Value.fromSignedBigInt(returns)]);
 }
 
-export function getMinDuration(contractAddress: string, returns: BigInt): void {
+export function getMinDuration(contractAddress: string, returns: bigint): void {
   createMockedFunction(
     Address.fromString(contractAddress),
     'minDuration',
@@ -342,7 +342,7 @@ export function getMinDuration(contractAddress: string, returns: BigInt): void {
 
 export function getProposalCount(
   contractAddress: string,
-  returns: BigInt
+  returns: bigint
 ): void {
   createMockedFunction(
     Address.fromString(contractAddress),

@@ -367,6 +367,22 @@ describe('Core: PermissionManager', function () {
       expect(permission).to.be.equal(UNSET_FLAG);
     });
 
+    it('does not clear ANY_ADDR grants when revoking a specific tuple', async () => {
+      await pm.grant(pm.address, ANY_ADDR, ADMIN_PERMISSION_ID);
+      await pm.grant(pm.address, otherSigner.address, ADMIN_PERMISSION_ID);
+
+      await pm.revoke(pm.address, otherSigner.address, ADMIN_PERMISSION_ID);
+
+      const stillGranted = await pm.hasPermission(
+        pm.address,
+        otherSigner.address,
+        ADMIN_PERMISSION_ID,
+        '0x'
+      );
+
+      expect(stillGranted).to.equal(true);
+    });
+
     it('should emit Revoked', async () => {
       await pm.grant(pm.address, otherSigner.address, ADMIN_PERMISSION_ID);
       await expect(

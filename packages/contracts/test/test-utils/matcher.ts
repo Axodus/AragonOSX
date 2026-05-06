@@ -23,38 +23,66 @@ type DecodedReturnData =
   | {kind: 'Panic'; code: bigint; description: string}
   | {kind: 'Custom'; id: string};
 
+const PANIC_DESCRIPTIONS: Record<string, string> = {
+  [toBeHex(0x01)]: 'assert(false)',
+  [toBeHex(0x11)]: 'arithmetic overflow/underflow',
+  [toBeHex(0x12)]: 'division or modulo by zero',
+  [toBeHex(0x21)]: 'invalid enum value',
+  [toBeHex(0x22)]: 'storage byte array that is incorrectly encoded',
+  [toBeHex(0x31)]: 'pop on empty array',
+  [toBeHex(0x32)]: 'array index out of bounds',
+  [toBeHex(0x41)]: 'memory allocation overflow',
+  [toBeHex(0x51)]: 'zero-initialized function call',
+};
+
+function decodeErrorReturnData(returnData: string): DecodedReturnData {
+  const [reason] = new AbiCoder().decode(['string'], dataSlice(returnData, 4));
+  return {kind: 'Error', reason};
+}
+
+function decodePanicReturnData(returnData: string): DecodedReturnData {
+  const [code] = new AbiCoder().decode(['uint256'], dataSlice(returnData, 4)) as [bigint];
+  const key = toBeHex(Number(code));
+  return {kind: 'Panic', code, description: PANIC_DESCRIPTIONS[key] ?? 'panic'};
+}
+
+const RETURN_DATA_DECODERS: Record<string, (returnData: string) => DecodedReturnData> = {
+  // Error(string)
+  '0x08c379a0': decodeErrorReturnData,
+  // Panic(uint256)
+  '0x4e487b71': decodePanicReturnData,
+};
+
 function decodeReturnData(returnData: string): DecodedReturnData {
   if (!returnData || returnData === '0x') {
     return {kind: 'Empty'};
   }
 
   const selector = returnData.slice(0, 10);
-  // Error(string)
-  if (selector === '0x08c379a0') {
-    const [reason] = new AbiCoder().decode(['string'], dataSlice(returnData, 4));
-    return {kind: 'Error', reason};
-  }
-  // Panic(uint256)
-  if (selector === '0x4e487b71') {
-    const [code] = new AbiCoder().decode(['uint256'], dataSlice(returnData, 4)) as [bigint];
-    // Description mapping (subset)
-    const descriptions: Record<string, string> = {
-      [toBeHex(0x01)]: 'assert(false)',
-      [toBeHex(0x11)]: 'arithmetic overflow/underflow',
-      [toBeHex(0x12)]: 'division or modulo by zero',
-      [toBeHex(0x21)]: 'invalid enum value',
-      [toBeHex(0x22)]: 'storage byte array that is incorrectly encoded',
-      [toBeHex(0x31)]: 'pop on empty array',
-      [toBeHex(0x32)]: 'array index out of bounds',
-      [toBeHex(0x41)]: 'memory allocation overflow',
-      [toBeHex(0x51)]: 'zero-initialized function call',
-    };
-    const key = toBeHex(Number(code));
-    return {kind: 'Panic', code, description: descriptions[key] ?? 'panic'};
+  const decoder = RETURN_DATA_DECODERS[selector];
+  if (decoder !== undefined) {
+    return decoder(returnData);
   }
 
   // Custom error: return selector only; args decoded later if needed
   return {kind: 'Custom', id: selector};
+}
+
+function findNestedErrorData(error: any): any {
+  const candidates = [
+    error?.data,
+    error?.error?.data,
+    error?.error?.error?.data,
+    error?.error?.error?.error?.data,
+  ];
+
+  for (const candidate of candidates) {
+    if (candidate !== undefined) {
+      return candidate;
+    }
+  }
+
+  return undefined;
 }
 
 /**
@@ -72,14 +100,9 @@ export function getReturnDataFromError(error: any): string {
   // some property that doesn't exist on Error
   error = error as any;
 
-  // This is the changed line, we have to check for deeply nested error.data otherwise
-  // ethers will re-throw our error and our tests won't work.
-  // If you can find a better way to do this, please let me know.
-  const errorData =
-    error.data ??
-    error.error?.data ??
-    error.error?.error?.data ??
-    error.error?.error?.error?.data;
+  // We need to check for deeply nested `error.data`, otherwise ethers may re-throw
+  // and our tests won't see the expected revert payload.
+  const errorData = findNestedErrorData(error);
 
   if (errorData === undefined) {
     throw error;
@@ -95,7 +118,9 @@ export function getReturnDataFromError(error: any): string {
 }
 
 export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
-  console.debug('Overwriting revertedWith matcher');
+  if (process?.env?.HARDHAT_MATCHERS_DEBUG === '1') {
+    console.debug('Overwriting revertedWith matcher');
+  }
 
   Assertion.addMethod(
     'revertedWith',
